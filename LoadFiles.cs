@@ -35,7 +35,7 @@ namespace Eu4ModEditor
             }
             //MessageBox.Show(Provinces.Count() + "");
 
-            bw.ReportProgress(10);
+            bw.ReportProgress(5);
             //lp.UpdateProgressLabel("Loading province map...", 2);
             Bitmap copiedBitmap = new Bitmap(GlobalVariables.ProvincesMapBitmap);
             LockBitmap bitmap = new LockBitmap(copiedBitmap);
@@ -70,7 +70,7 @@ namespace Eu4ModEditor
             }
 
             bitmap.UnlockBits();
-            bw.ReportProgress(20);
+            bw.ReportProgress(10);
 
             foreach (Province p in GlobalVariables.Provinces)
             {               
@@ -89,7 +89,7 @@ namespace Eu4ModEditor
                 }
             }
 
-            bw.ReportProgress(25);
+            bw.ReportProgress(15);
 
             List<NodeFile> tradegoodsfiles = new List<NodeFile>();
             if (GlobalVariables.UseMod[2] != 0)
@@ -119,7 +119,7 @@ namespace Eu4ModEditor
                 }
             }
 
-            bw.ReportProgress(30);
+            bw.ReportProgress(20);
             
             GlobalVariables.TradeGoods.Add(TradeGood.nothing);
             foreach (NodeFile tradegoods in tradegoodsfiles)
@@ -154,7 +154,7 @@ namespace Eu4ModEditor
                 
             }
 
-            bw.ReportProgress(35);
+            bw.ReportProgress(24);
 
             List<NodeFile> tradegoodspricesfiles = new List<NodeFile>();
             if (GlobalVariables.UseMod[3] != 0)
@@ -183,7 +183,7 @@ namespace Eu4ModEditor
                 }
             }
 
-            bw.ReportProgress(40);
+            bw.ReportProgress(28);
             List<string> done = new List<string>();
             foreach (NodeFile tradegoodsprices in tradegoodspricesfiles)
             {
@@ -205,7 +205,7 @@ namespace Eu4ModEditor
                 }
             }
 
-            bw.ReportProgress(45);
+            bw.ReportProgress(32);
             List<NodeFile> culturesfiles = new List<NodeFile>(); 
                 try
                 {
@@ -241,7 +241,7 @@ namespace Eu4ModEditor
                     MessageBox.Show(ex.Message);
                 }
             
-            bw.ReportProgress(50);
+            bw.ReportProgress(36);
             done.Clear();
             
                 foreach (NodeFile cultures in culturesfiles)
@@ -273,7 +273,7 @@ namespace Eu4ModEditor
                     }
                 }
             
-            bw.ReportProgress(55);
+            bw.ReportProgress(40);
             List<NodeFile> religionsfiles = new List<NodeFile>();
             if (GlobalVariables.UseMod[5] != 0)
             {
@@ -300,7 +300,7 @@ namespace Eu4ModEditor
                     }
                 }
             }
-            bw.ReportProgress(60);
+            bw.ReportProgress(44);
             string[] religionforbidden = new string[] { };
             done.Clear();
             foreach (NodeFile religions in religionsfiles)
@@ -329,7 +329,7 @@ namespace Eu4ModEditor
                     }
                 }
             }
-            bw.ReportProgress(65);
+            bw.ReportProgress(48);
             List<NodeFile> governmentsfiles = new List<NodeFile>();
             if (GlobalVariables.UseMod[16] != 0)
             {
@@ -356,7 +356,7 @@ namespace Eu4ModEditor
                     }
                 }
             }
-            bw.ReportProgress(70);
+            bw.ReportProgress(52);
             foreach (NodeFile government in governmentsfiles)
             {
                 foreach (Node n in government.MainNode.Nodes)
@@ -369,19 +369,19 @@ namespace Eu4ModEditor
                     }
                 }
             }
-            bw.ReportProgress(73);
+            bw.ReportProgress(56);
             NodeFile technology;
             if (GlobalVariables.UseMod[15] > 0)
                 technology = new NodeFile(GlobalVariables.pathtomod + "common\\technology.txt");
             else
                 technology = new NodeFile(GlobalVariables.pathtogame + "common\\technology.txt");
 
-            bw.ReportProgress(74);
+            bw.ReportProgress(60);
             foreach (Node node in technology.MainNode.Nodes.Find(x => x.Name == "groups").Nodes)
             {
                 GlobalVariables.TechGroups.Add(node.Name);
             }
-            bw.ReportProgress(75);
+            bw.ReportProgress(63);
             Dictionary<string, string> NameToTag = new Dictionary<string, string>();
 
             List<NodeFile> countrytagsfiles = new List<NodeFile>();
@@ -412,6 +412,8 @@ namespace Eu4ModEditor
                 }
             }
 
+            bw.ReportProgress(66);
+
             foreach (NodeFile countrytags in countrytagsfiles)
             {
                 foreach (Variable v in countrytags.MainNode.Variables)
@@ -419,6 +421,8 @@ namespace Eu4ModEditor
                     NameToTag.Add(v.Value.Replace("\"", "").Trim().Split('/')[1].Split('.')[0], v.Name.Trim());
                 }
             }
+
+            bw.ReportProgress(69);
 
             List<string> CountryHistoryFiles = new List<string>();
             List<bool> GameFiles = new List<bool>();
@@ -448,6 +452,7 @@ namespace Eu4ModEditor
                     }
                 }
             }
+            bw.ReportProgress(72);
             foreach (string file in CountryHistoryFiles)
             {
                 string fs = file.Split('\\').Last();
@@ -500,7 +505,7 @@ namespace Eu4ModEditor
                 c.Tag = tag;
                 c.FullName = name;
             }
-
+            bw.ReportProgress(75);
 
 
             List<NodeFile> buildingsfiles = new List<NodeFile>();
@@ -534,6 +539,8 @@ namespace Eu4ModEditor
                 }
             }
 
+            bw.ReportProgress(78);
+
             foreach (NodeFile buildings in buildingsfiles)
             {
                 foreach (Node node in buildings.MainNode.Nodes)
@@ -548,6 +555,8 @@ namespace Eu4ModEditor
                     GlobalVariables.Buildings.Add(bl);
                 }
             }
+
+            bw.ReportProgress(81);
 
             List<string> CountryCommonFiles = new List<string>();
             GameFiles.Clear();
@@ -577,29 +586,26 @@ namespace Eu4ModEditor
                     }
                 }
             }
-
+            bw.ReportProgress(84);
+            /*
             foreach (string file in CountryCommonFiles)
             {
                 string name = file.Split('\\').Last().Split('.')[0];
                 if (!NameToTag.ContainsKey(name))
                     continue;
                 Country c = GlobalVariables.Countries.Find(x => x.Tag == NameToTag[name]);
-                c.CommonFile = file;
-                if (GameFiles[CountryCommonFiles.IndexOf(file)])
-                    c.CommonFileGame = true;
                 if (c != null)
                 {
+                    c.CommonFile = file;
+                    if (GameFiles[CountryCommonFiles.IndexOf(file)])
+                        c.CommonFileGame = true;
                     NodeFile nodefile = new NodeFile(file);
                     string[] colort = nodefile.MainNode.Nodes.Find(x => x.Name == "color").PureValues.ToArray();
                     c.Color = Color.FromArgb(int.Parse(colort[0]), int.Parse(colort[1]), int.Parse(colort[2]));
-
-                    foreach (Variable v in nodefile.MainNode.Variables)
-                    {
-
-                    }
                 }
             }
-            bw.ReportProgress(80);
+            */
+            bw.ReportProgress(86);
             //lp.UpdateProgressLabel("Loading provinces...", 80);
 
             List<string> Files = new List<string>();
@@ -629,6 +635,7 @@ namespace Eu4ModEditor
                     }
                 }
             }
+            bw.ReportProgress(88);
             foreach (string file in Files)
             {
                 bool b = int.TryParse(new String(file.Split('\\').Last().Where(x => char.IsDigit(x)).ToArray()), out int id);
@@ -752,6 +759,7 @@ namespace Eu4ModEditor
                 areas = new NodeFile(GlobalVariables.pathtomod + "map\\area.txt");
             else
                 areas = new NodeFile(GlobalVariables.pathtogame + "map\\area.txt");
+            bw.ReportProgress(92);
             foreach (Node n in areas.MainNode.Nodes)
             {
                 List<Province> pr = new List<Province>();
@@ -766,12 +774,13 @@ namespace Eu4ModEditor
                 foreach (Province pro in a.Provinces)
                     pro.Area = a;
             }
-            bw.ReportProgress(95);
+            bw.ReportProgress(94);
             NodeFile regions;
             if (GlobalVariables.UseMod[11] > 0)
                 regions = new NodeFile(GlobalVariables.pathtomod + "map\\region.txt");
             else
                 regions = new NodeFile(GlobalVariables.pathtogame + "map\\region.txt");
+            bw.ReportProgress(96);
             foreach (Node n in regions.MainNode.Nodes)
             {
                 List<Area> ar = new List<Area>();
@@ -792,13 +801,14 @@ namespace Eu4ModEditor
                     are.Region = r;
             }
 
-            bw.ReportProgress(100);
+            bw.ReportProgress(98);
 
             NodeFile continents;
             if (GlobalVariables.UseMod[13] > 0)
                 continents = new NodeFile(GlobalVariables.pathtomod + "map\\continent.txt");
             else
                 continents = new NodeFile(GlobalVariables.pathtogame + "map\\continent.txt");
+            bw.ReportProgress(100);
             foreach (Node n in continents.MainNode.Nodes)
             {
                 List<Province> ctp = new List<Province>();
@@ -811,11 +821,7 @@ namespace Eu4ModEditor
                     pr.Continent = c;
             }
 
-            bw.ReportProgress(100);
-
-            
-
-
+            bw.ReportProgress(102);
             List<NodeFile> tradenodesfiles = new List<NodeFile>();
             GameFiles.Clear();
             if (GlobalVariables.UseMod[12] != 0)
@@ -843,7 +849,7 @@ namespace Eu4ModEditor
                     }
                 }
             }
-
+            bw.ReportProgress(105);
             foreach (NodeFile tradenodes in tradenodesfiles)
             {
                 foreach (Node node in tradenodes.MainNode.Nodes)
@@ -908,7 +914,7 @@ namespace Eu4ModEditor
                 }
             }
 
-            bw.ReportProgress(105);
+            bw.ReportProgress(108);
             //lp.UpdateProgressLabel("Loading map variables...", 95);
             if (GlobalVariables.UseMod[10] > 0)
                 Reader = new StreamReader(GlobalVariables.pathtomod + "map\\default.map");

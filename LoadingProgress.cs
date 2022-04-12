@@ -24,65 +24,104 @@ namespace Eu4ModEditor
                 case 0:
                     LoadingProgressLabel.Text = "Loading definition...";
                     break;
-                case 10:
+                case 5:
                     LoadingProgressLabel.Text = "Loading province map...";
                     break;
-                case 20:
+                case 10:
                     LoadingProgressLabel.Text = "Setting provinces' centres...";
                     break;
-                case 25:
+                case 15:
                     LoadingProgressLabel.Text = "Loading trade goods files...";
                     break;
-                case 30:
+                case 20:
                     LoadingProgressLabel.Text = "Adding trade goods...";
                     break;
-                case 35:
+                case 24:
                     LoadingProgressLabel.Text = "Loading trade goods prices files...";
                     break;
-                case 40:
+                case 28:
                     LoadingProgressLabel.Text = "Adding trade goods prices...";
                     break;
 
-                case 45:
+                case 32:
                     LoadingProgressLabel.Text = "Loading culture files...";
                     break;
-                case 50:
+                case 36:
                     LoadingProgressLabel.Text = "Adding cultures...";
                     break;
-                case 55:
+                case 40:
                     LoadingProgressLabel.Text = "Loading religion files...";
                     break;
-                case 60:
+                case 44:
                     LoadingProgressLabel.Text = "Adding religions...";
                     break;
-                case 65:
+                case 48:
                     LoadingProgressLabel.Text = "Loading government files...";
                     break;
-                case 70:
+                case 52:
                     LoadingProgressLabel.Text = "Adding governments...";
                     break;
-                case 73:
+                case 56:
                     LoadingProgressLabel.Text = "Loading technology group file...";
                     break;
-                case 74:
+                case 60:
                     LoadingProgressLabel.Text = "Adding technology groups...";
+                    break;
+                case 63:
+                    LoadingProgressLabel.Text = "Loading country tags files...";
+                    break;
+                case 66:
+                    LoadingProgressLabel.Text = "Adding country tags...";
+                    break;
+                case 69:
+                    LoadingProgressLabel.Text = "Loading country history files...";
+                    break;
+                case 72:
+                    LoadingProgressLabel.Text = "Adding country histories...";
                     break;
                 case 75:
-                    LoadingProgressLabel.Text = "Adding technology groups...";
+                    LoadingProgressLabel.Text = "Loading building files...";
                     break;
-                case 80:
-                    LoadingProgressLabel.Text = "Loading provinces...";
+                case 78:
+                    LoadingProgressLabel.Text = "Adding buildings...";
+                    break;
+                case 81:
+                    LoadingProgressLabel.Text = "Loading country common files...";
+                    break;
+                case 84:
+                    LoadingProgressLabel.Text = "Adding country common info...";
+                    break;
+                case 86:
+                    LoadingProgressLabel.Text = "Loading province files...";
+                    break;
+                case 88:
+                    LoadingProgressLabel.Text = "Adding provinces...";
                     break;
                 case 90:
-                    LoadingProgressLabel.Text = "Loading areas...";
+                    LoadingProgressLabel.Text = "Loading area files...";
                     break;
-                case 95:
-                    LoadingProgressLabel.Text = "Loading regions...";
+                case 92:
+                    LoadingProgressLabel.Text = "Adding areas...";
+                    break;
+                case 94:
+                    LoadingProgressLabel.Text = "Loading region files...";
+                    break;
+                case 96:
+                    LoadingProgressLabel.Text = "Adding regions...";
+                    break;
+                case 98:
+                    LoadingProgressLabel.Text = "Loading continent files...";
                     break;
                 case 100:
-                    LoadingProgressLabel.Text = "Loading tradenodes...";
+                    LoadingProgressLabel.Text = "Adding continents...";
                     break;
-                case 105:                    
+                case 102:
+                    LoadingProgressLabel.Text = "Loading tradenode files...";
+                    break;
+                case 105:
+                    LoadingProgressLabel.Text = "Adding tradenodes...";
+                    break;
+                case 108:                    
                     LoadingProgressLabel.Text = "Loading map variables...";
                     break;
                 case 110:
