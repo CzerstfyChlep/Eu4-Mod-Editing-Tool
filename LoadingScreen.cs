@@ -88,7 +88,7 @@ namespace Eu4ModEditor
             /*7*/"common\\countries\\", /*8*/"history\\provinces\\", /*9*/"map\\area.txt",
             /*10*/"map\\default.map", /*11*/"history\\countries\\", /*12*/"common\\tradenodes\\",
             /*13*/"map\\continent.txt", /*14*/"common\\country_tags\\", /*15*/"common\\technology.txt",
-            /*16*/"common\\governments\\", /*17*/"common\\buildings\\" };
+            /*16*/"common\\governments\\", /*17*/"common\\buildings\\", /*18*/"map\\superregion.txt" };
 
         public void RadioButtonChange(object sender, EventArgs e)
         {

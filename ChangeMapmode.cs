@@ -50,6 +50,9 @@ namespace Eu4ModEditor
                 case "ContinentMapmode":
                     GlobalVariables.mapmode = MapManagement.UpdateMapOptions.Continent;
                     break;
+                case "SuperregionMapmode":
+                    GlobalVariables.mapmode = MapManagement.UpdateMapOptions.Superregion;
+                    break;
             }
             ModEditor.UpdateMap();
         }

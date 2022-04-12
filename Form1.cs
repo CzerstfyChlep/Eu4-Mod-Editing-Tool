@@ -57,6 +57,7 @@ namespace Eu4ModEditor
             GlobalVariables.HREBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
             GlobalVariables.FortBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
             GlobalVariables.ContinentBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
+            GlobalVariables.SuperregionBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
 
             ProvincesMapmodeButton.Click += ChangeMapmode.ChangeMapmodeVoid;
             DevelopmentMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
@@ -70,6 +71,7 @@ namespace Eu4ModEditor
             HREMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
             FortMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
             ContinentMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
+            SuperregionMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
 
 
             LoadFilesClass.LoadFiles();
@@ -699,15 +701,12 @@ namespace Eu4ModEditor
                 graphics.DrawImage(GlobalVariables.FortBitmap.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
             else if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent)
                 graphics.DrawImage(GlobalVariables.ContinentBitmap.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
+            else if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Superregion)
+                graphics.DrawImage(GlobalVariables.SuperregionBitmap.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
 
             graphics.DrawImage(GlobalVariables.ClickedMask.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
         }
 
-        private void SaveButton_Click(object sender, EventArgs e)
-        {
-           // GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
-            //Saving.SaveThingsToUpdate();
-        }
 
         private void ProvinceTaxNumeric_ValueChanged(object sender, EventArgs e)
         {
@@ -1177,6 +1176,7 @@ namespace Eu4ModEditor
             MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Political);
             MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
             MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
             RefreshTradeGoodsTab();
         }
 

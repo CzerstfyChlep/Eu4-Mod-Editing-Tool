@@ -23,6 +23,7 @@ namespace Eu4ModEditor
             GlobalVariables.Regions.Add(this);
         }
         public List<Area> Areas = new List<Area>();
+        public Superregion Superregion;
         public string Name = "";
         public Color Color;
     }

@@ -108,7 +108,6 @@
             this.ReloadProvinceAllMapmodesButton = new System.Windows.Forms.Button();
             this.ReloadProvinceFromFileButton = new System.Windows.Forms.Button();
             this.OpenProvinceFileButton = new System.Windows.Forms.Button();
-            this.SaveButton = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label41 = new System.Windows.Forms.Label();
             this.CenterOfTradeNumeric = new System.Windows.Forms.NumericUpDown();
@@ -231,6 +230,7 @@
             this.HREMapmode = new System.Windows.Forms.Button();
             this.FortMapmode = new System.Windows.Forms.Button();
             this.ContinentMapmode = new System.Windows.Forms.Button();
+            this.SuperregionMapmode = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -286,7 +286,6 @@
             this.ProvinceTab.Controls.Add(this.ReloadProvinceAllMapmodesButton);
             this.ProvinceTab.Controls.Add(this.ReloadProvinceFromFileButton);
             this.ProvinceTab.Controls.Add(this.OpenProvinceFileButton);
-            this.ProvinceTab.Controls.Add(this.SaveButton);
             this.ProvinceTab.Controls.Add(this.groupBox2);
             this.ProvinceTab.Controls.Add(this.groupBox1);
             this.ProvinceTab.Location = new System.Drawing.Point(4, 22);
@@ -1138,16 +1137,6 @@
             this.OpenProvinceFileButton.Text = "Open province file";
             this.OpenProvinceFileButton.UseVisualStyleBackColor = true;
             this.OpenProvinceFileButton.Click += new System.EventHandler(this.OpenProvinceFileButton_Click);
-            // 
-            // SaveButton
-            // 
-            this.SaveButton.Location = new System.Drawing.Point(9, 834);
-            this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(540, 23);
-            this.SaveButton.TabIndex = 2;
-            this.SaveButton.Text = "Save";
-            this.SaveButton.UseVisualStyleBackColor = true;
-            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // groupBox2
             // 
@@ -2352,7 +2341,7 @@
             this.CultureMapmode.Name = "CultureMapmode";
             this.CultureMapmode.Size = new System.Drawing.Size(136, 22);
             this.CultureMapmode.TabIndex = 9;
-            this.CultureMapmode.Text = "Culture Mapmode";
+            this.CultureMapmode.Text = "Culture mapmode";
             this.CultureMapmode.UseVisualStyleBackColor = true;
             // 
             // ReligionMapmode
@@ -2361,7 +2350,7 @@
             this.ReligionMapmode.Name = "ReligionMapmode";
             this.ReligionMapmode.Size = new System.Drawing.Size(136, 22);
             this.ReligionMapmode.TabIndex = 8;
-            this.ReligionMapmode.Text = "Religion Mapmode";
+            this.ReligionMapmode.Text = "Religion mapmode";
             this.ReligionMapmode.UseVisualStyleBackColor = true;
             // 
             // PoliticalMapmode
@@ -2370,7 +2359,7 @@
             this.PoliticalMapmode.Name = "PoliticalMapmode";
             this.PoliticalMapmode.Size = new System.Drawing.Size(136, 22);
             this.PoliticalMapmode.TabIndex = 11;
-            this.PoliticalMapmode.Text = "Political Mapmode";
+            this.PoliticalMapmode.Text = "Political mapmode";
             this.PoliticalMapmode.UseVisualStyleBackColor = true;
             // 
             // ReloadMapsButton
@@ -2403,7 +2392,7 @@
             // 
             // TradeNodeMapmode
             // 
-            this.TradeNodeMapmode.Location = new System.Drawing.Point(296, 879);
+            this.TradeNodeMapmode.Location = new System.Drawing.Point(722, 879);
             this.TradeNodeMapmode.Name = "TradeNodeMapmode";
             this.TradeNodeMapmode.Size = new System.Drawing.Size(136, 22);
             this.TradeNodeMapmode.TabIndex = 15;
@@ -2412,7 +2401,7 @@
             // 
             // HREMapmode
             // 
-            this.HREMapmode.Location = new System.Drawing.Point(438, 879);
+            this.HREMapmode.Location = new System.Drawing.Point(580, 879);
             this.HREMapmode.Name = "HREMapmode";
             this.HREMapmode.Size = new System.Drawing.Size(136, 22);
             this.HREMapmode.TabIndex = 16;
@@ -2421,7 +2410,7 @@
             // 
             // FortMapmode
             // 
-            this.FortMapmode.Location = new System.Drawing.Point(580, 879);
+            this.FortMapmode.Location = new System.Drawing.Point(864, 855);
             this.FortMapmode.Name = "FortMapmode";
             this.FortMapmode.Size = new System.Drawing.Size(136, 22);
             this.FortMapmode.TabIndex = 17;
@@ -2430,12 +2419,21 @@
             // 
             // ContinentMapmode
             // 
-            this.ContinentMapmode.Location = new System.Drawing.Point(722, 879);
+            this.ContinentMapmode.Location = new System.Drawing.Point(438, 879);
             this.ContinentMapmode.Name = "ContinentMapmode";
             this.ContinentMapmode.Size = new System.Drawing.Size(136, 22);
             this.ContinentMapmode.TabIndex = 18;
             this.ContinentMapmode.Text = "Continent mapmode";
             this.ContinentMapmode.UseVisualStyleBackColor = true;
+            // 
+            // SuperregionMapmode
+            // 
+            this.SuperregionMapmode.Location = new System.Drawing.Point(296, 879);
+            this.SuperregionMapmode.Name = "SuperregionMapmode";
+            this.SuperregionMapmode.Size = new System.Drawing.Size(136, 22);
+            this.SuperregionMapmode.TabIndex = 19;
+            this.SuperregionMapmode.Text = "Superregion mapmode";
+            this.SuperregionMapmode.UseVisualStyleBackColor = true;
             // 
             // ModEditor
             // 
@@ -2443,6 +2441,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.ClientSize = new System.Drawing.Size(1736, 905);
+            this.Controls.Add(this.SuperregionMapmode);
             this.Controls.Add(this.ContinentMapmode);
             this.Controls.Add(this.FortMapmode);
             this.Controls.Add(this.HREMapmode);
@@ -2538,7 +2537,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label ProvinceSeaLakeLabel;
-        private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.Button ProvincesMapmodeButton;
         private System.Windows.Forms.Button DevelopmentMapmode;
         private System.Windows.Forms.Button TradeGoodsMapmode;
@@ -2724,6 +2722,7 @@
         public System.Windows.Forms.ComboBox BuildingsBox;
         private System.Windows.Forms.FlowLayoutPanel BuildingsPanel;
         private System.Windows.Forms.Button AddClaimButton;
+        private System.Windows.Forms.Button SuperregionMapmode;
     }
 }
 

@@ -161,6 +161,7 @@
     <Compile Include="Region.cs" />
     <Compile Include="Religion.cs" />
     <Compile Include="Saving.cs" />
+    <Compile Include="Superregion.cs" />
     <Compile Include="TradeGood.cs" />
     <Compile Include="Tradenode.cs" />
     <Compile Include="VariableChange.cs" />

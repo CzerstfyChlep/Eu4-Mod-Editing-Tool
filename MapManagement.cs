@@ -9,7 +9,7 @@ namespace Eu4ModEditor
 {
     public static class MapManagement
     {
-        public enum UpdateMapOptions { Provinces, Development, TradeGood, Culture, Religion, Political, Area, Region, TradeNode, HRE, Fort, Continent };
+        public enum UpdateMapOptions { Provinces, Development, TradeGood, Culture, Religion, Political, Area, Region, TradeNode, HRE, Fort, Continent, Superregion };
 
         public static void UpdateMap(List<Province> provinces, UpdateMapOptions options)
         {

@@ -27,6 +27,7 @@ namespace Eu4ModEditor
         public static LockBitmap HREBitmap;
         public static LockBitmap FortBitmap;
         public static LockBitmap ContinentBitmap;
+        public static LockBitmap SuperregionBitmap;
         public static List<Task<Dictionary<int, List<Point>>>> MapLines = new List<Task<Dictionary<int, List<Point>>>>();
         public static List<TradeGood> TradeGoods = new List<TradeGood>();
         public static List<TradeGood> LatentTradeGoods = new List<TradeGood>();
@@ -75,6 +76,7 @@ namespace Eu4ModEditor
         public static List<int> PressedKeys = new List<int>();
         public static List<Area> Areas = new List<Area>();
         public static List<Region> Regions = new List<Region>();
+        public static List<Superregion> Superregions = new List<Superregion>();
         public static List<Continent> Continents = new List<Continent>();
         public static List<Tradenode> TradeNodes = new List<Tradenode>();
         public static bool TradeDestClickingMode = false;
@@ -86,8 +88,8 @@ namespace Eu4ModEditor
         public static List<CountryModifier> CountryScopeModifiers = new List<CountryModifier>() { };
         public static List<string> CountryModifiers = new List<string>() { };
 
-        public static int[] UseMod = new int[18];
-        public static bool[] ReadOnly = new bool[18];
+        public static int[] UseMod = new int[19];
+        public static bool[] ReadOnly = new bool[19];
         public static bool LoadedProperly = false;
         public static bool FullyLoaded = false;
 

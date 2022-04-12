@@ -1000,6 +1000,29 @@ namespace Eu4ModEditor
                 }
             }
 
+
+            /////////////////////////////////////////////////////////////////////////
+            bw.ReportProgress(106);
+            NodeFile Superregions;
+            if (GlobalVariables.UseMod[18] > 0)
+                continents = new NodeFile(GlobalVariables.pathtomod + "map\\superregions.txt");
+            else
+                continents = new NodeFile(GlobalVariables.pathtogame + "map\\superregions.txt");
+            bw.ReportProgress(107);
+            foreach (Node n in continents.MainNode.Nodes)
+            {
+                List<Province> ctp = new List<Province>();
+                foreach (string s in n.PureValues)
+                {
+                    ctp.Add(GlobalVariables.Provinces[int.Parse(s.Trim()) - 1]);
+                }
+                Continent c = new Continent(n.Name, ctp);
+                foreach (Province pr in c.Provinces)
+                    pr.Continent = c;
+            }
+
+            
+
             bw.ReportProgress(108);
             //lp.UpdateProgressLabel("Loading map variables...", 95);
             if (GlobalVariables.UseMod[10] > 0)
