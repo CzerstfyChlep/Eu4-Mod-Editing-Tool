@@ -65,6 +65,7 @@
             this.LatentTradeGoodBox = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.AddClaimButton = new System.Windows.Forms.Button();
             this.label33 = new System.Windows.Forms.Label();
             this.AddOwnerCoreButton = new System.Windows.Forms.Button();
             this.AddCoreButton = new System.Windows.Forms.Button();
@@ -230,7 +231,6 @@
             this.HREMapmode = new System.Windows.Forms.Button();
             this.FortMapmode = new System.Windows.Forms.Button();
             this.ContinentMapmode = new System.Windows.Forms.Button();
-            this.AddClaimButton = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -567,6 +567,7 @@
             // CultureBox
             // 
             this.CultureBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.CultureBox.Enabled = false;
             this.CultureBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.CultureBox.FormattingEnabled = true;
             this.CultureBox.Location = new System.Drawing.Point(99, 30);
@@ -697,6 +698,16 @@
             this.groupBox11.TabIndex = 39;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "Province Cores";
+            // 
+            // AddClaimButton
+            // 
+            this.AddClaimButton.Location = new System.Drawing.Point(183, 47);
+            this.AddClaimButton.Name = "AddClaimButton";
+            this.AddClaimButton.Size = new System.Drawing.Size(75, 23);
+            this.AddClaimButton.TabIndex = 29;
+            this.AddClaimButton.Text = "Add claim";
+            this.AddClaimButton.UseVisualStyleBackColor = true;
+            this.AddClaimButton.Click += new System.EventHandler(this.AddClaimButton_Click);
             // 
             // label33
             // 
@@ -2426,16 +2437,6 @@
             this.ContinentMapmode.TabIndex = 18;
             this.ContinentMapmode.Text = "Continent mapmode";
             this.ContinentMapmode.UseVisualStyleBackColor = true;
-            // 
-            // AddClaimButton
-            // 
-            this.AddClaimButton.Location = new System.Drawing.Point(183, 47);
-            this.AddClaimButton.Name = "AddClaimButton";
-            this.AddClaimButton.Size = new System.Drawing.Size(75, 23);
-            this.AddClaimButton.TabIndex = 29;
-            this.AddClaimButton.Text = "Add claim";
-            this.AddClaimButton.UseVisualStyleBackColor = true;
-            this.AddClaimButton.Click += new System.EventHandler(this.AddClaimButton_Click);
             // 
             // ModEditor
             // 

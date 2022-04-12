@@ -63,14 +63,15 @@ namespace Eu4ModEditor
                 if(heightInterval == heightValue)
                 {
                     heightValue = 0;
-                    va += 4;
+                    va += 1;
                     bw.ReportProgress(va);
                 }
             }
 
             bitmap.UnlockBits();
+            bw.ReportProgress(20);
 
-            foreach(Province p in GlobalVariables.Provinces)
+            foreach (Province p in GlobalVariables.Provinces)
             {               
                 if (p.Pixels.Any())
                 {
@@ -87,6 +88,8 @@ namespace Eu4ModEditor
                 }
             }
 
+            bw.ReportProgress(25);
+
             List<NodeFile> tradegoodsfiles = new List<NodeFile>();
             if (GlobalVariables.UseMod[2] != 0)
             {
@@ -100,6 +103,7 @@ namespace Eu4ModEditor
                     }
                 }
             }
+
             if (GlobalVariables.UseMod[2] != 1)
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\tradegoods\\"))
@@ -114,142 +118,9 @@ namespace Eu4ModEditor
                 }
             }
 
-            List<NodeFile> tradegoodspricesfiles = new List<NodeFile>();
-            if (GlobalVariables.UseMod[3] != 0)
-            {
-                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\prices\\"))
-                {
-                    if (file.Split('.')[1] == "txt")
-                    {
-                        NodeFile nf = new NodeFile(file);
-                        tradegoodspricesfiles.Add(nf);
-                        GlobalVariables.ModPricesFiles.Add(nf);
-                    }
-                }
-            }
-            if (GlobalVariables.UseMod[3] != 1)
-            {
-                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\prices\\"))
-                {
-                    if (file.Split('.')[1] == "txt")
-                    {
-                        NodeFile nf = new NodeFile(file, true);
-                        if (!tradegoodspricesfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                            tradegoodspricesfiles.Add(nf);
-                        GlobalVariables.GamePricesFile = nf;
-                    }
-                }
-            }
+            bw.ReportProgress(30);
 
-            List<NodeFile> culturesfiles = new List<NodeFile>();
-            if (GlobalVariables.UseMod[4] != 0)
-            {
-                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\cultures\\"))
-                {
-                    if (file.Split('.')[1] == "txt")
-                    {
-                        NodeFile nf = new NodeFile(file);
-                        culturesfiles.Add(nf);
-                        GlobalVariables.ModCulturesFiles.Add(nf);
-                    }
-                }
-            }
-            if (GlobalVariables.UseMod[4] != 1)
-            {
-                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\cultures\\"))
-                {
-                    if (file.Split('.')[1] == "txt")
-                    {
-                        NodeFile nf = new NodeFile(file, true);
-                        if (!culturesfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                            culturesfiles.Add(nf);
-                        GlobalVariables.GameCulturesFile = nf;
-                    }
-                }
-            }
-
-            List<NodeFile> religionsfiles = new List<NodeFile>();
-            if (GlobalVariables.UseMod[5] != 0)
-            {
-                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\religions\\"))
-                {
-                    if (file.Split('.')[1] == "txt")
-                    {
-                        NodeFile nf = new NodeFile(file);
-                        religionsfiles.Add(nf);
-                        GlobalVariables.ModReligionsFiles.Add(nf);
-                    }
-                }
-            }
-            if (GlobalVariables.UseMod[5] != 1)
-            {
-                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\religions\\"))
-                {
-                    if (file.Split('.')[1] == "txt")
-                    {
-                        NodeFile nf = new NodeFile(file, true);
-                        if (!religionsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                            religionsfiles.Add(nf);
-                        GlobalVariables.GameReligionsFile = nf;
-                    }
-                }
-            }
-
-            List<NodeFile> governmentsfiles = new List<NodeFile>();
-            if (GlobalVariables.UseMod[16] != 0)
-            {
-                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\governments\\"))
-                {
-                    if (file.Split('.')[1] == "txt")
-                    {
-                        NodeFile nf = new NodeFile(file);
-                        governmentsfiles.Add(nf);
-                        GlobalVariables.ModGovernmentsFiles.Add(nf);
-                    }
-                }
-            }
-            if (GlobalVariables.UseMod[16] != 1)
-            {
-                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\governments\\"))
-                {
-                    if (file.Split('.')[1] == "txt")
-                    {
-                        NodeFile nf = new NodeFile(file, true);
-                        if (!governmentsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                            governmentsfiles.Add(nf);
-                        GlobalVariables.GameGovernmentsFile = nf;
-                    }
-                }
-            }
-
-            foreach(NodeFile government in governmentsfiles)
-            {
-                foreach(Node n in government.MainNode.Nodes)
-                {
-                    if(n.Name != "pre_dharma_mapping")
-                    {
-                        Government gv = new Government(n.Name);
-                        gv.reforms.AddRange(n.Nodes.Find(x => x.Name == "reform_levels").Nodes[0].Nodes.Find(x => x.Name == "reforms").PureValues);
-                        GlobalVariables.Governments.Add(gv);
-                    }
-                }
-            }
-
-            NodeFile technology;
-            if (GlobalVariables.UseMod[15] > 0)
-                technology = new NodeFile(GlobalVariables.pathtomod + "common\\technology.txt");
-            else
-                technology = new NodeFile(GlobalVariables.pathtogame + "common\\technology.txt");
-
-            bw.ReportProgress(50);
-            //lp.UpdateProgressLabel("Loading trade goods...", 50);
             GlobalVariables.TradeGoods.Add(TradeGood.nothing);
-
-            foreach (Node node in technology.MainNode.Nodes.Find(x=>x.Name == "groups").Nodes)
-            {
-                GlobalVariables.TechGroups.Add(node.Name);
-            }
-
             foreach (NodeFile tradegoods in tradegoodsfiles)
             {
                 foreach (Node node in tradegoods.MainNode.Nodes)
@@ -283,12 +154,40 @@ namespace Eu4ModEditor
                             GlobalVariables.LatentTradeGoods.Add(tg);
                 }
             }
-            bw.ReportProgress(55);
-            //lp.UpdateProgressLabel("Loading trade good prices...", 55);
 
+            bw.ReportProgress(35);
+
+            List<NodeFile> tradegoodspricesfiles = new List<NodeFile>();
+            if (GlobalVariables.UseMod[3] != 0)
+            {
+                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\prices\\"))
+                {
+                    if (file.Split('.')[1] == "txt")
+                    {
+                        NodeFile nf = new NodeFile(file);
+                        tradegoodspricesfiles.Add(nf);
+                        GlobalVariables.ModPricesFiles.Add(nf);
+                    }
+                }
+            }
+            if (GlobalVariables.UseMod[3] != 1)
+            {
+                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\prices\\"))
+                {
+                    if (file.Split('.')[1] == "txt")
+                    {
+                        NodeFile nf = new NodeFile(file, true);
+                        if (!tradegoodspricesfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                            tradegoodspricesfiles.Add(nf);
+                        GlobalVariables.GamePricesFile = nf;
+                    }
+                }
+            }
+
+            bw.ReportProgress(40);
             List<string> done = new List<string>();
             foreach (NodeFile tradegoodsprices in tradegoodspricesfiles)
-            {             
+            {
                 foreach (Node node in tradegoodsprices.MainNode.Nodes)
                 {
                     if (done.Contains(node.Name))
@@ -306,39 +205,107 @@ namespace Eu4ModEditor
                     }
                 }
             }
-            bw.ReportProgress(60);
-            //lp.UpdateProgressLabel("Loading cultures...", 60);
-            done.Clear();
-            foreach (NodeFile cultures in culturesfiles)
-            {                
-                foreach (Node node in cultures.MainNode.Nodes)
+
+            bw.ReportProgress(45);
+            List<NodeFile> culturesfiles = new List<NodeFile>();
+            if (false)
+            {
+               
+                try
                 {
-                    if (done.Contains(node.Name))
-                        continue;
-                    done.Add(node.Name);
-                    CultureGroup cg = new CultureGroup
+
+                    if (GlobalVariables.UseMod[4] != 0)
                     {
-                        Name = node.Name
-                    };
-                    foreach (Node innernode in node.Nodes)
-                    {
-                        if (innernode.Name != "dynasty_names" && innernode.Name != "female_names" && innernode.Name != "male_names" && innernode.Name != "graphical_culture")
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\cultures\\"))
                         {
-                            Culture c = new Culture
+                            if (file.Split('.')[1] == "txt")
                             {
-                                Name = innernode.Name,
-                                Group = cg
-                            };
-                            cg.Cultures.Add(c);
-                            Variable v = innernode.Variables.Find(x => x.Name == "primary");
-                            if (v != null)
-                                c.PrimaryTag = v.Value;
+                                NodeFile nf = new NodeFile(file);
+                                culturesfiles.Add(nf);
+                                GlobalVariables.ModCulturesFiles.Add(nf);
+                            }
+                        }
+                    }
+                    if (GlobalVariables.UseMod[4] != 1)
+                    {
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\cultures\\"))
+                        {
+                            if (file.Split('.')[1] == "txt")
+                            {
+                                NodeFile nf = new NodeFile(file, true);
+                                if (!culturesfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                    culturesfiles.Add(nf);
+                                GlobalVariables.GameCulturesFile = nf;
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            bw.ReportProgress(50);
+            done.Clear();
+            if (false)
+            {
+                foreach (NodeFile cultures in culturesfiles)
+                {
+                    foreach (Node node in cultures.MainNode.Nodes)
+                    {
+                        if (done.Contains(node.Name))
+                            continue;
+                        done.Add(node.Name);
+                        CultureGroup cg = new CultureGroup
+                        {
+                            Name = node.Name
+                        };
+                        foreach (Node innernode in node.Nodes)
+                        {
+                            if (innernode.Name != "dynasty_names" && innernode.Name != "female_names" && innernode.Name != "male_names" && innernode.Name != "graphical_culture")
+                            {
+                                Culture c = new Culture
+                                {
+                                    Name = innernode.Name,
+                                    Group = cg
+                                };
+                                cg.Cultures.Add(c);
+                                Variable v = innernode.Variables.Find(x => x.Name == "primary");
+                                if (v != null)
+                                    c.PrimaryTag = v.Value;
+                            }
                         }
                     }
                 }
             }
-            bw.ReportProgress(65);
-            //lp.UpdateProgressLabel("Loading religions...", 65);
+            bw.ReportProgress(55);
+            List<NodeFile> religionsfiles = new List<NodeFile>();
+            if (GlobalVariables.UseMod[5] != 0)
+            {
+                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\religions\\"))
+                {
+                    if (file.Split('.')[1] == "txt")
+                    {
+                        NodeFile nf = new NodeFile(file);
+                        religionsfiles.Add(nf);
+                        GlobalVariables.ModReligionsFiles.Add(nf);
+                    }
+                }
+            }
+            if (GlobalVariables.UseMod[5] != 1)
+            {
+                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\religions\\"))
+                {
+                    if (file.Split('.')[1] == "txt")
+                    {
+                        NodeFile nf = new NodeFile(file, true);
+                        if (!religionsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                            religionsfiles.Add(nf);
+                        GlobalVariables.GameReligionsFile = nf;
+                    }
+                }
+            }
+            bw.ReportProgress(60);
             string[] religionforbidden = new string[] { };
             done.Clear();
             foreach (NodeFile religions in religionsfiles)
@@ -367,9 +334,59 @@ namespace Eu4ModEditor
                     }
                 }
             }
+            bw.ReportProgress(65);
+            List<NodeFile> governmentsfiles = new List<NodeFile>();
+            if (GlobalVariables.UseMod[16] != 0)
+            {
+                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\governments\\"))
+                {
+                    if (file.Split('.')[1] == "txt")
+                    {
+                        NodeFile nf = new NodeFile(file);
+                        governmentsfiles.Add(nf);
+                        GlobalVariables.ModGovernmentsFiles.Add(nf);
+                    }
+                }
+            }
+            if (GlobalVariables.UseMod[16] != 1)
+            {
+                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\governments\\"))
+                {
+                    if (file.Split('.')[1] == "txt")
+                    {
+                        NodeFile nf = new NodeFile(file, true);
+                        if (!governmentsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                            governmentsfiles.Add(nf);
+                        GlobalVariables.GameGovernmentsFile = nf;
+                    }
+                }
+            }
             bw.ReportProgress(70);
-            //lp.UpdateProgressLabel("Loading countries...", 70);
+            foreach (NodeFile government in governmentsfiles)
+            {
+                foreach (Node n in government.MainNode.Nodes)
+                {
+                    if (n.Name != "pre_dharma_mapping")
+                    {
+                        Government gv = new Government(n.Name);
+                        gv.reforms.AddRange(n.Nodes.Find(x => x.Name == "reform_levels").Nodes[0].Nodes.Find(x => x.Name == "reforms").PureValues);
+                        GlobalVariables.Governments.Add(gv);
+                    }
+                }
+            }
+            bw.ReportProgress(73);
+            NodeFile technology;
+            if (GlobalVariables.UseMod[15] > 0)
+                technology = new NodeFile(GlobalVariables.pathtomod + "common\\technology.txt");
+            else
+                technology = new NodeFile(GlobalVariables.pathtogame + "common\\technology.txt");
 
+            bw.ReportProgress(74);
+            foreach (Node node in technology.MainNode.Nodes.Find(x => x.Name == "groups").Nodes)
+            {
+                GlobalVariables.TechGroups.Add(node.Name);
+            }
+            bw.ReportProgress(75);
             Dictionary<string, string> NameToTag = new Dictionary<string, string>();
 
             List<NodeFile> countrytagsfiles = new List<NodeFile>();

@@ -850,10 +850,12 @@ namespace Eu4ModEditor
 
         private void CultureBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            /*
             if (!GlobalVariables.CultureInternalChange)           
                 ChangeProvinceInfo(ChangeProvinceMode.Culture, Culture.Cultures.Find(x => x.Name == (string)CultureBox.SelectedItem));           
             else
                 GlobalVariables.CultureInternalChange = false;
+            */
         }
 
         private void ReligionBox_SelectedIndexChanged(object sender, EventArgs e)
