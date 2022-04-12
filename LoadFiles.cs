@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -119,7 +120,7 @@ namespace Eu4ModEditor
             }
 
             bw.ReportProgress(30);
-            /*
+            
             GlobalVariables.TradeGoods.Add(TradeGood.nothing);
             foreach (NodeFile tradegoods in tradegoodsfiles)
             {
@@ -136,10 +137,7 @@ namespace Eu4ModEditor
                     string[] colorv = node.Nodes.Find(x => x.Name == "color").PureValues.ToArray();
                     if (colorv.Count() == 3)
                     {
-                        colorv[0] = colorv[0].Replace('.', ',').Trim();
-                        colorv[1] = colorv[1].Replace('.', ',').Trim();
-                        colorv[2] = colorv[2].Replace('.', ',').Trim();
-                        tg.Color = Color.FromArgb((int)(255 * double.Parse(colorv[0])), (int)(255 * double.Parse(colorv[1])), (int)(255 * double.Parse(colorv[2])));
+                        tg.Color = Color.FromArgb((int)(255 * double.Parse(colorv[0], CultureInfo.InvariantCulture)), (int)(255 * double.Parse(colorv[1], CultureInfo.InvariantCulture)), (int)(255 * double.Parse(colorv[2], CultureInfo.InvariantCulture)));
                     }
                     else
                     {
@@ -154,7 +152,7 @@ namespace Eu4ModEditor
                             GlobalVariables.LatentTradeGoods.Add(tg);
                 }
                 
-            }*/
+            }
 
             bw.ReportProgress(35);
 
@@ -197,7 +195,7 @@ namespace Eu4ModEditor
                     TradeGood tg = GlobalVariables.TradeGoods.Find(x => x.Name == node.Name);
                     if (tg != null)
                     {
-                        tg.Price = double.Parse(node.Variables.Find(x => x.Name == "base_price").Value.Replace('.', ','));
+                        tg.Price = double.Parse(node.Variables.Find(x => x.Name == "base_price").Value, CultureInfo.InvariantCulture);
                         if (node.Variables.Find(x => x.Name == "goldtype") != null)
                         {
                             if (node.Variables.Find(x => x.Name == "goldtype").Value.Trim() == "yes")
@@ -208,10 +206,7 @@ namespace Eu4ModEditor
             }
 
             bw.ReportProgress(45);
-            List<NodeFile> culturesfiles = new List<NodeFile>();
-            if (false)
-            {
-               
+            List<NodeFile> culturesfiles = new List<NodeFile>(); 
                 try
                 {
 
@@ -245,11 +240,10 @@ namespace Eu4ModEditor
                 {
                     MessageBox.Show(ex.Message);
                 }
-            }
+            
             bw.ReportProgress(50);
             done.Clear();
-            if (false)
-            {
+            
                 foreach (NodeFile cultures in culturesfiles)
                 {
                     foreach (Node node in cultures.MainNode.Nodes)
@@ -278,7 +272,7 @@ namespace Eu4ModEditor
                         }
                     }
                 }
-            }
+            
             bw.ReportProgress(55);
             List<NodeFile> religionsfiles = new List<NodeFile>();
             if (GlobalVariables.UseMod[5] != 0)
