@@ -567,7 +567,6 @@
             // CultureBox
             // 
             this.CultureBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.CultureBox.Enabled = false;
             this.CultureBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.CultureBox.FormattingEnabled = true;
             this.CultureBox.Location = new System.Drawing.Point(99, 30);
