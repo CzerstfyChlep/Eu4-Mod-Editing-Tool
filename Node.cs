@@ -63,8 +63,13 @@ namespace Eu4ModEditor
                 {
                     if (!read.Contains('=') && name == "" && value == "")
                     {
-                        CurrentNode.PureInnerText = read.Trim();
-                        CurrentNode.UseInnerText = true;
+                        foreach (string v in read.Replace("\t", " ").Split(' '))
+                        {
+                            if (v != "" && v != " " && !string.IsNullOrWhiteSpace(v))
+                            {
+                                CurrentNode.PureValues.Add(v.Trim());
+                            }
+                        }
                     }
                     lastObj = CurrentNode;
                     CurrentNode = CurrentNode.Parent;

@@ -120,16 +120,22 @@ namespace Eu4ModEditor
         {
             File.WriteAllText("directories.txt", GameDirectoryBox.Text + "\n" + ModDirectoryBox.Text);
 
-            groupBox2.Enabled = true;
-            if(GameDirectoryBox.Text.Last() == '\\')
-                GlobalVariables.pathtogame = GameDirectoryBox.Text;
-            else
-                GlobalVariables.pathtogame = GameDirectoryBox.Text + "\\";
+            if (GameDirectoryBox.Text != "") 
+                {
+                    groupBox2.Enabled = true;
+                    if (GameDirectoryBox.Text.Last() == '\\')
+                        GlobalVariables.pathtogame = GameDirectoryBox.Text;
+                    else
+                        GlobalVariables.pathtogame = GameDirectoryBox.Text + "\\";
+                }
 
-            if (ModDirectoryBox.Text.Last() == '\\')
-                GlobalVariables.pathtomod = ModDirectoryBox.Text;
-            else
-                GlobalVariables.pathtomod = ModDirectoryBox.Text + "\\";
+            if (ModDirectoryBox.Text != "")
+            {
+                if (ModDirectoryBox.Text.Last() == '\\')
+                    GlobalVariables.pathtomod = ModDirectoryBox.Text;
+                else
+                    GlobalVariables.pathtomod = ModDirectoryBox.Text + "\\";
+            }
 
             FileStatuses.Clear();
 

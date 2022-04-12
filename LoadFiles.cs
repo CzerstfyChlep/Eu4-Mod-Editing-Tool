@@ -262,10 +262,18 @@ namespace Eu4ModEditor
                         Name = node.Name,
                         ReadableName = node.Name[0].ToString().ToUpper() + node.Name.Substring(1).Replace('_', ' ')
                     };
-                    string colorv = node.Nodes.Find(x => x.Name == "color").PureInnerText.Replace('.', ',').Trim();
-                    string[] spl = colorv.Split(' ');
-                    tg.Color = Color.FromArgb((int)(255 * double.Parse(spl[0])), (int)(255 * double.Parse(spl[1])), (int)(255 * double.Parse(spl[2])));
-
+                    string[] colorv = node.Nodes.Find(x => x.Name == "color").PureValues.ToArray();
+                    if (colorv.Count() == 3)
+                    {
+                        colorv[0] = colorv[0].Replace('.', ',').Trim();
+                        colorv[1] = colorv[1].Replace('.', ',').Trim();
+                        colorv[2] = colorv[2].Replace('.', ',').Trim();
+                        tg.Color = Color.FromArgb((int)(255 * double.Parse(colorv[0])), (int)(255 * double.Parse(colorv[1])), (int)(255 * double.Parse(colorv[2])));
+                    }
+                    else
+                    {
+                        tg.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
+                    }
 
                     GlobalVariables.TradeGoods.Add(tg);
 
@@ -352,7 +360,7 @@ namespace Eu4ModEditor
                                 Group = rg
                             };
                             rg.Religions.Add(r);
-                            string[] colorstring = innernode.Nodes.Find(x => x.Name == "color").PureInnerText.Trim().Split(' ');
+                            string[] colorstring = innernode.Nodes.Find(x => x.Name == "color").PureValues.ToArray();
                             r.Color = Color.FromArgb(int.Parse(colorstring[0]), int.Parse(colorstring[1]), int.Parse(colorstring[2]));
                             r.Icon = int.Parse(innernode.Variables.Find(x => x.Name == "icon").Value);
                         }
@@ -570,22 +578,8 @@ namespace Eu4ModEditor
                 if (c != null)
                 {
                     NodeFile nodefile = new NodeFile(file);
-                    string[] colort = nodefile.MainNode.Nodes.Find(x => x.Name == "color").PureInnerText.Split(' ');
-                    if(colort.Count() == 1)
-                        colort = nodefile.MainNode.Nodes.Find(x => x.Name == "color").PureInnerText.Split('\t');
-
-                    string[] colortf = new string[3];
-                    int n = 0;
-                    foreach (string s in colort)
-                    {
-                        if (s != "")
-                        {
-                            colortf[n] = s;
-                            n++;
-                        }
-                    }
-
-                    c.Color = Color.FromArgb(int.Parse(colortf[0]), int.Parse(colortf[1]), int.Parse(colortf[2]));
+                    string[] colort = nodefile.MainNode.Nodes.Find(x => x.Name == "color").PureValues.ToArray();
+                    c.Color = Color.FromArgb(int.Parse(colort[0]), int.Parse(colort[1]), int.Parse(colort[2]));
 
                     foreach (Variable v in nodefile.MainNode.Variables)
                     {
