@@ -284,6 +284,40 @@ namespace Eu4ModEditor
                     }
                     GlobalVariables.RegionBitmapLocked.UnlockBits();
                     break;
+
+                case UpdateMapOptions.Superregion:
+                    GlobalVariables.SuperregionBitmap.LockBits();
+
+                    foreach (Province p in provinces)
+                    {
+                        Color c = Color.White;
+                        if (p.Area != null)
+                        {
+                            if (p.Area.Region != null)
+                            {
+                                if(p.Area.Region.Superregion != null)
+                                    c = p.Area.Region.Superregion.Color;
+                            }
+                                
+                        }
+                        Color borderc = Color.Black;
+                        if ((p.Lake || p.Sea) && !GlobalVariables.ShowSeaTilesAreaMapmode)
+                        {
+                            c = Color.Black;
+                            //borderc = Color.Black;
+                        }
+                        foreach (Point pon in p.Pixels)
+                        {
+                            GlobalVariables.SuperregionBitmap.SetPixel(pon.X, pon.Y, c);
+                        }
+                        foreach (Point borderpnt in p.BorderPixels)
+                        {
+                            GlobalVariables.SuperregionBitmap.SetPixel(borderpnt.X, borderpnt.Y, Color.Black);
+                        }
+                    }
+                    GlobalVariables.SuperregionBitmap.UnlockBits();
+                    break;
+
                 case UpdateMapOptions.TradeNode:
                     GlobalVariables.TradeNodeBitmap.LockBits();
 

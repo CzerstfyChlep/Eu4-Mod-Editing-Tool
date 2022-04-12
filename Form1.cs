@@ -104,6 +104,7 @@ namespace Eu4ModEditor
             AddTradeNodeDestinationBox.KeyDown += InputManagement.IgnoreKeyPress;
             AddCoreBox.KeyDown += InputManagement.IgnoreKeyPress;
             ContinentBox.KeyDown += InputManagement.IgnoreKeyPress;
+            SuperregionBox.KeyDown += InputManagement.IgnoreKeyPress;
             TechnologyGroupBox.KeyDown += InputManagement.IgnoreKeyPress;
             CountryPrimaryCultureBox.KeyDown += InputManagement.IgnoreKeyPress;
             DiscoveredByBox.KeyDown += InputManagement.IgnoreKeyPress;
@@ -111,8 +112,8 @@ namespace Eu4ModEditor
 
             HideSeaTiles.Click += ShowHideSeaTilesAreaMapmode_Click;
 
-            boxes.AddRange(new ComboBox[] { OwnerBox, ReligionBox, CultureBox, TradeGoodBox, CountryBox, CountryReligionBox, AreaBox, RegionBox, ProvinceTradeNodeBox, TradeNodeBox, AddTradeNodeDestinationBox, ContinentBox, AddCoreBox, TechnologyGroupBox, CountryPrimaryCultureBox, DiscoveredByBox, BuildingsBox });
-            textboxes.AddRange(new TextBox[] { AreaNameChangeBox, AddNewAreaBox, AddNewRegionBox, RegionNameChangeBox, ChangeTradeNodeNameBox, TradeNodeNameBox, TradeNodeProvinceLocationBox, ContinentNameChangeBox, AddNewContinentBox });
+            boxes.AddRange(new ComboBox[] { OwnerBox, ReligionBox, CultureBox, TradeGoodBox, CountryBox, CountryReligionBox, AreaBox, RegionBox, ProvinceTradeNodeBox, TradeNodeBox, AddTradeNodeDestinationBox, ContinentBox, AddCoreBox, TechnologyGroupBox, CountryPrimaryCultureBox, DiscoveredByBox, BuildingsBox, SuperregionBox });
+            textboxes.AddRange(new TextBox[] { AreaNameChangeBox, AddNewAreaBox, AddNewRegionBox, RegionNameChangeBox, ChangeTradeNodeNameBox, TradeNodeNameBox, TradeNodeProvinceLocationBox, ContinentNameChangeBox, AddNewContinentBox, SuperregionNameChangeBox, AddNewSuperregionBox });
             foreach(TradeGood tg in GlobalVariables.TradeGoods)
             {
                 CreateTradeGoodsInfoBox(tg);
@@ -498,6 +499,19 @@ namespace Eu4ModEditor
                         GlobalVariables.RegionInternalChange = true;
                         RegionBox.SelectedIndex = GlobalVariables.Regions.IndexOf(p.Area.Region) + 1;
                     }
+                    if(p.Area.Region.Superregion != null)
+                    {
+                        if (SuperregionBox.SelectedIndex != GlobalVariables.Superregions.IndexOf(p.Area.Region.Superregion) + 1)
+                        {
+                            GlobalVariables.SuperregionInternalChange = true;
+                            SuperregionBox.SelectedIndex = GlobalVariables.Superregions.IndexOf(p.Area.Region.Superregion) + 1;
+                        }
+                    }
+                    else
+                    {
+                        GlobalVariables.SuperregionInternalChange = true;
+                        SuperregionBox.SelectedIndex = 0;
+                    }
                 }
                 else if (RegionBox.SelectedIndex != 0)
                 {
@@ -537,6 +551,8 @@ namespace Eu4ModEditor
                     ContinentBox.SelectedIndex = 0;
                 }
             }
+
+            
 
             if (p.TradeNode != null)
             {
@@ -1285,7 +1301,9 @@ namespace Eu4ModEditor
             GlobalVariables.ShowSeaTilesAreaMapmode = !GlobalVariables.ShowSeaTilesAreaMapmode;
             MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
             MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
-            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region)
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Continent);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Superregion)
                 UpdateMap();
         }
 
@@ -1361,75 +1379,13 @@ namespace Eu4ModEditor
 
         private void RegionBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (GlobalVariables.MultiProvinceMode)
+            if (!GlobalVariables.RegionInternalChange)
             {
-                if (GlobalVariables.ClickedProvinces.Any())
-                {
-                    int index = RegionBox.SelectedIndex - 1;
-                    List<Province> provincestoupdate = new List<Province>();
-                    foreach (Province p in GlobalVariables.ClickedProvinces)
-                    {
-
-                        if (p.Area != null)
-                        {
-                            provincestoupdate.AddRange(p.Area.Provinces);
-                            if (p.Area.Region != null)
-                            {
-                                p.Area.Region.Areas.Remove(p.Area);
-                            }
-
-                            if (index == -1)
-                            {
-                                p.Area.Region = null;
-                            }
-
-                            else
-                            {
-                                p.Area.Region = GlobalVariables.Regions[index];
-                                GlobalVariables.Regions[index].Areas.Add(p.Area);
-                            }
-                        }
-                    }
-
-                    provincestoupdate = provincestoupdate.Distinct().ToList();
-
-                    MapManagement.UpdateMap(provincestoupdate, MapManagement.UpdateMapOptions.Region);
-                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region)
-                        UpdateMap();
-                    //Saving.SaveThingsToUpdate();
-                }
+                int index = RegionBox.SelectedIndex - 1;
+                ChangeProvinceInfo(ChangeProvinceMode.Region, index);
             }
             else
-            {
-                if (!GlobalVariables.RegionInternalChange)
-                {
-                    if (GlobalVariables.ClickedProvince != null)
-                    {
-                        if (GlobalVariables.ClickedProvince.Area != null)
-                            if(GlobalVariables.ClickedProvince.Area.Region != null)
-                                GlobalVariables.ClickedProvince.Area.Region.Areas.Remove(GlobalVariables.ClickedProvince.Area);
-                        if (RegionBox.SelectedIndex == 0)
-                        {
-                            if(GlobalVariables.ClickedProvince.Area != null)
-                                GlobalVariables.ClickedProvince.Area.Region = null;
-                        }
-                        else
-                        {
-                            GlobalVariables.ClickedProvince.Area.Region = GlobalVariables.Regions[RegionBox.SelectedIndex - 1];
-                            GlobalVariables.Regions[RegionBox.SelectedIndex - 1].Areas.Add(GlobalVariables.ClickedProvince.Area);
-                        }
-                        if(GlobalVariables.ClickedProvince.Area != null)
-                            MapManagement.UpdateMap(GlobalVariables.ClickedProvince.Area.Provinces, MapManagement.UpdateMapOptions.Region);
-                        else
-                            MapManagement.UpdateMap(GlobalVariables.ClickedProvince, MapManagement.UpdateMapOptions.Region);
-                    }
-                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region)
-                        UpdateMap();
-                    
-                }
-                else
-                    GlobalVariables.RegionInternalChange = false;
-            }
+                GlobalVariables.RegionInternalChange = false;
             RegionNameChangeBox.Text = RegionBox.Text;
         }
 
@@ -2558,7 +2514,7 @@ namespace Eu4ModEditor
             UpdateDiscoveredBy();
         }
 
-        public enum ChangeProvinceMode { CoT, Fort, HRE, Religion, Culture, DiscoveredBy, DiscoveredByOwner, Area, Owner, Controller, City, Building, Core, Claim, CoreOwner };
+        public enum ChangeProvinceMode { CoT, Fort, HRE, Religion, Culture, DiscoveredBy, DiscoveredByOwner, Area, Owner, Controller, City, Building, Core, Claim, CoreOwner, Superregion, Region, Continent };
 
         public void ChangeProvinceInfo(ChangeProvinceMode mode, object change, object secondvalue = null)
         {
@@ -2783,6 +2739,77 @@ namespace Eu4ModEditor
                             p.AddCore(p.OwnerCountry.Tag);
                     }
                     break;
+                case ChangeProvinceMode.Superregion:
+                    foreach (Province p in ApplyTo)
+                    {
+                        int indexsuperregion = (int)change;
+                        List<Province> provincestoupdatesuperregion = new List<Province>();
+                        foreach (Province pr in ApplyTo)
+                        {
+
+                            if (p.Area != null)
+                            {
+                                if (p.Area.Region != null)
+                                {
+                                    provincestoupdatesuperregion.AddRange(p.Area.Provinces);
+                                    if (p.Area.Region.Superregion != null)
+                                    {
+                                        p.Area.Region.Superregion.Regions.Remove(p.Area.Region);
+                                    }
+
+                                    if (indexsuperregion == -1)
+                                    {
+                                        p.Area.Region.Superregion = null;
+                                    }
+                                    else
+                                    {
+                                        p.Area.Region.Superregion = GlobalVariables.Superregions[indexsuperregion];
+                                        GlobalVariables.Superregions[indexsuperregion].Regions.Add(p.Area.Region);
+                                    }
+                                }
+                            }
+                        }
+
+                        provincestoupdatesuperregion = provincestoupdatesuperregion.Distinct().ToList();
+
+                        MapManagement.UpdateMap(provincestoupdatesuperregion, MapManagement.UpdateMapOptions.Superregion);
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Superregion)
+                            UpdateMap();
+                    }
+                    break;
+                case ChangeProvinceMode.Region:                   
+                        int indexregion = (int)change;
+                        List<Province> provincestoupdate = new List<Province>();
+                        foreach (Province p in ApplyTo)
+                        {
+
+                            if (p.Area != null)
+                            {
+                                provincestoupdate.AddRange(p.Area.Provinces);
+                                if (p.Area.Region != null)
+                                {
+                                    p.Area.Region.Areas.Remove(p.Area);
+                                }
+
+                                if (indexregion == -1)
+                                {
+                                    p.Area.Region = null;
+                                }
+
+                                else
+                                {
+                                    p.Area.Region = GlobalVariables.Regions[indexregion];
+                                    GlobalVariables.Regions[indexregion].Areas.Add(p.Area);
+                                }
+                            }
+                        }
+
+                        provincestoupdate = provincestoupdate.Distinct().ToList();
+
+                        MapManagement.UpdateMap(provincestoupdate, MapManagement.UpdateMapOptions.Region);
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region)
+                            UpdateMap();
+                    break;
             }    
         }
 
@@ -2989,6 +3016,105 @@ namespace Eu4ModEditor
             Country c = GlobalVariables.Countries[index];
             ChangeProvinceInfo(ChangeProvinceMode.Claim, c.Tag);
             UpdateCoresPanel();
+        }
+
+        private void HideSeaTiles3_Click(object sender, EventArgs e)
+        {
+            GlobalVariables.ShowSeaTilesAreaMapmode = !GlobalVariables.ShowSeaTilesAreaMapmode;
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Continent);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Superregion)
+                UpdateMap();
+        }
+
+        private void HideSeaTiles_Click(object sender, EventArgs e)
+        {
+            GlobalVariables.ShowSeaTilesAreaMapmode = !GlobalVariables.ShowSeaTilesAreaMapmode;
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Continent);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Superregion)
+                UpdateMap();
+        }
+
+        private void HideSeaTiles2_Click(object sender, EventArgs e)
+        {
+            GlobalVariables.ShowSeaTilesAreaMapmode = !GlobalVariables.ShowSeaTilesAreaMapmode;
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Continent);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Superregion)
+                UpdateMap();
+        }
+
+        private void SuperregionBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!GlobalVariables.SuperregionInternalChange)
+            {
+                int index = SuperregionBox.SelectedIndex - 1;
+                ChangeProvinceInfo(ChangeProvinceMode.Superregion, index);
+            }
+            else
+                GlobalVariables.SuperregionInternalChange = false;
+            SuperregionNameChangeBox.Text = SuperregionBox.Text;
+        }
+
+        private void SuperregionNameChangeSave_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.Superregions.Any(x => x.Name == SuperregionNameChangeBox.Text))
+                SuperregionNameChangeBox.Text = SuperregionBox.Text;
+            else
+            {
+                GlobalVariables.Superregions[SuperregionBox.SelectedIndex - 1].Name = SuperregionNameChangeBox.Text;
+                SuperregionBox.Items[SuperregionBox.SelectedIndex] = SuperregionNameChangeBox.Text;
+            }
+        }
+
+        private void AddNewSuperregion_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.Superregions.Any(x => x.Name == AddNewSuperregionBox.Text))
+                AddNewSuperregionBox.Text = "Already taken!";
+            else
+            {
+                Superregion c = new Superregion(AddNewSuperregionBox.Text);
+                SuperregionBox.Items.Add(c.Name);
+
+                ChangeProvinceInfo(ChangeProvinceMode.Superregion, SuperregionBox.Items.Count - 2);     
+                AddNewSuperregionBox.Text = "";
+            }
+        }
+
+        private void SaveSuperregionFile_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.ReadOnly[18])
+                return;
+            NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\superregion.txt");
+            List<Node> newNodes = new List<Node>();
+            foreach (Superregion sr in GlobalVariables.Superregions)
+            {
+                Node n = nf.MainNode.Nodes.Find(x => x.Name == sr.Name);
+
+                if (n != null)
+                {
+                    n.PureValues.Clear();
+                    foreach (Region r in sr.Regions)
+                        n.PureValues.Add(r.Name);
+                }
+                else
+                {
+                    n = new Node(sr.Name);                  
+                    foreach (Region r in sr.Regions)
+                        n.PureValues.Add(r.Name);
+                }
+                newNodes.Add(n);
+            }
+            nf.MainNode.Nodes.Clear();
+            nf.MainNode.Nodes.AddRange(newNodes);
+            nf.SaveFile(GlobalVariables.pathtomod + "map\\superregion.txt");
         }
     }
 }

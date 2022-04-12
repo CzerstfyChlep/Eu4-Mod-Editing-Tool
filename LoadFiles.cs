@@ -1002,25 +1002,31 @@ namespace Eu4ModEditor
 
 
             /////////////////////////////////////////////////////////////////////////
+            ///
+            
             bw.ReportProgress(106);
             NodeFile Superregions;
             if (GlobalVariables.UseMod[18] > 0)
-                continents = new NodeFile(GlobalVariables.pathtomod + "map\\superregions.txt");
+                Superregions = new NodeFile(GlobalVariables.pathtomod + "map\\superregion.txt");
             else
-                continents = new NodeFile(GlobalVariables.pathtogame + "map\\superregions.txt");
+                Superregions = new NodeFile(GlobalVariables.pathtogame + "map\\superregion.txt");
             bw.ReportProgress(107);
-            foreach (Node n in continents.MainNode.Nodes)
+            foreach (Node n in Superregions.MainNode.Nodes)
             {
-                List<Province> ctp = new List<Province>();
+                List<Region> reg = new List<Region>();
                 foreach (string s in n.PureValues)
                 {
-                    ctp.Add(GlobalVariables.Provinces[int.Parse(s.Trim()) - 1]);
+                    Region r = GlobalVariables.Regions.Find(x => x.Name == s);
+                    if(r != null)
+                    {
+                        reg.Add(r);
+                    }
                 }
-                Continent c = new Continent(n.Name, ctp);
-                foreach (Province pr in c.Provinces)
-                    pr.Continent = c;
+                Superregion sr = new Superregion(n.Name, reg);
+                foreach (Region re in sr.Regions)
+                    re.Superregion = sr;
             }
-
+            
             
 
             bw.ReportProgress(108);
@@ -1098,6 +1104,7 @@ namespace Eu4ModEditor
             MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.HRE);
             MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Fort);
             MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Continent);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
             foreach (TradeGood tg in GlobalVariables.TradeGoods)
             {
                 if (!GlobalVariables.LatentTradeGoods.Contains(tg))
@@ -1137,6 +1144,8 @@ namespace Eu4ModEditor
                 ModEditor.form.GovernmentTypeBox.Items.Add(g.Type);
             foreach (Building bl in GlobalVariables.Buildings)
                 ModEditor.form.BuildingsBox.Items.Add(bl.Name);
+            foreach (Superregion sr in GlobalVariables.Superregions)
+                ModEditor.form.SuperregionBox.Items.Add(sr.Name);
             //lp.CloseForm();
             bw.ReportProgress(110);
 

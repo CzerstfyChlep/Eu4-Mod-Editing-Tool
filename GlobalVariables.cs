@@ -63,6 +63,7 @@ namespace Eu4ModEditor
         public static bool CountryTechGroupInternalChange = false;
         public static bool AreaInternalChange = false;
         public static bool RegionInternalChange = false;
+        public static bool SuperregionInternalChange = false;
         public static bool TradeNodeInternalChange = false;
         public static bool ShowSeaTilesAreaMapmode = false;
         public static bool ContinentInternalChange = false;

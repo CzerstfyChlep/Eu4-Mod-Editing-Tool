@@ -37,6 +37,7 @@
             this.CheckFilesButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.LoadingPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.ConfirmFileUsage = new System.Windows.Forms.Button();
             this.panelOLD = new System.Windows.Forms.Panel();
             this.groupBox19 = new System.Windows.Forms.GroupBox();
@@ -144,7 +145,6 @@
             this.radioButton11 = new System.Windows.Forms.RadioButton();
             this.ReligionTXT = new System.Windows.Forms.Label();
             this.GameButton6 = new System.Windows.Forms.RadioButton();
-            this.LoadingPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panelOLD.SuspendLayout();
@@ -258,6 +258,14 @@
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Step 2";
+            // 
+            // LoadingPanel
+            // 
+            this.LoadingPanel.AutoScroll = true;
+            this.LoadingPanel.Location = new System.Drawing.Point(6, 19);
+            this.LoadingPanel.Name = "LoadingPanel";
+            this.LoadingPanel.Size = new System.Drawing.Size(749, 514);
+            this.LoadingPanel.TabIndex = 12;
             // 
             // ConfirmFileUsage
             // 
@@ -1454,13 +1462,6 @@
             this.GameButton6.Tag = "game";
             this.GameButton6.Text = "Game";
             this.GameButton6.UseVisualStyleBackColor = true;
-            // 
-            // LoadingPanel
-            // 
-            this.LoadingPanel.Location = new System.Drawing.Point(6, 19);
-            this.LoadingPanel.Name = "LoadingPanel";
-            this.LoadingPanel.Size = new System.Drawing.Size(749, 514);
-            this.LoadingPanel.TabIndex = 12;
             // 
             // LoadingScreen
             // 

@@ -121,6 +121,12 @@ namespace Eu4ModEditor
                 case 105:
                     LoadingProgressLabel.Text = "Adding tradenodes...";
                     break;
+                case 106:
+                    LoadingProgressLabel.Text = "Loading superregion file...";
+                    break;
+                case 107:
+                    LoadingProgressLabel.Text = "Adding superregions...";
+                    break;
                 case 108:                    
                     LoadingProgressLabel.Text = "Loading map variables...";
                     break;

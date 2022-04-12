@@ -72,6 +72,17 @@
             this.AddCoreBox = new System.Windows.Forms.ComboBox();
             this.CoresPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.groupBox17 = new System.Windows.Forms.GroupBox();
+            this.label43 = new System.Windows.Forms.Label();
+            this.label44 = new System.Windows.Forms.Label();
+            this.AddNewSuperregionBox = new System.Windows.Forms.TextBox();
+            this.AddNewSuperregion = new System.Windows.Forms.Button();
+            this.SaveSuperregionFile = new System.Windows.Forms.Button();
+            this.HideSeaTiles3 = new System.Windows.Forms.Button();
+            this.SuperregionNameChangeSave = new System.Windows.Forms.Button();
+            this.SuperregionNameChangeBox = new System.Windows.Forms.TextBox();
+            this.SuperregionBox = new System.Windows.Forms.ComboBox();
+            this.label45 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.label28 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
@@ -243,6 +254,7 @@
             this.groupBox9.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.groupBox17.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -757,6 +769,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.groupBox17);
             this.tabPage2.Controls.Add(this.groupBox5);
             this.tabPage2.Controls.Add(this.groupBox6);
             this.tabPage2.Controls.Add(this.groupBox3);
@@ -767,6 +780,120 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Area & Region";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // groupBox17
+            // 
+            this.groupBox17.Controls.Add(this.label43);
+            this.groupBox17.Controls.Add(this.label44);
+            this.groupBox17.Controls.Add(this.AddNewSuperregionBox);
+            this.groupBox17.Controls.Add(this.AddNewSuperregion);
+            this.groupBox17.Controls.Add(this.SaveSuperregionFile);
+            this.groupBox17.Controls.Add(this.HideSeaTiles3);
+            this.groupBox17.Controls.Add(this.SuperregionNameChangeSave);
+            this.groupBox17.Controls.Add(this.SuperregionNameChangeBox);
+            this.groupBox17.Controls.Add(this.SuperregionBox);
+            this.groupBox17.Controls.Add(this.label45);
+            this.groupBox17.Location = new System.Drawing.Point(272, 145);
+            this.groupBox17.Name = "groupBox17";
+            this.groupBox17.Size = new System.Drawing.Size(260, 136);
+            this.groupBox17.TabIndex = 38;
+            this.groupBox17.TabStop = false;
+            this.groupBox17.Text = "Province superregion";
+            // 
+            // label43
+            // 
+            this.label43.AutoSize = true;
+            this.label43.Location = new System.Drawing.Point(7, 79);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(32, 13);
+            this.label43.TabIndex = 31;
+            this.label43.Text = "New:";
+            // 
+            // label44
+            // 
+            this.label44.AutoSize = true;
+            this.label44.Location = new System.Drawing.Point(6, 54);
+            this.label44.Name = "label44";
+            this.label44.Size = new System.Drawing.Size(38, 13);
+            this.label44.TabIndex = 30;
+            this.label44.Text = "Name:";
+            // 
+            // AddNewSuperregionBox
+            // 
+            this.AddNewSuperregionBox.Location = new System.Drawing.Point(64, 76);
+            this.AddNewSuperregionBox.Name = "AddNewSuperregionBox";
+            this.AddNewSuperregionBox.Size = new System.Drawing.Size(111, 20);
+            this.AddNewSuperregionBox.TabIndex = 29;
+            // 
+            // AddNewSuperregion
+            // 
+            this.AddNewSuperregion.Location = new System.Drawing.Point(181, 76);
+            this.AddNewSuperregion.Name = "AddNewSuperregion";
+            this.AddNewSuperregion.Size = new System.Drawing.Size(75, 20);
+            this.AddNewSuperregion.TabIndex = 28;
+            this.AddNewSuperregion.Text = "Add";
+            this.AddNewSuperregion.UseVisualStyleBackColor = true;
+            this.AddNewSuperregion.Click += new System.EventHandler(this.AddNewSuperregion_Click);
+            // 
+            // SaveSuperregionFile
+            // 
+            this.SaveSuperregionFile.Location = new System.Drawing.Point(9, 102);
+            this.SaveSuperregionFile.Name = "SaveSuperregionFile";
+            this.SaveSuperregionFile.Size = new System.Drawing.Size(121, 24);
+            this.SaveSuperregionFile.TabIndex = 27;
+            this.SaveSuperregionFile.Text = "Save superregion file";
+            this.SaveSuperregionFile.UseVisualStyleBackColor = true;
+            this.SaveSuperregionFile.Click += new System.EventHandler(this.SaveSuperregionFile_Click);
+            // 
+            // HideSeaTiles3
+            // 
+            this.HideSeaTiles3.Location = new System.Drawing.Point(137, 102);
+            this.HideSeaTiles3.Name = "HideSeaTiles3";
+            this.HideSeaTiles3.Size = new System.Drawing.Size(117, 23);
+            this.HideSeaTiles3.TabIndex = 26;
+            this.HideSeaTiles3.Text = "Show/Hide sea tiles";
+            this.HideSeaTiles3.UseVisualStyleBackColor = true;
+            this.HideSeaTiles3.Click += new System.EventHandler(this.HideSeaTiles3_Click);
+            // 
+            // SuperregionNameChangeSave
+            // 
+            this.SuperregionNameChangeSave.Location = new System.Drawing.Point(181, 50);
+            this.SuperregionNameChangeSave.Name = "SuperregionNameChangeSave";
+            this.SuperregionNameChangeSave.Size = new System.Drawing.Size(75, 20);
+            this.SuperregionNameChangeSave.TabIndex = 25;
+            this.SuperregionNameChangeSave.Text = "Save";
+            this.SuperregionNameChangeSave.UseVisualStyleBackColor = true;
+            this.SuperregionNameChangeSave.Click += new System.EventHandler(this.SuperregionNameChangeSave_Click);
+            // 
+            // SuperregionNameChangeBox
+            // 
+            this.SuperregionNameChangeBox.Location = new System.Drawing.Point(64, 50);
+            this.SuperregionNameChangeBox.Name = "SuperregionNameChangeBox";
+            this.SuperregionNameChangeBox.Size = new System.Drawing.Size(111, 20);
+            this.SuperregionNameChangeBox.TabIndex = 24;
+            // 
+            // SuperregionBox
+            // 
+            this.SuperregionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.SuperregionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.SuperregionBox.FormattingEnabled = true;
+            this.SuperregionBox.Items.AddRange(new object[] {
+            " "});
+            this.SuperregionBox.Location = new System.Drawing.Point(75, 19);
+            this.SuperregionBox.Name = "SuperregionBox";
+            this.SuperregionBox.Size = new System.Drawing.Size(111, 24);
+            this.SuperregionBox.TabIndex = 23;
+            this.SuperregionBox.TabStop = false;
+            this.SuperregionBox.SelectedIndexChanged += new System.EventHandler(this.SuperregionBox_SelectedIndexChanged);
+            // 
+            // label45
+            // 
+            this.label45.AutoSize = true;
+            this.label45.Location = new System.Drawing.Point(7, 25);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(67, 13);
+            this.label45.TabIndex = 0;
+            this.label45.Text = "Superregion:";
             // 
             // groupBox5
             // 
@@ -954,6 +1081,7 @@
             this.HideSeaTiles.TabIndex = 26;
             this.HideSeaTiles.Text = "Show/Hide sea tiles";
             this.HideSeaTiles.UseVisualStyleBackColor = true;
+            this.HideSeaTiles.Click += new System.EventHandler(this.HideSeaTiles_Click);
             // 
             // RegionNameChangeSave
             // 
@@ -1067,6 +1195,7 @@
             this.HideSeaTiles2.TabIndex = 26;
             this.HideSeaTiles2.Text = "Show/Hide sea tiles";
             this.HideSeaTiles2.UseVisualStyleBackColor = true;
+            this.HideSeaTiles2.Click += new System.EventHandler(this.HideSeaTiles2_Click);
             // 
             // ContinentNameChangeSave
             // 
@@ -2485,6 +2614,8 @@
             this.groupBox11.ResumeLayout(false);
             this.groupBox11.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.groupBox17.ResumeLayout(false);
+            this.groupBox17.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
@@ -2723,6 +2854,17 @@
         private System.Windows.Forms.FlowLayoutPanel BuildingsPanel;
         private System.Windows.Forms.Button AddClaimButton;
         private System.Windows.Forms.Button SuperregionMapmode;
+        private System.Windows.Forms.GroupBox groupBox17;
+        private System.Windows.Forms.Label label43;
+        private System.Windows.Forms.Label label44;
+        private System.Windows.Forms.TextBox AddNewSuperregionBox;
+        private System.Windows.Forms.Button AddNewSuperregion;
+        private System.Windows.Forms.Button SaveSuperregionFile;
+        private System.Windows.Forms.Button HideSeaTiles3;
+        private System.Windows.Forms.Button SuperregionNameChangeSave;
+        private System.Windows.Forms.TextBox SuperregionNameChangeBox;
+        public System.Windows.Forms.ComboBox SuperregionBox;
+        private System.Windows.Forms.Label label45;
     }
 }
 
