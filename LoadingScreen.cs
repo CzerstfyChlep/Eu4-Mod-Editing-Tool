@@ -82,7 +82,13 @@ namespace Eu4ModEditor
 
         }
 
-        List<string> ToLoad = new List<string>() { "map\\definition.csv", "map\\provinces.bmp", "common\\tradegoods\\", "common\\prices\\", "common\\cultures\\", "common\\religions\\", "map\\region.txt", "common\\countries\\", "history\\provinces\\", "map\\area.txt", "map\\default.map", "history\\countries\\", "common\\tradenodes\\", "map\\continent.txt", "common\\country_tags\\", "common\\technology.txt", "common\\governments\\", "common\\buildings\\" };
+        List<string> ToLoad = new List<string>() { /*0*/"map\\definition.csv",
+            /*1*/"map\\provinces.bmp", /*2*/"common\\tradegoods\\", /*3*/"common\\prices\\",
+            /*4*/"common\\cultures\\", /*5*/"common\\religions\\", /*6*/"map\\region.txt",
+            /*7*/"common\\countries\\", /*8*/"history\\provinces\\", /*9*/"map\\area.txt",
+            /*10*/"map\\default.map", /*11*/"history\\countries\\", /*12*/"common\\tradenodes\\",
+            /*13*/"map\\continent.txt", /*14*/"common\\country_tags\\", /*15*/"common\\technology.txt",
+            /*16*/"common\\governments\\", /*17*/"common\\buildings\\" };
 
         public void RadioButtonChange(object sender, EventArgs e)
         {

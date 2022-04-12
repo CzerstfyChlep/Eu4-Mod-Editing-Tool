@@ -96,11 +96,14 @@ namespace Eu4ModEditor
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\tradegoods\\"))
                 {
-                    if (file.Split('.')[1] == "txt")
+                    if (file.Contains('.'))
                     {
-                        NodeFile nf = new NodeFile(file);
-                        tradegoodsfiles.Add(nf);
-                        GlobalVariables.ModTradeGoodsFiles.Add(nf);
+                        if (file.Split('.')[1] == "txt")
+                        {
+                            NodeFile nf = new NodeFile(file);
+                            tradegoodsfiles.Add(nf);
+                            GlobalVariables.ModTradeGoodsFiles.Add(nf);
+                        }
                     }
                 }
             }
@@ -109,12 +112,15 @@ namespace Eu4ModEditor
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\tradegoods\\"))
                 {
-                    if (file.Split('.')[1] == "txt")
+                    if (file.Contains('.'))
                     {
-                        NodeFile nf = new NodeFile(file, true);
-                        if (!tradegoodsfiles.Any(x=> x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                            tradegoodsfiles.Add(nf);
-                        GlobalVariables.GameTradeGoodsFile = nf;
+                        if (file.Split('.')[1] == "txt")
+                        {
+                            NodeFile nf = new NodeFile(file, true);
+                            if (!tradegoodsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                tradegoodsfiles.Add(nf);
+                            GlobalVariables.GameTradeGoodsFile = nf;
+                        }
                     }
                 }
             }
@@ -161,11 +167,14 @@ namespace Eu4ModEditor
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\prices\\"))
                 {
-                    if (file.Split('.')[1] == "txt")
+                    if (file.Contains('.'))
                     {
-                        NodeFile nf = new NodeFile(file);
-                        tradegoodspricesfiles.Add(nf);
-                        GlobalVariables.ModPricesFiles.Add(nf);
+                        if (file.Split('.')[1] == "txt")
+                        {
+                            NodeFile nf = new NodeFile(file);
+                            tradegoodspricesfiles.Add(nf);
+                            GlobalVariables.ModPricesFiles.Add(nf);
+                        }
                     }
                 }
             }
@@ -173,12 +182,15 @@ namespace Eu4ModEditor
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\prices\\"))
                 {
-                    if (file.Split('.')[1] == "txt")
+                    if (file.Contains('.'))
                     {
-                        NodeFile nf = new NodeFile(file, true);
-                        if (!tradegoodspricesfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                            tradegoodspricesfiles.Add(nf);
-                        GlobalVariables.GamePricesFile = nf;
+                        if (file.Split('.')[1] == "txt")
+                        {
+                            NodeFile nf = new NodeFile(file, true);
+                            if (!tradegoodspricesfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                tradegoodspricesfiles.Add(nf);
+                            GlobalVariables.GamePricesFile = nf;
+                        }
                     }
                 }
             }
@@ -207,12 +219,14 @@ namespace Eu4ModEditor
 
             bw.ReportProgress(32);
             List<NodeFile> culturesfiles = new List<NodeFile>(); 
-                try
-                {
+            try
+            {
 
-                    if (GlobalVariables.UseMod[4] != 0)
+                if (GlobalVariables.UseMod[4] != 0)
+                {
+                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\cultures\\"))
                     {
-                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\cultures\\"))
+                        if (file.Contains('.'))
                         {
                             if (file.Split('.')[1] == "txt")
                             {
@@ -222,9 +236,12 @@ namespace Eu4ModEditor
                             }
                         }
                     }
-                    if (GlobalVariables.UseMod[4] != 1)
+                }
+                if (GlobalVariables.UseMod[4] != 1)
+                {
+                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\cultures\\"))
                     {
-                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\cultures\\"))
+                        if (file.Contains('.'))
                         {
                             if (file.Split('.')[1] == "txt")
                             {
@@ -236,9 +253,10 @@ namespace Eu4ModEditor
                         }
                     }
                 }
-                catch (Exception ex)
+            }
+            catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    //MessageBox.Show(ex.Message);
                 }
             
             bw.ReportProgress(36);
@@ -279,11 +297,14 @@ namespace Eu4ModEditor
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\religions\\"))
                 {
-                    if (file.Split('.')[1] == "txt")
+                    if (file.Contains('.'))
                     {
-                        NodeFile nf = new NodeFile(file);
-                        religionsfiles.Add(nf);
-                        GlobalVariables.ModReligionsFiles.Add(nf);
+                        if (file.Split('.')[1] == "txt")
+                        {
+                            NodeFile nf = new NodeFile(file);
+                            religionsfiles.Add(nf);
+                            GlobalVariables.ModReligionsFiles.Add(nf);
+                        }
                     }
                 }
             }
@@ -291,12 +312,15 @@ namespace Eu4ModEditor
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\religions\\"))
                 {
-                    if (file.Split('.')[1] == "txt")
+                    if (file.Contains('.'))
                     {
-                        NodeFile nf = new NodeFile(file, true);
-                        if (!religionsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                            religionsfiles.Add(nf);
-                        GlobalVariables.GameReligionsFile = nf;
+                        if (file.Split('.')[1] == "txt")
+                        {
+                            NodeFile nf = new NodeFile(file, true);
+                            if (!religionsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                religionsfiles.Add(nf);
+                            GlobalVariables.GameReligionsFile = nf;
+                        }
                     }
                 }
             }
@@ -315,16 +339,23 @@ namespace Eu4ModEditor
                     {
                         if (innernode.Name != "flag_emblem_index_range" && innernode.Name != "religious_schools")
                         {
-                            Religion r = new Religion
+                            try
                             {
-                                Name = innernode.Name,
-                                ReadableName = innernode.Name[0].ToString().ToUpper() + innernode.Name.Substring(1).Replace('_', ' '),
-                                Group = rg
-                            };
-                            rg.Religions.Add(r);
-                            string[] colorstring = innernode.Nodes.Find(x => x.Name == "color").PureValues.ToArray();
-                            r.Color = Color.FromArgb(int.Parse(colorstring[0]), int.Parse(colorstring[1]), int.Parse(colorstring[2]));
-                            r.Icon = int.Parse(innernode.Variables.Find(x => x.Name == "icon").Value);
+                                Religion r = new Religion
+                                {
+                                    Name = innernode.Name,
+                                    ReadableName = innernode.Name[0].ToString().ToUpper() + innernode.Name.Substring(1).Replace('_', ' '),
+                                    Group = rg
+                                };
+                                rg.Religions.Add(r);
+                                string[] colorstring = innernode.Nodes.Find(x => x.Name == "color").PureValues.ToArray();
+                                r.Color = Color.FromArgb(int.Parse(colorstring[0]), int.Parse(colorstring[1]), int.Parse(colorstring[2]));
+                                r.Icon = int.Parse(innernode.Variables.Find(x => x.Name == "icon").Value);
+                            }
+                            catch
+                            {
+
+                            }
                         }
                     }
                 }
@@ -335,11 +366,14 @@ namespace Eu4ModEditor
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\governments\\"))
                 {
-                    if (file.Split('.')[1] == "txt")
+                    if (file.Contains('.'))
                     {
-                        NodeFile nf = new NodeFile(file);
-                        governmentsfiles.Add(nf);
-                        GlobalVariables.ModGovernmentsFiles.Add(nf);
+                        if (file.Split('.')[1] == "txt")
+                        {
+                            NodeFile nf = new NodeFile(file);
+                            governmentsfiles.Add(nf);
+                            GlobalVariables.ModGovernmentsFiles.Add(nf);
+                        }
                     }
                 }
             }
@@ -347,12 +381,15 @@ namespace Eu4ModEditor
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\governments\\"))
                 {
-                    if (file.Split('.')[1] == "txt")
+                    if (file.Contains('.'))
                     {
-                        NodeFile nf = new NodeFile(file, true);
-                        if (!governmentsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                            governmentsfiles.Add(nf);
-                        GlobalVariables.GameGovernmentsFile = nf;
+                        if (file.Split('.')[1] == "txt")
+                        {
+                            NodeFile nf = new NodeFile(file, true);
+                            if (!governmentsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                governmentsfiles.Add(nf);
+                            GlobalVariables.GameGovernmentsFile = nf;
+                        }
                     }
                 }
             }
@@ -390,11 +427,14 @@ namespace Eu4ModEditor
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\country_tags\\"))
                 {
-                    if (file.Split('.')[1] == "txt")
+                    if (file.Contains('.'))
                     {
-                        NodeFile nf = new NodeFile(file);
-                        countrytagsfiles.Add(nf);
-                        GlobalVariables.ModCountryTagsFiles.Add(nf);
+                        if (file.Split('.')[1] == "txt")
+                        {
+                            NodeFile nf = new NodeFile(file);
+                            countrytagsfiles.Add(nf);
+                            GlobalVariables.ModCountryTagsFiles.Add(nf);
+                        }
                     }
                 }
             }
@@ -402,12 +442,15 @@ namespace Eu4ModEditor
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\country_tags\\"))
                 {
-                    if (file.Split('.')[1] == "txt")
+                    if (file.Contains('.'))
                     {
-                        NodeFile nf = new NodeFile(file, true);
-                        if (!countrytagsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                            countrytagsfiles.Add(nf);
-                        GlobalVariables.GameCountryTagsFile = nf;
+                        if (file.Split('.')[1] == "txt")
+                        {
+                            NodeFile nf = new NodeFile(file, true);
+                            if (!countrytagsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                countrytagsfiles.Add(nf);
+                            GlobalVariables.GameCountryTagsFile = nf;
+                        }
                     }
                 }
             }
@@ -427,27 +470,33 @@ namespace Eu4ModEditor
             List<string> CountryHistoryFiles = new List<string>();
             List<bool> GameFiles = new List<bool>();
 
-            if (GlobalVariables.UseMod[6] != 0)
+            if (GlobalVariables.UseMod[11] != 0)
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "history\\countries\\"))
                 {
-                    if (file.Split('.')[1] == "txt")
+                    if (file.Contains('.'))
                     {
-                        CountryHistoryFiles.Add(file);
-                        GameFiles.Add(false);
+                        if (file.Split('.')[1] == "txt")
+                        {
+                            CountryHistoryFiles.Add(file);
+                            GameFiles.Add(false);
+                        }
                     }
                 }
             }
-            if (GlobalVariables.UseMod[6] != 1)
+            if (GlobalVariables.UseMod[11] != 1)
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "history\\countries\\"))
                 {
-                    if (file.Split('.')[1] == "txt")
+                    if (file.Contains('.'))
                     {
-                        if (!CountryHistoryFiles.Any(x => x.Split('\\').Last().Replace(".txt", "") == file.Split('\\').Last().Replace(".txt", "")))
+                        if (file.Split('.')[1] == "txt")
                         {
-                            CountryHistoryFiles.Add(file);
-                            GameFiles.Add(true);
+                            if (!CountryHistoryFiles.Any(x => x.Split('\\').Last().Replace(".txt", "") == file.Split('\\').Last().Replace(".txt", "")))
+                            {
+                                CountryHistoryFiles.Add(file);
+                                GameFiles.Add(true);
+                            }
                         }
                     }
                 }
@@ -514,11 +563,14 @@ namespace Eu4ModEditor
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\buildings\\"))
                 {
-                    if (file.Split('.')[1] == "txt")
+                    if (file.Contains('.'))
                     {
-                        NodeFile nf = new NodeFile(file);
-                        buildingsfiles.Add(nf);
-                        GameFiles.Add(false);
+                        if (file.Split('.')[1] == "txt")
+                        {
+                            NodeFile nf = new NodeFile(file);
+                            buildingsfiles.Add(nf);
+                            GameFiles.Add(false);
+                        }
                     }
                 }
             }
@@ -526,15 +578,18 @@ namespace Eu4ModEditor
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\buildings\\"))
                 {
-                    if (file.Split('.')[1] == "txt")
+                    if (file.Contains('.'))
                     {
-                        NodeFile nf = new NodeFile(file, true);
-                        if (!buildingsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                        if (file.Split('.')[1] == "txt")
                         {
-                            buildingsfiles.Add(nf);
-                            GameFiles.Add(true);
-                        }
+                            NodeFile nf = new NodeFile(file, true);
+                            if (!buildingsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                            {
+                                buildingsfiles.Add(nf);
+                                GameFiles.Add(true);
+                            }
 
+                        }
                     }
                 }
             }
@@ -559,16 +614,20 @@ namespace Eu4ModEditor
             bw.ReportProgress(81);
 
             List<string> CountryCommonFiles = new List<string>();
+            
             GameFiles.Clear();
 
             if (GlobalVariables.UseMod[7] != 0)
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\countries\\"))
                 {
-                    if (file.Split('.')[1] == "txt")
+                    if (file.Contains('.'))
                     {
-                        CountryCommonFiles.Add(file);
-                        GameFiles.Add(false);
+                        if (file.Split('.')[1] == "txt")
+                        {
+                            CountryCommonFiles.Add(file);
+                            GameFiles.Add(false);
+                        }
                     }
                 }
             }
@@ -576,18 +635,22 @@ namespace Eu4ModEditor
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\countries\\"))
                 {
-                    if (file.Split('.')[1] == "txt")
+                    if (file.Contains('.'))
                     {
-                        if (!CountryCommonFiles.Any(x => x.Split('\\').Last().Replace(".txt", "") == file.Split('\\').Last().Replace(".txt", "")))
+                        if (file.Split('.')[1] == "txt")
                         {
-                            CountryCommonFiles.Add(file);
-                            GameFiles.Add(true);
+                            if (!CountryCommonFiles.Any(x => x.Split('\\').Last().Replace(".txt", "") == file.Split('\\').Last().Replace(".txt", "")))
+                            {
+                                CountryCommonFiles.Add(file);
+                                GameFiles.Add(true);
+                            }
                         }
                     }
                 }
             }
+            
             bw.ReportProgress(84);
-            /*
+            
             foreach (string file in CountryCommonFiles)
             {
                 string name = file.Split('\\').Last().Split('.')[0];
@@ -597,14 +660,25 @@ namespace Eu4ModEditor
                 if (c != null)
                 {
                     c.CommonFile = file;
-                    if (GameFiles[CountryCommonFiles.IndexOf(file)])
-                        c.CommonFileGame = true;
+                    if (GameFiles.Count > CountryCommonFiles.IndexOf(file))
+                    {
+                        if (GameFiles[CountryCommonFiles.IndexOf(file)])
+                            c.CommonFileGame = true;
+                    }
                     NodeFile nodefile = new NodeFile(file);
                     string[] colort = nodefile.MainNode.Nodes.Find(x => x.Name == "color").PureValues.ToArray();
-                    c.Color = Color.FromArgb(int.Parse(colort[0]), int.Parse(colort[1]), int.Parse(colort[2]));
+                    try
+                    {
+                        c.Color = Color.FromArgb(int.Parse(colort[0]), int.Parse(colort[1]), int.Parse(colort[2]));
+                    }
+                    catch
+                    {
+                        c.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
+                        MessageBox.Show("Some error in " + file);
+                    }
                 }
             }
-            */
+            
             bw.ReportProgress(86);
             //lp.UpdateProgressLabel("Loading provinces...", 80);
 
@@ -614,10 +688,13 @@ namespace Eu4ModEditor
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "history\\provinces\\"))
                 {
-                    if (file.Split('.').Last() == "txt")
+                    if (file.Contains('.'))
                     {
-                        Files.Add(file);
-                        GameFiles.Add(false);
+                        if (file.Split('.').Last() == "txt")
+                        {
+                            Files.Add(file);
+                            GameFiles.Add(false);
+                        }
                     }
                 }
             }
@@ -625,12 +702,15 @@ namespace Eu4ModEditor
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "history\\provinces\\"))
                 {
-                    if (file.Split('.').Last() == "txt")
+                    if (file.Contains('.'))
                     {
-                        if (!Files.Any(x => x.Split('\\').Last().Replace(".txt", "") == file.Split('\\').Last().Replace(".txt", "")))
+                        if (file.Split('.').Last() == "txt")
                         {
-                            Files.Add(file);
-                            GameFiles.Add(true);
+                            if (!Files.Any(x => x.Split('\\').Last().Replace(".txt", "") == file.Split('\\').Last().Replace(".txt", "")))
+                            {
+                                Files.Add(file);
+                                GameFiles.Add(true);
+                            }
                         }
                     }
                 }
@@ -776,7 +856,7 @@ namespace Eu4ModEditor
             }
             bw.ReportProgress(94);
             NodeFile regions;
-            if (GlobalVariables.UseMod[11] > 0)
+            if (GlobalVariables.UseMod[6] > 0)
                 regions = new NodeFile(GlobalVariables.pathtomod + "map\\region.txt");
             else
                 regions = new NodeFile(GlobalVariables.pathtogame + "map\\region.txt");
@@ -794,11 +874,11 @@ namespace Eu4ModEditor
                             if (are != null)
                                 ar.Add(are);
                         }
-                    }
+                    }               
+                    Region r = new Region(n.Name, ar);
+                    foreach (Area are in r.Areas)
+                        are.Region = r;
                 }
-                Region r = new Region(n.Name, ar);
-                foreach (Area are in r.Areas)
-                    are.Region = r;
             }
 
             bw.ReportProgress(98);
@@ -828,11 +908,14 @@ namespace Eu4ModEditor
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\tradenodes\\"))
                 {
-                    if (file.Split('.')[1] == "txt")
+                    if (file.Contains('.'))
                     {
-                        NodeFile nf = new NodeFile(file);
-                        tradenodesfiles.Add(nf);
-                        GlobalVariables.ModTradeNodesFiles.Add(nf);
+                        if (file.Split('.')[1] == "txt")
+                        {
+                            NodeFile nf = new NodeFile(file);
+                            tradenodesfiles.Add(nf);
+                            GlobalVariables.ModTradeNodesFiles.Add(nf);
+                        }
                     }
                 }
             }
@@ -840,12 +923,15 @@ namespace Eu4ModEditor
             {
                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\tradenodes\\"))
                 {
-                    if (file.Split('.')[1] == "txt")
+                    if (file.Contains('.'))
                     {
-                        NodeFile nf = new NodeFile(file, true);
-                        if (!tradenodesfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))                       
-                            tradenodesfiles.Add(nf);
-                        GlobalVariables.GameTradeNodesFile = nf;
+                        if (file.Split('.')[1] == "txt")
+                        {
+                            NodeFile nf = new NodeFile(file, true);
+                            if (!tradenodesfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                tradenodesfiles.Add(nf);
+                            GlobalVariables.GameTradeNodesFile = nf;
+                        }
                     }
                 }
             }
