@@ -119,7 +119,7 @@ namespace Eu4ModEditor
             }
 
             bw.ReportProgress(30);
-
+            /*
             GlobalVariables.TradeGoods.Add(TradeGood.nothing);
             foreach (NodeFile tradegoods in tradegoodsfiles)
             {
@@ -153,7 +153,8 @@ namespace Eu4ModEditor
                         if (latent.Value == "yes")
                             GlobalVariables.LatentTradeGoods.Add(tg);
                 }
-            }
+                
+            }*/
 
             bw.ReportProgress(35);
 
