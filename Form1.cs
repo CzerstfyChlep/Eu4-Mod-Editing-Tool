@@ -972,8 +972,7 @@ namespace Eu4ModEditor
                     if (TechnologyGroupBox.SelectedIndex != index)
                     {
                         GlobalVariables.CountryTechGroupInternalChange = true;
-                        if (index != -1)
-                            TechnologyGroupBox.SelectedIndex = index;
+                        TechnologyGroupBox.SelectedIndex = index;
                     }
 
                     index = Culture.Cultures.IndexOf(Culture.Cultures.Find(x=>x.Name == GlobalVariables.SelectedCountry.PrimaryCulture));
