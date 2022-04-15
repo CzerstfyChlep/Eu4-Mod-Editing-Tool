@@ -9,7 +9,7 @@ namespace Eu4ModEditor
 {
     public static class MapManagement
     {
-        public enum UpdateMapOptions { Provinces, Development, TradeGood, Culture, Religion, Political, Area, Region, TradeNode, HRE, Fort, Continent, Superregion };
+        public enum UpdateMapOptions { Provinces, Development, TradeGood, Culture, Religion, Political, Area, Region, TradeNode, HRE, Fort, Continent, Superregion, DiscoveredBy };
 
         public static void UpdateMap(List<Province> provinces, UpdateMapOptions options)
         {
@@ -485,6 +485,46 @@ namespace Eu4ModEditor
                     GlobalVariables.ContinentBitmap.UnlockBits();
                     break;
 
+                case UpdateMapOptions.DiscoveredBy:
+                    GlobalVariables.DiscoveredByBitmap = new LockBitmap(new Bitmap(GlobalVariables.BaseWhiteProvincesBitmap.source, GlobalVariables.BaseWhiteProvincesBitmap.Width, GlobalVariables.BaseWhiteProvincesBitmap.Height));
+                    GlobalVariables.DiscoveredByBitmap.LockBits();
+
+                    foreach (Province p in provinces)
+                    {
+                        bool ctr = false;
+                        if (p.OwnerCountry != null)
+                        {
+                            if (p.OwnerCountry.TechnologyGroup == GlobalVariables.SelectedDiscoveredByTechGroup)
+                                ctr = true;
+                            else if (!p.GetDiscoveredBy().Contains(GlobalVariables.SelectedDiscoveredByTechGroup))
+                                continue;
+                        }
+                        else if (!p.GetDiscoveredBy().Contains(GlobalVariables.SelectedDiscoveredByTechGroup))
+                            continue;
+
+                        foreach (Point pon in p.Pixels)
+                        {
+                            if (ctr)
+                            {
+                                GlobalVariables.DiscoveredByBitmap.SetPixel(pon.X, pon.Y, Color.Green);
+                            }
+                            else
+                            {
+                                if ((pon.X + (int)Math.Floor(pon.Y / 2f)) % 8 == 2 || (pon.X + (int)Math.Floor(pon.Y / 2f)) % 8 == 3)
+                                {
+                                    GlobalVariables.DiscoveredByBitmap.SetPixel(pon.X, pon.Y, Color.Green);
+                                }
+                            }
+                        }
+
+                        foreach (Point borderpnt in p.BorderPixels)
+                        {
+                            GlobalVariables.DiscoveredByBitmap.SetPixel(borderpnt.X, borderpnt.Y, Color.Black);
+                        }
+                    }
+                    GlobalVariables.DiscoveredByBitmap.UnlockBits();
+                    break;
+
             }
         }
 
@@ -851,6 +891,30 @@ namespace Eu4ModEditor
             UpdateMap(p, UpdateMapOptions.Religion);
             UpdateMap(p, UpdateMapOptions.TradeGood);
             UpdateMap(p, UpdateMapOptions.TradeNode);
+            UpdateMap(p, UpdateMapOptions.DiscoveredBy);
+            UpdateMap(p, UpdateMapOptions.Superregion);
+        }
+
+        public static void CreateBaseWhiteMap()
+        {
+            GlobalVariables.BaseWhiteProvincesBitmap.LockBits();
+            foreach (Province p in GlobalVariables.Provinces)
+            {
+                Color c = Color.White;
+                if (p.Sea || p.Lake || p.Wasteland)
+                    c = Color.Gray;
+                Color borderc = Color.Black;
+                foreach (Point pon in p.Pixels)
+                {
+                    GlobalVariables.BaseWhiteProvincesBitmap.SetPixel(pon.X, pon.Y, c);
+                }
+                foreach (Point borderpnt in p.BorderPixels)
+                {
+                    GlobalVariables.BaseWhiteProvincesBitmap.SetPixel(borderpnt.X, borderpnt.Y, Color.Black);
+                }
+
+            }
+            GlobalVariables.BaseWhiteProvincesBitmap.UnlockBits();
         }
     }
 }

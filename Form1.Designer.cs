@@ -242,6 +242,7 @@
             this.FortMapmode = new System.Windows.Forms.Button();
             this.ContinentMapmode = new System.Windows.Forms.Button();
             this.SuperregionMapmode = new System.Windows.Forms.Button();
+            this.DiscoveredByMapmode = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -289,7 +290,7 @@
             this.Tabs.Location = new System.Drawing.Point(1171, 12);
             this.Tabs.Name = "Tabs";
             this.Tabs.SelectedIndex = 0;
-            this.Tabs.Size = new System.Drawing.Size(564, 889);
+            this.Tabs.Size = new System.Drawing.Size(564, 837);
             this.Tabs.TabIndex = 0;
             // 
             // ProvinceTab
@@ -303,7 +304,7 @@
             this.ProvinceTab.Location = new System.Drawing.Point(4, 22);
             this.ProvinceTab.Name = "ProvinceTab";
             this.ProvinceTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ProvinceTab.Size = new System.Drawing.Size(556, 863);
+            this.ProvinceTab.Size = new System.Drawing.Size(556, 811);
             this.ProvinceTab.TabIndex = 0;
             this.ProvinceTab.Text = "Province";
             this.ProvinceTab.UseVisualStyleBackColor = true;
@@ -315,7 +316,7 @@
             this.tabControl1.Location = new System.Drawing.Point(6, 177);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(545, 563);
+            this.tabControl1.Size = new System.Drawing.Size(545, 550);
             this.tabControl1.TabIndex = 19;
             // 
             // tabPage1
@@ -330,7 +331,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(537, 537);
+            this.tabPage1.Size = new System.Drawing.Size(537, 524);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Main";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -1239,7 +1240,7 @@
             // 
             // ReloadProvinceAllMapmodesButton
             // 
-            this.ReloadProvinceAllMapmodesButton.Location = new System.Drawing.Point(9, 804);
+            this.ReloadProvinceAllMapmodesButton.Location = new System.Drawing.Point(10, 789);
             this.ReloadProvinceAllMapmodesButton.Name = "ReloadProvinceAllMapmodesButton";
             this.ReloadProvinceAllMapmodesButton.Size = new System.Drawing.Size(540, 23);
             this.ReloadProvinceAllMapmodesButton.TabIndex = 42;
@@ -1249,7 +1250,7 @@
             // 
             // ReloadProvinceFromFileButton
             // 
-            this.ReloadProvinceFromFileButton.Location = new System.Drawing.Point(9, 775);
+            this.ReloadProvinceFromFileButton.Location = new System.Drawing.Point(10, 762);
             this.ReloadProvinceFromFileButton.Name = "ReloadProvinceFromFileButton";
             this.ReloadProvinceFromFileButton.Size = new System.Drawing.Size(540, 23);
             this.ReloadProvinceFromFileButton.TabIndex = 41;
@@ -1259,7 +1260,7 @@
             // 
             // OpenProvinceFileButton
             // 
-            this.OpenProvinceFileButton.Location = new System.Drawing.Point(9, 746);
+            this.OpenProvinceFileButton.Location = new System.Drawing.Point(10, 733);
             this.OpenProvinceFileButton.Name = "OpenProvinceFileButton";
             this.OpenProvinceFileButton.Size = new System.Drawing.Size(540, 23);
             this.OpenProvinceFileButton.TabIndex = 40;
@@ -1562,7 +1563,7 @@
             this.CountryPage.Location = new System.Drawing.Point(4, 22);
             this.CountryPage.Name = "CountryPage";
             this.CountryPage.Padding = new System.Windows.Forms.Padding(3);
-            this.CountryPage.Size = new System.Drawing.Size(556, 863);
+            this.CountryPage.Size = new System.Drawing.Size(556, 811);
             this.CountryPage.TabIndex = 1;
             this.CountryPage.Text = "Country";
             this.CountryPage.UseVisualStyleBackColor = true;
@@ -1661,7 +1662,7 @@
             // 
             // OpenCountryHistoryFileButton
             // 
-            this.OpenCountryHistoryFileButton.Location = new System.Drawing.Point(3, 807);
+            this.OpenCountryHistoryFileButton.Location = new System.Drawing.Point(4, 756);
             this.OpenCountryHistoryFileButton.Name = "OpenCountryHistoryFileButton";
             this.OpenCountryHistoryFileButton.Size = new System.Drawing.Size(546, 23);
             this.OpenCountryHistoryFileButton.TabIndex = 41;
@@ -1908,7 +1909,7 @@
             // 
             // CreateCountryButton
             // 
-            this.CreateCountryButton.Location = new System.Drawing.Point(3, 836);
+            this.CreateCountryButton.Location = new System.Drawing.Point(4, 781);
             this.CreateCountryButton.Name = "CreateCountryButton";
             this.CreateCountryButton.Size = new System.Drawing.Size(546, 23);
             this.CreateCountryButton.TabIndex = 29;
@@ -1921,7 +1922,7 @@
             this.TradeGoodsTab.Controls.Add(this.TradeGoodsInfoPanel);
             this.TradeGoodsTab.Location = new System.Drawing.Point(4, 22);
             this.TradeGoodsTab.Name = "TradeGoodsTab";
-            this.TradeGoodsTab.Size = new System.Drawing.Size(556, 863);
+            this.TradeGoodsTab.Size = new System.Drawing.Size(556, 855);
             this.TradeGoodsTab.TabIndex = 3;
             this.TradeGoodsTab.Text = "Trade Goods";
             this.TradeGoodsTab.UseVisualStyleBackColor = true;
@@ -1931,7 +1932,7 @@
             this.TradeGoodsInfoPanel.AutoScroll = true;
             this.TradeGoodsInfoPanel.Location = new System.Drawing.Point(6, 6);
             this.TradeGoodsInfoPanel.Name = "TradeGoodsInfoPanel";
-            this.TradeGoodsInfoPanel.Size = new System.Drawing.Size(385, 766);
+            this.TradeGoodsInfoPanel.Size = new System.Drawing.Size(543, 766);
             this.TradeGoodsInfoPanel.TabIndex = 0;
             // 
             // TradeNodesTab
@@ -1941,7 +1942,7 @@
             this.TradeNodesTab.Controls.Add(this.groupBox7);
             this.TradeNodesTab.Location = new System.Drawing.Point(4, 22);
             this.TradeNodesTab.Name = "TradeNodesTab";
-            this.TradeNodesTab.Size = new System.Drawing.Size(556, 863);
+            this.TradeNodesTab.Size = new System.Drawing.Size(556, 855);
             this.TradeNodesTab.TabIndex = 4;
             this.TradeNodesTab.Text = "Trade Nodes";
             this.TradeNodesTab.UseVisualStyleBackColor = true;
@@ -1950,7 +1951,7 @@
             // 
             this.SaveTradeNodeFile.Location = new System.Drawing.Point(16, 573);
             this.SaveTradeNodeFile.Name = "SaveTradeNodeFile";
-            this.SaveTradeNodeFile.Size = new System.Drawing.Size(362, 23);
+            this.SaveTradeNodeFile.Size = new System.Drawing.Size(533, 23);
             this.SaveTradeNodeFile.TabIndex = 24;
             this.SaveTradeNodeFile.Text = "Save trade nodes file";
             this.SaveTradeNodeFile.UseVisualStyleBackColor = true;
@@ -1982,14 +1983,14 @@
             this.groupBox8.Controls.Add(this.TradeNodeBox);
             this.groupBox8.Location = new System.Drawing.Point(16, 6);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(362, 417);
+            this.groupBox8.Size = new System.Drawing.Size(533, 417);
             this.groupBox8.TabIndex = 23;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Edit trade node";
             // 
             // AddTradeNodeDestClickButton
             // 
-            this.AddTradeNodeDestClickButton.Location = new System.Drawing.Point(6, 388);
+            this.AddTradeNodeDestClickButton.Location = new System.Drawing.Point(79, 388);
             this.AddTradeNodeDestClickButton.Name = "AddTradeNodeDestClickButton";
             this.AddTradeNodeDestClickButton.Size = new System.Drawing.Size(197, 23);
             this.AddTradeNodeDestClickButton.TabIndex = 37;
@@ -2000,7 +2001,7 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(6, 348);
+            this.label25.Location = new System.Drawing.Point(79, 348);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(54, 13);
             this.label25.TabIndex = 36;
@@ -2009,14 +2010,14 @@
             // TradeNodeProvincesBox
             // 
             this.TradeNodeProvincesBox.Enabled = false;
-            this.TradeNodeProvincesBox.Location = new System.Drawing.Point(9, 364);
+            this.TradeNodeProvincesBox.Location = new System.Drawing.Point(82, 364);
             this.TradeNodeProvincesBox.Name = "TradeNodeProvincesBox";
             this.TradeNodeProvincesBox.Size = new System.Drawing.Size(55, 20);
             this.TradeNodeProvincesBox.TabIndex = 35;
             // 
             // RemoveTradeNodeButton
             // 
-            this.RemoveTradeNodeButton.Location = new System.Drawing.Point(234, 388);
+            this.RemoveTradeNodeButton.Location = new System.Drawing.Point(307, 388);
             this.RemoveTradeNodeButton.Name = "RemoveTradeNodeButton";
             this.RemoveTradeNodeButton.Size = new System.Drawing.Size(122, 23);
             this.RemoveTradeNodeButton.TabIndex = 34;
@@ -2026,7 +2027,7 @@
             // 
             // TradeNodeSelectAllProvinces
             // 
-            this.TradeNodeSelectAllProvinces.Location = new System.Drawing.Point(281, 320);
+            this.TradeNodeSelectAllProvinces.Location = new System.Drawing.Point(354, 320);
             this.TradeNodeSelectAllProvinces.Name = "TradeNodeSelectAllProvinces";
             this.TradeNodeSelectAllProvinces.Size = new System.Drawing.Size(75, 23);
             this.TradeNodeSelectAllProvinces.TabIndex = 33;
@@ -2036,7 +2037,7 @@
             // 
             // TradeNodeLocationSave
             // 
-            this.TradeNodeLocationSave.Location = new System.Drawing.Point(151, 319);
+            this.TradeNodeLocationSave.Location = new System.Drawing.Point(224, 319);
             this.TradeNodeLocationSave.Name = "TradeNodeLocationSave";
             this.TradeNodeLocationSave.Size = new System.Drawing.Size(75, 23);
             this.TradeNodeLocationSave.TabIndex = 32;
@@ -2046,7 +2047,7 @@
             // 
             // TradeNodeLocationSetAsCliecked
             // 
-            this.TradeNodeLocationSetAsCliecked.Location = new System.Drawing.Point(70, 320);
+            this.TradeNodeLocationSetAsCliecked.Location = new System.Drawing.Point(143, 320);
             this.TradeNodeLocationSetAsCliecked.Name = "TradeNodeLocationSetAsCliecked";
             this.TradeNodeLocationSetAsCliecked.Size = new System.Drawing.Size(75, 23);
             this.TradeNodeLocationSetAsCliecked.TabIndex = 31;
@@ -2057,7 +2058,7 @@
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(6, 306);
+            this.label24.Location = new System.Drawing.Point(79, 306);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(48, 13);
             this.label24.TabIndex = 30;
@@ -2065,7 +2066,7 @@
             // 
             // TradeNodeProvinceLocationBox
             // 
-            this.TradeNodeProvinceLocationBox.Location = new System.Drawing.Point(9, 322);
+            this.TradeNodeProvinceLocationBox.Location = new System.Drawing.Point(82, 322);
             this.TradeNodeProvinceLocationBox.Name = "TradeNodeProvinceLocationBox";
             this.TradeNodeProvinceLocationBox.Size = new System.Drawing.Size(55, 20);
             this.TradeNodeProvinceLocationBox.TabIndex = 29;
@@ -2073,7 +2074,7 @@
             // TradeNodeInlandCheckbox
             // 
             this.TradeNodeInlandCheckbox.AutoSize = true;
-            this.TradeNodeInlandCheckbox.Location = new System.Drawing.Point(9, 288);
+            this.TradeNodeInlandCheckbox.Location = new System.Drawing.Point(82, 288);
             this.TradeNodeInlandCheckbox.Name = "TradeNodeInlandCheckbox";
             this.TradeNodeInlandCheckbox.Size = new System.Drawing.Size(55, 17);
             this.TradeNodeInlandCheckbox.TabIndex = 28;
@@ -2083,7 +2084,7 @@
             // 
             // ChangeTradeNodeRandomColorButton
             // 
-            this.ChangeTradeNodeRandomColorButton.Location = new System.Drawing.Point(181, 259);
+            this.ChangeTradeNodeRandomColorButton.Location = new System.Drawing.Point(254, 259);
             this.ChangeTradeNodeRandomColorButton.Name = "ChangeTradeNodeRandomColorButton";
             this.ChangeTradeNodeRandomColorButton.Size = new System.Drawing.Size(175, 23);
             this.ChangeTradeNodeRandomColorButton.TabIndex = 8;
@@ -2094,7 +2095,7 @@
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(6, 163);
+            this.label22.Location = new System.Drawing.Point(79, 163);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(273, 13);
             this.label22.TabIndex = 27;
@@ -2102,7 +2103,7 @@
             // 
             // ChangeTradeNodeColorButton
             // 
-            this.ChangeTradeNodeColorButton.Location = new System.Drawing.Point(9, 259);
+            this.ChangeTradeNodeColorButton.Location = new System.Drawing.Point(82, 259);
             this.ChangeTradeNodeColorButton.Name = "ChangeTradeNodeColorButton";
             this.ChangeTradeNodeColorButton.Size = new System.Drawing.Size(166, 23);
             this.ChangeTradeNodeColorButton.TabIndex = 7;
@@ -2111,7 +2112,7 @@
             // 
             // AddTradeNodeDestinationButton
             // 
-            this.AddTradeNodeDestinationButton.Location = new System.Drawing.Point(281, 121);
+            this.AddTradeNodeDestinationButton.Location = new System.Drawing.Point(354, 121);
             this.AddTradeNodeDestinationButton.Name = "AddTradeNodeDestinationButton";
             this.AddTradeNodeDestinationButton.Size = new System.Drawing.Size(75, 24);
             this.AddTradeNodeDestinationButton.TabIndex = 26;
@@ -2122,7 +2123,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(6, 243);
+            this.label23.Location = new System.Drawing.Point(79, 243);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(31, 13);
             this.label23.TabIndex = 6;
@@ -2131,7 +2132,7 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(6, 105);
+            this.label21.Location = new System.Drawing.Point(79, 105);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(139, 13);
             this.label21.TabIndex = 25;
@@ -2140,7 +2141,7 @@
             // TradeNodeDestinationsBox
             // 
             this.TradeNodeDestinationsBox.BackColor = System.Drawing.Color.LightGray;
-            this.TradeNodeDestinationsBox.Location = new System.Drawing.Point(9, 179);
+            this.TradeNodeDestinationsBox.Location = new System.Drawing.Point(82, 179);
             this.TradeNodeDestinationsBox.Name = "TradeNodeDestinationsBox";
             this.TradeNodeDestinationsBox.Size = new System.Drawing.Size(347, 61);
             this.TradeNodeDestinationsBox.TabIndex = 24;
@@ -2148,7 +2149,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(6, 51);
+            this.label20.Location = new System.Drawing.Point(79, 51);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(124, 13);
             this.label20.TabIndex = 23;
@@ -2161,7 +2162,7 @@
             this.AddTradeNodeDestinationBox.FormattingEnabled = true;
             this.AddTradeNodeDestinationBox.Items.AddRange(new object[] {
             " "});
-            this.AddTradeNodeDestinationBox.Location = new System.Drawing.Point(9, 121);
+            this.AddTradeNodeDestinationBox.Location = new System.Drawing.Point(82, 121);
             this.AddTradeNodeDestinationBox.Name = "AddTradeNodeDestinationBox";
             this.AddTradeNodeDestinationBox.Size = new System.Drawing.Size(266, 24);
             this.AddTradeNodeDestinationBox.TabIndex = 22;
@@ -2169,7 +2170,7 @@
             // 
             // TradeNodeNameSaveButton
             // 
-            this.TradeNodeNameSaveButton.Location = new System.Drawing.Point(286, 67);
+            this.TradeNodeNameSaveButton.Location = new System.Drawing.Point(359, 67);
             this.TradeNodeNameSaveButton.Name = "TradeNodeNameSaveButton";
             this.TradeNodeNameSaveButton.Size = new System.Drawing.Size(70, 20);
             this.TradeNodeNameSaveButton.TabIndex = 21;
@@ -2179,7 +2180,7 @@
             // 
             // ChangeTradeNodeNameBox
             // 
-            this.ChangeTradeNodeNameBox.Location = new System.Drawing.Point(9, 67);
+            this.ChangeTradeNodeNameBox.Location = new System.Drawing.Point(82, 67);
             this.ChangeTradeNodeNameBox.Name = "ChangeTradeNodeNameBox";
             this.ChangeTradeNodeNameBox.Size = new System.Drawing.Size(271, 20);
             this.ChangeTradeNodeNameBox.TabIndex = 6;
@@ -2191,7 +2192,7 @@
             this.TradeNodeBox.FormattingEnabled = true;
             this.TradeNodeBox.Items.AddRange(new object[] {
             " "});
-            this.TradeNodeBox.Location = new System.Drawing.Point(9, 19);
+            this.TradeNodeBox.Location = new System.Drawing.Point(82, 19);
             this.TradeNodeBox.Name = "TradeNodeBox";
             this.TradeNodeBox.Size = new System.Drawing.Size(347, 24);
             this.TradeNodeBox.TabIndex = 20;
@@ -2208,14 +2209,14 @@
             this.groupBox7.Controls.Add(this.TradeNodeNameBox);
             this.groupBox7.Location = new System.Drawing.Point(16, 429);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(362, 138);
+            this.groupBox7.Size = new System.Drawing.Size(533, 138);
             this.groupBox7.TabIndex = 22;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Create new trade node";
             // 
             // TradeNodeRandomColorButton
             // 
-            this.TradeNodeRandomColorButton.Location = new System.Drawing.Point(190, 76);
+            this.TradeNodeRandomColorButton.Location = new System.Drawing.Point(254, 76);
             this.TradeNodeRandomColorButton.Name = "TradeNodeRandomColorButton";
             this.TradeNodeRandomColorButton.Size = new System.Drawing.Size(155, 23);
             this.TradeNodeRandomColorButton.TabIndex = 5;
@@ -2226,7 +2227,7 @@
             // TradeNodeColorButton
             // 
             this.TradeNodeColorButton.BackColor = System.Drawing.Color.Transparent;
-            this.TradeNodeColorButton.Location = new System.Drawing.Point(18, 76);
+            this.TradeNodeColorButton.Location = new System.Drawing.Point(82, 76);
             this.TradeNodeColorButton.Name = "TradeNodeColorButton";
             this.TradeNodeColorButton.Size = new System.Drawing.Size(166, 23);
             this.TradeNodeColorButton.TabIndex = 4;
@@ -2236,7 +2237,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(15, 60);
+            this.label19.Location = new System.Drawing.Point(79, 60);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(31, 13);
             this.label19.TabIndex = 3;
@@ -2244,7 +2245,7 @@
             // 
             // AddNewTradeNodeButton
             // 
-            this.AddNewTradeNodeButton.Location = new System.Drawing.Point(270, 105);
+            this.AddNewTradeNodeButton.Location = new System.Drawing.Point(82, 105);
             this.AddNewTradeNodeButton.Name = "AddNewTradeNodeButton";
             this.AddNewTradeNodeButton.Size = new System.Drawing.Size(75, 23);
             this.AddNewTradeNodeButton.TabIndex = 2;
@@ -2255,7 +2256,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(15, 21);
+            this.label18.Location = new System.Drawing.Point(79, 21);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(35, 13);
             this.label18.TabIndex = 1;
@@ -2263,7 +2264,7 @@
             // 
             // TradeNodeNameBox
             // 
-            this.TradeNodeNameBox.Location = new System.Drawing.Point(18, 37);
+            this.TradeNodeNameBox.Location = new System.Drawing.Point(82, 37);
             this.TradeNodeNameBox.Name = "TradeNodeNameBox";
             this.TradeNodeNameBox.Size = new System.Drawing.Size(327, 20);
             this.TradeNodeNameBox.TabIndex = 0;
@@ -2274,7 +2275,7 @@
             this.AdditionalPage.Controls.Add(this.OpenWordCreator);
             this.AdditionalPage.Location = new System.Drawing.Point(4, 22);
             this.AdditionalPage.Name = "AdditionalPage";
-            this.AdditionalPage.Size = new System.Drawing.Size(556, 863);
+            this.AdditionalPage.Size = new System.Drawing.Size(556, 855);
             this.AdditionalPage.TabIndex = 2;
             this.AdditionalPage.Text = "Additional Tools";
             this.AdditionalPage.UseVisualStyleBackColor = true;
@@ -2283,7 +2284,7 @@
             // 
             this.RandomIdeaBoxButton.Location = new System.Drawing.Point(6, 35);
             this.RandomIdeaBoxButton.Name = "RandomIdeaBoxButton";
-            this.RandomIdeaBoxButton.Size = new System.Drawing.Size(384, 23);
+            this.RandomIdeaBoxButton.Size = new System.Drawing.Size(543, 23);
             this.RandomIdeaBoxButton.TabIndex = 1;
             this.RandomIdeaBoxButton.Text = "Random Idea Box";
             this.RandomIdeaBoxButton.UseVisualStyleBackColor = true;
@@ -2293,7 +2294,7 @@
             // 
             this.OpenWordCreator.Location = new System.Drawing.Point(6, 6);
             this.OpenWordCreator.Name = "OpenWordCreator";
-            this.OpenWordCreator.Size = new System.Drawing.Size(384, 23);
+            this.OpenWordCreator.Size = new System.Drawing.Size(543, 23);
             this.OpenWordCreator.TabIndex = 0;
             this.OpenWordCreator.Text = "Open word creator";
             this.OpenWordCreator.UseVisualStyleBackColor = true;
@@ -2307,7 +2308,7 @@
             this.ChangesTab.Controls.Add(this.ChangesLayoutPanel);
             this.ChangesTab.Location = new System.Drawing.Point(4, 22);
             this.ChangesTab.Name = "ChangesTab";
-            this.ChangesTab.Size = new System.Drawing.Size(556, 863);
+            this.ChangesTab.Size = new System.Drawing.Size(556, 811);
             this.ChangesTab.TabIndex = 5;
             this.ChangesTab.Text = "Changes";
             this.ChangesTab.UseVisualStyleBackColor = true;
@@ -2318,13 +2319,13 @@
             this.RefreshChanges.Name = "RefreshChanges";
             this.RefreshChanges.Size = new System.Drawing.Size(543, 23);
             this.RefreshChanges.TabIndex = 4;
-            this.RefreshChanges.Text = "Refresh changes";
+            this.RefreshChanges.Text = "Refresh changes (Shows only 30)";
             this.RefreshChanges.UseVisualStyleBackColor = true;
             this.RefreshChanges.Click += new System.EventHandler(this.RefreshChanges_Click);
             // 
             // RevertAllChangesButton
             // 
-            this.RevertAllChangesButton.Location = new System.Drawing.Point(280, 820);
+            this.RevertAllChangesButton.Location = new System.Drawing.Point(280, 766);
             this.RevertAllChangesButton.Name = "RevertAllChangesButton";
             this.RevertAllChangesButton.Size = new System.Drawing.Size(269, 39);
             this.RevertAllChangesButton.TabIndex = 3;
@@ -2334,7 +2335,7 @@
             // 
             // SaveAllChangesButton
             // 
-            this.SaveAllChangesButton.Location = new System.Drawing.Point(3, 820);
+            this.SaveAllChangesButton.Location = new System.Drawing.Point(3, 766);
             this.SaveAllChangesButton.Name = "SaveAllChangesButton";
             this.SaveAllChangesButton.Size = new System.Drawing.Size(271, 39);
             this.SaveAllChangesButton.TabIndex = 2;
@@ -2347,7 +2348,7 @@
             this.ChangesLayoutPanel.AutoScroll = true;
             this.ChangesLayoutPanel.Location = new System.Drawing.Point(3, 35);
             this.ChangesLayoutPanel.Name = "ChangesLayoutPanel";
-            this.ChangesLayoutPanel.Size = new System.Drawing.Size(546, 780);
+            this.ChangesLayoutPanel.Size = new System.Drawing.Size(546, 725);
             this.ChangesLayoutPanel.TabIndex = 1;
             // 
             // SavingTab
@@ -2358,14 +2359,14 @@
             this.SavingTab.Controls.Add(this.RefreshSavesButton);
             this.SavingTab.Location = new System.Drawing.Point(4, 22);
             this.SavingTab.Name = "SavingTab";
-            this.SavingTab.Size = new System.Drawing.Size(556, 863);
+            this.SavingTab.Size = new System.Drawing.Size(556, 811);
             this.SavingTab.TabIndex = 7;
             this.SavingTab.Text = "Saving";
             this.SavingTab.UseVisualStyleBackColor = true;
             // 
             // LoadAllFilesAgainButton
             // 
-            this.LoadAllFilesAgainButton.Location = new System.Drawing.Point(280, 820);
+            this.LoadAllFilesAgainButton.Location = new System.Drawing.Point(282, 769);
             this.LoadAllFilesAgainButton.Name = "LoadAllFilesAgainButton";
             this.LoadAllFilesAgainButton.Size = new System.Drawing.Size(269, 39);
             this.LoadAllFilesAgainButton.TabIndex = 4;
@@ -2375,7 +2376,7 @@
             // 
             // SaveAllFilesButton
             // 
-            this.SaveAllFilesButton.Location = new System.Drawing.Point(3, 820);
+            this.SaveAllFilesButton.Location = new System.Drawing.Point(5, 769);
             this.SaveAllFilesButton.Name = "SaveAllFilesButton";
             this.SaveAllFilesButton.Size = new System.Drawing.Size(271, 39);
             this.SaveAllFilesButton.TabIndex = 3;
@@ -2388,7 +2389,7 @@
             this.SaveFilesPanel.AutoScroll = true;
             this.SaveFilesPanel.Location = new System.Drawing.Point(3, 35);
             this.SaveFilesPanel.Name = "SaveFilesPanel";
-            this.SaveFilesPanel.Size = new System.Drawing.Size(546, 780);
+            this.SaveFilesPanel.Size = new System.Drawing.Size(546, 728);
             this.SaveFilesPanel.TabIndex = 2;
             // 
             // RefreshSavesButton
@@ -2397,7 +2398,7 @@
             this.RefreshSavesButton.Name = "RefreshSavesButton";
             this.RefreshSavesButton.Size = new System.Drawing.Size(546, 23);
             this.RefreshSavesButton.TabIndex = 0;
-            this.RefreshSavesButton.Text = "Refresh saves";
+            this.RefreshSavesButton.Text = "Refresh saves (Shows only 30)";
             this.RefreshSavesButton.UseVisualStyleBackColor = true;
             this.RefreshSavesButton.Click += new System.EventHandler(this.RefreshSavesButton_Click);
             // 
@@ -2493,7 +2494,7 @@
             // 
             // ReloadMapsButton
             // 
-            this.ReloadMapsButton.Location = new System.Drawing.Point(1026, 855);
+            this.ReloadMapsButton.Location = new System.Drawing.Point(1595, 852);
             this.ReloadMapsButton.Name = "ReloadMapsButton";
             this.ReloadMapsButton.Size = new System.Drawing.Size(136, 38);
             this.ReloadMapsButton.TabIndex = 12;
@@ -2564,12 +2565,22 @@
             this.SuperregionMapmode.Text = "Superregion mapmode";
             this.SuperregionMapmode.UseVisualStyleBackColor = true;
             // 
+            // DiscoveredByMapmode
+            // 
+            this.DiscoveredByMapmode.Location = new System.Drawing.Point(864, 879);
+            this.DiscoveredByMapmode.Name = "DiscoveredByMapmode";
+            this.DiscoveredByMapmode.Size = new System.Drawing.Size(136, 22);
+            this.DiscoveredByMapmode.TabIndex = 20;
+            this.DiscoveredByMapmode.Text = "Discovered by mapmode";
+            this.DiscoveredByMapmode.UseVisualStyleBackColor = true;
+            // 
             // ModEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.ClientSize = new System.Drawing.Size(1736, 905);
+            this.Controls.Add(this.DiscoveredByMapmode);
             this.Controls.Add(this.SuperregionMapmode);
             this.Controls.Add(this.ContinentMapmode);
             this.Controls.Add(this.FortMapmode);
@@ -2865,6 +2876,7 @@
         private System.Windows.Forms.TextBox SuperregionNameChangeBox;
         public System.Windows.Forms.ComboBox SuperregionBox;
         private System.Windows.Forms.Label label45;
+        private System.Windows.Forms.Button DiscoveredByMapmode;
     }
 }
 

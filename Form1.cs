@@ -58,6 +58,8 @@ namespace Eu4ModEditor
             GlobalVariables.FortBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
             GlobalVariables.ContinentBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
             GlobalVariables.SuperregionBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
+            GlobalVariables.BaseWhiteProvincesBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
+            GlobalVariables.DiscoveredByBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
 
             ProvincesMapmodeButton.Click += ChangeMapmode.ChangeMapmodeVoid;
             DevelopmentMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
@@ -72,6 +74,7 @@ namespace Eu4ModEditor
             FortMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
             ContinentMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
             SuperregionMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
+            DiscoveredByMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
 
 
             LoadFilesClass.LoadFiles();
@@ -129,6 +132,7 @@ namespace Eu4ModEditor
             GlobalVariables.UpdtGraphicsThread.Start();
             GotFocus += GainedFocus;
 
+            MapManagement.CreateBaseWhiteMap();
 
             foreach(Province p in GlobalVariables.Provinces)
             {
@@ -611,6 +615,15 @@ namespace Eu4ModEditor
 
             //label5.Text = p.TradeGood.Price + " " + p.TradeGood.GoldLike;
 
+            if (p.OwnerCountry != null)
+            {
+                if (GlobalVariables.SelectedDiscoveredByTechGroup != p.OwnerCountry.TechnologyGroup)
+                {
+                    GlobalVariables.SelectedDiscoveredByTechGroup = p.OwnerCountry.TechnologyGroup;
+                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.DiscoveredBy);
+                }
+            }
+
             UpdateMap();
         }
 
@@ -719,6 +732,8 @@ namespace Eu4ModEditor
                 graphics.DrawImage(GlobalVariables.ContinentBitmap.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
             else if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Superregion)
                 graphics.DrawImage(GlobalVariables.SuperregionBitmap.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
+            else if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.DiscoveredBy)
+                graphics.DrawImage(GlobalVariables.DiscoveredByBitmap.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
 
             graphics.DrawImage(GlobalVariables.ClickedMask.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
         }
@@ -1158,6 +1173,7 @@ namespace Eu4ModEditor
                 }
                 else
                     GlobalVariables.CountryTechGroupInternalChange = false;
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.DiscoveredBy);
             }
         }
 
@@ -2179,8 +2195,12 @@ namespace Eu4ModEditor
         {
             MergeChanges();
             ChangesLayoutPanel.Controls.Clear();
+            int count = 0;
             foreach(VariableChange change in GlobalVariables.Changes)
             {
+                if (count == 30)
+                    break;
+                count++;
                 GroupBox gb = new GroupBox();
                 if(change.Object is Province)
                 {
@@ -2377,8 +2397,12 @@ namespace Eu4ModEditor
         {
             SaveFilesPanel.Controls.Clear();
 
+            int count = 0;
             foreach (object obj in GlobalVariables.Saves)
             {
+                if (count == 30)
+                    break;
+                count++;
                 string name = "";
                 string path = "";
                 string path2 = "";
@@ -2511,6 +2535,7 @@ namespace Eu4ModEditor
             if(DiscoveredByBox.SelectedItem.ToString() != "")
                 ChangeProvinceInfo(ChangeProvinceMode.DiscoveredBy, DiscoveredByBox.SelectedItem, false);
             UpdateDiscoveredBy();
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.DiscoveredBy);
         }
 
         public enum ChangeProvinceMode { CoT, Fort, HRE, Religion, Culture, DiscoveredBy, DiscoveredByOwner, Area, Owner, Controller, City, Building, Core, Claim, CoreOwner, Superregion, Region, Continent };
@@ -2595,6 +2620,8 @@ namespace Eu4ModEditor
                     }
 
                     UpdateDiscoveredBy();
+                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.DiscoveredBy)
+                        UpdateMap();
                     break;
 
                 case ChangeProvinceMode.DiscoveredByOwner:
@@ -2603,6 +2630,8 @@ namespace Eu4ModEditor
                         if(p.OwnerCountry != null)
                             p.AddDiscoveredBy(p.OwnerCountry.TechnologyGroup);
                     }
+                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.DiscoveredBy)
+                        UpdateMap();
                     break;
 
                 case ChangeProvinceMode.Area:
@@ -2816,6 +2845,7 @@ namespace Eu4ModEditor
         {
             ChangeProvinceInfo(ChangeProvinceMode.DiscoveredByOwner, null);
             UpdateDiscoveredBy();
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.DiscoveredBy);
         }
 
         public void UpdateDiscoveredBy()
@@ -2870,6 +2900,8 @@ namespace Eu4ModEditor
                 ChangeProvinceInfo(ChangeProvinceMode.DiscoveredBy, (string)l.Tag, true);
             }
             UpdateDiscoveredBy();
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.DiscoveredBy);
+            
         }
 
         private void ControllerBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -2949,10 +2981,13 @@ namespace Eu4ModEditor
 
         private void AddBuildingButton_Click(object sender, EventArgs e)
         {
-            Building bl = GlobalVariables.Buildings.Find(x => x.Name == BuildingsBox.SelectedItem.ToString());
-            if(bl != null)
-                ChangeProvinceInfo(ChangeProvinceMode.Building, bl);
-            UpdateBuildings();
+            if (BuildingsBox.SelectedIndex != -1)
+            {
+                Building bl = GlobalVariables.Buildings.Find(x => x.Name == BuildingsBox.SelectedItem.ToString());
+                if (bl != null)
+                    ChangeProvinceInfo(ChangeProvinceMode.Building, bl);
+                UpdateBuildings();
+            }
         }
 
         public void BuildingClick(object sender, MouseEventArgs e)

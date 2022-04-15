@@ -53,6 +53,9 @@ namespace Eu4ModEditor
                 case "SuperregionMapmode":
                     GlobalVariables.mapmode = MapManagement.UpdateMapOptions.Superregion;
                     break;
+                case "DiscoveredByMapmode":
+                    GlobalVariables.mapmode = MapManagement.UpdateMapOptions.DiscoveredBy;
+                    break;
             }
             ModEditor.UpdateMap();
         }

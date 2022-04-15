@@ -28,6 +28,8 @@ namespace Eu4ModEditor
         public static LockBitmap FortBitmap;
         public static LockBitmap ContinentBitmap;
         public static LockBitmap SuperregionBitmap;
+        public static LockBitmap DiscoveredByBitmap;
+        public static LockBitmap BaseWhiteProvincesBitmap;
         public static List<Task<Dictionary<int, List<Point>>>> MapLines = new List<Task<Dictionary<int, List<Point>>>>();
         public static List<TradeGood> TradeGoods = new List<TradeGood>();
         public static List<TradeGood> LatentTradeGoods = new List<TradeGood>();
@@ -121,6 +123,8 @@ namespace Eu4ModEditor
         public static List<NodeFile> ModGovernmentsFiles = new List<NodeFile>();
 
         public static Form MainForm;
+
+        public static string SelectedDiscoveredByTechGroup = "";
     }
 
    
