@@ -60,6 +60,8 @@ namespace Eu4ModEditor
             GlobalVariables.SuperregionBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
             GlobalVariables.BaseWhiteProvincesBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
             GlobalVariables.DiscoveredByBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
+            
+
 
             ProvincesMapmodeButton.Click += ChangeMapmode.ChangeMapmodeVoid;
             DevelopmentMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
@@ -629,32 +631,37 @@ namespace Eu4ModEditor
 
         void AddToClickedProvinces(Province p, bool Update = true)
         {
-           // if (!GlobalVariables.ToUpdate.Contains(p))
-           //     GlobalVariables.ToUpdate.Add(p);
             GlobalVariables.ClickedProvinces.Add(p);
+
             if (GlobalVariables.ClickedProvince != null)
                 MapManagement.UpdateClickedMap(new List<Province>() { GlobalVariables.ClickedProvince }, Color.White, false);
-            MapManagement.UpdateClickedMap(new List<Province>() { p }, Color.Gold);
-            
+            MapManagement.UpdateClickedMap(new List<Province>() { p }, Color.Gold);            
             GlobalVariables.ClickedProvince = null;
             GlobalVariables.MultiProvinceMode = true;
+                   
+        
+            ProvinceTaxNumeric.Enabled = false;
+            ProvinceManpowerNumeric.Enabled = false;
+            ProvinceProductionNumeric.Enabled = false;
             ProvinceLabelID.Text = "ID: N/A";
             ProvinceColorLabelR.Text = "R: N/A";
             ProvinceColorLabelG.Text = "G: N/A";
             ProvinceColorLabelB.Text = "B: N/A";
             ProvinceSeaLakeLabel.Text = "S/L: N/A";
 
-            ProvinceTaxNumeric.Enabled = false;
-            ProvinceManpowerNumeric.Enabled = false;
-            ProvinceProductionNumeric.Enabled = false;
             if (Update)
+            {
                 UpdateMap();
+                UpdateDiscoveredBy();
+                
+                
+            }
 
-            UpdateDiscoveredBy();
+            
 
         }
 
-        void AddToClickedProvinces(List<Province> p)
+        void AddToClickedProvinces(List<Province> p, bool Update = true)
         {
             List<Province> UpdateMapList = new List<Province>();
             foreach (Province pr in p)
@@ -880,12 +887,12 @@ namespace Eu4ModEditor
 
         private void CultureBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            /*
+            
             if (!GlobalVariables.CultureInternalChange)           
                 ChangeProvinceInfo(ChangeProvinceMode.Culture, Culture.Cultures.Find(x => x.Name == (string)CultureBox.SelectedItem));           
             else
                 GlobalVariables.CultureInternalChange = false;
-            */
+            
         }
 
         private void ReligionBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -991,6 +998,8 @@ namespace Eu4ModEditor
                     }
 
                     index = Culture.Cultures.IndexOf(Culture.Cultures.Find(x=>x.Name == GlobalVariables.SelectedCountry.PrimaryCulture));
+                    if (index == -1)
+                        index = 0;
                     if (CountryPrimaryCultureBox.SelectedIndex != index)
                     {
                         GlobalVariables.CountryPrimaryCultureInternalChange = true;
@@ -3149,6 +3158,77 @@ namespace Eu4ModEditor
             nf.MainNode.Nodes.Clear();
             nf.MainNode.Nodes.AddRange(newNodes);
             nf.SaveFile(GlobalVariables.pathtomod + "map\\superregion.txt");
+        }
+
+        private void MacroDeselectAllProvincesButton_Click(object sender, EventArgs e)
+        {
+            GlobalVariables.ClickedProvinces.Clear();
+            GlobalVariables.MultiProvinceMode = false;
+            MapManagement.UpdateClickedMap(GlobalVariables.Provinces, Color.White, false);
+            UpdateMap();
+        }
+
+        private void MacroSelectAllProvincesButton_Click(object sender, EventArgs e)
+        {
+            AddToClickedProvinces(GlobalVariables.Provinces.Where(x=>!x.Lake && !x.Sea && !x.Wasteland).ToList());
+        }
+
+        private void MacroSelectProvincesAboveDev_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach(Province p in GlobalVariables.Provinces.Where(x=>!x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if(p.Tax + p.Production + p.Manpower > MacroDevNumeric.Value)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            AddToClickedProvinces(ToSelect);
+            UpdateDiscoveredBy();
+        }
+
+        private void MacroSelectProvincesBelowDev_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.Tax + p.Production + p.Manpower < MacroDevNumeric.Value)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            AddToClickedProvinces(ToSelect);
+            UpdateDiscoveredBy();
+        }
+
+        private void MacroDeselectProvincesAboveDev_Click(object sender, EventArgs e)
+        {
+            List<Province> ToDeselect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.Tax + p.Production + p.Manpower > MacroDevNumeric.Value)
+                {
+                    ToDeselect.Add(p);
+                }
+            }
+            GlobalVariables.ClickedProvinces.RemoveAll(x=>ToDeselect.Contains(x));
+            MapManagement.UpdateClickedMap(ToDeselect, Color.White, false);
+            UpdateDiscoveredBy();
+        }
+
+        private void MacroDeselectProvincesBelowDev_Click(object sender, EventArgs e)
+        {
+            List<Province> ToDeselect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.Tax + p.Production + p.Manpower < MacroDevNumeric.Value)
+                {
+                    ToDeselect.Add(p);
+                }
+            }
+            GlobalVariables.ClickedProvinces.RemoveAll(x => ToDeselect.Contains(x));
+            MapManagement.UpdateClickedMap(ToDeselect, Color.White, false);
+            UpdateDiscoveredBy();
         }
     }
 }

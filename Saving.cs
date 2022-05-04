@@ -97,7 +97,7 @@ namespace Eu4ModEditor
                         nf.MainNode.Variables.RemoveAll(x => x.Name == "center_of_trade");
 
                     if (province.City)
-                        nf.MainNode.ChangeVariable("is_city", "yes", false);
+                        nf.MainNode.ChangeVariable("is_city", "yes", true);
                     else
                         nf.MainNode.ChangeVariable("is_city", "no", true);
 

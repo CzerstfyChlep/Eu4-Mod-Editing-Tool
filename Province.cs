@@ -427,7 +427,7 @@ namespace Eu4ModEditor
             Variables.Add("Area", null);
             Variables.Add("Continent", null);
             Variables.Add("DiscoveredBy", new List<string>());
-            Variables.Add("City", true);
+            Variables.Add("City", false);
             Variables.Add("Buildings", new List<Building>());
         }
     }

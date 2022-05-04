@@ -461,7 +461,9 @@ namespace Eu4ModEditor
             {
                 foreach (Variable v in countrytags.MainNode.Variables)
                 {
-                    NameToTag.Add(v.Value.Replace("\"", "").Trim().Split('/')[1].Split('.')[0], v.Name.Trim());
+                    string n = v.Value.Replace("\"", "").Trim().Split('/')[1].Split('.')[0];
+                    if (!NameToTag.Keys.Contains(n))
+                        NameToTag.Add(n, v.Name.Trim());
                 }
             }
 

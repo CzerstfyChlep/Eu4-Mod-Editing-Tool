@@ -30,8 +30,8 @@
         {
             this.Tabs = new System.Windows.Forms.TabControl();
             this.ProvinceTab = new System.Windows.Forms.TabPage();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.ProvinceTabControl = new System.Windows.Forms.TabControl();
+            this.MainPage = new System.Windows.Forms.TabPage();
             this.groupBox16 = new System.Windows.Forms.GroupBox();
             this.label42 = new System.Windows.Forms.Label();
             this.AddBuildingButton = new System.Windows.Forms.Button();
@@ -71,7 +71,7 @@
             this.AddCoreButton = new System.Windows.Forms.Button();
             this.AddCoreBox = new System.Windows.Forms.ComboBox();
             this.CoresPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.AreaRegionPage = new System.Windows.Forms.TabPage();
             this.groupBox17 = new System.Windows.Forms.GroupBox();
             this.label43 = new System.Windows.Forms.Label();
             this.label44 = new System.Windows.Forms.Label();
@@ -214,6 +214,28 @@
             this.AdditionalPage = new System.Windows.Forms.TabPage();
             this.RandomIdeaBoxButton = new System.Windows.Forms.Button();
             this.OpenWordCreator = new System.Windows.Forms.Button();
+            this.MacroSelecter = new System.Windows.Forms.TabPage();
+            this.MacroSelectAllProvincesButton = new System.Windows.Forms.Button();
+            this.MacroDeselectAllProvincesButton = new System.Windows.Forms.Button();
+            this.MacroSelectorTabs = new System.Windows.Forms.TabControl();
+            this.MacroDevelopmentPage = new System.Windows.Forms.TabPage();
+            this.MacroDeselectProvincesBelowDev = new System.Windows.Forms.Button();
+            this.MacroDeselectProvincesAboveDev = new System.Windows.Forms.Button();
+            this.MacroSelectProvincesBelowDev = new System.Windows.Forms.Button();
+            this.MacroSelectProvincesAboveDev = new System.Windows.Forms.Button();
+            this.label46 = new System.Windows.Forms.Label();
+            this.MacroDevNumeric = new System.Windows.Forms.NumericUpDown();
+            this.MacroReligionPage = new System.Windows.Forms.TabPage();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.MacroCulturePage = new System.Windows.Forms.TabPage();
+            this.MacroFortPage = new System.Windows.Forms.TabPage();
+            this.MacroAreaPage = new System.Windows.Forms.TabPage();
+            this.MacroRegionPage = new System.Windows.Forms.TabPage();
+            this.MacroSuperregionPage = new System.Windows.Forms.TabPage();
+            this.MacroContinentPage = new System.Windows.Forms.TabPage();
+            this.MacroHREPage = new System.Windows.Forms.TabPage();
+            this.MacroTradenodePage = new System.Windows.Forms.TabPage();
+            this.MacroDiscoveredByPage = new System.Windows.Forms.TabPage();
             this.ChangesTab = new System.Windows.Forms.TabPage();
             this.RefreshChanges = new System.Windows.Forms.Button();
             this.RevertAllChangesButton = new System.Windows.Forms.Button();
@@ -243,10 +265,11 @@
             this.ContinentMapmode = new System.Windows.Forms.Button();
             this.SuperregionMapmode = new System.Windows.Forms.Button();
             this.DiscoveredByMapmode = new System.Windows.Forms.Button();
+            this.GovernmentMapmode = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.ProvinceTabControl.SuspendLayout();
+            this.MainPage.SuspendLayout();
             this.groupBox16.SuspendLayout();
             this.groupBox15.SuspendLayout();
             this.groupBox12.SuspendLayout();
@@ -254,7 +277,7 @@
             this.groupBox10.SuspendLayout();
             this.groupBox9.SuspendLayout();
             this.groupBox11.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.AreaRegionPage.SuspendLayout();
             this.groupBox17.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -274,6 +297,11 @@
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.AdditionalPage.SuspendLayout();
+            this.MacroSelecter.SuspendLayout();
+            this.MacroSelectorTabs.SuspendLayout();
+            this.MacroDevelopmentPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MacroDevNumeric)).BeginInit();
+            this.MacroReligionPage.SuspendLayout();
             this.ChangesTab.SuspendLayout();
             this.SavingTab.SuspendLayout();
             this.SuspendLayout();
@@ -285,6 +313,7 @@
             this.Tabs.Controls.Add(this.TradeGoodsTab);
             this.Tabs.Controls.Add(this.TradeNodesTab);
             this.Tabs.Controls.Add(this.AdditionalPage);
+            this.Tabs.Controls.Add(this.MacroSelecter);
             this.Tabs.Controls.Add(this.ChangesTab);
             this.Tabs.Controls.Add(this.SavingTab);
             this.Tabs.Location = new System.Drawing.Point(1171, 12);
@@ -295,7 +324,7 @@
             // 
             // ProvinceTab
             // 
-            this.ProvinceTab.Controls.Add(this.tabControl1);
+            this.ProvinceTab.Controls.Add(this.ProvinceTabControl);
             this.ProvinceTab.Controls.Add(this.ReloadProvinceAllMapmodesButton);
             this.ProvinceTab.Controls.Add(this.ReloadProvinceFromFileButton);
             this.ProvinceTab.Controls.Add(this.OpenProvinceFileButton);
@@ -309,32 +338,32 @@
             this.ProvinceTab.Text = "Province";
             this.ProvinceTab.UseVisualStyleBackColor = true;
             // 
-            // tabControl1
+            // ProvinceTabControl
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(6, 177);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(545, 550);
-            this.tabControl1.TabIndex = 19;
+            this.ProvinceTabControl.Controls.Add(this.MainPage);
+            this.ProvinceTabControl.Controls.Add(this.AreaRegionPage);
+            this.ProvinceTabControl.Location = new System.Drawing.Point(6, 177);
+            this.ProvinceTabControl.Name = "ProvinceTabControl";
+            this.ProvinceTabControl.SelectedIndex = 0;
+            this.ProvinceTabControl.Size = new System.Drawing.Size(545, 550);
+            this.ProvinceTabControl.TabIndex = 19;
             // 
-            // tabPage1
+            // MainPage
             // 
-            this.tabPage1.Controls.Add(this.groupBox16);
-            this.tabPage1.Controls.Add(this.groupBox15);
-            this.tabPage1.Controls.Add(this.groupBox12);
-            this.tabPage1.Controls.Add(this.groupBox13);
-            this.tabPage1.Controls.Add(this.groupBox10);
-            this.tabPage1.Controls.Add(this.groupBox9);
-            this.tabPage1.Controls.Add(this.groupBox11);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(537, 524);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Main";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.MainPage.Controls.Add(this.groupBox16);
+            this.MainPage.Controls.Add(this.groupBox15);
+            this.MainPage.Controls.Add(this.groupBox12);
+            this.MainPage.Controls.Add(this.groupBox13);
+            this.MainPage.Controls.Add(this.groupBox10);
+            this.MainPage.Controls.Add(this.groupBox9);
+            this.MainPage.Controls.Add(this.groupBox11);
+            this.MainPage.Location = new System.Drawing.Point(4, 22);
+            this.MainPage.Name = "MainPage";
+            this.MainPage.Padding = new System.Windows.Forms.Padding(3);
+            this.MainPage.Size = new System.Drawing.Size(537, 524);
+            this.MainPage.TabIndex = 0;
+            this.MainPage.Text = "Main";
+            this.MainPage.UseVisualStyleBackColor = true;
             // 
             // groupBox16
             // 
@@ -768,19 +797,19 @@
             this.CoresPanel.Size = new System.Drawing.Size(251, 38);
             this.CoresPanel.TabIndex = 25;
             // 
-            // tabPage2
+            // AreaRegionPage
             // 
-            this.tabPage2.Controls.Add(this.groupBox17);
-            this.tabPage2.Controls.Add(this.groupBox5);
-            this.tabPage2.Controls.Add(this.groupBox6);
-            this.tabPage2.Controls.Add(this.groupBox3);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(537, 537);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Area & Region";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.AreaRegionPage.Controls.Add(this.groupBox17);
+            this.AreaRegionPage.Controls.Add(this.groupBox5);
+            this.AreaRegionPage.Controls.Add(this.groupBox6);
+            this.AreaRegionPage.Controls.Add(this.groupBox3);
+            this.AreaRegionPage.Location = new System.Drawing.Point(4, 22);
+            this.AreaRegionPage.Name = "AreaRegionPage";
+            this.AreaRegionPage.Padding = new System.Windows.Forms.Padding(3);
+            this.AreaRegionPage.Size = new System.Drawing.Size(537, 524);
+            this.AreaRegionPage.TabIndex = 1;
+            this.AreaRegionPage.Text = "Area & Region";
+            this.AreaRegionPage.UseVisualStyleBackColor = true;
             // 
             // groupBox17
             // 
@@ -1922,7 +1951,7 @@
             this.TradeGoodsTab.Controls.Add(this.TradeGoodsInfoPanel);
             this.TradeGoodsTab.Location = new System.Drawing.Point(4, 22);
             this.TradeGoodsTab.Name = "TradeGoodsTab";
-            this.TradeGoodsTab.Size = new System.Drawing.Size(556, 855);
+            this.TradeGoodsTab.Size = new System.Drawing.Size(556, 811);
             this.TradeGoodsTab.TabIndex = 3;
             this.TradeGoodsTab.Text = "Trade Goods";
             this.TradeGoodsTab.UseVisualStyleBackColor = true;
@@ -1942,7 +1971,7 @@
             this.TradeNodesTab.Controls.Add(this.groupBox7);
             this.TradeNodesTab.Location = new System.Drawing.Point(4, 22);
             this.TradeNodesTab.Name = "TradeNodesTab";
-            this.TradeNodesTab.Size = new System.Drawing.Size(556, 855);
+            this.TradeNodesTab.Size = new System.Drawing.Size(556, 811);
             this.TradeNodesTab.TabIndex = 4;
             this.TradeNodesTab.Text = "Trade Nodes";
             this.TradeNodesTab.UseVisualStyleBackColor = true;
@@ -2275,7 +2304,7 @@
             this.AdditionalPage.Controls.Add(this.OpenWordCreator);
             this.AdditionalPage.Location = new System.Drawing.Point(4, 22);
             this.AdditionalPage.Name = "AdditionalPage";
-            this.AdditionalPage.Size = new System.Drawing.Size(556, 855);
+            this.AdditionalPage.Size = new System.Drawing.Size(556, 811);
             this.AdditionalPage.TabIndex = 2;
             this.AdditionalPage.Text = "Additional Tools";
             this.AdditionalPage.UseVisualStyleBackColor = true;
@@ -2299,6 +2328,234 @@
             this.OpenWordCreator.Text = "Open word creator";
             this.OpenWordCreator.UseVisualStyleBackColor = true;
             this.OpenWordCreator.Click += new System.EventHandler(this.OpenWordCreator_Click);
+            // 
+            // MacroSelecter
+            // 
+            this.MacroSelecter.Controls.Add(this.MacroSelectAllProvincesButton);
+            this.MacroSelecter.Controls.Add(this.MacroDeselectAllProvincesButton);
+            this.MacroSelecter.Controls.Add(this.MacroSelectorTabs);
+            this.MacroSelecter.Location = new System.Drawing.Point(4, 22);
+            this.MacroSelecter.Name = "MacroSelecter";
+            this.MacroSelecter.Size = new System.Drawing.Size(556, 811);
+            this.MacroSelecter.TabIndex = 8;
+            this.MacroSelecter.Text = "MacroSelector";
+            this.MacroSelecter.UseVisualStyleBackColor = true;
+            // 
+            // MacroSelectAllProvincesButton
+            // 
+            this.MacroSelectAllProvincesButton.Location = new System.Drawing.Point(281, 6);
+            this.MacroSelectAllProvincesButton.Name = "MacroSelectAllProvincesButton";
+            this.MacroSelectAllProvincesButton.Size = new System.Drawing.Size(268, 41);
+            this.MacroSelectAllProvincesButton.TabIndex = 2;
+            this.MacroSelectAllProvincesButton.Text = "Select all provinces";
+            this.MacroSelectAllProvincesButton.UseVisualStyleBackColor = true;
+            this.MacroSelectAllProvincesButton.Click += new System.EventHandler(this.MacroSelectAllProvincesButton_Click);
+            // 
+            // MacroDeselectAllProvincesButton
+            // 
+            this.MacroDeselectAllProvincesButton.Location = new System.Drawing.Point(7, 6);
+            this.MacroDeselectAllProvincesButton.Name = "MacroDeselectAllProvincesButton";
+            this.MacroDeselectAllProvincesButton.Size = new System.Drawing.Size(268, 41);
+            this.MacroDeselectAllProvincesButton.TabIndex = 1;
+            this.MacroDeselectAllProvincesButton.Text = "Deselct all provinces";
+            this.MacroDeselectAllProvincesButton.UseVisualStyleBackColor = true;
+            this.MacroDeselectAllProvincesButton.Click += new System.EventHandler(this.MacroDeselectAllProvincesButton_Click);
+            // 
+            // MacroSelectorTabs
+            // 
+            this.MacroSelectorTabs.Controls.Add(this.MacroDevelopmentPage);
+            this.MacroSelectorTabs.Controls.Add(this.MacroReligionPage);
+            this.MacroSelectorTabs.Controls.Add(this.MacroCulturePage);
+            this.MacroSelectorTabs.Controls.Add(this.MacroFortPage);
+            this.MacroSelectorTabs.Controls.Add(this.MacroAreaPage);
+            this.MacroSelectorTabs.Controls.Add(this.MacroRegionPage);
+            this.MacroSelectorTabs.Controls.Add(this.MacroSuperregionPage);
+            this.MacroSelectorTabs.Controls.Add(this.MacroContinentPage);
+            this.MacroSelectorTabs.Controls.Add(this.MacroHREPage);
+            this.MacroSelectorTabs.Controls.Add(this.MacroTradenodePage);
+            this.MacroSelectorTabs.Controls.Add(this.MacroDiscoveredByPage);
+            this.MacroSelectorTabs.Location = new System.Drawing.Point(3, 53);
+            this.MacroSelectorTabs.Multiline = true;
+            this.MacroSelectorTabs.Name = "MacroSelectorTabs";
+            this.MacroSelectorTabs.SelectedIndex = 0;
+            this.MacroSelectorTabs.Size = new System.Drawing.Size(546, 186);
+            this.MacroSelectorTabs.TabIndex = 0;
+            // 
+            // MacroDevelopmentPage
+            // 
+            this.MacroDevelopmentPage.Controls.Add(this.MacroDeselectProvincesBelowDev);
+            this.MacroDevelopmentPage.Controls.Add(this.MacroDeselectProvincesAboveDev);
+            this.MacroDevelopmentPage.Controls.Add(this.MacroSelectProvincesBelowDev);
+            this.MacroDevelopmentPage.Controls.Add(this.MacroSelectProvincesAboveDev);
+            this.MacroDevelopmentPage.Controls.Add(this.label46);
+            this.MacroDevelopmentPage.Controls.Add(this.MacroDevNumeric);
+            this.MacroDevelopmentPage.Location = new System.Drawing.Point(4, 40);
+            this.MacroDevelopmentPage.Name = "MacroDevelopmentPage";
+            this.MacroDevelopmentPage.Padding = new System.Windows.Forms.Padding(3);
+            this.MacroDevelopmentPage.Size = new System.Drawing.Size(538, 142);
+            this.MacroDevelopmentPage.TabIndex = 0;
+            this.MacroDevelopmentPage.Text = "Development";
+            this.MacroDevelopmentPage.UseVisualStyleBackColor = true;
+            // 
+            // MacroDeselectProvincesBelowDev
+            // 
+            this.MacroDeselectProvincesBelowDev.Location = new System.Drawing.Point(209, 115);
+            this.MacroDeselectProvincesBelowDev.Name = "MacroDeselectProvincesBelowDev";
+            this.MacroDeselectProvincesBelowDev.Size = new System.Drawing.Size(323, 23);
+            this.MacroDeselectProvincesBelowDev.TabIndex = 5;
+            this.MacroDeselectProvincesBelowDev.Text = "Deselect provinces below";
+            this.MacroDeselectProvincesBelowDev.UseVisualStyleBackColor = true;
+            this.MacroDeselectProvincesBelowDev.Click += new System.EventHandler(this.MacroDeselectProvincesBelowDev_Click);
+            // 
+            // MacroDeselectProvincesAboveDev
+            // 
+            this.MacroDeselectProvincesAboveDev.Location = new System.Drawing.Point(209, 91);
+            this.MacroDeselectProvincesAboveDev.Name = "MacroDeselectProvincesAboveDev";
+            this.MacroDeselectProvincesAboveDev.Size = new System.Drawing.Size(323, 23);
+            this.MacroDeselectProvincesAboveDev.TabIndex = 4;
+            this.MacroDeselectProvincesAboveDev.Text = "Deselect provinces above";
+            this.MacroDeselectProvincesAboveDev.UseVisualStyleBackColor = true;
+            this.MacroDeselectProvincesAboveDev.Click += new System.EventHandler(this.MacroDeselectProvincesAboveDev_Click);
+            // 
+            // MacroSelectProvincesBelowDev
+            // 
+            this.MacroSelectProvincesBelowDev.Location = new System.Drawing.Point(209, 30);
+            this.MacroSelectProvincesBelowDev.Name = "MacroSelectProvincesBelowDev";
+            this.MacroSelectProvincesBelowDev.Size = new System.Drawing.Size(323, 23);
+            this.MacroSelectProvincesBelowDev.TabIndex = 3;
+            this.MacroSelectProvincesBelowDev.Text = "Select provinces below";
+            this.MacroSelectProvincesBelowDev.UseVisualStyleBackColor = true;
+            this.MacroSelectProvincesBelowDev.Click += new System.EventHandler(this.MacroSelectProvincesBelowDev_Click);
+            // 
+            // MacroSelectProvincesAboveDev
+            // 
+            this.MacroSelectProvincesAboveDev.Location = new System.Drawing.Point(209, 6);
+            this.MacroSelectProvincesAboveDev.Name = "MacroSelectProvincesAboveDev";
+            this.MacroSelectProvincesAboveDev.Size = new System.Drawing.Size(323, 23);
+            this.MacroSelectProvincesAboveDev.TabIndex = 2;
+            this.MacroSelectProvincesAboveDev.Text = "Select provinces above";
+            this.MacroSelectProvincesAboveDev.UseVisualStyleBackColor = true;
+            this.MacroSelectProvincesAboveDev.Click += new System.EventHandler(this.MacroSelectProvincesAboveDev_Click);
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(3, 49);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(70, 13);
+            this.label46.TabIndex = 1;
+            this.label46.Text = "Development";
+            // 
+            // MacroDevNumeric
+            // 
+            this.MacroDevNumeric.Location = new System.Drawing.Point(6, 65);
+            this.MacroDevNumeric.Maximum = new decimal(new int[] {
+            100000,
+            0,
+            0,
+            0});
+            this.MacroDevNumeric.Name = "MacroDevNumeric";
+            this.MacroDevNumeric.Size = new System.Drawing.Size(161, 20);
+            this.MacroDevNumeric.TabIndex = 0;
+            // 
+            // MacroReligionPage
+            // 
+            this.MacroReligionPage.Controls.Add(this.flowLayoutPanel1);
+            this.MacroReligionPage.Location = new System.Drawing.Point(4, 40);
+            this.MacroReligionPage.Name = "MacroReligionPage";
+            this.MacroReligionPage.Padding = new System.Windows.Forms.Padding(3);
+            this.MacroReligionPage.Size = new System.Drawing.Size(538, 142);
+            this.MacroReligionPage.TabIndex = 1;
+            this.MacroReligionPage.Text = "Religion";
+            this.MacroReligionPage.UseVisualStyleBackColor = true;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(6, 3);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(526, 133);
+            this.flowLayoutPanel1.TabIndex = 0;
+            // 
+            // MacroCulturePage
+            // 
+            this.MacroCulturePage.Location = new System.Drawing.Point(4, 40);
+            this.MacroCulturePage.Name = "MacroCulturePage";
+            this.MacroCulturePage.Size = new System.Drawing.Size(538, 142);
+            this.MacroCulturePage.TabIndex = 2;
+            this.MacroCulturePage.Text = "Culture";
+            this.MacroCulturePage.UseVisualStyleBackColor = true;
+            // 
+            // MacroFortPage
+            // 
+            this.MacroFortPage.Location = new System.Drawing.Point(4, 40);
+            this.MacroFortPage.Name = "MacroFortPage";
+            this.MacroFortPage.Size = new System.Drawing.Size(538, 142);
+            this.MacroFortPage.TabIndex = 3;
+            this.MacroFortPage.Text = "Fort";
+            this.MacroFortPage.UseVisualStyleBackColor = true;
+            // 
+            // MacroAreaPage
+            // 
+            this.MacroAreaPage.Location = new System.Drawing.Point(4, 40);
+            this.MacroAreaPage.Name = "MacroAreaPage";
+            this.MacroAreaPage.Size = new System.Drawing.Size(538, 142);
+            this.MacroAreaPage.TabIndex = 4;
+            this.MacroAreaPage.Text = "Area";
+            this.MacroAreaPage.UseVisualStyleBackColor = true;
+            // 
+            // MacroRegionPage
+            // 
+            this.MacroRegionPage.Location = new System.Drawing.Point(4, 40);
+            this.MacroRegionPage.Name = "MacroRegionPage";
+            this.MacroRegionPage.Size = new System.Drawing.Size(538, 142);
+            this.MacroRegionPage.TabIndex = 5;
+            this.MacroRegionPage.Text = "Region";
+            this.MacroRegionPage.UseVisualStyleBackColor = true;
+            // 
+            // MacroSuperregionPage
+            // 
+            this.MacroSuperregionPage.Location = new System.Drawing.Point(4, 40);
+            this.MacroSuperregionPage.Name = "MacroSuperregionPage";
+            this.MacroSuperregionPage.Size = new System.Drawing.Size(538, 142);
+            this.MacroSuperregionPage.TabIndex = 6;
+            this.MacroSuperregionPage.Text = "Superregion";
+            this.MacroSuperregionPage.UseVisualStyleBackColor = true;
+            // 
+            // MacroContinentPage
+            // 
+            this.MacroContinentPage.Location = new System.Drawing.Point(4, 40);
+            this.MacroContinentPage.Name = "MacroContinentPage";
+            this.MacroContinentPage.Size = new System.Drawing.Size(538, 142);
+            this.MacroContinentPage.TabIndex = 7;
+            this.MacroContinentPage.Text = "Continent";
+            this.MacroContinentPage.UseVisualStyleBackColor = true;
+            // 
+            // MacroHREPage
+            // 
+            this.MacroHREPage.Location = new System.Drawing.Point(4, 40);
+            this.MacroHREPage.Name = "MacroHREPage";
+            this.MacroHREPage.Size = new System.Drawing.Size(538, 142);
+            this.MacroHREPage.TabIndex = 8;
+            this.MacroHREPage.Text = "HRE";
+            this.MacroHREPage.UseVisualStyleBackColor = true;
+            // 
+            // MacroTradenodePage
+            // 
+            this.MacroTradenodePage.Location = new System.Drawing.Point(4, 40);
+            this.MacroTradenodePage.Name = "MacroTradenodePage";
+            this.MacroTradenodePage.Size = new System.Drawing.Size(538, 142);
+            this.MacroTradenodePage.TabIndex = 9;
+            this.MacroTradenodePage.Text = "Tradenode";
+            this.MacroTradenodePage.UseVisualStyleBackColor = true;
+            // 
+            // MacroDiscoveredByPage
+            // 
+            this.MacroDiscoveredByPage.Location = new System.Drawing.Point(4, 40);
+            this.MacroDiscoveredByPage.Name = "MacroDiscoveredByPage";
+            this.MacroDiscoveredByPage.Size = new System.Drawing.Size(538, 142);
+            this.MacroDiscoveredByPage.TabIndex = 10;
+            this.MacroDiscoveredByPage.Text = "Discovered by";
+            this.MacroDiscoveredByPage.UseVisualStyleBackColor = true;
             // 
             // ChangesTab
             // 
@@ -2574,12 +2831,22 @@
             this.DiscoveredByMapmode.Text = "Discovered by mapmode";
             this.DiscoveredByMapmode.UseVisualStyleBackColor = true;
             // 
+            // GovernmentMapmode
+            // 
+            this.GovernmentMapmode.Location = new System.Drawing.Point(1006, 855);
+            this.GovernmentMapmode.Name = "GovernmentMapmode";
+            this.GovernmentMapmode.Size = new System.Drawing.Size(136, 22);
+            this.GovernmentMapmode.TabIndex = 21;
+            this.GovernmentMapmode.Text = "Government mapmode";
+            this.GovernmentMapmode.UseVisualStyleBackColor = true;
+            // 
             // ModEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.ClientSize = new System.Drawing.Size(1736, 905);
+            this.Controls.Add(this.GovernmentMapmode);
             this.Controls.Add(this.DiscoveredByMapmode);
             this.Controls.Add(this.SuperregionMapmode);
             this.Controls.Add(this.ContinentMapmode);
@@ -2608,8 +2875,8 @@
             this.Text = "EUIV - Mod Editor";
             this.Tabs.ResumeLayout(false);
             this.ProvinceTab.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
+            this.ProvinceTabControl.ResumeLayout(false);
+            this.MainPage.ResumeLayout(false);
             this.groupBox16.ResumeLayout(false);
             this.groupBox16.PerformLayout();
             this.groupBox15.ResumeLayout(false);
@@ -2624,7 +2891,7 @@
             this.groupBox9.PerformLayout();
             this.groupBox11.ResumeLayout(false);
             this.groupBox11.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
+            this.AreaRegionPage.ResumeLayout(false);
             this.groupBox17.ResumeLayout(false);
             this.groupBox17.PerformLayout();
             this.groupBox5.ResumeLayout(false);
@@ -2654,6 +2921,12 @@
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.AdditionalPage.ResumeLayout(false);
+            this.MacroSelecter.ResumeLayout(false);
+            this.MacroSelectorTabs.ResumeLayout(false);
+            this.MacroDevelopmentPage.ResumeLayout(false);
+            this.MacroDevelopmentPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MacroDevNumeric)).EndInit();
+            this.MacroReligionPage.ResumeLayout(false);
             this.ChangesTab.ResumeLayout(false);
             this.SavingTab.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -2842,9 +3115,9 @@
         private System.Windows.Forms.GroupBox groupBox13;
         private System.Windows.Forms.Label label37;
         public System.Windows.Forms.ComboBox ControllerBox;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabControl ProvinceTabControl;
+        private System.Windows.Forms.TabPage MainPage;
+        private System.Windows.Forms.TabPage AreaRegionPage;
         private System.Windows.Forms.GroupBox groupBox14;
         public System.Windows.Forms.ComboBox GovernmentReformBox;
         private System.Windows.Forms.Label label39;
@@ -2877,6 +3150,29 @@
         public System.Windows.Forms.ComboBox SuperregionBox;
         private System.Windows.Forms.Label label45;
         private System.Windows.Forms.Button DiscoveredByMapmode;
+        private System.Windows.Forms.TabPage MacroSelecter;
+        private System.Windows.Forms.Button MacroSelectAllProvincesButton;
+        private System.Windows.Forms.Button MacroDeselectAllProvincesButton;
+        private System.Windows.Forms.TabControl MacroSelectorTabs;
+        private System.Windows.Forms.TabPage MacroDevelopmentPage;
+        private System.Windows.Forms.TabPage MacroReligionPage;
+        private System.Windows.Forms.TabPage MacroCulturePage;
+        private System.Windows.Forms.Button MacroDeselectProvincesBelowDev;
+        private System.Windows.Forms.Button MacroDeselectProvincesAboveDev;
+        private System.Windows.Forms.Button MacroSelectProvincesBelowDev;
+        private System.Windows.Forms.Button MacroSelectProvincesAboveDev;
+        private System.Windows.Forms.Label label46;
+        private System.Windows.Forms.NumericUpDown MacroDevNumeric;
+        private System.Windows.Forms.TabPage MacroFortPage;
+        private System.Windows.Forms.TabPage MacroAreaPage;
+        private System.Windows.Forms.TabPage MacroRegionPage;
+        private System.Windows.Forms.TabPage MacroSuperregionPage;
+        private System.Windows.Forms.TabPage MacroContinentPage;
+        private System.Windows.Forms.TabPage MacroHREPage;
+        private System.Windows.Forms.TabPage MacroTradenodePage;
+        private System.Windows.Forms.TabPage MacroDiscoveredByPage;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Button GovernmentMapmode;
     }
 }
 

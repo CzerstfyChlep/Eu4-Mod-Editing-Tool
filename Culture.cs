@@ -37,14 +37,13 @@ namespace Eu4ModEditor
         };
 
         public static Color GenerateNiceColor()
-        {
-            Random ra = new Random();
+        {           
             int r, g, b;
             do
             {
-                r = ra.Next(0, 256);
-                g = ra.Next(0, 256);
-                b = ra.Next(0, 256);
+                r = GlobalVariables.GlobalRandom.Next(0, 256);
+                g = GlobalVariables.GlobalRandom.Next(0, 256);
+                b = GlobalVariables.GlobalRandom.Next(0, 256);
             } while (r + g + b < 100 && r + g + b > 240 * 3);
             return Color.FromArgb(r, g, b);
         }
