@@ -125,6 +125,8 @@ namespace Eu4ModEditor
         public static Form MainForm;
 
         public static string SelectedDiscoveredByTechGroup = "";
+
+        public static int CurrentLoadingProgress = 0;
     }
 
    

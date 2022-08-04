@@ -62,9 +62,12 @@ namespace Eu4ModEditor
                         nf.MainNode.Variables.RemoveAll(x => x.Name == "owner");
                     }
 
-                    nf.MainNode.ChangeVariable("base_tax", province.Tax.ToString(), true);
-                    nf.MainNode.ChangeVariable("base_manpower", province.Manpower.ToString(), true);
-                    nf.MainNode.ChangeVariable("base_production", province.Production.ToString(), true);
+                    if(province.Tax > 0)
+                        nf.MainNode.ChangeVariable("base_tax", province.Tax.ToString(), true);
+                    if (province.Manpower > 0)
+                        nf.MainNode.ChangeVariable("base_manpower", province.Manpower.ToString(), true);
+                    if (province.Production > 0)
+                        nf.MainNode.ChangeVariable("base_production", province.Production.ToString(), true);
                     if (province.Culture != null)
                     {
                         nf.MainNode.ChangeVariable("culture", province.Culture.Name, true);
@@ -73,8 +76,9 @@ namespace Eu4ModEditor
                     {
                         nf.MainNode.Variables.RemoveAll(x => x.Name == "culture");
                     }
-                    nf.MainNode.ChangeVariable("trade_goods", province.TradeGood.Name, true);
-                    if (province.Religion != null)
+                    if(province.TradeGood != null && province.TradeGood != TradeGood.nothing)
+                        nf.MainNode.ChangeVariable("trade_goods", province.TradeGood.Name, true);
+                    if (province.Religion != null && province.Religion != Religion.NoReligion)
                         nf.MainNode.ChangeVariable("religion", province.Religion.Name, true);
                     else
                         nf.MainNode.Variables.RemoveAll(x => x.Name == "religion");
@@ -96,10 +100,13 @@ namespace Eu4ModEditor
                     else
                         nf.MainNode.Variables.RemoveAll(x => x.Name == "center_of_trade");
 
-                    if (province.City)
-                        nf.MainNode.ChangeVariable("is_city", "yes", true);
-                    else
-                        nf.MainNode.ChangeVariable("is_city", "no", true);
+                    if (!province.Sea && !province.Lake && !province.Wasteland)
+                    {
+                        if (province.City)
+                            nf.MainNode.ChangeVariable("is_city", "yes", true);
+                        else
+                            nf.MainNode.ChangeVariable("is_city", "no", true);
+                    }
 
                     Node n = nf.MainNode.Nodes.Find(x => x.Name == "latent_trade_goods");
                     if (province.LatentTradeGood != null)
