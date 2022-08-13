@@ -5,7 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Eu4ModEditor
@@ -15,7 +15,10 @@ namespace Eu4ModEditor
         public LoadingProgress()
         {
             InitializeComponent();
+            CheckForIllegalCrossThreadCalls = false;
         }
+        int amount = 0;
+        /*
         public void UpdateProgressLabel(object senrder, ProgressChangedEventArgs e)
         {
             GlobalVariables.CurrentLoadingProgress = e.ProgressPercentage;
@@ -142,6 +145,95 @@ namespace Eu4ModEditor
                         this.Close();
                         break;
                 }
+            }
+        }
+        */
+        public void UpdateProgress(int id, int status)
+        {
+            Label l = null;
+            switch (id)
+            {
+                case 0:
+                    l = DefinitionProgress;
+                    break;
+                case 1:
+                    l = TradeGoodsProgress;
+                    break;
+                case 2:
+                    l = MapProgress;
+                    break;
+                case 3:
+                    l = CentresProgress;
+                    break;
+                case 4:
+                    l = CultureProgress;
+                    break;
+                case 5:
+                    l = ReligionProgress;
+                    break;
+                case 6:
+                    l = GovernmentsProgress;
+                    break;
+                case 7:
+                    l = TechnologyProgress;
+                    break;
+                case 8:
+                    l = TagsProgress;
+                    break;
+                case 9:
+                    l = CountryHistoryProgress;
+                    break;
+                case 10:
+                    l = CountryCommonProgress;
+                    break;
+                case 11:
+                    l = ProvinceHistoryProgress;
+                    break;
+                case 12:
+                    l = AreaProgress;
+                    break;
+                case 13:
+                    l = RegionProgress;
+                    break;
+                case 14:
+                    l = ContinentsProgress;
+                    break;
+                case 15:
+                    l = TradeNodesProgress;
+                    break;
+                case 16:
+                    l = SuperregionProgress;
+                    break;
+                case 17:
+                    l = DefaultMapProgress;
+                    break;
+                case 18:
+                    l = UpdateMapProgress;
+                    break;
+                case 19:
+                    l = UpdateControlsProgress;
+                    break;
+                case 20:
+                    l = BuildingProgress;
+                    break;
+            }
+            if (status == 0)
+                l.ForeColor = Color.DarkGoldenrod;
+            else if (status == 1)
+            {
+                l.ForeColor = Color.DarkRed;
+                amount++;
+            }
+            else if (status == 2)
+            {
+                l.ForeColor = Color.DarkGreen;
+                amount++;
+            }
+            
+            if(amount == 21)
+            {
+                Thread.Sleep(1000);
+                this.Close();
             }
         }
     }
