@@ -232,9 +232,18 @@ namespace Eu4ModEditor
             
             if(amount == 21)
             {
-                Thread.Sleep(1000);
-                this.Close();
+                ContinueButton.Enabled = true;
             }
+        }
+
+        public void ReportError(string message)
+        {
+            ErrorList.AppendText(Environment.NewLine + $"{message}");
+        }
+
+        private void ContinueButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

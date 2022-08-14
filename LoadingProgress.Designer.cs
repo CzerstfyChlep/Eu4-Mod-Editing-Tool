@@ -50,6 +50,8 @@
             this.UpdateMapProgress = new System.Windows.Forms.Label();
             this.UpdateControlsProgress = new System.Windows.Forms.Label();
             this.BuildingProgress = new System.Windows.Forms.Label();
+            this.ErrorList = new System.Windows.Forms.TextBox();
+            this.ContinueButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -293,12 +295,35 @@
             this.BuildingProgress.TabIndex = 21;
             this.BuildingProgress.Text = "Loading buildings";
             // 
+            // ErrorList
+            // 
+            this.ErrorList.Location = new System.Drawing.Point(16, 345);
+            this.ErrorList.Multiline = true;
+            this.ErrorList.Name = "ErrorList";
+            this.ErrorList.ReadOnly = true;
+            this.ErrorList.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.ErrorList.Size = new System.Drawing.Size(414, 145);
+            this.ErrorList.TabIndex = 22;
+            // 
+            // ContinueButton
+            // 
+            this.ContinueButton.Enabled = false;
+            this.ContinueButton.Location = new System.Drawing.Point(355, 496);
+            this.ContinueButton.Name = "ContinueButton";
+            this.ContinueButton.Size = new System.Drawing.Size(75, 23);
+            this.ContinueButton.TabIndex = 23;
+            this.ContinueButton.Text = "Continue";
+            this.ContinueButton.UseVisualStyleBackColor = true;
+            this.ContinueButton.Click += new System.EventHandler(this.ContinueButton_Click);
+            // 
             // LoadingProgress
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(450, 352);
+            this.ClientSize = new System.Drawing.Size(450, 528);
             this.ControlBox = false;
+            this.Controls.Add(this.ContinueButton);
+            this.Controls.Add(this.ErrorList);
             this.Controls.Add(this.BuildingProgress);
             this.Controls.Add(this.UpdateControlsProgress);
             this.Controls.Add(this.UpdateMapProgress);
@@ -353,5 +378,7 @@
         private System.Windows.Forms.Label UpdateMapProgress;
         private System.Windows.Forms.Label UpdateControlsProgress;
         private System.Windows.Forms.Label BuildingProgress;
+        private System.Windows.Forms.TextBox ErrorList;
+        private System.Windows.Forms.Button ContinueButton;
     }
 }

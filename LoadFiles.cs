@@ -438,63 +438,98 @@ namespace Eu4ModEditor
             lcontinent.Start();
             progress.UpdateProgress(14, 0);
             Task ltradenodes = new Task(() => {
-                if (GlobalVariables.UseMod[12] != 0)
+            if (GlobalVariables.UseMod[12] != 0)
+            {
+                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\tradenodes\\"))
                 {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\tradenodes\\"))
+                    if (file.Contains('.'))
                     {
-                        if (file.Contains('.'))
+                        if (file.Split('.')[1] == "txt")
                         {
-                            if (file.Split('.')[1] == "txt")
-                            {
-                                NodeFile nf = new NodeFile(file);
+                            NodeFile nf = new NodeFile(file);
+                            tradenodesfiles.Add(nf);
+                            GlobalVariables.ModTradeNodesFiles.Add(nf);
+                        }
+                    }
+                }
+            }
+            if (GlobalVariables.UseMod[12] != 1)
+            {
+                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\tradenodes\\"))
+                {
+                    if (file.Contains('.'))
+                    {
+                        if (file.Split('.')[1] == "txt")
+                        {
+                            NodeFile nf = new NodeFile(file, true);
+                            if (!tradenodesfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
                                 tradenodesfiles.Add(nf);
-                                GlobalVariables.ModTradeNodesFiles.Add(nf);
-                            }
+                            GlobalVariables.GameTradeNodesFile = nf;
                         }
                     }
                 }
-                if (GlobalVariables.UseMod[12] != 1)
+            }
+            //bw.ReportProgress(105);
+            foreach (NodeFile tradenodes in tradenodesfiles)
+            {
+                foreach (Node node in tradenodes.MainNode.Nodes)
                 {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\tradenodes\\"))
-                    {
-                        if (file.Contains('.'))
-                        {
-                            if (file.Split('.')[1] == "txt")
-                            {
-                                NodeFile nf = new NodeFile(file, true);
-                                if (!tradenodesfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                                    tradenodesfiles.Add(nf);
-                                GlobalVariables.GameTradeNodesFile = nf;
-                            }
-                        }
-                    }
+                    if (GlobalVariables.TradeNodes.Any(x => x.Name == node.Name))
+                        continue;
+                    Tradenode tn = new Tradenode();
+                    tn.Name = node.Name;
+                    GlobalVariables.TradeNodes.Add(tn);
                 }
-                //bw.ReportProgress(105);
-                foreach (NodeFile tradenodes in tradenodesfiles)
-                {
-                    foreach (Node node in tradenodes.MainNode.Nodes)
-                    {
-                        if (GlobalVariables.TradeNodes.Any(x => x.Name == node.Name))
-                            continue;
-                        Tradenode tn = new Tradenode();
-                        tn.Name = node.Name;
-                        GlobalVariables.TradeNodes.Add(tn);
-                    }
-                }
-                string lastTradeNode = "";
-                string lastMember = "";
+            }
+            string lastTradeNode = "";
+            string lastMember = "";
 
-                foreach (NodeFile tradenodes in tradenodesfiles)
+            foreach (NodeFile tradenodes in tradenodesfiles)
+            {
+                foreach (Node node in tradenodes.MainNode.Nodes)
                 {
-                    foreach (Node node in tradenodes.MainNode.Nodes)
-                    {
-                        lastTradeNode = node.Name;
-                        Tradenode tn = GlobalVariables.TradeNodes.Find(x => x.Name == node.Name);
-                        tn.File = tradenodes.FileName;
-                        if (tradenodes == GlobalVariables.GameTradeNodesFile)
-                            tn.GameFile = true;
-                        tn.Name = node.Name;
-                        tn.Location = GlobalVariables.Provinces[int.Parse(node.Variables.Find(x => x.Name == "location").Value) - 1];
+                    lastTradeNode = node.Name;
+                    Tradenode tn = GlobalVariables.TradeNodes.Find(x => x.Name == node.Name);
+                    tn.File = tradenodes.FileName;
+                    if (tradenodes == GlobalVariables.GameTradeNodesFile)
+                        tn.GameFile = true;
+                    tn.Name = node.Name;
+
+                        int location = 0;
+                        if (!int.TryParse(node.Variables.Find(x => x.Name == "location").Value, out location))
+                        {
+                            progress.ReportError($"Trade nodes: '{node.Name}' node has incorrect location: '{location}', using first valid node province member.");
+                            location = -1;
+                        }
+                        else if (GlobalVariables.Provinces.Count() <= location)
+                        {
+                            progress.ReportError($"Trade nodes: Location of '{node.Name}' node is outside of province ID limit '{location}', using first valid node province member.");
+                            location = -1;
+                        }
+                        if(location == -1)
+                        {
+                            foreach (string value in node.Nodes.Find(x => x.Name == "members").PureValues)
+                            {
+                                if (!int.TryParse(value, out location))
+                                    continue;
+                                else if (GlobalVariables.Provinces.Count() <= location)
+                                {
+                                    location = -1;
+                                    continue;
+                                }
+                                else
+                                    break;
+                            }
+                        }
+                        if (location == -1)
+                        {
+                            progress.ReportError($"Trade nodes: Couldn't find a suitable location for '{node.Name}' node!");
+                        }
+                        else
+                        {
+                            location -= 1;
+                            tn.Location = GlobalVariables.Provinces[location];
+                        }
                         Node ColorNode = node.Nodes.Find(x => x.Name == "color");
                         if (ColorNode != null)
                             tn.Color = Color.FromArgb(int.Parse(ColorNode.PureValues[0]), int.Parse(ColorNode.PureValues[1]), int.Parse(ColorNode.PureValues[2]));
@@ -1474,7 +1509,8 @@ namespace Eu4ModEditor
             File.WriteAllLines("dev.txt", dev.Select(x => x.ToString()).ToArray());
             File.WriteAllLines("tradegoods.txt", tradego);
             */
-            File.WriteAllLines("ids.txt", ids.Select(x => x.ToString()).ToArray());
+            //File.WriteAllLines("ids.txt", ids.Select(x => x.ToString()).ToArray());
+            //MessageBox.Show($"Provinces: {GlobalVariables.Provinces.Count()}\nName: {GlobalVariables.Provinces[0].DefinitionName}");
             
         }
 
