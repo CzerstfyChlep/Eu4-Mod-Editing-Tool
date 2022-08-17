@@ -713,35 +713,51 @@ namespace Eu4ModEditor
 
         public static void UpdateMap()
         {
-            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Provinces)
-                graphics.DrawImage(GlobalVariables.ProvincesMap, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
-            else if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Development)
-                graphics.DrawImage(GlobalVariables.DevelopmentBitmap, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
-            else if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeGood)
-                graphics.DrawImage(GlobalVariables.TradeGoodBitmapLocked.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
-            else if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Religion)
-                graphics.DrawImage(GlobalVariables.ReligionBitmapLocked.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
-            else if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Culture)
-                graphics.DrawImage(GlobalVariables.CultureBitmapLocked.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
-            else if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Political)
-                graphics.DrawImage(GlobalVariables.PoliticalBitmapLocked.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
-            else if(GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area)
-                graphics.DrawImage(GlobalVariables.AreaBitmapLocked.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
-            else if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region)
-                graphics.DrawImage(GlobalVariables.RegionBitmapLocked.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
-            else if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
-                graphics.DrawImage(GlobalVariables.TradeNodeBitmap.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
-            else if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.HRE)
-                graphics.DrawImage(GlobalVariables.HREBitmap.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
-            else if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Fort)
-                graphics.DrawImage(GlobalVariables.FortBitmap.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
-            else if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent)
-                graphics.DrawImage(GlobalVariables.ContinentBitmap.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
-            else if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Superregion)
-                graphics.DrawImage(GlobalVariables.SuperregionBitmap.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
-            else if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.DiscoveredBy)
-                graphics.DrawImage(GlobalVariables.DiscoveredByBitmap.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
-
+            switch (GlobalVariables.mapmode)
+            {
+                case MapManagement.UpdateMapOptions.Provinces:
+                    graphics.DrawImage(GlobalVariables.ProvincesMap, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
+                    break;
+                case MapManagement.UpdateMapOptions.Development:
+                    graphics.DrawImage(GlobalVariables.DevelopmentBitmap, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
+                    break;
+                case MapManagement.UpdateMapOptions.TradeGood:
+                    graphics.DrawImage(GlobalVariables.TradeGoodBitmapLocked.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
+                    break;
+                case MapManagement.UpdateMapOptions.Religion:
+                    graphics.DrawImage(GlobalVariables.ReligionBitmapLocked.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
+                    break;
+                case MapManagement.UpdateMapOptions.Culture:
+                    graphics.DrawImage(GlobalVariables.CultureBitmapLocked.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
+                    break;
+                case MapManagement.UpdateMapOptions.Political:
+                    graphics.DrawImage(GlobalVariables.PoliticalBitmapLocked.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
+                    break;
+                case MapManagement.UpdateMapOptions.Area:
+                    graphics.DrawImage(GlobalVariables.AreaBitmapLocked.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
+                    break;
+                case MapManagement.UpdateMapOptions.Region:
+                    graphics.DrawImage(GlobalVariables.RegionBitmapLocked.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
+                    break;
+                case MapManagement.UpdateMapOptions.TradeNode:
+                    graphics.DrawImage(GlobalVariables.TradeNodeBitmap.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
+                    break;
+                case MapManagement.UpdateMapOptions.HRE:
+                    graphics.DrawImage(GlobalVariables.HREBitmap.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
+                    break;
+                case MapManagement.UpdateMapOptions.Fort:
+                    graphics.DrawImage(GlobalVariables.FortBitmap.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
+                    break;
+                case MapManagement.UpdateMapOptions.Continent:
+                    graphics.DrawImage(GlobalVariables.ContinentBitmap.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
+                    break;
+                case MapManagement.UpdateMapOptions.Superregion:
+                    graphics.DrawImage(GlobalVariables.SuperregionBitmap.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
+                    break;
+                case MapManagement.UpdateMapOptions.DiscoveredBy:
+                    graphics.DrawImage(GlobalVariables.DiscoveredByBitmap.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
+                    break;
+            }   
             graphics.DrawImage(GlobalVariables.ClickedMask.source, new Rectangle(40, 40, 1090, 770), new Rectangle(GlobalVariables.CameraPosition, new Size(1090, 770)), GraphicsUnit.Pixel);
         }
 

@@ -1172,6 +1172,16 @@ namespace Eu4ModEditor
                         }
                     }
                 }
+
+                foreach(Province p in GlobalVariables.Provinces)
+                {
+                    if(p.HistoryFile == null)
+                    {
+                        string s = GlobalVariables.pathtomod + "history\\provinces\\" + (GlobalVariables.Provinces.IndexOf(p)+1) + ".txt";
+                        File.Create(s);
+                        p.HistoryFile = s;
+                    }
+                }
             });
             lprovhistory.Start();
             progress.UpdateProgress(11, 0);

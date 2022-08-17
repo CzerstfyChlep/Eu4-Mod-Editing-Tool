@@ -194,8 +194,8 @@ namespace Eu4ModEditor
                         l.BackColor = Color.Green;
                         l.Text = "Only game";
                         mod.Enabled = false;
-                        game.Enabled = true;                       
-                        check.Enabled = true;
+                        game.Enabled = true;
+                        check.Enabled = false;
                         game.Checked = true;
                         both.Enabled = false;
                         break;
@@ -272,6 +272,192 @@ namespace Eu4ModEditor
                 }
                 GlobalVariables.LoadedProperly = true;
                 this.Close();
+            }
+        }
+
+        private void AllMod_Click(object sender, EventArgs e)
+        {
+            foreach (Label l in StatusLabels)
+            {
+                int index = StatusLabels.IndexOf(l);
+                RadioButton game = null;
+                RadioButton mod = null;
+                RadioButton both = null;
+                CheckBox check = null;
+                foreach (Control c in l.Parent.Controls)
+                {
+                    if (c is RadioButton)
+                    {
+                        if (c.Tag == "mod")
+                            mod = c as RadioButton;
+                        else if (c.Tag == "game")
+                            game = c as RadioButton;
+                        else if (c.Tag == "both")
+                            both = c as RadioButton;
+                    }
+                    if (c is CheckBox)
+                        check = c as CheckBox;
+                }
+                switch (FileStatuses[index])
+                {
+                    case FileStatus.FileNotFound:
+                        break;
+                    case FileStatus.GameFoundModNot:                       
+                        break;
+                    case FileStatus.GameNotModFound:
+                        mod.Checked = true;
+                        break;
+                    case FileStatus.BothFound:
+                        mod.Checked = true;
+                        break;
+                }
+            }
+        }
+
+        private void AllGame_Click(object sender, EventArgs e)
+        {
+            foreach (Label l in StatusLabels)
+            {
+                int index = StatusLabels.IndexOf(l);
+                RadioButton game = null;
+                RadioButton mod = null;
+                RadioButton both = null;
+                CheckBox check = null;
+                foreach (Control c in l.Parent.Controls)
+                {
+                    if (c is RadioButton)
+                    {
+                        if (c.Tag == "mod")
+                            mod = c as RadioButton;
+                        else if (c.Tag == "game")
+                            game = c as RadioButton;
+                        else if (c.Tag == "both")
+                            both = c as RadioButton;
+                    }
+                    if (c is CheckBox)
+                        check = c as CheckBox;
+                }
+                switch (FileStatuses[index])
+                {
+                    case FileStatus.FileNotFound:
+                        break;
+                    case FileStatus.GameFoundModNot:
+                        game.Checked = true;
+                        break;
+                    case FileStatus.GameNotModFound:
+                        break;
+                    case FileStatus.BothFound:
+                        game.Checked = true;
+                        break;
+                }
+            }
+        }
+
+        private void AllBoth_Click(object sender, EventArgs e)
+        {
+            foreach (Label l in StatusLabels)
+            {
+                int index = StatusLabels.IndexOf(l);
+                RadioButton game = null;
+                RadioButton mod = null;
+                RadioButton both = null;
+                CheckBox check = null;
+                foreach (Control c in l.Parent.Controls)
+                {
+                    if (c is RadioButton)
+                    {
+                        if (c.Tag == "mod")
+                            mod = c as RadioButton;
+                        else if (c.Tag == "game")
+                            game = c as RadioButton;
+                        else if (c.Tag == "both")
+                            both = c as RadioButton;
+                    }
+                    if (c is CheckBox)
+                        check = c as CheckBox;
+                }
+                switch (FileStatuses[index])
+                {
+                    case FileStatus.FileNotFound:
+                        break;
+                    case FileStatus.GameFoundModNot:
+                        break;
+                    case FileStatus.GameNotModFound:
+                        break;
+                    case FileStatus.BothFound:
+                        both.Checked = true;
+                        break;
+                }
+            }
+        }
+
+        private void AllRead_Click(object sender, EventArgs e)
+        {
+            foreach (Label l in StatusLabels)
+            {
+                int index = StatusLabels.IndexOf(l);
+                RadioButton game = null;
+                RadioButton mod = null;
+                RadioButton both = null;
+                CheckBox check = null;
+                foreach (Control c in l.Parent.Controls)
+                {
+                    if (c is RadioButton)
+                    {
+                        if (c.Tag == "mod")
+                            mod = c as RadioButton;
+                        else if (c.Tag == "game")
+                            game = c as RadioButton;
+                        else if (c.Tag == "both")
+                            both = c as RadioButton;
+                    }
+                    if (c is CheckBox)
+                        check = c as CheckBox;
+                }
+                switch (FileStatuses[index])
+                {
+                    case FileStatus.FileNotFound:
+                        break;
+                    case FileStatus.GameFoundModNot:
+                        check.Checked = true;
+                        break;
+                    case FileStatus.GameNotModFound:
+                        check.Checked = true;
+                        break;
+                    case FileStatus.BothFound:
+                        check.Checked = true;
+                        break;
+                }
+            }
+        }
+
+        private void AllNotRead_Click(object sender, EventArgs e)
+        {
+            foreach (Label l in StatusLabels)
+            {
+                int index = StatusLabels.IndexOf(l);
+                RadioButton game = null;
+                RadioButton mod = null;
+                RadioButton both = null;
+                CheckBox check = null;
+                foreach (Control c in l.Parent.Controls)
+                {
+                    if (c is RadioButton)
+                    {
+                        if (c.Tag == "mod")
+                            mod = c as RadioButton;
+                        else if (c.Tag == "game")
+                            game = c as RadioButton;
+                        else if (c.Tag == "both")
+                            both = c as RadioButton;
+                    }
+                    if (c is CheckBox)
+                        check = c as CheckBox;
+                }
+                if(both.Checked || mod.Checked)
+                {
+                    check.Checked = false;
+                }
             }
         }
     }
