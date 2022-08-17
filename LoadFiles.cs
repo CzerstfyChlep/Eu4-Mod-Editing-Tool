@@ -46,6 +46,7 @@ namespace Eu4ModEditor
                     string data = Reader.ReadLine();
                     string[] values = data.Split(';');
                     Province p = new Province(int.Parse(values[0]), int.Parse(values[1]), int.Parse(values[2]), int.Parse(values[3]), values[4]);
+                    GlobalVariables.CubeArray[int.Parse(values[1]), int.Parse(values[2]), int.Parse(values[3])] = p;
                     GlobalVariables.Provinces.Add(p);
                 }
             });
@@ -676,7 +677,8 @@ namespace Eu4ModEditor
                         Color c = bitmap.GetPixel(x, y);
                         if (c != Color.FromArgb(1, 255, 255, 255))
                         {
-                            Province p = GlobalVariables.Provinces.Find(pr => pr.c == c);
+                            //Province p = GlobalVariables.Provinces.Find(pr => pr.c == c);
+                            Province p = GlobalVariables.CubeArray[c.R, c.G, c.B];
                             if (p != null)
                             {
                                 p.Pixel = new Point(x, y);
@@ -1559,7 +1561,8 @@ namespace Eu4ModEditor
                     Color c = bitmap.GetPixel(x, y);
                     if (c != Color.FromArgb(1, 255, 255, 255))
                     {
-                        Province p = GlobalVariables.Provinces.Find(pr => pr.c == c);
+                        // Province p = GlobalVariables.Provinces.Find(pr => pr.c == c);
+                        Province p = GlobalVariables.CubeArray[c.R, c.G, c.B];
                         if (p != null)
                         {
                             p.Pixel = new Point(x, y);

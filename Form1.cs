@@ -298,7 +298,8 @@ namespace Eu4ModEditor
                 {
                     Point truePosition = new Point(e.Location.X - 40 + GlobalVariables.CameraPosition.X, e.Location.Y - 40 + GlobalVariables.CameraPosition.Y);
                     Color c = GlobalVariables.ProvincesMapBitmap.GetPixel(truePosition.X, truePosition.Y);
-                    Province p = GlobalVariables.Provinces.Find(x => x.R == c.R && x.G == c.G && x.B == c.B);
+                    //Province p = GlobalVariables.Provinces.Find(x => x.R == c.R && x.G == c.G && x.B == c.B);
+                    Province p = GlobalVariables.CubeArray[c.R, c.G, c.B];
                     //MessageBox.Show(c.R + " " + c.G + " " + c.B + "" + (p == null));
                     if (p != null)
                         if (e.Button == MouseButtons.Right)
@@ -581,9 +582,9 @@ namespace Eu4ModEditor
             IsCityCheckbox.Checked = p.City;
 
 
-            UpdateCoresPanel();
-            UpdateDiscoveredBy();
-            UpdateBuildings();
+            //UpdateCoresPanel();
+            //UpdateDiscoveredBy();
+            //UpdateBuildings();
         }
 
 
@@ -619,14 +620,12 @@ namespace Eu4ModEditor
 
             if (p.OwnerCountry != null)
             {
-                if (GlobalVariables.SelectedDiscoveredByTechGroup != p.OwnerCountry.TechnologyGroup)
+                if (GlobalVariables.SelectedDiscoveredByTechGroup != p.OwnerCountry.TechnologyGroup && GlobalVariables.mapmode == MapManagement.UpdateMapOptions.DiscoveredBy)
                 {
                     GlobalVariables.SelectedDiscoveredByTechGroup = p.OwnerCountry.TechnologyGroup;
                     MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.DiscoveredBy);
                 }
             }
-
-            UpdateMap();
         }
 
         void AddToClickedProvinces(Province p, bool Update = true)

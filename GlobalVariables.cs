@@ -127,9 +127,11 @@ namespace Eu4ModEditor
         public static string SelectedDiscoveredByTechGroup = "";
 
         public static int CurrentLoadingProgress = 0;
-    }
 
-   
+        public static Province[,,] CubeArray = new Province[256, 256, 256];
+
+
+    }
 }
 
 
