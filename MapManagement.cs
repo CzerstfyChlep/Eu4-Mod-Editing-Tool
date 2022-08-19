@@ -52,6 +52,7 @@ namespace Eu4ModEditor
                         {
                             GlobalVariables.DevelopmentBitmapLocked.SetPixel(borderpnt.X, borderpnt.Y, Color.Black);
                         }
+                        
                     }
                     GlobalVariables.DevelopmentBitmapLocked.UnlockBits();
                     break;

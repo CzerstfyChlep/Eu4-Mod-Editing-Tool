@@ -34,8 +34,13 @@ namespace Eu4ModEditor
                 GlobalVariables.CameraPosition.Y += 160;
             if (GlobalVariables.CameraPosition.X + 1090 >= GlobalVariables.ProvincesMap.Width)
                 GlobalVariables.CameraPosition.X = GlobalVariables.ProvincesMap.Width - 1090;
+            else if (GlobalVariables.CameraPosition.X < 0)
+                GlobalVariables.CameraPosition.X = 0;
             if (GlobalVariables.CameraPosition.Y + 770 >= GlobalVariables.ProvincesMap.Height)
                 GlobalVariables.CameraPosition.Y = GlobalVariables.ProvincesMap.Height - 770;
+            else if (GlobalVariables.CameraPosition.Y < 0)
+                GlobalVariables.CameraPosition.Y = 0;
+           
             ModEditor.UpdateMap();
         }
 

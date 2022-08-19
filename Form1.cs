@@ -294,14 +294,17 @@ namespace Eu4ModEditor
         {
             if (sender == this)
             {
+               
                 if (e.Location.X > 40 && e.Location.X < 1130 && e.Location.Y > 40 && e.Location.Y < 810)
                 {
+                   
                     Point truePosition = new Point(e.Location.X - 40 + GlobalVariables.CameraPosition.X, e.Location.Y - 40 + GlobalVariables.CameraPosition.Y);
                     Color c = GlobalVariables.ProvincesMapBitmap.GetPixel(truePosition.X, truePosition.Y);
                     //Province p = GlobalVariables.Provinces.Find(x => x.R == c.R && x.G == c.G && x.B == c.B);
                     Province p = GlobalVariables.CubeArray[c.R, c.G, c.B];
                     //MessageBox.Show(c.R + " " + c.G + " " + c.B + "" + (p == null));
                     if (p != null)
+                    {
                         if (e.Button == MouseButtons.Right)
                         {
                             if (!GlobalVariables.ClickedProvinces.Contains(p))
@@ -315,12 +318,18 @@ namespace Eu4ModEditor
                             {
                                 GlobalVariables.ClickedProvinces.Remove(p);
                                 MapManagement.UpdateClickedMap(new List<Province>() { p }, Color.White, false);
-                                
+
                             }
                         }
                         else
+                        {
                             if (p.HistoryFile != null)
+                            {
                                 ChangeClickedProvince(p);
+                                
+                            }
+                        }
+                    }
                     UpdateMap();
                 }
             }
@@ -582,9 +591,9 @@ namespace Eu4ModEditor
             IsCityCheckbox.Checked = p.City;
 
 
-            //UpdateCoresPanel();
-            //UpdateDiscoveredBy();
-            //UpdateBuildings();
+            UpdateCoresPanel();
+            UpdateDiscoveredBy();
+            UpdateBuildings();
         }
 
 
@@ -927,30 +936,40 @@ namespace Eu4ModEditor
         {
             DevelopmentManagement.RemoveAll();
             RefreshTradeGoodsTab();
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Development)
+                UpdateMap();
         }
 
         private void DevIncreaseAll_Click(object sender, EventArgs e)
         {
             DevelopmentManagement.DevIncreaseAll();
             RefreshTradeGoodsTab();
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Development)
+                UpdateMap();
         }
 
         private void RandomDevLow_Click(object sender, EventArgs e)
         {
             DevelopmentManagement.RandomLowDev();
             RefreshTradeGoodsTab();
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Development)
+                UpdateMap();
         }
 
         private void RandomDevMed_Click(object sender, EventArgs e)
         {
             DevelopmentManagement.RandomMedDev();
             RefreshTradeGoodsTab();
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Development)
+                UpdateMap();
         }
 
         private void RandomDevHigh_Click(object sender, EventArgs e)
         {
             DevelopmentManagement.RandomHighDev();
             RefreshTradeGoodsTab();
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Development)
+                UpdateMap();
         }
 
         private void OwnerBox_SelectedIndexChanged(object sender, EventArgs e)

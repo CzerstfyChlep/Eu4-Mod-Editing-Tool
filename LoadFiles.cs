@@ -51,6 +51,7 @@ namespace Eu4ModEditor
                 }
             });
             ldefinition.Start();
+
             progress.UpdateProgress(0, 0);
             Task ltradegoods = new Task(() => {
                 
