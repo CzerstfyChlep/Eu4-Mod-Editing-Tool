@@ -26,5 +26,10 @@ namespace Eu4ModEditor
             ReadableName = "Nothing",
             Color = Color.DarkRed
         };
+
+        public override string ToString()
+        {
+            return ReadableName;
+        }
     }
 }

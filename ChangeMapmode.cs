@@ -56,6 +56,9 @@ namespace Eu4ModEditor
                 case "DiscoveredByMapmode":
                     GlobalVariables.mapmode = MapManagement.UpdateMapOptions.DiscoveredBy;
                     break;
+                case "TradeCompanyMapmode":
+                    GlobalVariables.mapmode = MapManagement.UpdateMapOptions.TradeCompany;
+                    break;
             }
             ModEditor.UpdateMap();
         }

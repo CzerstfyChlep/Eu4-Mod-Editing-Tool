@@ -26,6 +26,10 @@ namespace Eu4ModEditor
             Color = Color.White,
             Name = "NoReligion"
         };
+        public override string ToString()
+        {
+            return ReadableName;
+        }
     }
 
     public class ReligionGroup

@@ -30,6 +30,8 @@ namespace Eu4ModEditor
         public static LockBitmap SuperregionBitmap;
         public static LockBitmap DiscoveredByBitmap;
         public static LockBitmap BaseWhiteProvincesBitmap;
+        public static LockBitmap TradeCompanyLocked;
+        public static LockBitmap GovernmentLocked;
         public static List<Task<Dictionary<int, List<Point>>>> MapLines = new List<Task<Dictionary<int, List<Point>>>>();
         public static List<TradeGood> TradeGoods = new List<TradeGood>();
         public static List<TradeGood> LatentTradeGoods = new List<TradeGood>();
@@ -69,6 +71,10 @@ namespace Eu4ModEditor
         public static bool TradeNodeInternalChange = false;
         public static bool ShowSeaTilesAreaMapmode = false;
         public static bool ContinentInternalChange = false;
+        public static bool TradeCompanyInternalChange = false;
+
+        public static bool CreateNewFilesReadOnly = false;
+        public static bool NewObjectsNewFiles = false;
 
         public static List<Province> ClickedProvinces = new List<Province>();
         public static List<object> ToUpdate = new List<object>();
@@ -83,6 +89,7 @@ namespace Eu4ModEditor
         public static List<Continent> Continents = new List<Continent>();
         public static List<Tradenode> TradeNodes = new List<Tradenode>();
         public static bool TradeDestClickingMode = false;
+        public static List<TradeCompany> TradeCompanies = new List<TradeCompany>();
 
         public static List<Building> Buildings = new List<Building>();
 
@@ -91,8 +98,8 @@ namespace Eu4ModEditor
         public static List<CountryModifier> CountryScopeModifiers = new List<CountryModifier>() { };
         public static List<string> CountryModifiers = new List<string>() { };
 
-        public static int[] UseMod = new int[19];
-        public static bool[] ReadOnly = new bool[19];
+        public static int[] UseMod = new int[20];
+        public static bool[] ReadOnly = new bool[20];
         public static bool LoadedProperly = false;
         public static bool FullyLoaded = false;
 
@@ -116,11 +123,16 @@ namespace Eu4ModEditor
         public static NodeFile GameTradeNodesFile;
         public static List<NodeFile> ModTradeNodesFiles = new List<NodeFile>();
 
+        public static NodeFile GameTradeCompanyFile;
+        public static List<NodeFile> ModTradeCompanyFiles = new List<NodeFile>();
+
         public static NodeFile GameCountryTagsFile;
         public static List<NodeFile> ModCountryTagsFiles = new List<NodeFile>();
 
         public static NodeFile GameGovernmentsFile;
         public static List<NodeFile> ModGovernmentsFiles = new List<NodeFile>();
+
+        public enum ModNodeFileTypes { TradeGoods = 0, Prices = 1, Cultures, Religions, TradeNodes, TradeCompanies, CountryTags, Governments };
 
         public static Form MainForm;
 

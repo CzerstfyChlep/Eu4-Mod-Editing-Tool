@@ -26,5 +26,9 @@ namespace Eu4ModEditor
         public Superregion Superregion;
         public string Name = "";
         public Color Color;
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

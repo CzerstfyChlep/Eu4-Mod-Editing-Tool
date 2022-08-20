@@ -111,6 +111,11 @@ namespace Eu4ModEditor
             }
         }
 
+        public override string ToString()
+        {
+            return FullName;
+        }
+
         public Dictionary<string, object> Variables = new Dictionary<string, object>();
 
         public Country()

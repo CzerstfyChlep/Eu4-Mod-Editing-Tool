@@ -216,6 +216,9 @@ namespace Eu4ModEditor
                 case 20:
                     l = BuildingProgress;
                     break;
+                case 21:
+                    l = TradeCompaniesProgress;
+                    break;
             }
             if (status == 0)
                 l.ForeColor = Color.DarkGoldenrod;

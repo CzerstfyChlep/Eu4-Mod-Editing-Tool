@@ -25,5 +25,9 @@ namespace Eu4ModEditor
         public List<Province> Provinces = new List<Province>();
         public string Name = "";
         public Color Color;
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

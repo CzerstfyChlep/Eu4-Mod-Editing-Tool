@@ -26,5 +26,9 @@ namespace Eu4ModEditor
         public string Name = "";
         public Color Color;
         public Region Region;
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

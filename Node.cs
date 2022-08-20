@@ -11,8 +11,9 @@ namespace Eu4ModEditor
     {
         public Node MainNode;
         public bool ReadOnly = false;
+        public bool CreatedByEditor = false;
         public string FileName = "";
-        string Path = "";
+        public string Path = "";
         public NodeFile()
         {
             MainNode = new Node("__MainNode");
@@ -25,12 +26,20 @@ namespace Eu4ModEditor
         }
         public void ReadFile(string path)
         {
-            if (!File.Exists(path))
-                return;
             Path = path;
             FileName = path.Split('\\').Last().Replace(".txt", "");
             Node CurrentNode = new Node("__MainNode");
             MainNode = CurrentNode;
+
+            if (!Directory.Exists(System.IO.Path.GetDirectoryName(Path)))
+            {
+                Directory.CreateDirectory(System.IO.Path.GetDirectoryName(Path));
+            }
+            if (!File.Exists(path))
+            {
+                CreatedByEditor = true;
+                return;
+            }       
             StreamReader Reader = new StreamReader(path);
             string read = "";
             string name = "";
@@ -114,7 +123,7 @@ namespace Eu4ModEditor
                 else if(character == '#')
                 {
                     comment = true;
-                    if(read.Trim() == "" || name.Trim() == "")
+                    if(read.Trim() == "")
                     {
                         commentLine = true;
                     }
@@ -277,10 +286,12 @@ namespace Eu4ModEditor
         public string Name = "";
         public string Value = "";
         public string Comment = "";
-        public Variable(string name, string value)
+        public bool StringVariable = false;
+        public Variable(string name, string value, bool str = false)
         {
             Name = name;
             Value = value;
+            StringVariable = str;
         }
     }
 }

@@ -72,6 +72,19 @@
             this.AddCoreBox = new System.Windows.Forms.ComboBox();
             this.CoresPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.AreaRegionPage = new System.Windows.Forms.TabPage();
+            this.groupBox18 = new System.Windows.Forms.GroupBox();
+            this.TradeCompanyRandomColor = new System.Windows.Forms.Button();
+            this.TradeCompanyColorButton = new System.Windows.Forms.Button();
+            this.label50 = new System.Windows.Forms.Label();
+            this.label47 = new System.Windows.Forms.Label();
+            this.label48 = new System.Windows.Forms.Label();
+            this.AddNewTradeCompanyBox = new System.Windows.Forms.TextBox();
+            this.AddNewTradeCompany = new System.Windows.Forms.Button();
+            this.SaveTradeCompanyFile = new System.Windows.Forms.Button();
+            this.TradeComapnyNameChangeSave = new System.Windows.Forms.Button();
+            this.TradeCompanyNameChangeBox = new System.Windows.Forms.TextBox();
+            this.TradeCompanyBox = new System.Windows.Forms.ComboBox();
+            this.label49 = new System.Windows.Forms.Label();
             this.groupBox17 = new System.Windows.Forms.GroupBox();
             this.label43 = new System.Windows.Forms.Label();
             this.label44 = new System.Windows.Forms.Label();
@@ -266,6 +279,7 @@
             this.SuperregionMapmode = new System.Windows.Forms.Button();
             this.DiscoveredByMapmode = new System.Windows.Forms.Button();
             this.GovernmentMapmode = new System.Windows.Forms.Button();
+            this.TradeCompanyMapmode = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.ProvinceTabControl.SuspendLayout();
@@ -278,6 +292,7 @@
             this.groupBox9.SuspendLayout();
             this.groupBox11.SuspendLayout();
             this.AreaRegionPage.SuspendLayout();
+            this.groupBox18.SuspendLayout();
             this.groupBox17.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
@@ -399,6 +414,8 @@
             // 
             // BuildingsBox
             // 
+            this.BuildingsBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.BuildingsBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.BuildingsBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.BuildingsBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.BuildingsBox.FormattingEnabled = true;
@@ -504,6 +521,8 @@
             // 
             // DiscoveredByBox
             // 
+            this.DiscoveredByBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.DiscoveredByBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.DiscoveredByBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.DiscoveredByBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.DiscoveredByBox.FormattingEnabled = true;
@@ -546,6 +565,8 @@
             // 
             // ControllerBox
             // 
+            this.ControllerBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.ControllerBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.ControllerBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ControllerBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.ControllerBox.FormattingEnabled = true;
@@ -570,6 +591,8 @@
             // 
             // OwnerBox
             // 
+            this.OwnerBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.OwnerBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.OwnerBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.OwnerBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.OwnerBox.FormattingEnabled = true;
@@ -607,6 +630,8 @@
             // 
             // CultureBox
             // 
+            this.CultureBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.CultureBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.CultureBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CultureBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.CultureBox.FormattingEnabled = true;
@@ -666,6 +691,8 @@
             // 
             // ProvinceTradeNodeBox
             // 
+            this.ProvinceTradeNodeBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.ProvinceTradeNodeBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.ProvinceTradeNodeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ProvinceTradeNodeBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.ProvinceTradeNodeBox.FormattingEnabled = true;
@@ -690,6 +717,8 @@
             // 
             // TradeGoodBox
             // 
+            this.TradeGoodBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.TradeGoodBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.TradeGoodBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.TradeGoodBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.TradeGoodBox.FormattingEnabled = true;
@@ -780,6 +809,8 @@
             // 
             // AddCoreBox
             // 
+            this.AddCoreBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.AddCoreBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.AddCoreBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.AddCoreBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.AddCoreBox.FormattingEnabled = true;
@@ -799,6 +830,7 @@
             // 
             // AreaRegionPage
             // 
+            this.AreaRegionPage.Controls.Add(this.groupBox18);
             this.AreaRegionPage.Controls.Add(this.groupBox17);
             this.AreaRegionPage.Controls.Add(this.groupBox5);
             this.AreaRegionPage.Controls.Add(this.groupBox6);
@@ -810,6 +842,142 @@
             this.AreaRegionPage.TabIndex = 1;
             this.AreaRegionPage.Text = "Area & Region";
             this.AreaRegionPage.UseVisualStyleBackColor = true;
+            // 
+            // groupBox18
+            // 
+            this.groupBox18.Controls.Add(this.TradeCompanyRandomColor);
+            this.groupBox18.Controls.Add(this.TradeCompanyColorButton);
+            this.groupBox18.Controls.Add(this.label50);
+            this.groupBox18.Controls.Add(this.label47);
+            this.groupBox18.Controls.Add(this.label48);
+            this.groupBox18.Controls.Add(this.AddNewTradeCompanyBox);
+            this.groupBox18.Controls.Add(this.AddNewTradeCompany);
+            this.groupBox18.Controls.Add(this.SaveTradeCompanyFile);
+            this.groupBox18.Controls.Add(this.TradeComapnyNameChangeSave);
+            this.groupBox18.Controls.Add(this.TradeCompanyNameChangeBox);
+            this.groupBox18.Controls.Add(this.TradeCompanyBox);
+            this.groupBox18.Controls.Add(this.label49);
+            this.groupBox18.Location = new System.Drawing.Point(6, 287);
+            this.groupBox18.Name = "groupBox18";
+            this.groupBox18.Size = new System.Drawing.Size(260, 158);
+            this.groupBox18.TabIndex = 38;
+            this.groupBox18.TabStop = false;
+            this.groupBox18.Text = "Province trade company";
+            // 
+            // TradeCompanyRandomColor
+            // 
+            this.TradeCompanyRandomColor.Location = new System.Drawing.Point(180, 98);
+            this.TradeCompanyRandomColor.Name = "TradeCompanyRandomColor";
+            this.TradeCompanyRandomColor.Size = new System.Drawing.Size(75, 23);
+            this.TradeCompanyRandomColor.TabIndex = 34;
+            this.TradeCompanyRandomColor.Text = "Random";
+            this.TradeCompanyRandomColor.UseVisualStyleBackColor = true;
+            this.TradeCompanyRandomColor.Click += new System.EventHandler(this.TradeCompanyRandomColor_Click);
+            // 
+            // TradeCompanyColorButton
+            // 
+            this.TradeCompanyColorButton.Location = new System.Drawing.Point(64, 98);
+            this.TradeCompanyColorButton.Name = "TradeCompanyColorButton";
+            this.TradeCompanyColorButton.Size = new System.Drawing.Size(111, 23);
+            this.TradeCompanyColorButton.TabIndex = 33;
+            this.TradeCompanyColorButton.UseVisualStyleBackColor = true;
+            this.TradeCompanyColorButton.Click += new System.EventHandler(this.TradeCompanyColorButton_Click);
+            // 
+            // label50
+            // 
+            this.label50.AutoSize = true;
+            this.label50.Location = new System.Drawing.Point(7, 103);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(34, 13);
+            this.label50.TabIndex = 32;
+            this.label50.Text = "Color:";
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Location = new System.Drawing.Point(7, 79);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(32, 13);
+            this.label47.TabIndex = 31;
+            this.label47.Text = "New:";
+            // 
+            // label48
+            // 
+            this.label48.AutoSize = true;
+            this.label48.Location = new System.Drawing.Point(6, 54);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(38, 13);
+            this.label48.TabIndex = 30;
+            this.label48.Text = "Name:";
+            // 
+            // AddNewTradeCompanyBox
+            // 
+            this.AddNewTradeCompanyBox.Location = new System.Drawing.Point(64, 76);
+            this.AddNewTradeCompanyBox.Name = "AddNewTradeCompanyBox";
+            this.AddNewTradeCompanyBox.Size = new System.Drawing.Size(111, 20);
+            this.AddNewTradeCompanyBox.TabIndex = 29;
+            // 
+            // AddNewTradeCompany
+            // 
+            this.AddNewTradeCompany.Location = new System.Drawing.Point(181, 76);
+            this.AddNewTradeCompany.Name = "AddNewTradeCompany";
+            this.AddNewTradeCompany.Size = new System.Drawing.Size(75, 20);
+            this.AddNewTradeCompany.TabIndex = 28;
+            this.AddNewTradeCompany.Text = "Add";
+            this.AddNewTradeCompany.UseVisualStyleBackColor = true;
+            this.AddNewTradeCompany.Click += new System.EventHandler(this.AddNewTradeCompany_Click);
+            // 
+            // SaveTradeCompanyFile
+            // 
+            this.SaveTradeCompanyFile.Location = new System.Drawing.Point(9, 127);
+            this.SaveTradeCompanyFile.Name = "SaveTradeCompanyFile";
+            this.SaveTradeCompanyFile.Size = new System.Drawing.Size(139, 24);
+            this.SaveTradeCompanyFile.TabIndex = 27;
+            this.SaveTradeCompanyFile.Text = "Save trade company file";
+            this.SaveTradeCompanyFile.UseVisualStyleBackColor = true;
+            this.SaveTradeCompanyFile.Click += new System.EventHandler(this.SaveTradeCompanyFile_Click);
+            // 
+            // TradeComapnyNameChangeSave
+            // 
+            this.TradeComapnyNameChangeSave.Location = new System.Drawing.Point(181, 50);
+            this.TradeComapnyNameChangeSave.Name = "TradeComapnyNameChangeSave";
+            this.TradeComapnyNameChangeSave.Size = new System.Drawing.Size(75, 20);
+            this.TradeComapnyNameChangeSave.TabIndex = 25;
+            this.TradeComapnyNameChangeSave.Text = "Save";
+            this.TradeComapnyNameChangeSave.UseVisualStyleBackColor = true;
+            this.TradeComapnyNameChangeSave.Click += new System.EventHandler(this.TradeComapnyNameChangeSave_Click);
+            // 
+            // TradeCompanyNameChangeBox
+            // 
+            this.TradeCompanyNameChangeBox.Location = new System.Drawing.Point(64, 50);
+            this.TradeCompanyNameChangeBox.Name = "TradeCompanyNameChangeBox";
+            this.TradeCompanyNameChangeBox.Size = new System.Drawing.Size(111, 20);
+            this.TradeCompanyNameChangeBox.TabIndex = 24;
+            // 
+            // TradeCompanyBox
+            // 
+            this.TradeCompanyBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.TradeCompanyBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.TradeCompanyBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.TradeCompanyBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.TradeCompanyBox.FormattingEnabled = true;
+            this.TradeCompanyBox.Items.AddRange(new object[] {
+            " "});
+            this.TradeCompanyBox.Location = new System.Drawing.Point(64, 19);
+            this.TradeCompanyBox.Name = "TradeCompanyBox";
+            this.TradeCompanyBox.Size = new System.Drawing.Size(190, 24);
+            this.TradeCompanyBox.TabIndex = 23;
+            this.TradeCompanyBox.TabStop = false;
+            this.TradeCompanyBox.SelectedIndexChanged += new System.EventHandler(this.TradeCompanyBox_SelectedIndexChanged);
+            // 
+            // label49
+            // 
+            this.label49.AutoSize = true;
+            this.label49.Location = new System.Drawing.Point(7, 25);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(54, 13);
+            this.label49.TabIndex = 0;
+            this.label49.Text = "Company:";
             // 
             // groupBox17
             // 
@@ -904,6 +1072,8 @@
             // 
             // SuperregionBox
             // 
+            this.SuperregionBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.SuperregionBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.SuperregionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SuperregionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.SuperregionBox.FormattingEnabled = true;
@@ -911,7 +1081,7 @@
             " "});
             this.SuperregionBox.Location = new System.Drawing.Point(75, 19);
             this.SuperregionBox.Name = "SuperregionBox";
-            this.SuperregionBox.Size = new System.Drawing.Size(111, 24);
+            this.SuperregionBox.Size = new System.Drawing.Size(179, 24);
             this.SuperregionBox.TabIndex = 23;
             this.SuperregionBox.TabStop = false;
             this.SuperregionBox.SelectedIndexChanged += new System.EventHandler(this.SuperregionBox_SelectedIndexChanged);
@@ -1018,6 +1188,8 @@
             // 
             // AreaBox
             // 
+            this.AreaBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.AreaBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.AreaBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.AreaBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.AreaBox.FormattingEnabled = true;
@@ -1025,7 +1197,7 @@
             " "});
             this.AreaBox.Location = new System.Drawing.Point(51, 19);
             this.AreaBox.Name = "AreaBox";
-            this.AreaBox.Size = new System.Drawing.Size(122, 24);
+            this.AreaBox.Size = new System.Drawing.Size(203, 24);
             this.AreaBox.TabIndex = 23;
             this.AreaBox.TabStop = false;
             this.AreaBox.SelectedIndexChanged += new System.EventHandler(this.AreaBox_SelectedIndexChanged);
@@ -1132,6 +1304,8 @@
             // 
             // RegionBox
             // 
+            this.RegionBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.RegionBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.RegionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.RegionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.RegionBox.FormattingEnabled = true;
@@ -1139,7 +1313,7 @@
             " "});
             this.RegionBox.Location = new System.Drawing.Point(55, 19);
             this.RegionBox.Name = "RegionBox";
-            this.RegionBox.Size = new System.Drawing.Size(122, 24);
+            this.RegionBox.Size = new System.Drawing.Size(202, 24);
             this.RegionBox.TabIndex = 23;
             this.RegionBox.TabStop = false;
             this.RegionBox.SelectedIndexChanged += new System.EventHandler(this.RegionBox_SelectedIndexChanged);
@@ -1246,6 +1420,8 @@
             // 
             // ContinentBox
             // 
+            this.ContinentBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.ContinentBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.ContinentBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ContinentBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.ContinentBox.FormattingEnabled = true;
@@ -1253,7 +1429,7 @@
             " "});
             this.ContinentBox.Location = new System.Drawing.Point(64, 19);
             this.ContinentBox.Name = "ContinentBox";
-            this.ContinentBox.Size = new System.Drawing.Size(111, 24);
+            this.ContinentBox.Size = new System.Drawing.Size(190, 24);
             this.ContinentBox.TabIndex = 23;
             this.ContinentBox.TabStop = false;
             this.ContinentBox.SelectedIndexChanged += new System.EventHandler(this.ContinentBox_SelectedIndexChanged);
@@ -2840,12 +3016,22 @@
             this.GovernmentMapmode.Text = "Government mapmode";
             this.GovernmentMapmode.UseVisualStyleBackColor = true;
             // 
+            // TradeCompanyMapmode
+            // 
+            this.TradeCompanyMapmode.Location = new System.Drawing.Point(1006, 879);
+            this.TradeCompanyMapmode.Name = "TradeCompanyMapmode";
+            this.TradeCompanyMapmode.Size = new System.Drawing.Size(136, 22);
+            this.TradeCompanyMapmode.TabIndex = 22;
+            this.TradeCompanyMapmode.Text = "Trade com. mapmode";
+            this.TradeCompanyMapmode.UseVisualStyleBackColor = true;
+            // 
             // ModEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.ClientSize = new System.Drawing.Size(1736, 905);
+            this.Controls.Add(this.TradeCompanyMapmode);
             this.Controls.Add(this.GovernmentMapmode);
             this.Controls.Add(this.DiscoveredByMapmode);
             this.Controls.Add(this.SuperregionMapmode);
@@ -2892,6 +3078,8 @@
             this.groupBox11.ResumeLayout(false);
             this.groupBox11.PerformLayout();
             this.AreaRegionPage.ResumeLayout(false);
+            this.groupBox18.ResumeLayout(false);
+            this.groupBox18.PerformLayout();
             this.groupBox17.ResumeLayout(false);
             this.groupBox17.PerformLayout();
             this.groupBox5.ResumeLayout(false);
@@ -3141,7 +3329,6 @@
         private System.Windows.Forms.GroupBox groupBox17;
         private System.Windows.Forms.Label label43;
         private System.Windows.Forms.Label label44;
-        private System.Windows.Forms.TextBox AddNewSuperregionBox;
         private System.Windows.Forms.Button AddNewSuperregion;
         private System.Windows.Forms.Button SaveSuperregionFile;
         private System.Windows.Forms.Button HideSeaTiles3;
@@ -3173,6 +3360,21 @@
         private System.Windows.Forms.TabPage MacroDiscoveredByPage;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button GovernmentMapmode;
+        private System.Windows.Forms.GroupBox groupBox18;
+        private System.Windows.Forms.Label label47;
+        private System.Windows.Forms.Label label48;
+        private System.Windows.Forms.TextBox AddNewTradeCompanyBox;
+        private System.Windows.Forms.Button AddNewTradeCompany;
+        private System.Windows.Forms.Button SaveTradeCompanyFile;
+        private System.Windows.Forms.Button TradeComapnyNameChangeSave;
+        private System.Windows.Forms.TextBox TradeCompanyNameChangeBox;
+        public System.Windows.Forms.ComboBox TradeCompanyBox;
+        private System.Windows.Forms.Label label49;
+        private System.Windows.Forms.TextBox AddNewSuperregionBox;
+        private System.Windows.Forms.Button TradeCompanyMapmode;
+        private System.Windows.Forms.Button TradeCompanyRandomColor;
+        private System.Windows.Forms.Button TradeCompanyColorButton;
+        private System.Windows.Forms.Label label50;
     }
 }
 

@@ -52,6 +52,7 @@
             this.BuildingProgress = new System.Windows.Forms.Label();
             this.ErrorList = new System.Windows.Forms.TextBox();
             this.ContinueButton = new System.Windows.Forms.Button();
+            this.TradeCompaniesProgress = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -316,12 +317,24 @@
             this.ContinueButton.UseVisualStyleBackColor = true;
             this.ContinueButton.Click += new System.EventHandler(this.ContinueButton_Click);
             // 
+            // TradeCompaniesProgress
+            // 
+            this.TradeCompaniesProgress.AutoSize = true;
+            this.TradeCompaniesProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.TradeCompaniesProgress.ForeColor = System.Drawing.Color.Gray;
+            this.TradeCompaniesProgress.Location = new System.Drawing.Point(254, 326);
+            this.TradeCompaniesProgress.Name = "TradeCompaniesProgress";
+            this.TradeCompaniesProgress.Size = new System.Drawing.Size(161, 16);
+            this.TradeCompaniesProgress.TabIndex = 24;
+            this.TradeCompaniesProgress.Text = "Loading trade companies";
+            // 
             // LoadingProgress
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(450, 528);
             this.ControlBox = false;
+            this.Controls.Add(this.TradeCompaniesProgress);
             this.Controls.Add(this.ContinueButton);
             this.Controls.Add(this.ErrorList);
             this.Controls.Add(this.BuildingProgress);
@@ -380,5 +393,6 @@
         private System.Windows.Forms.Label BuildingProgress;
         private System.Windows.Forms.TextBox ErrorList;
         private System.Windows.Forms.Button ContinueButton;
+        private System.Windows.Forms.Label TradeCompaniesProgress;
     }
 }

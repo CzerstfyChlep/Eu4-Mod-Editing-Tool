@@ -11,10 +11,15 @@ namespace Eu4ModEditor
     {
         public List<Culture> Cultures = new List<Culture>();
         public string Name = "";
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 
     public class Culture
     {
+
         public CultureGroup Group;
         public string PrimaryTag = "";
         public string Name = "";
@@ -46,6 +51,10 @@ namespace Eu4ModEditor
                 b = GlobalVariables.GlobalRandom.Next(0, 256);
             } while (r + g + b < 100 && r + g + b > 240 * 3);
             return Color.FromArgb(r, g, b);
+        }
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

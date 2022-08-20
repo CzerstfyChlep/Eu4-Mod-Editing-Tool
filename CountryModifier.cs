@@ -23,5 +23,9 @@ namespace Eu4ModEditor
             MaxValue = maxvalue;
             Integer = integer;
         }
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

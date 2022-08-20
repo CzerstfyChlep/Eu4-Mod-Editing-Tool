@@ -31,6 +31,7 @@ namespace Eu4ModEditor
             NodeFile regions;
             NodeFile continents;
             List<NodeFile> tradenodesfiles = new List<NodeFile>();
+            List<NodeFile> tradecompanyfiles = new List<NodeFile>();
             NodeFile Superregions;
 
             Task ldefinition = new Task(() => {
@@ -789,6 +790,72 @@ namespace Eu4ModEditor
                 }
             }));
 
+            Task ltradecomapnies = new Task(() =>
+            {
+                if (GlobalVariables.UseMod[19] != 0)
+                {
+                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\trade_companies\\"))
+                    {
+                        if (file.Contains('.'))
+                        {
+                            if (file.Split('.')[1] == "txt")
+                            {
+                                NodeFile nf = new NodeFile(file);
+                                tradecompanyfiles.Add(nf);
+                                GlobalVariables.ModTradeCompanyFiles.Add(nf);
+                            }
+                        }
+                    }
+                }
+                if (GlobalVariables.UseMod[19] != 1)
+                {
+                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\trade_companies\\"))
+                    {
+                        if (file.Contains('.'))
+                        {
+                            if (file.Split('.')[1] == "txt")
+                            {
+                                NodeFile nf = new NodeFile(file, true);
+                                if (!tradecompanyfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                    tradecompanyfiles.Add(nf);
+                                GlobalVariables.GameTradeCompanyFile = nf;
+                            }
+                        }
+                    }
+                }
+                foreach (NodeFile tradecompanies in tradecompanyfiles)
+                {
+                    foreach (Node node in tradecompanies.MainNode.Nodes)
+                    {
+                        TradeCompany tc = GlobalVariables.TradeCompanies.Find(x => x.Name == node.Name);
+                        if (tc == null)
+                        {
+                            tc = new TradeCompany() { Name = node.Name };
+                            GlobalVariables.TradeCompanies.Add(tc);
+                        }
+                        tc.ParentFile = tradecompanies;
+                        Node ColorNode = node.Nodes.Find(x => x.Name == "color");
+                        if (ColorNode != null)
+                            tc.Color = Color.FromArgb(int.Parse(ColorNode.PureValues[0]), int.Parse(ColorNode.PureValues[1]), int.Parse(ColorNode.PureValues[2]));
+                        else
+                            tc.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);                                           
+                        foreach (string value in node.Nodes.Find(x => x.Name == "provinces").PureValues)
+                        {
+                            if (int.Parse(value) <= GlobalVariables.Provinces.Count())
+                            {
+                                tc.Provinces.Add(GlobalVariables.Provinces[int.Parse(value) - 1]);
+                                GlobalVariables.Provinces[int.Parse(value) - 1].TradeCompany = tc;
+                            }
+                        }
+                        foreach(Node TCnames in node.Nodes.FindAll(x=>x.Name == "names")){
+                            tc.Names.Add(TCnames.Variables.Find(x => x.Name == "name").Value);
+                        }
+                    }
+                }
+            });
+            ltradecomapnies.Start();
+            progress.UpdateProgress(21, 0);
+
             await lmap;
             if (lmap.IsFaulted)
                 progress.UpdateProgress(2, 1);
@@ -1289,6 +1356,14 @@ namespace Eu4ModEditor
                 progress.UpdateProgress(17, 1);
             else if (ldefaultmap.IsCompleted)
                 progress.UpdateProgress(17, 2);
+            
+
+            await ltradecomapnies;         
+            if (ltradecomapnies.IsFaulted)
+                progress.UpdateProgress(21, 1);
+            else if (ltradecomapnies.IsCompleted)
+                progress.UpdateProgress(21, 2);
+
             await provincecentre;
             if (provincecentre.IsFaulted)
                 progress.UpdateProgress(3, 1);
@@ -1313,6 +1388,7 @@ namespace Eu4ModEditor
                 MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Fort);
                 MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Continent);
                 MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.TradeCompany);
             });
             umap.Start();
             progress.UpdateProgress(18, 0);
@@ -1358,6 +1434,8 @@ namespace Eu4ModEditor
                     ModEditor.form.BuildingsBox.Items.Add(bl.Name);
                 foreach (Superregion sr in GlobalVariables.Superregions)
                     ModEditor.form.SuperregionBox.Items.Add(sr.Name);
+                foreach (TradeCompany tc in GlobalVariables.TradeCompanies)
+                    ModEditor.form.TradeCompanyBox.Items.Add(tc);
             });
             ucontrol.Start();
             progress.UpdateProgress(19, 0);

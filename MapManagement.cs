@@ -9,7 +9,7 @@ namespace Eu4ModEditor
 {
     public static class MapManagement
     {
-        public enum UpdateMapOptions { Provinces, Development, TradeGood, Culture, Religion, Political, Area, Region, TradeNode, HRE, Fort, Continent, Superregion, DiscoveredBy };
+        public enum UpdateMapOptions { Provinces, Development, TradeGood, Culture, Religion, Political, Area, Region, TradeNode, HRE, Fort, Continent, Superregion, DiscoveredBy, TradeCompany, Government };
 
         public static void UpdateMap(List<Province> provinces, UpdateMapOptions options)
         {
@@ -375,6 +375,36 @@ namespace Eu4ModEditor
                     GlobalVariables.TradeNodeBitmap.UnlockBits();
                     break;
 
+                case UpdateMapOptions.TradeCompany:
+                    GlobalVariables.TradeCompanyLocked.LockBits();
+
+                    foreach (Province p in provinces)
+                    {
+                        Color c = Color.White;
+                        if (p.TradeCompany != null)
+                        {
+                            c = p.TradeCompany.Color;
+                        }
+                        Color borderc = Color.Black;
+                        if (p.Lake || p.Sea)
+                        {
+                            c = Color.Black;
+                            //borderc = Color.Black;
+                        }
+                        foreach (Point pon in p.Pixels)
+                        {
+                            GlobalVariables.TradeCompanyLocked.SetPixel(pon.X, pon.Y, c);
+                        }
+                        foreach (Point borderpnt in p.BorderPixels)
+                        {
+                            GlobalVariables.TradeCompanyLocked.SetPixel(borderpnt.X, borderpnt.Y, Color.Black);
+                        }
+
+                    }
+
+
+                    GlobalVariables.TradeCompanyLocked.UnlockBits();
+                    break;
 
                 case UpdateMapOptions.HRE:
                     GlobalVariables.HREBitmap.LockBits();

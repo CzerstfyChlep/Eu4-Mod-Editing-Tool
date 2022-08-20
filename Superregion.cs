@@ -25,5 +25,9 @@ namespace Eu4ModEditor
             Name = name;
             Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
         }
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

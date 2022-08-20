@@ -336,6 +336,20 @@ namespace Eu4ModEditor
         public string HistoryFile;
         public bool HistoryFileGame = false;
 
+        public TradeCompany TradeCompany
+        {
+            get
+            {
+                return Variables["TradeCompany"] as TradeCompany;
+            }
+            set
+            {
+                if (GlobalVariables.FullyLoaded)
+                    GlobalVariables.Changes.Add(new VariableChange(this, "TradeCompany", Variables["TradeCompany"], value.ToString()));
+                Variables["TradeCompany"] = value;
+            }
+        }
+
         public Area Area
         {
             get
@@ -429,6 +443,7 @@ namespace Eu4ModEditor
             Variables.Add("DiscoveredBy", new List<string>());
             Variables.Add("City", false);
             Variables.Add("Buildings", new List<Building>());
+            Variables.Add("TradeCompany", null);
         }
     }
 }

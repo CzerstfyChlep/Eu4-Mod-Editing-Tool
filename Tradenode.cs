@@ -19,6 +19,10 @@ namespace Eu4ModEditor
         public bool Endnode;
         public string File;
         public bool GameFile = false;
+        public override string ToString()
+        {
+            return Name;
+        }
     }
     public class Destination
     {
