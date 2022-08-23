@@ -107,6 +107,24 @@ namespace Eu4ModEditor
                     }
                     GlobalVariables.ReligionBitmapLocked.UnlockBits();
                     break;
+
+                case UpdateMapOptions.Government:
+                    GlobalVariables.GovernmentLocked.LockBits();
+
+                    foreach (Province p in provinces)
+                    {
+                        Color c = p.OwnerCountry?.Government?.Color ?? Color.White;                     
+                        Color bordercolor = Color.Black;
+
+                        if (p.Lake || p.Sea)
+                            c = Color.Black;
+                        foreach (Point pon in p.Pixels)
+                            GlobalVariables.GovernmentLocked.SetPixel(pon.X, pon.Y, c);
+                        foreach (Point borderpnt in p.BorderPixels)                        
+                            GlobalVariables.GovernmentLocked.SetPixel(borderpnt.X, borderpnt.Y, Color.Black);
+                    }
+                    GlobalVariables.GovernmentLocked.UnlockBits();
+                    break;
                 case UpdateMapOptions.Culture:
 
                     GlobalVariables.CultureBitmapLocked.LockBits();

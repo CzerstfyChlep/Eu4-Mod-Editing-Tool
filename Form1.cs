@@ -61,7 +61,7 @@ namespace Eu4ModEditor
             GlobalVariables.BaseWhiteProvincesBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
             GlobalVariables.DiscoveredByBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
             GlobalVariables.TradeCompanyLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-
+            GlobalVariables.GovernmentLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
 
             ProvincesMapmodeButton.Click += ChangeMapmode.ChangeMapmodeVoid;
             DevelopmentMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
@@ -78,6 +78,7 @@ namespace Eu4ModEditor
             SuperregionMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
             DiscoveredByMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
             TradeCompanyMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
+            GovernmentMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
 
             LoadFilesClass.LoadFiles();
 
@@ -371,107 +372,20 @@ namespace Eu4ModEditor
             else
                 ProvinceSeaLakeLabel.Text = "S/L: No";
 
-            if (ProvinceTaxNumeric.Value != p.Tax)
-            {
-                GlobalVariables.TaxInternalChange = true;
-                ProvinceTaxNumeric.Value = p.Tax;
-            }
-            if (ProvinceProductionNumeric.Value != p.Production)
-            {
-                GlobalVariables.ProductionInternalChange = true;
-                ProvinceProductionNumeric.Value = p.Production;
-            }
-            if (ProvinceManpowerNumeric.Value != p.Manpower)
-            {
-                GlobalVariables.ManpowerInternalChange = true;
-                ProvinceManpowerNumeric.Value = p.Manpower;
-            }
-
-            int tradegoodindex = TradeGoodBox.Items.IndexOf(p.TradeGood.ReadableName);
-            if (tradegoodindex != TradeGoodBox.SelectedIndex)
-            {
-                GlobalVariables.TradeGoodInternalChange = true;
-                TradeGoodBox.SelectedIndex = tradegoodindex;
-            }
-
-            if (p.LatentTradeGood != null)
-            {
-                if (LatentTradeGoodBox.SelectedIndex != LatentTradeGoodBox.Items.IndexOf(p.LatentTradeGood.ReadableName))
-                {
-                    GlobalVariables.LatentTradeGoodInternalChange = true;
-                    LatentTradeGoodBox.SelectedIndex = LatentTradeGoodBox.Items.IndexOf(p.LatentTradeGood.ReadableName);
-                }
-            }
-            else
-            {
-                if (LatentTradeGoodBox.SelectedIndex != 0)
-                {
-                    GlobalVariables.LatentTradeGoodInternalChange = true;
-                    LatentTradeGoodBox.SelectedIndex = 0;
-                }
-            }
-
-            if (p.Religion != null)
-            {
-                int index = ReligionBox.Items.IndexOf(p.Religion.ReadableName);
-                if (ReligionBox.SelectedIndex != index)
-                {
-                    GlobalVariables.ReligionInternalChange = true;
-                    ReligionBox.SelectedIndex = ReligionBox.Items.IndexOf(p.Religion.ReadableName);
-                }
-            }
-            else
-            {
-                GlobalVariables.ReligionInternalChange = true;
-                ReligionBox.SelectedIndex = ReligionBox.Items.IndexOf("NoReligion");
-            }
-
-
-            if (p.Culture != null)
-            {
-                int index = CultureBox.Items.IndexOf(p.Culture.Name);
-                if (CultureBox.SelectedIndex != index)
-                {
-                    GlobalVariables.CultureInternalChange = true;
-                    CultureBox.SelectedIndex = index;
-                }
-            }
-            else
-            {
-                GlobalVariables.CultureInternalChange = true;
-                CultureBox.SelectedIndex = CultureBox.Items.IndexOf("NoCulture");
-            }
-
-            HRECheckbox.Checked = p.HRE;
-            FortCheckbox.Checked = p.Fort;
-            GlobalVariables.ProvinceCenterOfTradeInternalChange = true;
-            CenterOfTradeNumeric.Value = p.CenterOfTrade;
-
-            if (p.OwnerCountry != null)
-            {
-                int index = OwnerBox.Items.IndexOf(p.OwnerCountry.FullName + ", " + p.OwnerCountry.Tag);
-                if (OwnerBox.SelectedIndex != index)
-                {
-                    GlobalVariables.OwnerInternalChange = true;
-                    OwnerBox.SelectedIndex = index;
-                }
-                if (CountryBox.SelectedIndex != index)
-                {
-                    CountryBox.SelectedIndex = index;
-                }
-            }
-            else
-            {
-                if (OwnerBox.SelectedIndex != 0)
-                {
-                    GlobalVariables.OwnerInternalChange = true;
-                    OwnerBox.SelectedIndex = 0;
-                }
-                if (CountryBox.SelectedIndex != 0)
-                {
-                    CountryBox.SelectedIndex = 0;
-                }
-            }
+            ChangeValueInternally(ProvinceTaxNumeric, p.Tax);
+            ChangeValueInternally(ProvinceProductionNumeric, p.Production);
+            ChangeValueInternally(ProvinceManpowerNumeric, p.Manpower);
+            ChangeValueInternally(TradeGoodBox, TradeGoodBox.Items.IndexOf(p.TradeGood?.ReadableName ?? ""));
+            ChangeValueInternally(LatentTradeGoodBox, LatentTradeGoodBox.Items.IndexOf(p.LatentTradeGood?.ReadableName ?? ""));
+            ChangeValueInternally(ReligionBox, ReligionBox.Items.IndexOf(p.Religion?.ReadableName ?? ""));
+            ChangeValueInternally(CultureBox, CultureBox.Items.IndexOf(p.Culture?.Name ?? ""));
+            ChangeValueInternally(HRECheckbox, p.HRE);
+            ChangeValueInternally(FortCheckbox, p.Fort);
+            ChangeValueInternally(CenterOfTradeNumeric, p.CenterOfTrade);
+            int OwnerIndex = OwnerBox.Items.IndexOf((p.OwnerCountry?.FullName ?? "") + ", " + (p.OwnerCountry?.Tag ?? ""));
+            ChangeValueInternally(OwnerBox, OwnerIndex);
+            ChangeValueInternally(CountryBox, OwnerIndex);
+            
 
             if (p.Controller != "")
             {
@@ -795,81 +709,93 @@ namespace Eu4ModEditor
         }
 
 
+        public void ChangeValueInternally(Control control, object value)
+        {
+            GlobalVariables.InternalChanges = true;
+            if (control is NumericUpDown)
+                ((NumericUpDown)control).Value = (int)value;
+            else if (control is CheckBox)
+                ((CheckBox)control).Checked = (bool)value;
+            else if (control is ComboBox)
+            {
+                if((int)value == -1)
+                    ((ComboBox)control).SelectedIndex = 0;
+                else
+                    ((ComboBox)control).SelectedIndex = (int)value;
+            }
+            else if (control is TextBox)
+                ((TextBox)control).Text = (string)value;
+            GlobalVariables.InternalChanges = false; 
+        }
+
         private void ProvinceTaxNumeric_ValueChanged(object sender, EventArgs e)
         {
-            if (!GlobalVariables.TaxInternalChange)
+            if (GlobalVariables.InternalChanges)            
+                return;           
+            if (GlobalVariables.ClickedProvince != null)
             {
-                if (GlobalVariables.ClickedProvince != null)
+                if (GlobalVariables.ClickedProvince.TradeGood != null)
                 {
-                    if (GlobalVariables.ClickedProvince.TradeGood != null)
-                    {
-                        GlobalVariables.ClickedProvince.TradeGood.TotalDev += (int)ProvinceTaxNumeric.Value - GlobalVariables.ClickedProvince.Tax;
-                    }
-                    GlobalVariables.ClickedProvince.Tax = (int)ProvinceTaxNumeric.Value;
+                    GlobalVariables.ClickedProvince.TradeGood.TotalDev += (int)ProvinceTaxNumeric.Value - GlobalVariables.ClickedProvince.Tax;
                 }
-                MapManagement.UpdateMap(GlobalVariables.ClickedProvince, MapManagement.UpdateMapOptions.Development);
-                if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Development)
-                    UpdateMap();
-
-                //if (!GlobalVariables.ToUpdate.Contains(GlobalVariables.ClickedProvince))
-                //    GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
-                GlobalVariables.UpdateDevInfo = new Task(UpdateDevCount);
-                GlobalVariables.UpdateDevInfo.Start();
-                RefreshTradeGoodsTab();
+                GlobalVariables.ClickedProvince.Tax = (int)ProvinceTaxNumeric.Value;
             }
-            else
-                GlobalVariables.TaxInternalChange = false;
+            MapManagement.UpdateMap(GlobalVariables.ClickedProvince, MapManagement.UpdateMapOptions.Development);
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Development)
+                UpdateMap();
+
+            //if (!GlobalVariables.ToUpdate.Contains(GlobalVariables.ClickedProvince))
+            //    GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
+            GlobalVariables.UpdateDevInfo = new Task(UpdateDevCount);
+            GlobalVariables.UpdateDevInfo.Start();
+            RefreshTradeGoodsTab();
         }
 
         private void ProvinceProductionNumeric_ValueChanged(object sender, EventArgs e)
         {
-            if (!GlobalVariables.ProductionInternalChange)
+            if (GlobalVariables.InternalChanges)
+                return;
+            if (GlobalVariables.ClickedProvince != null)
             {
-                if (GlobalVariables.ClickedProvince != null)
+                if (GlobalVariables.ClickedProvince.TradeGood != null)
                 {
-                    if (GlobalVariables.ClickedProvince.TradeGood != null)
-                    {
-                        GlobalVariables.ClickedProvince.TradeGood.TotalDev += (int)ProvinceProductionNumeric.Value - GlobalVariables.ClickedProvince.Production;
-                    }
-                    GlobalVariables.ClickedProvince.Production = (int)ProvinceProductionNumeric.Value;
-
+                    GlobalVariables.ClickedProvince.TradeGood.TotalDev += (int)ProvinceProductionNumeric.Value - GlobalVariables.ClickedProvince.Production;
                 }
-                MapManagement.UpdateMap(GlobalVariables.ClickedProvince, MapManagement.UpdateMapOptions.Development);
-                if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Development)
-                    UpdateMap();
-                // if (!GlobalVariables.ToUpdate.Contains(GlobalVariables.ClickedProvince))
-                //    GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
-                GlobalVariables.UpdateDevInfo = new Task(UpdateDevCount);
-                GlobalVariables.UpdateDevInfo.Start();
-                RefreshTradeGoodsTab();
+                GlobalVariables.ClickedProvince.Production = (int)ProvinceProductionNumeric.Value;
+
             }
-            else
-                GlobalVariables.ProductionInternalChange = false;
+            MapManagement.UpdateMap(GlobalVariables.ClickedProvince, MapManagement.UpdateMapOptions.Development);
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Development)
+                UpdateMap();
+            // if (!GlobalVariables.ToUpdate.Contains(GlobalVariables.ClickedProvince))
+            //    GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
+            GlobalVariables.UpdateDevInfo = new Task(UpdateDevCount);
+            GlobalVariables.UpdateDevInfo.Start();
+            RefreshTradeGoodsTab();
+
         }
 
         private void ProvinceManpowerNumeric_ValueChanged(object sender, EventArgs e)
         {
-            if (!GlobalVariables.ManpowerInternalChange)
+            if (GlobalVariables.InternalChanges)
+                return;
+            if (GlobalVariables.ClickedProvince != null)
             {
-                if (GlobalVariables.ClickedProvince != null)
+                GlobalVariables.ClickedProvince.Manpower = (int)ProvinceManpowerNumeric.Value;
+                if (GlobalVariables.ClickedProvince.TradeGood != null)
                 {
-                    GlobalVariables.ClickedProvince.Manpower = (int)ProvinceManpowerNumeric.Value;
-                    if (GlobalVariables.ClickedProvince.TradeGood != null)
-                    {
-                        GlobalVariables.ClickedProvince.TradeGood.TotalDev += (int)ProvinceManpowerNumeric.Value - GlobalVariables.ClickedProvince.Manpower;
-                    }
+                    GlobalVariables.ClickedProvince.TradeGood.TotalDev += (int)ProvinceManpowerNumeric.Value - GlobalVariables.ClickedProvince.Manpower;
                 }
-                MapManagement.UpdateMap(GlobalVariables.ClickedProvince, MapManagement.UpdateMapOptions.Development);
-                if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Development)
-                    UpdateMap();
-                //  if (!GlobalVariables.ToUpdate.Contains(GlobalVariables.ClickedProvince))
-                //      GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
-                GlobalVariables.UpdateDevInfo = new Task(UpdateDevCount);
-                GlobalVariables.UpdateDevInfo.Start();
-                RefreshTradeGoodsTab();
             }
-            else
-                GlobalVariables.ManpowerInternalChange = false;
+            MapManagement.UpdateMap(GlobalVariables.ClickedProvince, MapManagement.UpdateMapOptions.Development);
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Development)
+                UpdateMap();
+            //  if (!GlobalVariables.ToUpdate.Contains(GlobalVariables.ClickedProvince))
+            //      GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
+            GlobalVariables.UpdateDevInfo = new Task(UpdateDevCount);
+            GlobalVariables.UpdateDevInfo.Start();
+            RefreshTradeGoodsTab();
+
         }
 
         private void TradeGoodBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -905,9 +831,9 @@ namespace Eu4ModEditor
             }
             else
             {
-                if (!GlobalVariables.TradeGoodInternalChange)
-                {
-                    if (GlobalVariables.ClickedProvince != null)
+                if (GlobalVariables.InternalChanges)
+                    return;
+                if (GlobalVariables.ClickedProvince != null)
                     {
                         if (GlobalVariables.ClickedProvince.TradeGood != null)
                         {
@@ -928,28 +854,23 @@ namespace Eu4ModEditor
                     //if (!GlobalVariables.ToUpdate.Contains(GlobalVariables.ClickedProvince))
                     //    GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
                     RefreshTradeGoodsTab();
-                }
-                else
-                    GlobalVariables.TradeGoodInternalChange = false;
             }
         }
 
         private void CultureBox_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            if (!GlobalVariables.CultureInternalChange)
-                ChangeProvinceInfo(ChangeProvinceMode.Culture, Culture.Cultures.Find(x => x.Name == (string)CultureBox.SelectedItem));
-            else
-                GlobalVariables.CultureInternalChange = false;
+            if (GlobalVariables.InternalChanges)
+                return;
+            ChangeProvinceInfo(ChangeProvinceMode.Culture, Culture.Cultures.Find(x => x.Name == (string)CultureBox.SelectedItem));
 
         }
 
         private void ReligionBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!GlobalVariables.ReligionInternalChange)
-                ChangeProvinceInfo(ChangeProvinceMode.Religion, Religion.Religions.Find(x => x.ReadableName == (string)ReligionBox.SelectedItem));
-            else
-                GlobalVariables.ReligionInternalChange = false;
+            if (GlobalVariables.InternalChanges)
+                return;
+            ChangeProvinceInfo(ChangeProvinceMode.Religion, Religion.Religions.Find(x => x.ReadableName == (string)ReligionBox.SelectedItem));
         }
 
         private void RemoveDevButton_Click(object sender, EventArgs e)
@@ -999,12 +920,9 @@ namespace Eu4ModEditor
 
         private void OwnerBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (!GlobalVariables.OwnerInternalChange)
-            {
-                ChangeProvinceInfo(ChangeProvinceMode.Owner, OwnerBox.SelectedIndex);
-            }
-            else
-                GlobalVariables.OwnerInternalChange = false;
+            if (GlobalVariables.InternalChanges)
+                return;
+            ChangeProvinceInfo(ChangeProvinceMode.Owner, OwnerBox.SelectedIndex);
         }
 
         private void CountryBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -1273,6 +1191,7 @@ namespace Eu4ModEditor
             MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Religion);
             MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Culture);
             MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Political);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Government);
             MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
             MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
             MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
@@ -1311,9 +1230,9 @@ namespace Eu4ModEditor
             }
             else
             {
-                if (!GlobalVariables.LatentTradeGoodInternalChange)
-                {
-                    if (GlobalVariables.ClickedProvince != null)
+                if (GlobalVariables.InternalChanges)
+                    return;
+                if (GlobalVariables.ClickedProvince != null)
                     {
                         if (GlobalVariables.ClickedProvince.LatentTradeGood != null)
                         {
@@ -1334,9 +1253,7 @@ namespace Eu4ModEditor
                     //if (!GlobalVariables.ToUpdate.Contains(GlobalVariables.ClickedProvince))
                     //GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
                     RefreshTradeGoodsTab();
-                }
-                else
-                    GlobalVariables.LatentTradeGoodInternalChange = false;
+                
             }
         }
 
@@ -2751,6 +2668,7 @@ namespace Eu4ModEditor
                         }
                     }
                     MapManagement.UpdateMap(ApplyTo, MapManagement.UpdateMapOptions.Political);
+                    MapManagement.UpdateMap(ApplyTo, MapManagement.UpdateMapOptions.Government);
                     if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Political)
                         UpdateMap();
 
@@ -2771,6 +2689,7 @@ namespace Eu4ModEditor
                         }
                     }
                     MapManagement.UpdateMap(ApplyTo, MapManagement.UpdateMapOptions.Political);
+                    MapManagement.UpdateMap(ApplyTo, MapManagement.UpdateMapOptions.Government);
                     if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Political)
                         UpdateMap();
                     break;
@@ -3028,12 +2947,10 @@ namespace Eu4ModEditor
 
         private void CenterOfTradeNumeric_ValueChanged(object sender, EventArgs e)
         {
-            if (!GlobalVariables.ProvinceCenterOfTradeInternalChange)
-            {
-                ChangeProvinceInfo(ChangeProvinceMode.CoT, (int)CenterOfTradeNumeric.Value);
-            }
-            else
-                GlobalVariables.ProvinceCenterOfTradeInternalChange = false;
+            if (GlobalVariables.InternalChanges)
+                return;
+            ChangeProvinceInfo(ChangeProvinceMode.CoT, (int)CenterOfTradeNumeric.Value);
+            
         }
 
         private void MakeCityButton_Click(object sender, EventArgs e)

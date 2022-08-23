@@ -162,6 +162,7 @@
     <Compile Include="Religion.cs" />
     <Compile Include="Saving.cs" />
     <Compile Include="Superregion.cs" />
+    <Compile Include="SyncLoad.cs" />
     <Compile Include="TradeCompany.cs" />
     <Compile Include="TradeGood.cs" />
     <Compile Include="Tradenode.cs" />

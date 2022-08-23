@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Eu4ModEditor
@@ -58,6 +55,9 @@ namespace Eu4ModEditor
                     break;
                 case "TradeCompanyMapmode":
                     GlobalVariables.mapmode = MapManagement.UpdateMapOptions.TradeCompany;
+                    break;
+                case "GovernmentMapmode":
+                    GlobalVariables.mapmode = MapManagement.UpdateMapOptions.Government;
                     break;
             }
             ModEditor.UpdateMap();

@@ -143,6 +143,8 @@ namespace Eu4ModEditor
         public static Province[,,] CubeArray = new Province[256, 256, 256];
 
 
+        public static bool InternalChanges = false;
+
     }
 }
 

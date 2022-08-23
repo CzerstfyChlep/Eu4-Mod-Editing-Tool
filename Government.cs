@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Eu4ModEditor
 {
@@ -10,6 +8,7 @@ namespace Eu4ModEditor
     {
         public string Type = "";
         public List<string> reforms = new List<string>();
+        public Color Color;
         public Government(string type)
         {
             Type = type;
