@@ -114,13 +114,13 @@ namespace Eu4ModEditor
                         if (n != null)
                         {
                             n.PureValues.Clear();
-                            n.PureValues.Add(province.LatentTradeGood.Name);
+                            n.AddPureValue(province.LatentTradeGood.Name);
                         }
                         else
                         {
                             n = new Node("latent_trade_goods", nf.MainNode);
                             nf.MainNode.Nodes.Add(n);
-                            n.PureValues.Add(province.LatentTradeGood.Name);
+                            n.AddPureValue(province.LatentTradeGood.Name);
                         }
                     }
                     else
@@ -321,13 +321,13 @@ namespace Eu4ModEditor
                             if (n != null)
                             {
                                 n.PureValues.Clear();
-                                n.PureValues.Add(province.LatentTradeGood.Name);
+                                n.AddPureValue(province.LatentTradeGood.Name);
                             }
                             else
                             {
                                 n = new Node("latent_trade_goods", nf.MainNode);
                                 nf.MainNode.Nodes.Add(n);
-                                n.PureValues.Add(province.LatentTradeGood.Name);
+                                n.AddPureValue(province.LatentTradeGood.Name);
                             }
                         }
                         else
@@ -517,7 +517,7 @@ namespace Eu4ModEditor
                     {
                         if (n.PureValues.Any())
                         {
-                            province.Variables["LatentTradeGood"] = GlobalVariables.TradeGoods.Find(x => x.Name == n.PureValues[0].Trim());
+                            province.Variables["LatentTradeGood"] = GlobalVariables.TradeGoods.Find(x => x.Name == n.PureValues[0].Name.Trim());
                             if (province.LatentTradeGood != null)
                             {
                                 province.LatentTradeGood.TotalProvinces++;

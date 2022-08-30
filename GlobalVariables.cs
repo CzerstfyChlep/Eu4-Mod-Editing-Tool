@@ -46,14 +46,6 @@ namespace Eu4ModEditor
         public static Thread UpdtGraphicsThread;
         public static bool ChangedSomething = false;
         public static bool MultiProvinceMode = false;
-        public static bool TaxInternalChange = false;
-        public static bool ProductionInternalChange = false;
-        public static bool ManpowerInternalChange = false;
-        public static bool TradeGoodInternalChange = false;
-        public static bool LatentTradeGoodInternalChange = false;
-        public static bool ReligionInternalChange = false;
-        public static bool CultureInternalChange = false;
-        public static bool OwnerInternalChange = false;
         public static bool ControllerInternalChange = false;
         public static bool HREInternalChange = false;
         public static bool FortInternalChange = false;
@@ -98,8 +90,8 @@ namespace Eu4ModEditor
         public static List<CountryModifier> CountryScopeModifiers = new List<CountryModifier>() { };
         public static List<string> CountryModifiers = new List<string>() { };
 
-        public static int[] UseMod = new int[20];
-        public static bool[] ReadOnly = new bool[20];
+        public static int[] UseMod = new int[21];
+        public static bool[] ReadOnly = new bool[21];
         public static bool LoadedProperly = false;
         public static bool FullyLoaded = false;
 
@@ -145,6 +137,12 @@ namespace Eu4ModEditor
 
         public static bool InternalChanges = false;
 
+        public enum Languages { English, French, German, Spanish };
+
+        public static Languages LocalisationLanguage = Languages.English;
+
+        public static Dictionary<string, string> LocalisationEntries = new Dictionary<string, string>();
+        public static Dictionary<string, string> ModLocalisationEntries = new Dictionary<string, string>();
     }
 }
 

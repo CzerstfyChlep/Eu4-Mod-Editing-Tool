@@ -280,6 +280,14 @@
             this.DiscoveredByMapmode = new System.Windows.Forms.Button();
             this.GovernmentMapmode = new System.Windows.Forms.Button();
             this.TradeCompanyMapmode = new System.Windows.Forms.Button();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label51 = new System.Windows.Forms.Label();
+            this.ProvinceNameLocalisationBox = new System.Windows.Forms.TextBox();
+            this.ProvinceAdjectiveLocalisationBox = new System.Windows.Forms.TextBox();
+            this.label52 = new System.Windows.Forms.Label();
+            this.SaveLocalisationButton = new System.Windows.Forms.Button();
+            this.SaveProvinceName = new System.Windows.Forms.Button();
+            this.SaveProvinceAdj = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.ProvinceTabControl.SuspendLayout();
@@ -319,6 +327,7 @@
             this.MacroReligionPage.SuspendLayout();
             this.ChangesTab.SuspendLayout();
             this.SavingTab.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tabs
@@ -357,6 +366,7 @@
             // 
             this.ProvinceTabControl.Controls.Add(this.MainPage);
             this.ProvinceTabControl.Controls.Add(this.AreaRegionPage);
+            this.ProvinceTabControl.Controls.Add(this.tabPage1);
             this.ProvinceTabControl.Location = new System.Drawing.Point(6, 177);
             this.ProvinceTabControl.Name = "ProvinceTabControl";
             this.ProvinceTabControl.SelectedIndex = 0;
@@ -3025,6 +3035,84 @@
             this.TradeCompanyMapmode.Text = "Trade com. mapmode";
             this.TradeCompanyMapmode.UseVisualStyleBackColor = true;
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.SaveProvinceAdj);
+            this.tabPage1.Controls.Add(this.SaveProvinceName);
+            this.tabPage1.Controls.Add(this.SaveLocalisationButton);
+            this.tabPage1.Controls.Add(this.ProvinceAdjectiveLocalisationBox);
+            this.tabPage1.Controls.Add(this.label52);
+            this.tabPage1.Controls.Add(this.ProvinceNameLocalisationBox);
+            this.tabPage1.Controls.Add(this.label51);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Size = new System.Drawing.Size(537, 524);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "Localisation";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Location = new System.Drawing.Point(12, 11);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(81, 13);
+            this.label51.TabIndex = 0;
+            this.label51.Text = "Province name:";
+            // 
+            // ProvinceNameLocalisationBox
+            // 
+            this.ProvinceNameLocalisationBox.Location = new System.Drawing.Point(15, 27);
+            this.ProvinceNameLocalisationBox.Name = "ProvinceNameLocalisationBox";
+            this.ProvinceNameLocalisationBox.Size = new System.Drawing.Size(251, 20);
+            this.ProvinceNameLocalisationBox.TabIndex = 1;
+            // 
+            // ProvinceAdjectiveLocalisationBox
+            // 
+            this.ProvinceAdjectiveLocalisationBox.Location = new System.Drawing.Point(15, 66);
+            this.ProvinceAdjectiveLocalisationBox.Name = "ProvinceAdjectiveLocalisationBox";
+            this.ProvinceAdjectiveLocalisationBox.Size = new System.Drawing.Size(251, 20);
+            this.ProvinceAdjectiveLocalisationBox.TabIndex = 3;
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(12, 50);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(98, 13);
+            this.label52.TabIndex = 2;
+            this.label52.Text = "Province adjective:";
+            // 
+            // SaveLocalisationButton
+            // 
+            this.SaveLocalisationButton.Location = new System.Drawing.Point(15, 92);
+            this.SaveLocalisationButton.Name = "SaveLocalisationButton";
+            this.SaveLocalisationButton.Size = new System.Drawing.Size(251, 23);
+            this.SaveLocalisationButton.TabIndex = 4;
+            this.SaveLocalisationButton.Text = "Save localisation";
+            this.SaveLocalisationButton.UseVisualStyleBackColor = true;
+            this.SaveLocalisationButton.Click += new System.EventHandler(this.SaveLocalisationButton_Click);
+            // 
+            // SaveProvinceName
+            // 
+            this.SaveProvinceName.Location = new System.Drawing.Point(272, 27);
+            this.SaveProvinceName.Name = "SaveProvinceName";
+            this.SaveProvinceName.Size = new System.Drawing.Size(75, 20);
+            this.SaveProvinceName.TabIndex = 5;
+            this.SaveProvinceName.Text = "Save";
+            this.SaveProvinceName.UseVisualStyleBackColor = true;
+            this.SaveProvinceName.Click += new System.EventHandler(this.SaveProvinceName_Click);
+            // 
+            // SaveProvinceAdj
+            // 
+            this.SaveProvinceAdj.Location = new System.Drawing.Point(272, 66);
+            this.SaveProvinceAdj.Name = "SaveProvinceAdj";
+            this.SaveProvinceAdj.Size = new System.Drawing.Size(75, 20);
+            this.SaveProvinceAdj.TabIndex = 6;
+            this.SaveProvinceAdj.Text = "Save";
+            this.SaveProvinceAdj.UseVisualStyleBackColor = true;
+            this.SaveProvinceAdj.Click += new System.EventHandler(this.SaveProvinceAdj_Click);
+            // 
             // ModEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3117,6 +3205,8 @@
             this.MacroReligionPage.ResumeLayout(false);
             this.ChangesTab.ResumeLayout(false);
             this.SavingTab.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3375,6 +3465,14 @@
         private System.Windows.Forms.Button TradeCompanyRandomColor;
         private System.Windows.Forms.Button TradeCompanyColorButton;
         private System.Windows.Forms.Label label50;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TextBox ProvinceNameLocalisationBox;
+        private System.Windows.Forms.Label label51;
+        private System.Windows.Forms.TextBox ProvinceAdjectiveLocalisationBox;
+        private System.Windows.Forms.Label label52;
+        private System.Windows.Forms.Button SaveLocalisationButton;
+        private System.Windows.Forms.Button SaveProvinceAdj;
+        private System.Windows.Forms.Button SaveProvinceName;
     }
 }
 

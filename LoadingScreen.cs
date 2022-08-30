@@ -88,7 +88,9 @@ namespace Eu4ModEditor
             /*7*/"common\\countries\\", /*8*/"history\\provinces\\", /*9*/"map\\area.txt",
             /*10*/"map\\default.map", /*11*/"history\\countries\\", /*12*/"common\\tradenodes\\",
             /*13*/"map\\continent.txt", /*14*/"common\\country_tags\\", /*15*/"common\\technology.txt",
-            /*16*/"common\\governments\\", /*17*/"common\\buildings\\", /*18*/"map\\superregion.txt", /*19*/"common\\trade_companies\\" };
+            /*16*/"common\\governments\\", /*17*/"common\\buildings\\", /*18*/"map\\superregion.txt",
+            /*19*/"common\\trade_companies\\", /*20*/"localisation\\"
+        };
 
         public void RadioButtonChange(object sender, EventArgs e)
         {
@@ -273,6 +275,25 @@ namespace Eu4ModEditor
                 GlobalVariables.LoadedProperly = true;
                 GlobalVariables.CreateNewFilesReadOnly = ReadOnlyNewFiles.Checked;
                 GlobalVariables.NewObjectsNewFiles = NewFilesForNewObjects.Checked;
+                switch (LanguageBox.SelectedIndex)
+                {
+                   
+                    case 0:
+                        GlobalVariables.LocalisationLanguage = GlobalVariables.Languages.English;
+                        break;
+                    case 1:
+                        GlobalVariables.LocalisationLanguage = GlobalVariables.Languages.French;
+                        break;
+                    case 2:
+                        GlobalVariables.LocalisationLanguage = GlobalVariables.Languages.German;
+                        break;
+                    case 3:
+                        GlobalVariables.LocalisationLanguage = GlobalVariables.Languages.Spanish;
+                        break;
+                    default:
+                        GlobalVariables.LocalisationLanguage = GlobalVariables.Languages.English;
+                        break;
+                }
                 this.Close();
             }
         }

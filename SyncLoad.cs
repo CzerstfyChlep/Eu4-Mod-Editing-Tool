@@ -132,10 +132,10 @@ namespace Eu4ModEditor
                         Name = node.Name,
                         ReadableName = node.Name[0].ToString().ToUpper() + node.Name.Substring(1).Replace('_', ' ')
                     };
-                    string[] colorv = node.Nodes.Find(x => x.Name == "color").PureValues.ToArray();
+                    PureValue[] colorv = node.Nodes.Find(x => x.Name == "color").PureValues.ToArray();
                     if (colorv.Count() == 3)
                     {
-                        tg.Color = Color.FromArgb((int)(255 * double.Parse(colorv[0], CultureInfo.InvariantCulture)), (int)(255 * double.Parse(colorv[1], CultureInfo.InvariantCulture)), (int)(255 * double.Parse(colorv[2], CultureInfo.InvariantCulture)));
+                        tg.Color = Color.FromArgb((int)(255 * double.Parse(colorv[0].Name, CultureInfo.InvariantCulture)), (int)(255 * double.Parse(colorv[1].Name, CultureInfo.InvariantCulture)), (int)(255 * double.Parse(colorv[2].Name, CultureInfo.InvariantCulture)));
                     }
                     else
                     {
@@ -334,8 +334,8 @@ namespace Eu4ModEditor
                                     Group = rg
                                 };
                                 rg.Religions.Add(r);
-                                string[] colorstring = innernode.Nodes.Find(x => x.Name == "color").PureValues.ToArray();
-                                r.Color = Color.FromArgb(int.Parse(colorstring[0]), int.Parse(colorstring[1]), int.Parse(colorstring[2]));
+                                PureValue[] colorstring = innernode.Nodes.Find(x => x.Name == "color").PureValues.ToArray();
+                                r.Color = Color.FromArgb(int.Parse(colorstring[0].Name), int.Parse(colorstring[1].Name), int.Parse(colorstring[2].Name));
                                 r.Icon = int.Parse(innernode.Variables.Find(x => x.Name == "icon").Value);
                             }
                             catch
@@ -385,7 +385,7 @@ namespace Eu4ModEditor
                     if (n.Name != "pre_dharma_mapping")
                     {
                         Government gv = new Government(n.Name);
-                        gv.reforms.AddRange(n.Nodes.Find(x => x.Name == "reform_levels").Nodes[0].Nodes.Find(x => x.Name == "reforms").PureValues);
+                        gv.reforms.AddRange(n.Nodes.Find(x => x.Name == "reform_levels").Nodes[0].Nodes.Find(x => x.Name == "reforms").GetPureValuesAsArray());
                         GlobalVariables.Governments.Add(gv);
                     }
                 }
@@ -641,7 +641,7 @@ namespace Eu4ModEditor
                             c.CommonFileGame = true;
                     }
                     NodeFile nodefile = new NodeFile(file);
-                    string[] colort = nodefile.MainNode.Nodes.Find(x => x.Name == "color").PureValues.ToArray();
+                    string[] colort = nodefile.MainNode.Nodes.Find(x => x.Name == "color").GetPureValuesAsArray();
                     try
                     {
                         c.Color = Color.FromArgb(int.Parse(colort[0]), int.Parse(colort[1]), int.Parse(colort[2]));
@@ -799,7 +799,7 @@ namespace Eu4ModEditor
                         {
                             if (n.PureValues.Any())
                             {
-                                province.LatentTradeGood = GlobalVariables.TradeGoods.Find(x => x.Name == n.PureValues[0].Trim());
+                                province.LatentTradeGood = GlobalVariables.TradeGoods.Find(x => x.Name == n.PureValues[0].Name.Trim());
                                 if (province.LatentTradeGood != null)
                                 {
                                     province.LatentTradeGood.TotalProvinces++;
@@ -820,11 +820,11 @@ namespace Eu4ModEditor
             foreach (Node n in areas.MainNode.Nodes)
             {
                 List<Province> pr = new List<Province>();
-                foreach (string vr in n.PureValues)
+                foreach (PureValue vr in n.PureValues)
                 {
-                    if (vr != "")
+                    if (vr.Name != "")
                     {
-                        pr.Add(GlobalVariables.Provinces[int.Parse(vr) - 1]);
+                        pr.Add(GlobalVariables.Provinces[int.Parse(vr.Name) - 1]);
                     }
                 }
                 Area a = new Area(n.Name, pr);
@@ -842,11 +842,11 @@ namespace Eu4ModEditor
                 Node nd = n.Nodes.Find(x => x.Name == "areas");
                 if (nd != null)
                 {
-                    foreach (string vr in nd.PureValues)
+                    foreach (PureValue vr in nd.PureValues)
                     {
-                        if (vr != "")
+                        if (vr.Name != "")
                         {
-                            Area are = GlobalVariables.Areas.Find(x => x.Name == vr);
+                            Area are = GlobalVariables.Areas.Find(x => x.Name == vr.Name);
                             if (are != null)
                                 ar.Add(are);
                         }
@@ -866,9 +866,9 @@ namespace Eu4ModEditor
             foreach (Node n in continents.MainNode.Nodes)
             {
                 List<Province> ctp = new List<Province>();
-                foreach (string s in n.PureValues)
+                foreach (PureValue s in n.PureValues)
                 {
-                    ctp.Add(GlobalVariables.Provinces[int.Parse(s.Trim()) - 1]);
+                    ctp.Add(GlobalVariables.Provinces[int.Parse(s.Name.Trim()) - 1]);
                 }
                 Continent c = new Continent(n.Name, ctp);
                 foreach (Province pr in c.Provinces)
@@ -935,7 +935,7 @@ namespace Eu4ModEditor
                     tn.Location = GlobalVariables.Provinces[int.Parse(node.Variables.Find(x => x.Name == "location").Value) - 1];
                     Node ColorNode = node.Nodes.Find(x => x.Name == "color");
                     if (ColorNode != null)
-                        tn.Color = Color.FromArgb(int.Parse(ColorNode.PureValues[0]), int.Parse(ColorNode.PureValues[1]), int.Parse(ColorNode.PureValues[2]));
+                        tn.Color = Color.FromArgb(int.Parse(ColorNode.PureValues[0].Name), int.Parse(ColorNode.PureValues[1].Name), int.Parse(ColorNode.PureValues[2].Name));
                     else
                         tn.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
 
@@ -963,13 +963,13 @@ namespace Eu4ModEditor
                     foreach (Node outgoing in node.Nodes.FindAll(x => x.Name == "outgoing"))
                     {
                         Destination dn = new Destination() { TradeNode = GlobalVariables.TradeNodes.Find(x => x.Name == outgoing.Variables.Find(y => y.Name == "name").Value.Replace("\"", "")) };
-                        dn.Path.AddRange(outgoing.Nodes.Find(x => x.Name == "path").PureValues);
+                        dn.Path.AddRange(outgoing.Nodes.Find(x => x.Name == "path").GetPureValuesAsArray());
                         if (outgoing.Nodes.Find(x => x.Name == "control") != null)
-                            dn.Control.AddRange(outgoing.Nodes.Find(x => x.Name == "control").PureValues);
+                            dn.Control.AddRange(outgoing.Nodes.Find(x => x.Name == "control").GetPureValuesAsArray());
                         tn.Destination.Add(dn);
                         dn.TradeNode.Incoming.Add(tn);
                     }
-                    foreach (string value in node.Nodes.Find(x => x.Name == "members").PureValues)
+                    foreach (string value in node.Nodes.Find(x => x.Name == "members").GetPureValuesAsArray())
                     {
                         if (int.Parse(value) <= GlobalVariables.Provinces.Count())
                         {
@@ -993,7 +993,7 @@ namespace Eu4ModEditor
             foreach (Node n in Superregions.MainNode.Nodes)
             {
                 List<Region> reg = new List<Region>();
-                foreach (string s in n.PureValues)
+                foreach (string s in n.GetPureValuesAsArray())
                 {
                     Region r = GlobalVariables.Regions.Find(x => x.Name == s);
                     if (r != null)
@@ -1006,82 +1006,43 @@ namespace Eu4ModEditor
                     re.Superregion = sr;
             }
 
-
+            NodeFile defaultmap;
 
             //lp.UpdateProgressLabel("Loading map variables...", 95);
             if (GlobalVariables.UseMod[10] > 0)
-                Reader = new StreamReader(GlobalVariables.pathtomod + "map\\default.map");
+                defaultmap = new NodeFile(GlobalVariables.pathtomod + "map\\default.map");
             else
-                Reader = new StreamReader(GlobalVariables.pathtogame + "map\\default.map");
-            bool addlines = false;
-            int addlinesto = 0;
-            string seas = "";
-            string lakes = "";
-            while (!Reader.EndOfStream)
+                defaultmap = new NodeFile(GlobalVariables.pathtogame + "map\\default.map");
+            
+            foreach(string sea in defaultmap.MainNode.Nodes.Find(x=>x.Name == "sea_starts").GetPureValuesAsArray())
             {
-                string line = Reader.ReadLine();
-                if (line.Contains("sea_starts"))
+                if (int.TryParse(sea, out int id))
                 {
-                    addlines = true;
-                    addlinesto = 0;
-                }
-                else if (line.Contains("lakes"))
-                {
-                    addlines = true;
-                    addlinesto = 1;
-                }
-
-                if (addlines)
-                {
-                    if (addlinesto == 0)
-                        seas += " " + line;
-                    else if (addlinesto == 1)
-                        lakes += " " + line;
-                }
-
-                if (line.Contains("}"))
-                    addlines = false;
-            }
-            seas = seas.Split('{')[1].Split('}')[0];
-            lakes = lakes.Split('{')[1].Split('}')[0];
-
-
-            foreach (string sea in seas.Split(' '))
-            {
-                if (sea != "" && sea != " ")
-                {
-                    if (int.TryParse(sea, out int id))
+                    try
                     {
-                        try
-                        {
-                            GlobalVariables.Provinces[id - 1].Sea = true;
-                        }
-                        catch
-                        {
-                            MessageBox.Show("Sea Id: " + id);
-                        }
+                        GlobalVariables.Provinces[id - 1].Sea = true;
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Sea Id: " + id);
                     }
                 }
             }
-            foreach (string lake in lakes.Split(' '))
+            
+            foreach (string lake in defaultmap.MainNode.Nodes.Find(x => x.Name == "lakes").GetPureValuesAsArray())
             {
-                if (lake != "" && lake != " ")
+                if (int.TryParse(lake, out int id))
                 {
-                    if (int.TryParse(lake, out int id))
+                    try
                     {
-                        try
-                        {
-                            GlobalVariables.Provinces[id - 1].Lake = true;
-                        }
-                        catch
-                        {
-                            MessageBox.Show("Lake Id: " + id);
-                        }
+                        GlobalVariables.Provinces[id - 1].Lake = true;
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Lake Id: " + id);
                     }
                 }
             }
-
-            Reader.Dispose();
 
             foreach (Province p in GlobalVariables.Provinces)
             {

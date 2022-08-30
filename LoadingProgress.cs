@@ -219,6 +219,9 @@ namespace Eu4ModEditor
                 case 21:
                     l = TradeCompaniesProgress;
                     break;
+                case 22:
+                    l = LocalisationProgress;
+                    break;
             }
             if (status == 0)
                 l.ForeColor = Color.DarkGoldenrod;
@@ -233,7 +236,7 @@ namespace Eu4ModEditor
                 amount++;
             }
             
-            if(amount == 21)
+            if(amount == 22)
             {
                 ContinueButton.Enabled = true;
             }

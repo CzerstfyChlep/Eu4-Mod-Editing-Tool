@@ -45,9 +45,11 @@
             this.LoadingPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.ConfirmFileUsage = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.ReadOnlyNewFiles = new System.Windows.Forms.CheckBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.NewFilesForNewObjects = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.ReadOnlyNewFiles = new System.Windows.Forms.CheckBox();
+            this.LanguageBox = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -128,7 +130,7 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(538, 152);
+            this.groupBox1.Size = new System.Drawing.Size(538, 195);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Step 1";
@@ -143,9 +145,9 @@
             this.groupBox2.Controls.Add(this.LoadingPanel);
             this.groupBox2.Controls.Add(this.ConfirmFileUsage);
             this.groupBox2.Enabled = false;
-            this.groupBox2.Location = new System.Drawing.Point(12, 170);
+            this.groupBox2.Location = new System.Drawing.Point(12, 213);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(775, 610);
+            this.groupBox2.Size = new System.Drawing.Size(775, 502);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Step 2";
@@ -203,14 +205,14 @@
             // LoadingPanel
             // 
             this.LoadingPanel.AutoScroll = true;
-            this.LoadingPanel.Location = new System.Drawing.Point(6, 53);
+            this.LoadingPanel.Location = new System.Drawing.Point(6, 48);
             this.LoadingPanel.Name = "LoadingPanel";
-            this.LoadingPanel.Size = new System.Drawing.Size(763, 522);
+            this.LoadingPanel.Size = new System.Drawing.Size(763, 414);
             this.LoadingPanel.TabIndex = 12;
             // 
             // ConfirmFileUsage
             // 
-            this.ConfirmFileUsage.Location = new System.Drawing.Point(6, 581);
+            this.ConfirmFileUsage.Location = new System.Drawing.Point(15, 468);
             this.ConfirmFileUsage.Name = "ConfirmFileUsage";
             this.ConfirmFileUsage.Size = new System.Drawing.Size(749, 23);
             this.ConfirmFileUsage.TabIndex = 11;
@@ -220,34 +222,17 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label4);
+            this.groupBox3.Controls.Add(this.LanguageBox);
             this.groupBox3.Controls.Add(this.NewFilesForNewObjects);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.ReadOnlyNewFiles);
             this.groupBox3.Location = new System.Drawing.Point(552, 12);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(235, 152);
+            this.groupBox3.Size = new System.Drawing.Size(235, 195);
             this.groupBox3.TabIndex = 7;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Special options";
-            // 
-            // ReadOnlyNewFiles
-            // 
-            this.ReadOnlyNewFiles.AutoSize = true;
-            this.ReadOnlyNewFiles.Location = new System.Drawing.Point(16, 21);
-            this.ReadOnlyNewFiles.Name = "ReadOnlyNewFiles";
-            this.ReadOnlyNewFiles.Size = new System.Drawing.Size(208, 17);
-            this.ReadOnlyNewFiles.TabIndex = 0;
-            this.ReadOnlyNewFiles.Text = "Create new files when Read Only is on";
-            this.ReadOnlyNewFiles.UseVisualStyleBackColor = true;
-            // 
-            // label3
-            // 
-            this.label3.Location = new System.Drawing.Point(13, 41);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(216, 68);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "If you want to always have new files while using this editor: set all to Ready On" +
-    "ly and check the option above";
             // 
             // NewFilesForNewObjects
             // 
@@ -261,11 +246,53 @@
     "ill look for first not ReadOnly file";
             this.NewFilesForNewObjects.UseVisualStyleBackColor = true;
             // 
+            // label3
+            // 
+            this.label3.Location = new System.Drawing.Point(13, 41);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(216, 68);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "If you want to always have new files while using this editor: set all to Ready On" +
+    "ly and check the option above";
+            // 
+            // ReadOnlyNewFiles
+            // 
+            this.ReadOnlyNewFiles.AutoSize = true;
+            this.ReadOnlyNewFiles.Location = new System.Drawing.Point(16, 21);
+            this.ReadOnlyNewFiles.Name = "ReadOnlyNewFiles";
+            this.ReadOnlyNewFiles.Size = new System.Drawing.Size(208, 17);
+            this.ReadOnlyNewFiles.TabIndex = 0;
+            this.ReadOnlyNewFiles.Text = "Create new files when Read Only is on";
+            this.ReadOnlyNewFiles.UseVisualStyleBackColor = true;
+            // 
+            // LanguageBox
+            // 
+            this.LanguageBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.LanguageBox.FormattingEnabled = true;
+            this.LanguageBox.Items.AddRange(new object[] {
+            "English",
+            "French",
+            "German",
+            "Spanish"});
+            this.LanguageBox.Location = new System.Drawing.Point(16, 168);
+            this.LanguageBox.Name = "LanguageBox";
+            this.LanguageBox.Size = new System.Drawing.Size(136, 21);
+            this.LanguageBox.TabIndex = 3;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(13, 149);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(143, 13);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Language of localisation files";
+            // 
             // LoadingScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(799, 792);
+            this.ClientSize = new System.Drawing.Size(799, 719);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -305,5 +332,7 @@
         private System.Windows.Forms.CheckBox ReadOnlyNewFiles;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox NewFilesForNewObjects;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox LanguageBox;
     }
 }

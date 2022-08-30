@@ -333,6 +333,7 @@ namespace Eu4ModEditor
                     }
                     UpdateMap();
                 }
+                this.Focus();
             }
         }
 
@@ -519,6 +520,21 @@ namespace Eu4ModEditor
                     TradeCompanyBox.SelectedIndex = 0;
                 }
             }
+
+            if(GlobalVariables.ModLocalisationEntries.Keys.Contains("PROV" + p.ID))           
+                ProvinceNameLocalisationBox.Text = GlobalVariables.ModLocalisationEntries["PROV" + p.ID];
+            else if (GlobalVariables.LocalisationEntries.Keys.Contains("PROV" + p.ID))
+                ProvinceNameLocalisationBox.Text = GlobalVariables.LocalisationEntries["PROV" + p.ID];
+            else
+                ProvinceNameLocalisationBox.Text = "";
+
+            if (GlobalVariables.ModLocalisationEntries.Keys.Contains("PROV_ADJ" + p.ID))
+                ProvinceAdjectiveLocalisationBox.Text = GlobalVariables.ModLocalisationEntries["PROV_ADJ" + p.ID];
+            else if (GlobalVariables.LocalisationEntries.Keys.Contains("PROV_ADJ" + p.ID))
+                ProvinceAdjectiveLocalisationBox.Text = GlobalVariables.LocalisationEntries["PROV_ADJ" + p.ID];
+            else
+                ProvinceAdjectiveLocalisationBox.Text = "";
+
 
             IsCityCheckbox.Checked = p.City;
 
@@ -1331,13 +1347,13 @@ namespace Eu4ModEditor
                 {
                     n.PureValues.Clear();
                     foreach (Province p in a.Provinces)
-                        n.PureValues.Add(p.ID.ToString());
+                        n.AddPureValue(p.ID.ToString());
                 }
                 else
                 {
                     n = new Node(a.Name);
                     foreach (Province p in a.Provinces)
-                        n.PureValues.Add(p.ID.ToString());
+                        n.AddPureValue(p.ID.ToString());
                 }
                 newNodes.Add(n);
             }
@@ -1454,14 +1470,14 @@ namespace Eu4ModEditor
                     {
                         purevaluesnode.PureValues.Clear();
                         foreach (Area a in r.Areas)
-                            purevaluesnode.PureValues.Add(a.Name);
+                            purevaluesnode.AddPureValue(a.Name);
                     }
                     else
                     {
                         purevaluesnode = new Node("areas", n);
                         n.Nodes.Add(purevaluesnode);
                         foreach (Area a in r.Areas)
-                            purevaluesnode.PureValues.Add(a.Name);
+                            purevaluesnode.AddPureValue(a.Name);
                     }
                 }
                 else
@@ -1470,7 +1486,7 @@ namespace Eu4ModEditor
                     Node purevaluesnode = new Node("areas", n);
                     n.Nodes.Add(purevaluesnode);
                     foreach (Area a in r.Areas)
-                        purevaluesnode.PureValues.Add(a.Name);
+                        purevaluesnode.AddPureValue(a.Name);
                 }
                 newNodes.Add(n);
             }
@@ -1847,22 +1863,24 @@ namespace Eu4ModEditor
                     if (!tn.Destination.Any())
                         n.Variables.Add(new Variable("end", "yes"));
                     Node cl = new Node("color");
-                    cl.PureValues = new List<string>() { tn.Color.R + "", tn.Color.G + "", tn.Color.B + "" };
+                    cl.PureValues = new List<PureValue>() { new PureValue(tn.Color.R + "" ), new PureValue(tn.Color.G + ""), new PureValue(tn.Color.B + "") };
                     n.Nodes.Add(cl);
                     foreach (Destination ds in tn.Destination)
                     {
                         Node des = new Node("outgoing");
                         des.Variables.Add(new Variable("name", "\"" + ds.TradeNode.Name + "\""));
                         Node path = new Node("path");
-                        path.PureValues = ds.Path;
+                        foreach (string s in ds.Path)
+                            path.AddPureValue(s);                   
                         des.Nodes.Add(path);
                         Node control = new Node("control");
-                        control.PureValues = ds.Control;
+                        foreach (string s in ds.Control)
+                            control.AddPureValue(s);
                         des.Nodes.Add(control);
                         n.Nodes.Add(des);
                     }
                     Node members = new Node("members");
-                    tn.Provinces.ForEach(x => members.PureValues.Add(x.ID + ""));
+                    tn.Provinces.ForEach(x => members.AddPureValue(x.ID + ""));
                     n.Nodes.Add(members);
                     nf.MainNode.Nodes.Add(n);
                     done.Add(tn);
@@ -1984,13 +2002,13 @@ namespace Eu4ModEditor
                 {
                     n.PureValues.Clear();
                     foreach (Province p in c.Provinces)
-                        n.PureValues.Add(p.ID.ToString());
+                        n.AddPureValue(p.ID.ToString());
                 }
                 else
                 {
                     n = new Node(c.Name);
                     foreach (Province p in c.Provinces)
-                        n.PureValues.Add(p.ID.ToString());
+                        n.AddPureValue(p.ID.ToString());
                 }
                 newNodes.Add(n);
             }
@@ -3122,13 +3140,13 @@ namespace Eu4ModEditor
                 {
                     n.PureValues.Clear();
                     foreach (Region r in sr.Regions)
-                        n.PureValues.Add(r.Name);
+                        n.AddPureValue(r.Name);
                 }
                 else
                 {
                     n = new Node(sr.Name);
                     foreach (Region r in sr.Regions)
-                        n.PureValues.Add(r.Name);
+                        n.AddPureValue(r.Name);
                 }
                 newNodes.Add(n);
             }
@@ -3476,13 +3494,13 @@ namespace Eu4ModEditor
 
                     Node color = new Node("color", n)
                     {
-                        PureValues = new List<string>() { tc.Color.R.ToString(), tc.Color.G.ToString(), tc.Color.B.ToString() }
+                        PureValues = new List<PureValue>() { new PureValue(tc.Color.R.ToString()), new PureValue( tc.Color.G.ToString()), new PureValue(tc.Color.B.ToString()) }
                     };
                     n.Nodes.Add(color);
                     Node provinces = new Node("provinces", n);
                     n.Nodes.Add(provinces);
                     foreach (Province p in tc.Provinces)
-                        provinces.PureValues.Add(p.ID.ToString());
+                        provinces.AddPureValue(p.ID.ToString());
                     foreach(string name in tc.Names)
                     {
                         Node nm = new Node("names", n);
@@ -3493,11 +3511,11 @@ namespace Eu4ModEditor
                 }
                 else
                 {
-                    n.Nodes.Find(x => x.Name == "color").PureValues = new List<string>() { tc.Color.R.ToString(), tc.Color.G.ToString(), tc.Color.B.ToString() };
+                    n.Nodes.Find(x => x.Name == "color").PureValues = new List<PureValue>() { new PureValue(tc.Color.R.ToString()), new PureValue(tc.Color.G.ToString()), new PureValue(tc.Color.B.ToString()) };
                     Node pnode = n.Nodes.Find(x => x.Name == "provinces");
                     pnode.PureValues.Clear();
                     foreach (Province p in tc.Provinces)
-                        pnode.PureValues.Add(p.ID.ToString());
+                        pnode.AddPureValue(p.ID.ToString());
                     int N = 0;
                     List<Node> ToRemove = new List<Node>();
                     foreach (Node namenode in n.Nodes.FindAll(x => x.Name == "names"))
@@ -3536,6 +3554,63 @@ namespace Eu4ModEditor
             MapManagement.UpdateMap(GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeCompany);
             if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeCompany)
                 UpdateMap();
+        }
+
+        private void SaveProvinceName_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.ClickedProvince == null)
+                return;
+            if (GlobalVariables.ModLocalisationEntries.Keys.Contains("PROV" + GlobalVariables.ClickedProvince.ID))
+                GlobalVariables.ModLocalisationEntries["PROV" + GlobalVariables.ClickedProvince.ID] = ProvinceNameLocalisationBox.Text;
+            else if (GlobalVariables.LocalisationEntries.Keys.Contains("PROV" + GlobalVariables.ClickedProvince.ID)) {
+                if (GlobalVariables.LocalisationEntries["PROV" + GlobalVariables.ClickedProvince.ID] != ProvinceNameLocalisationBox.Text)
+                    GlobalVariables.ModLocalisationEntries["PROV" + GlobalVariables.ClickedProvince.ID] = ProvinceNameLocalisationBox.Text;
+            }
+        }
+
+        private void SaveProvinceAdj_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.ClickedProvince == null)
+                return;
+            if (GlobalVariables.ModLocalisationEntries.Keys.Contains("PROV_ADJ" + GlobalVariables.ClickedProvince.ID))
+                GlobalVariables.ModLocalisationEntries["PROV_ADJ" + GlobalVariables.ClickedProvince.ID] = ProvinceAdjectiveLocalisationBox.Text;
+            else if (GlobalVariables.LocalisationEntries.Keys.Contains("PROV_ADJ" + GlobalVariables.ClickedProvince.ID))
+            {
+                if (GlobalVariables.LocalisationEntries["PROV_ADJ" + GlobalVariables.ClickedProvince.ID] != ProvinceAdjectiveLocalisationBox.Text)
+                    GlobalVariables.ModLocalisationEntries["PROV_ADJ" + GlobalVariables.ClickedProvince.ID] = ProvinceAdjectiveLocalisationBox.Text;
+            }
+        }
+
+        private void SaveLocalisationButton_Click(object sender, EventArgs e)
+        {
+            string tosave = "";
+            string filename = "";
+            switch(GlobalVariables.LocalisationLanguage)
+            {
+                case GlobalVariables.Languages.English:
+                    filename = "localisation\\mod_edt_loc_l_english.yml";
+                    tosave = "l_english:\n";
+                    break;
+                case GlobalVariables.Languages.French:
+                    filename = "localisation\\mod_edt_loc_l_french.yml";
+                    tosave = "l_french:\n";
+                    break;
+                case GlobalVariables.Languages.German:
+                    filename = "localisation\\mod_edt_loc_l_german.yml";
+                    tosave = "l_german:\n";
+                    break;
+                case GlobalVariables.Languages.Spanish:
+                    filename = "localisation\\mod_edt_loc_l_spanish.yml";
+                    tosave = "l_spanish:\n";
+                    break;
+            }
+            foreach(string key in GlobalVariables.ModLocalisationEntries.Keys)
+            {
+                tosave += " " + key + ": \"" + GlobalVariables.ModLocalisationEntries[key] + "\"\n"; 
+            }
+            if(!Directory.Exists(GlobalVariables.pathtomod + "localisation"))
+                Directory.CreateDirectory(GlobalVariables.pathtomod + "localisation");
+            File.WriteAllText(GlobalVariables.pathtomod + filename, tosave);
         }
     }
 }

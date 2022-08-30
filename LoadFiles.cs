@@ -34,6 +34,97 @@ namespace Eu4ModEditor
             List<NodeFile> tradecompanyfiles = new List<NodeFile>();
             NodeFile Superregions;
 
+            Task llocalisation = new Task(() => {
+
+                if (GlobalVariables.UseMod[20] != 1)
+                {
+                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "localisation\\"))
+                    {
+                        if (file.Contains('.'))
+                        {
+                            if (file.Contains("l_english") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.English)
+                                continue;
+                            if (file.Contains("l_french") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.French)
+                                continue;
+                            if (file.Contains("l_spanish") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.Spanish)
+                                continue;
+                            if (file.Contains("l_german") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.German)
+                                continue;
+                            if (!file.Contains("l_english") && !file.Contains("l_french") && !file.Contains("l_spanish") && !file.Contains("l_german"))
+                                continue;
+                            if (file.Split('.')[1] == "yml")
+                            {
+                                foreach(string line in File.ReadAllLines(file))
+                                {
+                                    string linetoread = line.Split('#')[0];
+
+                                    if (linetoread.Contains("\""))
+                                    {
+                                        string name = "";
+                                        string value = "";
+                                        name = linetoread.Split(':')[0].Trim();
+                                        value = linetoread.Split(':')[1].Split('"')[1];
+                                        if (GlobalVariables.LocalisationEntries.Keys.Contains(name))
+                                            GlobalVariables.LocalisationEntries[name] = value;
+                                        else
+                                            GlobalVariables.LocalisationEntries.Add(name, value);
+                                    }
+
+                                }
+
+                            }
+                        }
+                    }
+                }
+
+
+                if (GlobalVariables.UseMod[20] != 0)
+                {
+                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "localisation\\"))
+                    {
+                        if (file.Contains('.'))
+                        {
+                            if (file.Contains("l_english") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.English)
+                                continue;
+                            if (file.Contains("l_french") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.French)
+                                continue;
+                            if (file.Contains("l_spanish") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.Spanish)
+                                continue;
+                            if (file.Contains("l_german") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.German)
+                                continue;
+                            if (!file.Contains("l_english") && !file.Contains("l_french") && !file.Contains("l_spanish") && !file.Contains("l_german"))
+                                continue;
+                            if (file.Split('.')[1] == "yml")
+                            {
+                                foreach (string line in File.ReadAllLines(file))
+                                {
+                                    string linetoread = line.Split('#')[0];
+
+                                    if (linetoread.Contains("\""))
+                                    {
+                                        string name = "";
+                                        string value = "";
+                                        name = linetoread.Split(':')[0].Trim();
+                                        value = linetoread.Split(':')[1].Split('"')[1];
+                                        if (GlobalVariables.LocalisationEntries.Keys.Contains(name))
+                                            GlobalVariables.LocalisationEntries[name] = value;
+                                        else
+                                            GlobalVariables.LocalisationEntries.Add(name, value);
+                                    }
+
+                                }
+
+                            }
+                        }
+                    }
+                }
+                
+
+
+            });
+            llocalisation.Start();
+            progress.UpdateProgress(22, 0);
+
             Task ldefinition = new Task(() => {
                 StreamReader Reader;
                 if (GlobalVariables.UseMod[0] > 0)
@@ -211,7 +302,7 @@ namespace Eu4ModEditor
                                         Group = rg
                                     };
                                     rg.Religions.Add(r);
-                                    string[] colorstring = innernode.Nodes.Find(x => x.Name == "color").PureValues.ToArray();
+                                    string[] colorstring = innernode.Nodes.Find(x => x.Name == "color").GetPureValuesAsArray();
                                     r.Color = Color.FromArgb(int.Parse(colorstring[0]), int.Parse(colorstring[1]), int.Parse(colorstring[2]));
                                     r.Icon = int.Parse(innernode.Variables.Find(x => x.Name == "icon").Value);
                                 }
@@ -265,9 +356,9 @@ namespace Eu4ModEditor
                         if (n.Name != "pre_dharma_mapping")
                         {
                             Government gv = new Government(n.Name);
-                            gv.reforms.AddRange(n.Nodes.Find(x => x.Name == "reform_levels").Nodes[0].Nodes.Find(x => x.Name == "reforms").PureValues);
+                            gv.reforms.AddRange(n.Nodes.Find(x => x.Name == "reform_levels").Nodes[0].Nodes.Find(x => x.Name == "reforms").GetPureValuesAsArray());
                             Node colornode = n.Nodes.Find(x => x.Name == "color");
-                            gv.Color = Color.FromArgb(int.Parse(colornode.PureValues[0]), int.Parse(colornode.PureValues[1]), int.Parse(colornode.PureValues[2]));
+                            gv.Color = Color.FromArgb(int.Parse(colornode.PureValues[0].Name), int.Parse(colornode.PureValues[1].Name), int.Parse(colornode.PureValues[2].Name));
                             GlobalVariables.Governments.Add(gv);
                         }
                     }
@@ -408,11 +499,11 @@ namespace Eu4ModEditor
                 foreach (Node n in areas.MainNode.Nodes)
                 {
                     List<Province> pr = new List<Province>();
-                    foreach (string vr in n.PureValues)
+                    foreach (PureValue vr in n.PureValues)
                     {
-                        if (vr != "")
+                        if (vr.Name != "")
                         {
-                            pr.Add(GlobalVariables.Provinces[int.Parse(vr) - 1]);
+                            pr.Add(GlobalVariables.Provinces[int.Parse(vr.Name) - 1]);
                         }
                     }
                     Area a = new Area(n.Name, pr);
@@ -431,9 +522,9 @@ namespace Eu4ModEditor
                 foreach (Node n in continents.MainNode.Nodes)
                 {
                     List<Province> ctp = new List<Province>();
-                    foreach (string s in n.PureValues)
+                    foreach (PureValue s in n.PureValues)
                     {
-                        ctp.Add(GlobalVariables.Provinces[int.Parse(s.Trim()) - 1]);
+                        ctp.Add(GlobalVariables.Provinces[int.Parse(s.Name.Trim()) - 1]);
                     }
                     Continent c = new Continent(n.Name, ctp);
                     foreach (Province pr in c.Provinces)
@@ -513,9 +604,9 @@ namespace Eu4ModEditor
                         }
                         if(location == -1)
                         {
-                            foreach (string value in node.Nodes.Find(x => x.Name == "members").PureValues)
+                            foreach (PureValue value in node.Nodes.Find(x => x.Name == "members").PureValues)
                             {
-                                if (!int.TryParse(value, out location))
+                                if (!int.TryParse(value.Name, out location))
                                     continue;
                                 else if (GlobalVariables.Provinces.Count() <= location)
                                 {
@@ -537,7 +628,7 @@ namespace Eu4ModEditor
                         }
                         Node ColorNode = node.Nodes.Find(x => x.Name == "color");
                         if (ColorNode != null)
-                            tn.Color = Color.FromArgb(int.Parse(ColorNode.PureValues[0]), int.Parse(ColorNode.PureValues[1]), int.Parse(ColorNode.PureValues[2]));
+                            tn.Color = Color.FromArgb(int.Parse(ColorNode.PureValues[0].Name), int.Parse(ColorNode.PureValues[1].Name), int.Parse(ColorNode.PureValues[2].Name));
                         else
                             tn.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
 
@@ -565,18 +656,18 @@ namespace Eu4ModEditor
                         foreach (Node outgoing in node.Nodes.FindAll(x => x.Name == "outgoing"))
                         {
                             Destination dn = new Destination() { TradeNode = GlobalVariables.TradeNodes.Find(x => x.Name == outgoing.Variables.Find(y => y.Name == "name").Value.Replace("\"", "")) };
-                            dn.Path.AddRange(outgoing.Nodes.Find(x => x.Name == "path").PureValues);
+                            dn.Path.AddRange(outgoing.Nodes.Find(x => x.Name == "path").GetPureValuesAsArray());
                             if (outgoing.Nodes.Find(x => x.Name == "control") != null)
-                                dn.Control.AddRange(outgoing.Nodes.Find(x => x.Name == "control").PureValues);
+                                dn.Control.AddRange(outgoing.Nodes.Find(x => x.Name == "control").GetPureValuesAsArray());
                             tn.Destination.Add(dn);
                             dn.TradeNode.Incoming.Add(tn);
                         }
-                        foreach (string value in node.Nodes.Find(x => x.Name == "members").PureValues)
+                        foreach (PureValue value in node.Nodes.Find(x => x.Name == "members").PureValues)
                         {
-                            if (int.Parse(value) <= GlobalVariables.Provinces.Count())
+                            if (int.Parse(value.Name) <= GlobalVariables.Provinces.Count())
                             {
-                                tn.Provinces.Add(GlobalVariables.Provinces[int.Parse(value) - 1]);
-                                GlobalVariables.Provinces[int.Parse(value) - 1].TradeNode = tn;
+                                tn.Provinces.Add(GlobalVariables.Provinces[int.Parse(value.Name) - 1]);
+                                GlobalVariables.Provinces[int.Parse(value.Name) - 1].TradeNode = tn;
                             }
                         }
                     }
@@ -585,81 +676,42 @@ namespace Eu4ModEditor
             ltradenodes.Start();
             progress.UpdateProgress(15, 0);
             Task ldefaultmap = new Task(() => {
-                StreamReader Reader;
+                NodeFile defaultmap;
                 //lp.UpdateProgressLabel("Loading map variables...", 95);
                 if (GlobalVariables.UseMod[10] > 0)
-                    Reader = new StreamReader(GlobalVariables.pathtomod + "map\\default.map");
+                    defaultmap = new NodeFile(GlobalVariables.pathtomod + "map\\default.map");
                 else
-                    Reader = new StreamReader(GlobalVariables.pathtogame + "map\\default.map");
-                bool addlines = false;
-                int addlinesto = 0;
-                string seas = "";
-                string lakes = "";
-                while (!Reader.EndOfStream)
+                    defaultmap = new NodeFile(GlobalVariables.pathtogame + "map\\default.map");
+
+                foreach (string sea in defaultmap.MainNode.Nodes.Find(x => x.Name == "sea_starts").GetPureValuesAsArray())
                 {
-                    string line = Reader.ReadLine();
-                    if (line.Contains("sea_starts"))
+                    if (int.TryParse(sea, out int id))
                     {
-                        addlines = true;
-                        addlinesto = 0;
-                    }
-                    else if (line.Contains("lakes"))
-                    {
-                        addlines = true;
-                        addlinesto = 1;
-                    }
-
-                    if (addlines)
-                    {
-                        if (addlinesto == 0)
-                            seas += " " + line;
-                        else if (addlinesto == 1)
-                            lakes += " " + line;
-                    }
-
-                    if (line.Contains("}"))
-                        addlines = false;
-                }
-                seas = seas.Split('{')[1].Split('}')[0];
-                lakes = lakes.Split('{')[1].Split('}')[0];
-
-
-                foreach (string sea in seas.Split(' '))
-                {
-                    if (sea != "" && sea != " ")
-                    {
-                        if (int.TryParse(sea, out int id))
+                        try
                         {
-                            try
-                            {
-                                GlobalVariables.Provinces[id - 1].Sea = true;
-                            }
-                            catch
-                            {
-                                MessageBox.Show("Sea Id: " + id);
-                            }
+                            GlobalVariables.Provinces[id - 1].Sea = true;
                         }
-                    }
-                }
-                foreach (string lake in lakes.Split(' '))
-                {
-                    if (lake != "" && lake != " ")
-                    {
-                        if (int.TryParse(lake, out int id))
+                        catch
                         {
-                            try
-                            {
-                                GlobalVariables.Provinces[id - 1].Lake = true;
-                            }
-                            catch
-                            {
-                                MessageBox.Show("Lake Id: " + id);
-                            }
+                            MessageBox.Show("Sea Id: " + id);
                         }
                     }
                 }
 
-                Reader.Dispose();
+                foreach (string lake in defaultmap.MainNode.Nodes.Find(x => x.Name == "lakes").GetPureValuesAsArray())
+                {
+                    if (int.TryParse(lake, out int id))
+                    {
+                        try
+                        {
+                            GlobalVariables.Provinces[id - 1].Lake = true;
+                        }
+                        catch
+                        {
+                            MessageBox.Show("Lake Id: " + id);
+                        }
+                    }
+                }
             });
             ldefaultmap.Start();
             progress.UpdateProgress(17, 0);
@@ -718,7 +770,7 @@ namespace Eu4ModEditor
                             Name = node.Name,
                             ReadableName = node.Name[0].ToString().ToUpper() + node.Name.Substring(1).Replace('_', ' ')
                         };
-                        string[] colorv = node.Nodes.Find(x => x.Name == "color").PureValues.ToArray();
+                        string[] colorv = node.Nodes.Find(x => x.Name == "color").GetPureValuesAsArray();
                         if (colorv.Count() == 3)
                         {
                             tg.Color = Color.FromArgb((int)(255 * double.Parse(colorv[0], CultureInfo.InvariantCulture)), (int)(255 * double.Parse(colorv[1], CultureInfo.InvariantCulture)), (int)(255 * double.Parse(colorv[2], CultureInfo.InvariantCulture)));
@@ -838,15 +890,15 @@ namespace Eu4ModEditor
                         tc.ParentFile = tradecompanies;
                         Node ColorNode = node.Nodes.Find(x => x.Name == "color");
                         if (ColorNode != null)
-                            tc.Color = Color.FromArgb(int.Parse(ColorNode.PureValues[0]), int.Parse(ColorNode.PureValues[1]), int.Parse(ColorNode.PureValues[2]));
+                            tc.Color = Color.FromArgb(int.Parse(ColorNode.PureValues[0].Name), int.Parse(ColorNode.PureValues[1].Name), int.Parse(ColorNode.PureValues[2].Name));
                         else
                             tc.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);                                           
-                        foreach (string value in node.Nodes.Find(x => x.Name == "provinces").PureValues)
+                        foreach (PureValue value in node.Nodes.Find(x => x.Name == "provinces").PureValues)
                         {
-                            if (int.Parse(value) <= GlobalVariables.Provinces.Count())
+                            if (int.Parse(value.Name) <= GlobalVariables.Provinces.Count())
                             {
-                                tc.Provinces.Add(GlobalVariables.Provinces[int.Parse(value) - 1]);
-                                GlobalVariables.Provinces[int.Parse(value) - 1].TradeCompany = tc;
+                                tc.Provinces.Add(GlobalVariables.Provinces[int.Parse(value.Name) - 1]);
+                                GlobalVariables.Provinces[int.Parse(value.Name) - 1].TradeCompany = tc;
                             }
                         }
                         foreach(Node TCnames in node.Nodes.FindAll(x=>x.Name == "names")){
@@ -1072,7 +1124,7 @@ namespace Eu4ModEditor
                                 c.CommonFileGame = true;
                         }
                         NodeFile nodefile = new NodeFile(file);
-                        string[] colort = nodefile.MainNode.Nodes.Find(x => x.Name == "color").PureValues.ToArray();
+                        string[] colort = nodefile.MainNode.Nodes.Find(x => x.Name == "color").GetPureValuesAsArray();
                         try
                         {
                             c.Color = Color.FromArgb(int.Parse(colort[0]), int.Parse(colort[1]), int.Parse(colort[2]));
@@ -1144,82 +1196,18 @@ namespace Eu4ModEditor
                             if (nodefile.MainNode.Variables.Any())
                                 GlobalVariables.TotalUsableProvinces++;
 
-                            foreach (Variable v in nodefile.MainNode.Variables)
-                            {
-                                Building bl = GlobalVariables.Buildings.Find(x => x.Name == v.Name);
-                                if (bl != null && v.Value == "yes")
-                                {
-                                    province.AddBuilding(bl, true);
-                                }
+                            ReadProvinceValuesFromNode(province, nodefile.MainNode);
 
-                                switch (v.Name)
+                            foreach(Node dateNode in nodefile.MainNode.Nodes)
+                            {
+                                if (dateNode.Name.Contains("."))
                                 {
-                                    case "add_core":
-                                        province.AddCore(v.Value, true);
-                                        break;
-                                    case "add_claim":
-                                        province.AddClaim(v.Value, true);
-                                        break;
-                                    case "owner":
-                                        Country c = GlobalVariables.Countries.Find(x => x.Tag == v.Value.ToUpper());
-                                        if (c != null)
-                                        {
-                                            province.OwnerCountry = c;
-                                            c.Provinces.Add(province);
-                                        }
-                                        break;
-                                    case "controller":
-                                        province.Controller = v.Value;
-                                        break;
-                                    case "culture":
-                                        province.Culture = Culture.Cultures.Find(x => x.Name == v.Value);
-                                        break;
-                                    case "religion":
-                                        province.Religion = Religion.Religions.Find(x => x.Name == v.Value);
-                                        break;
-                                    case "hre":
-                                        if (v.Value == "yes")
-                                            province.HRE = true;
-                                        else
-                                            province.HRE = false;
-                                        break;
-                                    case "fort_15th":
-                                        if (v.Value == "yes")
-                                            province.Fort = true;
-                                        else
-                                            province.Fort = false;
-                                        break;
-                                    case "base_tax":
-                                        province.Tax = int.Parse(v.Value);
-                                        break;
-                                    case "base_production":
-                                        province.Production = int.Parse(v.Value);
-                                        break;
-                                    case "base_manpower":
-                                        province.Manpower = int.Parse(v.Value);
-                                        break;
-                                    case "trade_goods":
-                                        province.TradeGood = GlobalVariables.TradeGoods.Find(x => x.Name == v.Value);
-                                        if (province.TradeGood != null)
-                                        {
-                                            province.TradeGood.TotalProvinces++;
-                                        }
-                                        break;
-                                    case "capital":
-                                        province.Capital = v.Value.Replace("\"", "");
-                                        break;
-                                    case "center_of_trade":
-                                        province.CenterOfTrade = int.Parse(v.Value);
-                                        break;
-                                    case "discovered_by":
-                                        province.AddDiscoveredBy(v.Value, true);
-                                        break;
-                                    case "is_city":
-                                        if (v.Value == "yes")
-                                            province.City = true;
-                                        else
-                                            province.City = false;
-                                        break;
+                                    int year = int.Parse(dateNode.Name.Split('.')[0]);
+                                    int month = int.Parse(dateNode.Name.Split('.')[1]);
+                                    if ((year < 1444) || (year == 1444 && month < 11) || (year == 1444 && month == 11 && int.Parse(dateNode.Name.Split('.')[2]) <= 11))
+                                    {
+                                        ReadProvinceValuesFromNode(province, dateNode);
+                                    }
                                 }
                             }
 
@@ -1233,7 +1221,7 @@ namespace Eu4ModEditor
                             {
                                 if (n.PureValues.Any())
                                 {
-                                    province.LatentTradeGood = GlobalVariables.TradeGoods.Find(x => x.Name == n.PureValues[0].Trim());
+                                    province.LatentTradeGood = GlobalVariables.TradeGoods.Find(x => x.Name == n.PureValues[0].Name.Trim());
                                     if (province.LatentTradeGood != null)
                                     {
                                         province.LatentTradeGood.TotalProvinces++;
@@ -1289,11 +1277,11 @@ namespace Eu4ModEditor
                     Node nd = n.Nodes.Find(x => x.Name == "areas");
                     if (nd != null)
                     {
-                        foreach (string vr in nd.PureValues)
+                        foreach (PureValue vr in nd.PureValues)
                         {
-                            if (vr != "")
+                            if (vr.Name != "")
                             {
-                                Area are = GlobalVariables.Areas.Find(x => x.Name == vr);
+                                Area are = GlobalVariables.Areas.Find(x => x.Name == vr.Name);
                                 if (are != null)
                                     ar.Add(are);
                             }
@@ -1321,9 +1309,9 @@ namespace Eu4ModEditor
                 foreach (Node n in Superregions.MainNode.Nodes)
                 {
                     List<Region> reg = new List<Region>();
-                    foreach (string s in n.PureValues)
+                    foreach (PureValue s in n.PureValues)
                     {
-                        Region r = GlobalVariables.Regions.Find(x => x.Name == s);
+                        Region r = GlobalVariables.Regions.Find(x => x.Name == s.Name);
                         if (r != null)
                         {
                             reg.Add(r);
@@ -1374,6 +1362,12 @@ namespace Eu4ModEditor
                 progress.UpdateProgress(3, 1);
             else if (provincecentre.IsCompleted)
                 progress.UpdateProgress(3, 2);
+
+            await llocalisation;
+            if (llocalisation.IsFaulted)
+                progress.UpdateProgress(22, 1);
+            else if (llocalisation.IsCompleted)
+                progress.UpdateProgress(22, 2);
 
             Task umap = new Task(() => {
                 foreach (Province p in GlobalVariables.Provinces)
@@ -1635,6 +1629,88 @@ namespace Eu4ModEditor
             lp.ShowDialog();         
             //LoadFilesSync();
             
+        }
+
+        public static void ReadProvinceValuesFromNode(Province province, Node n)
+        {
+            foreach (Variable v in n.Variables)
+            {
+                Building bl = GlobalVariables.Buildings.Find(x => x.Name == v.Name);
+                if (bl != null && v.Value == "yes")
+                {
+                    province.AddBuilding(bl, true);
+                }
+
+                switch (v.Name)
+                {
+                    case "add_core":
+                        province.AddCore(v.Value, true);
+                        break;
+                    case "add_claim":
+                        province.AddClaim(v.Value, true);
+                        break;
+                    case "owner":
+                        Country c = GlobalVariables.Countries.Find(x => x.Tag == v.Value.ToUpper());
+                        if (c != null)
+                        {
+                            province.OwnerCountry = c;
+                            c.Provinces.Add(province);
+                        }
+                        break;
+                    case "controller":
+                        province.Controller = v.Value;
+                        break;
+                    case "culture":
+                        province.Culture = Culture.Cultures.Find(x => x.Name == v.Value);
+                        break;
+                    case "religion":
+                        province.Religion = Religion.Religions.Find(x => x.Name == v.Value.Replace("\"", ""));
+                        break;
+                    case "hre":
+                        if (v.Value == "yes")
+                            province.HRE = true;
+                        else
+                            province.HRE = false;
+                        break;
+                    case "fort_15th":
+                        if (v.Value == "yes")
+                            province.Fort = true;
+                        else
+                            province.Fort = false;
+                        break;
+                    case "base_tax":
+                        province.Tax = int.Parse(v.Value);
+                        break;
+                    case "base_production":
+                        province.Production = int.Parse(v.Value);
+                        break;
+                    case "base_manpower":
+                        province.Manpower = int.Parse(v.Value);
+                        break;
+                    case "trade_goods":
+                        province.TradeGood = GlobalVariables.TradeGoods.Find(x => x.Name == v.Value);
+                        if (province.TradeGood != null)
+                        {
+                            province.TradeGood.TotalProvinces++;
+                        }
+                        break;
+                    case "capital":
+                        province.Capital = v.Value.Replace("\"", "");
+                        break;
+                    case "center_of_trade":
+                        province.CenterOfTrade = int.Parse(v.Value);
+                        break;
+                    case "discovered_by":
+                        province.AddDiscoveredBy(v.Value, true);
+                        break;
+                    case "is_city":
+                        if (v.Value == "yes")
+                            province.City = true;
+                        else
+                            province.City = false;
+                        break;
+                }
+            }
         }
     }
 }
