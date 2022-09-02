@@ -54,6 +54,7 @@
             this.ContinueButton = new System.Windows.Forms.Button();
             this.TradeCompaniesProgress = new System.Windows.Forms.Label();
             this.LocalisationProgress = new System.Windows.Forms.Label();
+            this.BordersProgress = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -340,12 +341,24 @@
             this.LocalisationProgress.TabIndex = 25;
             this.LocalisationProgress.Text = "Loading localisation";
             // 
+            // BordersProgress
+            // 
+            this.BordersProgress.AutoSize = true;
+            this.BordersProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.BordersProgress.ForeColor = System.Drawing.Color.Gray;
+            this.BordersProgress.Location = new System.Drawing.Point(254, 350);
+            this.BordersProgress.Name = "BordersProgress";
+            this.BordersProgress.Size = new System.Drawing.Size(108, 16);
+            this.BordersProgress.TabIndex = 26;
+            this.BordersProgress.Text = "Creating borders";
+            // 
             // LoadingProgress
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(450, 549);
             this.ControlBox = false;
+            this.Controls.Add(this.BordersProgress);
             this.Controls.Add(this.LocalisationProgress);
             this.Controls.Add(this.TradeCompaniesProgress);
             this.Controls.Add(this.ContinueButton);
@@ -408,5 +421,6 @@
         private System.Windows.Forms.Button ContinueButton;
         private System.Windows.Forms.Label TradeCompaniesProgress;
         private System.Windows.Forms.Label LocalisationProgress;
+        private System.Windows.Forms.Label BordersProgress;
     }
 }

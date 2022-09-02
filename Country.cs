@@ -24,11 +24,11 @@ namespace Eu4ModEditor
                 Variables["Government"] = value;
             }
         }
-        public string PrimaryCulture
+        public Culture PrimaryCulture
         {
             get
             {
-                return Variables["PrimaryCulture"] as string;
+                return Variables["PrimaryCulture"] as Culture;
             }
             set
             {
@@ -119,7 +119,7 @@ namespace Eu4ModEditor
             Variables.Add("CapitalID", 0);
             Variables.Add("Religion", Religion.NoReligion);
             Variables.Add("TechnologyGroup", Religion.NoReligion);
-            Variables.Add("PrimaryCulture", "");
+            Variables.Add("PrimaryCulture", Culture.NoCulture);
             Variables.Add("Government", "");
             Variables.Add("GovernmentReform", "");
             Variables.Add("GovernmentRank", 1);

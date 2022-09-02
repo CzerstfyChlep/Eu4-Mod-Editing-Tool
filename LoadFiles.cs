@@ -482,8 +482,6 @@ namespace Eu4ModEditor
             lbuildings.Start();
             progress.UpdateProgress(20, 0);
 
-
-
             await ldefinition;
             if (ldefinition.IsFaulted)
                 progress.UpdateProgress(0, 1);
@@ -682,6 +680,9 @@ namespace Eu4ModEditor
                     defaultmap = new NodeFile(GlobalVariables.pathtomod + "map\\default.map");
                 else
                     defaultmap = new NodeFile(GlobalVariables.pathtogame + "map\\default.map");
+
+                GlobalVariables.MapWidth = int.Parse(defaultmap.MainNode.Variables.Find(x => x.Name == "width").Value);
+                GlobalVariables.MapHeight = int.Parse(defaultmap.MainNode.Variables.Find(x => x.Name == "height").Value);
 
                 foreach (string sea in defaultmap.MainNode.Nodes.Find(x => x.Name == "sea_starts").GetPureValuesAsArray())
                 {
@@ -916,8 +917,6 @@ namespace Eu4ModEditor
             else if (lmap.IsCompleted)
                 progress.UpdateProgress(2, 2);
 
-
-
             Task provincecentre = new Task(() => {
                 foreach (Province p in GlobalVariables.Provinces)
                 {
@@ -938,6 +937,143 @@ namespace Eu4ModEditor
             });
             provincecentre.Start();
             progress.UpdateProgress(3, 0);
+
+
+            await provincecentre;
+            if (provincecentre.IsFaulted)
+                progress.UpdateProgress(3, 1);
+            else if (provincecentre.IsCompleted)
+                progress.UpdateProgress(3, 2);
+
+           
+
+            await ldefaultmap;
+            if (ldefaultmap.IsFaulted)
+                progress.UpdateProgress(17, 1);
+            else if (ldefaultmap.IsCompleted)
+                progress.UpdateProgress(17, 2);
+
+            //TODO raycast
+
+            Task raycast = new Task(() =>
+            {
+                /*
+                Province[,] pixelstoprovinces = new Province[10000, 10000];
+
+                foreach (Province p in GlobalVariables.Provinces)
+                {
+                    foreach (Point pt in p.Pixels)
+                    {
+                        pixelstoprovinces[pt.X, pt.Y] = p;
+                    }
+                }
+
+
+                foreach (Province p in GlobalVariables.Provinces)
+                {
+                    for (int a = 0; a < 90; a += 5)
+                    {
+                        ProvinceNeighbourRay ray = new ProvinceNeighbourRay();
+                        ray.currentPosition = p.Center;
+                        ray.MoveX = a;
+                        ray.MoveY = 90 - a;
+
+                        Province pfound = null;
+                        do
+                        {
+                            ray.PerformMove();
+                            if (ray.currentPosition.X < 0 || ray.currentPosition.Y < 0)
+                                break;
+                            if (ray.currentPosition.X > GlobalVariables.MapWidth || ray.currentPosition.Y > GlobalVariables.MapHeight)
+                                break;
+                            pfound = pixelstoprovinces[ray.currentPosition.X, ray.currentPosition.Y];
+                        }
+                        while (pfound == null || pfound == p);
+
+                        if (!p.BorderingProvinces.Contains(pfound))
+                            p.BorderingProvinces.Add(pfound);
+                    }
+
+                    for (int a = 0; a < 90; a += 5)
+                    {
+                        ProvinceNeighbourRay ray = new ProvinceNeighbourRay();
+                        ray.currentPosition = p.Center;
+                        ray.MoveX = 90 - a;
+                        ray.MoveY = -a;
+
+                        Province pfound = null;
+                        do
+                        {
+                            ray.PerformMove();
+                            if (ray.currentPosition.X < 0 || ray.currentPosition.Y < 0)
+                                break;
+                            if (ray.currentPosition.X > GlobalVariables.MapWidth || ray.currentPosition.Y > GlobalVariables.MapHeight)
+                                break;
+                            pfound = pixelstoprovinces[ray.currentPosition.X, ray.currentPosition.Y];
+                        }
+                        while (pfound == null || pfound == p);
+
+                        if (!p.BorderingProvinces.Contains(pfound))
+                            p.BorderingProvinces.Add(pfound);
+                    }
+
+                    for (int a = 0; a < 90; a += 5)
+                    {
+                        ProvinceNeighbourRay ray = new ProvinceNeighbourRay();
+                        ray.currentPosition = p.Center;
+                        ray.MoveX = -a;
+                        ray.MoveY = -90 + a;
+
+                        Province pfound = null;
+                        do
+                        {
+                            ray.PerformMove();
+                            if (ray.currentPosition.X < 0 || ray.currentPosition.Y < 0)
+                                break;
+                            if (ray.currentPosition.X > GlobalVariables.MapWidth || ray.currentPosition.Y > GlobalVariables.MapHeight)
+                                break;
+                            pfound = pixelstoprovinces[ray.currentPosition.X, ray.currentPosition.Y];
+                        }
+                        while (pfound == null || pfound == p);
+
+                        if (!p.BorderingProvinces.Contains(pfound))
+                            p.BorderingProvinces.Add(pfound);
+                    }
+
+                    for (int a = 0; a < 90; a += 5)
+                    {
+                        ProvinceNeighbourRay ray = new ProvinceNeighbourRay();
+                        ray.currentPosition = p.Center;
+                        ray.MoveX = -90 + a;
+                        ray.MoveY = a;
+
+                        Province pfound = null;
+                        do
+                        {
+                            ray.PerformMove();
+                            if (ray.currentPosition.X < 0 || ray.currentPosition.Y < 0)
+                                break;
+                            if (ray.currentPosition.X > GlobalVariables.MapWidth || ray.currentPosition.Y > GlobalVariables.MapHeight)
+                                break;
+                            pfound = pixelstoprovinces[ray.currentPosition.X, ray.currentPosition.Y];
+                        }
+                        while (pfound == null || pfound == p);
+
+                        if (!p.BorderingProvinces.Contains(pfound))
+                            p.BorderingProvinces.Add(pfound);
+                    }
+                }
+                */
+            });
+            raycast.Start();
+            progress.UpdateProgress(23, 0);
+
+
+
+
+
+
+           
             
 
 
@@ -1051,7 +1187,7 @@ namespace Eu4ModEditor
                                 c.Religion = Religion.Religions.Find(x => x.Name == v.Value);
                                 break;
                             case "primary_culture":
-                                c.PrimaryCulture = v.Value;
+                                c.PrimaryCulture = Culture.Cultures.Find(x => x.Name == v.Value);
                                 break;
                             case "government_rank ":
                                 c.GovernmentRank = int.Parse(v.Value);
@@ -1344,11 +1480,7 @@ namespace Eu4ModEditor
                 progress.UpdateProgress(16, 1);
             else if (lsuperregion.IsCompleted)
                 progress.UpdateProgress(16, 2);
-            await ldefaultmap;
-            if (ldefaultmap.IsFaulted)
-                progress.UpdateProgress(17, 1);
-            else if (ldefaultmap.IsCompleted)
-                progress.UpdateProgress(17, 2);
+            
             
 
             await ltradecomapnies;         
@@ -1357,11 +1489,7 @@ namespace Eu4ModEditor
             else if (ltradecomapnies.IsCompleted)
                 progress.UpdateProgress(21, 2);
 
-            await provincecentre;
-            if (provincecentre.IsFaulted)
-                progress.UpdateProgress(3, 1);
-            else if (provincecentre.IsCompleted)
-                progress.UpdateProgress(3, 2);
+           
 
             await llocalisation;
             if (llocalisation.IsFaulted)
@@ -1456,6 +1584,11 @@ namespace Eu4ModEditor
             else if (lbuildings.IsCompleted)
                 progress.UpdateProgress(20, 2);
 
+            await raycast;
+            if(raycast.IsFaulted)
+                progress.UpdateProgress(23, 1);
+            else if (raycast.IsCompleted)
+                progress.UpdateProgress(23, 2);
             /*
             List<CountryModifier> modifiers = new List<CountryModifier>();
             modifiers.Add(new CountryModifier("drill_gain_modifier", "military", 3, 0.05, 1, false));
@@ -1557,42 +1690,10 @@ namespace Eu4ModEditor
                 "trade_efficiency","trade_range_modifier","trade_steering","global_ship_trade_power","privateer_efficiency","embargo_efficiency",
                 "ship_power_propagation","center_of_trade_upgrade_cost","trade_company_investment_cost","mercantilism_cost" };
 
-                GlobalVariables.CountryModifiers.AddRange(modifiers);
+            GlobalVariables.CountryModifiers.AddRange(modifiers);
 
-                GlobalVariables.FullyLoaded = true;
+            GlobalVariables.FullyLoaded = true;
 
-
-
-            int[] ids = new int[5000];
-            string[] tags = new string[5000];
-            string[] cultu = new string[5000];
-            string[] relig = new string[5000];
-            int[] dev = new int[5000];
-            string[] tradego = new string[5000];
-            string[] terrains = new string[5000];
-            string[] names = new string[5000];
-
-            int nme = -1;
-            foreach (Province p in GlobalVariables.Provinces)
-            {
-                if(p.OwnerCountry != null)
-                {
-                    nme++;
-                    ids[nme] = p.ID;
-                    /*
-                    tags[nme] = p.OwnerCountry.Tag;
-                    if(p.Culture != null)
-                        cultu[nme] = p.Culture.Name;
-                    if(p.Religion != null)
-                        relig[nme] = p.Religion.ReadableName;
-                    dev[nme] = p.Tax + p.Production + p.Manpower;
-                    if(p.TradeGood != null)
-                        tradego[nme] = p.TradeGood.ReadableName;
-                        */
-                }
-                
-
-            }
             /*
             File.WriteAllLines("owners.txt", tags);
             File.WriteAllLines("cultures.txt", cultu);
@@ -1711,6 +1812,51 @@ namespace Eu4ModEditor
                         break;
                 }
             }
+        }
+
+       
+
+
+    }
+
+    public class ProvinceNeighbourRay
+    {
+        public Point currentPosition = new Point();
+
+        public int MoveX = 1;
+        public int MoveY = 1;
+     
+        int CurrentDistance = 0;
+        bool UsingY = false;
+
+        public void PerformMove()
+        {
+            if (UsingY)
+            {
+                if(MoveY > 0)
+                    currentPosition.Y++;
+                else if (MoveY < 0)
+                    currentPosition.Y--;
+                CurrentDistance++;
+                if (CurrentDistance >= Math.Abs(MoveY)) {
+                    UsingY = false;
+                    CurrentDistance = 0;
+                }
+            }
+            else
+            {
+                if(MoveX > 0)
+                    currentPosition.X++;
+                else if(MoveX < 0)
+                    currentPosition.X--;
+                CurrentDistance++;
+                if (CurrentDistance >= Math.Abs(MoveX))
+                {
+                    UsingY = true;
+                    CurrentDistance = 0;
+                }
+            }
+            
         }
     }
 }

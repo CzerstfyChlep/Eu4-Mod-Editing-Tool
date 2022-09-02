@@ -129,6 +129,14 @@
             this.ContinentNameChangeBox = new System.Windows.Forms.TextBox();
             this.ContinentBox = new System.Windows.Forms.ComboBox();
             this.label26 = new System.Windows.Forms.Label();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.SaveProvinceAdj = new System.Windows.Forms.Button();
+            this.SaveProvinceName = new System.Windows.Forms.Button();
+            this.SaveLocalisationButton = new System.Windows.Forms.Button();
+            this.ProvinceAdjectiveLocalisationBox = new System.Windows.Forms.TextBox();
+            this.label52 = new System.Windows.Forms.Label();
+            this.ProvinceNameLocalisationBox = new System.Windows.Forms.TextBox();
+            this.label51 = new System.Windows.Forms.Label();
             this.ReloadProvinceAllMapmodesButton = new System.Windows.Forms.Button();
             this.ReloadProvinceFromFileButton = new System.Windows.Forms.Button();
             this.OpenProvinceFileButton = new System.Windows.Forms.Button();
@@ -228,27 +236,47 @@
             this.RandomIdeaBoxButton = new System.Windows.Forms.Button();
             this.OpenWordCreator = new System.Windows.Forms.Button();
             this.MacroSelecter = new System.Windows.Forms.TabPage();
-            this.MacroSelectAllProvincesButton = new System.Windows.Forms.Button();
-            this.MacroDeselectAllProvincesButton = new System.Windows.Forms.Button();
+            this.groupBox20 = new System.Windows.Forms.GroupBox();
+            this.label57 = new System.Windows.Forms.Label();
+            this.label55 = new System.Windows.Forms.Label();
+            this.label53 = new System.Windows.Forms.Label();
             this.MacroSelectorTabs = new System.Windows.Forms.TabControl();
             this.MacroDevelopmentPage = new System.Windows.Forms.TabPage();
-            this.MacroDeselectProvincesBelowDev = new System.Windows.Forms.Button();
-            this.MacroDeselectProvincesAboveDev = new System.Windows.Forms.Button();
+            this.MacroSelectProvincesEqualDev = new System.Windows.Forms.Button();
             this.MacroSelectProvincesBelowDev = new System.Windows.Forms.Button();
             this.MacroSelectProvincesAboveDev = new System.Windows.Forms.Button();
             this.label46 = new System.Windows.Forms.Label();
             this.MacroDevNumeric = new System.Windows.Forms.NumericUpDown();
             this.MacroReligionPage = new System.Windows.Forms.TabPage();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.MacroSameCountryReligion = new System.Windows.Forms.Button();
+            this.MacroDifferentCountryReligion = new System.Windows.Forms.Button();
+            this.MacroDifferentReligion = new System.Windows.Forms.Button();
+            this.MacroSameReligion = new System.Windows.Forms.Button();
+            this.label54 = new System.Windows.Forms.Label();
+            this.MacroReligionBox = new System.Windows.Forms.ComboBox();
             this.MacroCulturePage = new System.Windows.Forms.TabPage();
+            this.MacroSameCountryCulture = new System.Windows.Forms.Button();
+            this.MacroDifferentCountryCulture = new System.Windows.Forms.Button();
+            this.MacroDifferentCulture = new System.Windows.Forms.Button();
+            this.MacroSameCulture = new System.Windows.Forms.Button();
+            this.label56 = new System.Windows.Forms.Label();
+            this.MacroCultureBox = new System.Windows.Forms.ComboBox();
             this.MacroFortPage = new System.Windows.Forms.TabPage();
+            this.label58 = new System.Windows.Forms.Label();
+            this.MacroOutsideFort = new System.Windows.Forms.Button();
+            this.MacroInsideFort = new System.Windows.Forms.Button();
+            this.MacroWithoutFort = new System.Windows.Forms.Button();
+            this.MacroWithFort = new System.Windows.Forms.Button();
             this.MacroAreaPage = new System.Windows.Forms.TabPage();
             this.MacroRegionPage = new System.Windows.Forms.TabPage();
             this.MacroSuperregionPage = new System.Windows.Forms.TabPage();
             this.MacroContinentPage = new System.Windows.Forms.TabPage();
             this.MacroHREPage = new System.Windows.Forms.TabPage();
             this.MacroTradenodePage = new System.Windows.Forms.TabPage();
-            this.MacroDiscoveredByPage = new System.Windows.Forms.TabPage();
+            this.MacroTechGroupPage = new System.Windows.Forms.TabPage();
+            this.groupBox19 = new System.Windows.Forms.GroupBox();
+            this.MacroDeselectAllProvincesButton = new System.Windows.Forms.Button();
+            this.MacroSelectAllProvincesButton = new System.Windows.Forms.Button();
             this.ChangesTab = new System.Windows.Forms.TabPage();
             this.RefreshChanges = new System.Windows.Forms.Button();
             this.RevertAllChangesButton = new System.Windows.Forms.Button();
@@ -280,14 +308,37 @@
             this.DiscoveredByMapmode = new System.Windows.Forms.Button();
             this.GovernmentMapmode = new System.Windows.Forms.Button();
             this.TradeCompanyMapmode = new System.Windows.Forms.Button();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.label51 = new System.Windows.Forms.Label();
-            this.ProvinceNameLocalisationBox = new System.Windows.Forms.TextBox();
-            this.ProvinceAdjectiveLocalisationBox = new System.Windows.Forms.TextBox();
-            this.label52 = new System.Windows.Forms.Label();
-            this.SaveLocalisationButton = new System.Windows.Forms.Button();
-            this.SaveProvinceName = new System.Windows.Forms.Button();
-            this.SaveProvinceAdj = new System.Windows.Forms.Button();
+            this.BorderingDebugButton = new System.Windows.Forms.Button();
+            this.MacroDifferentArea = new System.Windows.Forms.Button();
+            this.MacroSameArea = new System.Windows.Forms.Button();
+            this.MacroAreaBox = new System.Windows.Forms.ComboBox();
+            this.label59 = new System.Windows.Forms.Label();
+            this.label60 = new System.Windows.Forms.Label();
+            this.MacroDifferentRegion = new System.Windows.Forms.Button();
+            this.MacroSameRegion = new System.Windows.Forms.Button();
+            this.MacroRegionBox = new System.Windows.Forms.ComboBox();
+            this.label61 = new System.Windows.Forms.Label();
+            this.MacroDifferentSuperregion = new System.Windows.Forms.Button();
+            this.MacroSameSuperregion = new System.Windows.Forms.Button();
+            this.MacroSuperregionBox = new System.Windows.Forms.ComboBox();
+            this.label62 = new System.Windows.Forms.Label();
+            this.MacroDifferentContinent = new System.Windows.Forms.Button();
+            this.MacroSameContinent = new System.Windows.Forms.Button();
+            this.MacroContinentBox = new System.Windows.Forms.ComboBox();
+            this.MacroOutsideHRE = new System.Windows.Forms.Button();
+            this.MacroInsideHRE = new System.Windows.Forms.Button();
+            this.MacroHREProvOutCountry = new System.Windows.Forms.Button();
+            this.MacroHRECountry = new System.Windows.Forms.Button();
+            this.MacroDifferentTradenode = new System.Windows.Forms.Button();
+            this.MacroSameTradenode = new System.Windows.Forms.Button();
+            this.label63 = new System.Windows.Forms.Label();
+            this.MacroTradeNodeBox = new System.Windows.Forms.ComboBox();
+            this.MacroDifferentTechGroup = new System.Windows.Forms.Button();
+            this.MacroDiscoveredBy = new System.Windows.Forms.Button();
+            this.label64 = new System.Windows.Forms.Label();
+            this.MacroTechGroupBox = new System.Windows.Forms.ComboBox();
+            this.MacroNotDiscoveredBy = new System.Windows.Forms.Button();
+            this.MacroSameTechGroup = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.ProvinceTabControl.SuspendLayout();
@@ -305,6 +356,7 @@
             this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CenterOfTradeNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ProvinceManpowerNumeric)).BeginInit();
@@ -321,13 +373,23 @@
             this.groupBox7.SuspendLayout();
             this.AdditionalPage.SuspendLayout();
             this.MacroSelecter.SuspendLayout();
+            this.groupBox20.SuspendLayout();
             this.MacroSelectorTabs.SuspendLayout();
             this.MacroDevelopmentPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MacroDevNumeric)).BeginInit();
             this.MacroReligionPage.SuspendLayout();
+            this.MacroCulturePage.SuspendLayout();
+            this.MacroFortPage.SuspendLayout();
+            this.MacroAreaPage.SuspendLayout();
+            this.MacroRegionPage.SuspendLayout();
+            this.MacroSuperregionPage.SuspendLayout();
+            this.MacroContinentPage.SuspendLayout();
+            this.MacroHREPage.SuspendLayout();
+            this.MacroTradenodePage.SuspendLayout();
+            this.MacroTechGroupPage.SuspendLayout();
+            this.groupBox19.SuspendLayout();
             this.ChangesTab.SuspendLayout();
             this.SavingTab.SuspendLayout();
-            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tabs
@@ -1453,6 +1515,84 @@
             this.label26.TabIndex = 0;
             this.label26.Text = "Continent:";
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.SaveProvinceAdj);
+            this.tabPage1.Controls.Add(this.SaveProvinceName);
+            this.tabPage1.Controls.Add(this.SaveLocalisationButton);
+            this.tabPage1.Controls.Add(this.ProvinceAdjectiveLocalisationBox);
+            this.tabPage1.Controls.Add(this.label52);
+            this.tabPage1.Controls.Add(this.ProvinceNameLocalisationBox);
+            this.tabPage1.Controls.Add(this.label51);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Size = new System.Drawing.Size(537, 524);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "Localisation";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // SaveProvinceAdj
+            // 
+            this.SaveProvinceAdj.Location = new System.Drawing.Point(272, 66);
+            this.SaveProvinceAdj.Name = "SaveProvinceAdj";
+            this.SaveProvinceAdj.Size = new System.Drawing.Size(75, 20);
+            this.SaveProvinceAdj.TabIndex = 6;
+            this.SaveProvinceAdj.Text = "Save";
+            this.SaveProvinceAdj.UseVisualStyleBackColor = true;
+            this.SaveProvinceAdj.Click += new System.EventHandler(this.SaveProvinceAdj_Click);
+            // 
+            // SaveProvinceName
+            // 
+            this.SaveProvinceName.Location = new System.Drawing.Point(272, 27);
+            this.SaveProvinceName.Name = "SaveProvinceName";
+            this.SaveProvinceName.Size = new System.Drawing.Size(75, 20);
+            this.SaveProvinceName.TabIndex = 5;
+            this.SaveProvinceName.Text = "Save";
+            this.SaveProvinceName.UseVisualStyleBackColor = true;
+            this.SaveProvinceName.Click += new System.EventHandler(this.SaveProvinceName_Click);
+            // 
+            // SaveLocalisationButton
+            // 
+            this.SaveLocalisationButton.Location = new System.Drawing.Point(15, 92);
+            this.SaveLocalisationButton.Name = "SaveLocalisationButton";
+            this.SaveLocalisationButton.Size = new System.Drawing.Size(251, 23);
+            this.SaveLocalisationButton.TabIndex = 4;
+            this.SaveLocalisationButton.Text = "Save localisation";
+            this.SaveLocalisationButton.UseVisualStyleBackColor = true;
+            this.SaveLocalisationButton.Click += new System.EventHandler(this.SaveLocalisationButton_Click);
+            // 
+            // ProvinceAdjectiveLocalisationBox
+            // 
+            this.ProvinceAdjectiveLocalisationBox.Location = new System.Drawing.Point(15, 66);
+            this.ProvinceAdjectiveLocalisationBox.Name = "ProvinceAdjectiveLocalisationBox";
+            this.ProvinceAdjectiveLocalisationBox.Size = new System.Drawing.Size(251, 20);
+            this.ProvinceAdjectiveLocalisationBox.TabIndex = 3;
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(12, 50);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(98, 13);
+            this.label52.TabIndex = 2;
+            this.label52.Text = "Province adjective:";
+            // 
+            // ProvinceNameLocalisationBox
+            // 
+            this.ProvinceNameLocalisationBox.Location = new System.Drawing.Point(15, 27);
+            this.ProvinceNameLocalisationBox.Name = "ProvinceNameLocalisationBox";
+            this.ProvinceNameLocalisationBox.Size = new System.Drawing.Size(251, 20);
+            this.ProvinceNameLocalisationBox.TabIndex = 1;
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Location = new System.Drawing.Point(12, 11);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(81, 13);
+            this.label51.TabIndex = 0;
+            this.label51.Text = "Province name:";
+            // 
             // ReloadProvinceAllMapmodesButton
             // 
             this.ReloadProvinceAllMapmodesButton.Location = new System.Drawing.Point(10, 789);
@@ -2517,9 +2657,8 @@
             // 
             // MacroSelecter
             // 
-            this.MacroSelecter.Controls.Add(this.MacroSelectAllProvincesButton);
-            this.MacroSelecter.Controls.Add(this.MacroDeselectAllProvincesButton);
-            this.MacroSelecter.Controls.Add(this.MacroSelectorTabs);
+            this.MacroSelecter.Controls.Add(this.groupBox20);
+            this.MacroSelecter.Controls.Add(this.groupBox19);
             this.MacroSelecter.Location = new System.Drawing.Point(4, 22);
             this.MacroSelecter.Name = "MacroSelecter";
             this.MacroSelecter.Size = new System.Drawing.Size(556, 811);
@@ -2527,25 +2666,48 @@
             this.MacroSelecter.Text = "MacroSelector";
             this.MacroSelecter.UseVisualStyleBackColor = true;
             // 
-            // MacroSelectAllProvincesButton
+            // groupBox20
             // 
-            this.MacroSelectAllProvincesButton.Location = new System.Drawing.Point(281, 6);
-            this.MacroSelectAllProvincesButton.Name = "MacroSelectAllProvincesButton";
-            this.MacroSelectAllProvincesButton.Size = new System.Drawing.Size(268, 41);
-            this.MacroSelectAllProvincesButton.TabIndex = 2;
-            this.MacroSelectAllProvincesButton.Text = "Select all provinces";
-            this.MacroSelectAllProvincesButton.UseVisualStyleBackColor = true;
-            this.MacroSelectAllProvincesButton.Click += new System.EventHandler(this.MacroSelectAllProvincesButton_Click);
+            this.groupBox20.Controls.Add(this.label57);
+            this.groupBox20.Controls.Add(this.label55);
+            this.groupBox20.Controls.Add(this.label53);
+            this.groupBox20.Controls.Add(this.MacroSelectorTabs);
+            this.groupBox20.Location = new System.Drawing.Point(3, 84);
+            this.groupBox20.Name = "groupBox20";
+            this.groupBox20.Size = new System.Drawing.Size(546, 287);
+            this.groupBox20.TabIndex = 4;
+            this.groupBox20.TabStop = false;
+            this.groupBox20.Text = "Selectors";
             // 
-            // MacroDeselectAllProvincesButton
+            // label57
             // 
-            this.MacroDeselectAllProvincesButton.Location = new System.Drawing.Point(7, 6);
-            this.MacroDeselectAllProvincesButton.Name = "MacroDeselectAllProvincesButton";
-            this.MacroDeselectAllProvincesButton.Size = new System.Drawing.Size(268, 41);
-            this.MacroDeselectAllProvincesButton.TabIndex = 1;
-            this.MacroDeselectAllProvincesButton.Text = "Deselct all provinces";
-            this.MacroDeselectAllProvincesButton.UseVisualStyleBackColor = true;
-            this.MacroDeselectAllProvincesButton.Click += new System.EventHandler(this.MacroDeselectAllProvincesButton_Click);
+            this.label57.AutoSize = true;
+            this.label57.Location = new System.Drawing.Point(11, 58);
+            this.label57.Name = "label57";
+            this.label57.Size = new System.Drawing.Size(394, 26);
+            this.label57.TabIndex = 3;
+            this.label57.Text = "By pressing Alt while clicking any selection button here, you will filter your se" +
+    "lection\r\n\r\n";
+            // 
+            // label55
+            // 
+            this.label55.AutoSize = true;
+            this.label55.Location = new System.Drawing.Point(11, 36);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(527, 13);
+            this.label55.TabIndex = 2;
+            this.label55.Text = "By pressing Control while clicking any selection button here, you will remove tho" +
+    "se provinces from the selection\r\n";
+            // 
+            // label53
+            // 
+            this.label53.AutoSize = true;
+            this.label53.Location = new System.Drawing.Point(11, 16);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(487, 13);
+            this.label53.TabIndex = 1;
+            this.label53.Text = "By pressing Shift while clicking any selection button here, you will add those pr" +
+    "ovinces to the selection";
             // 
             // MacroSelectorTabs
             // 
@@ -2559,18 +2721,17 @@
             this.MacroSelectorTabs.Controls.Add(this.MacroContinentPage);
             this.MacroSelectorTabs.Controls.Add(this.MacroHREPage);
             this.MacroSelectorTabs.Controls.Add(this.MacroTradenodePage);
-            this.MacroSelectorTabs.Controls.Add(this.MacroDiscoveredByPage);
-            this.MacroSelectorTabs.Location = new System.Drawing.Point(3, 53);
+            this.MacroSelectorTabs.Controls.Add(this.MacroTechGroupPage);
+            this.MacroSelectorTabs.Location = new System.Drawing.Point(6, 87);
             this.MacroSelectorTabs.Multiline = true;
             this.MacroSelectorTabs.Name = "MacroSelectorTabs";
             this.MacroSelectorTabs.SelectedIndex = 0;
-            this.MacroSelectorTabs.Size = new System.Drawing.Size(546, 186);
+            this.MacroSelectorTabs.Size = new System.Drawing.Size(536, 186);
             this.MacroSelectorTabs.TabIndex = 0;
             // 
             // MacroDevelopmentPage
             // 
-            this.MacroDevelopmentPage.Controls.Add(this.MacroDeselectProvincesBelowDev);
-            this.MacroDevelopmentPage.Controls.Add(this.MacroDeselectProvincesAboveDev);
+            this.MacroDevelopmentPage.Controls.Add(this.MacroSelectProvincesEqualDev);
             this.MacroDevelopmentPage.Controls.Add(this.MacroSelectProvincesBelowDev);
             this.MacroDevelopmentPage.Controls.Add(this.MacroSelectProvincesAboveDev);
             this.MacroDevelopmentPage.Controls.Add(this.label46);
@@ -2578,36 +2739,26 @@
             this.MacroDevelopmentPage.Location = new System.Drawing.Point(4, 40);
             this.MacroDevelopmentPage.Name = "MacroDevelopmentPage";
             this.MacroDevelopmentPage.Padding = new System.Windows.Forms.Padding(3);
-            this.MacroDevelopmentPage.Size = new System.Drawing.Size(538, 142);
+            this.MacroDevelopmentPage.Size = new System.Drawing.Size(528, 142);
             this.MacroDevelopmentPage.TabIndex = 0;
             this.MacroDevelopmentPage.Text = "Development";
             this.MacroDevelopmentPage.UseVisualStyleBackColor = true;
             // 
-            // MacroDeselectProvincesBelowDev
+            // MacroSelectProvincesEqualDev
             // 
-            this.MacroDeselectProvincesBelowDev.Location = new System.Drawing.Point(209, 115);
-            this.MacroDeselectProvincesBelowDev.Name = "MacroDeselectProvincesBelowDev";
-            this.MacroDeselectProvincesBelowDev.Size = new System.Drawing.Size(323, 23);
-            this.MacroDeselectProvincesBelowDev.TabIndex = 5;
-            this.MacroDeselectProvincesBelowDev.Text = "Deselect provinces below";
-            this.MacroDeselectProvincesBelowDev.UseVisualStyleBackColor = true;
-            this.MacroDeselectProvincesBelowDev.Click += new System.EventHandler(this.MacroDeselectProvincesBelowDev_Click);
-            // 
-            // MacroDeselectProvincesAboveDev
-            // 
-            this.MacroDeselectProvincesAboveDev.Location = new System.Drawing.Point(209, 91);
-            this.MacroDeselectProvincesAboveDev.Name = "MacroDeselectProvincesAboveDev";
-            this.MacroDeselectProvincesAboveDev.Size = new System.Drawing.Size(323, 23);
-            this.MacroDeselectProvincesAboveDev.TabIndex = 4;
-            this.MacroDeselectProvincesAboveDev.Text = "Deselect provinces above";
-            this.MacroDeselectProvincesAboveDev.UseVisualStyleBackColor = true;
-            this.MacroDeselectProvincesAboveDev.Click += new System.EventHandler(this.MacroDeselectProvincesAboveDev_Click);
+            this.MacroSelectProvincesEqualDev.Location = new System.Drawing.Point(202, 62);
+            this.MacroSelectProvincesEqualDev.Name = "MacroSelectProvincesEqualDev";
+            this.MacroSelectProvincesEqualDev.Size = new System.Drawing.Size(306, 23);
+            this.MacroSelectProvincesEqualDev.TabIndex = 4;
+            this.MacroSelectProvincesEqualDev.Text = "Select provinces equal";
+            this.MacroSelectProvincesEqualDev.UseVisualStyleBackColor = true;
+            this.MacroSelectProvincesEqualDev.Click += new System.EventHandler(this.MacroSelectProvincesEqualDev_Click);
             // 
             // MacroSelectProvincesBelowDev
             // 
-            this.MacroSelectProvincesBelowDev.Location = new System.Drawing.Point(209, 30);
+            this.MacroSelectProvincesBelowDev.Location = new System.Drawing.Point(202, 101);
             this.MacroSelectProvincesBelowDev.Name = "MacroSelectProvincesBelowDev";
-            this.MacroSelectProvincesBelowDev.Size = new System.Drawing.Size(323, 23);
+            this.MacroSelectProvincesBelowDev.Size = new System.Drawing.Size(306, 23);
             this.MacroSelectProvincesBelowDev.TabIndex = 3;
             this.MacroSelectProvincesBelowDev.Text = "Select provinces below";
             this.MacroSelectProvincesBelowDev.UseVisualStyleBackColor = true;
@@ -2615,9 +2766,9 @@
             // 
             // MacroSelectProvincesAboveDev
             // 
-            this.MacroSelectProvincesAboveDev.Location = new System.Drawing.Point(209, 6);
+            this.MacroSelectProvincesAboveDev.Location = new System.Drawing.Point(202, 26);
             this.MacroSelectProvincesAboveDev.Name = "MacroSelectProvincesAboveDev";
-            this.MacroSelectProvincesAboveDev.Size = new System.Drawing.Size(323, 23);
+            this.MacroSelectProvincesAboveDev.Size = new System.Drawing.Size(306, 23);
             this.MacroSelectProvincesAboveDev.TabIndex = 2;
             this.MacroSelectProvincesAboveDev.Text = "Select provinces above";
             this.MacroSelectProvincesAboveDev.UseVisualStyleBackColor = true;
@@ -2646,102 +2797,342 @@
             // 
             // MacroReligionPage
             // 
-            this.MacroReligionPage.Controls.Add(this.flowLayoutPanel1);
+            this.MacroReligionPage.Controls.Add(this.MacroSameCountryReligion);
+            this.MacroReligionPage.Controls.Add(this.MacroDifferentCountryReligion);
+            this.MacroReligionPage.Controls.Add(this.MacroDifferentReligion);
+            this.MacroReligionPage.Controls.Add(this.MacroSameReligion);
+            this.MacroReligionPage.Controls.Add(this.label54);
+            this.MacroReligionPage.Controls.Add(this.MacroReligionBox);
             this.MacroReligionPage.Location = new System.Drawing.Point(4, 40);
             this.MacroReligionPage.Name = "MacroReligionPage";
             this.MacroReligionPage.Padding = new System.Windows.Forms.Padding(3);
-            this.MacroReligionPage.Size = new System.Drawing.Size(538, 142);
+            this.MacroReligionPage.Size = new System.Drawing.Size(528, 142);
             this.MacroReligionPage.TabIndex = 1;
             this.MacroReligionPage.Text = "Religion";
             this.MacroReligionPage.UseVisualStyleBackColor = true;
             // 
-            // flowLayoutPanel1
+            // MacroSameCountryReligion
             // 
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(6, 3);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(526, 133);
-            this.flowLayoutPanel1.TabIndex = 0;
+            this.MacroSameCountryReligion.Location = new System.Drawing.Point(176, 73);
+            this.MacroSameCountryReligion.Name = "MacroSameCountryReligion";
+            this.MacroSameCountryReligion.Size = new System.Drawing.Size(346, 23);
+            this.MacroSameCountryReligion.TabIndex = 20;
+            this.MacroSameCountryReligion.Text = "Select provinces of countries following this religion\r\n";
+            this.MacroSameCountryReligion.UseVisualStyleBackColor = true;
+            this.MacroSameCountryReligion.Click += new System.EventHandler(this.MacroSameCountryReligion_Click);
+            // 
+            // MacroDifferentCountryReligion
+            // 
+            this.MacroDifferentCountryReligion.Location = new System.Drawing.Point(176, 102);
+            this.MacroDifferentCountryReligion.Name = "MacroDifferentCountryReligion";
+            this.MacroDifferentCountryReligion.Size = new System.Drawing.Size(346, 23);
+            this.MacroDifferentCountryReligion.TabIndex = 19;
+            this.MacroDifferentCountryReligion.Text = "Select provinces of countries not following this religion\r\n\r\n";
+            this.MacroDifferentCountryReligion.UseVisualStyleBackColor = true;
+            this.MacroDifferentCountryReligion.Click += new System.EventHandler(this.MacroDifferentCountryReligion_Click);
+            // 
+            // MacroDifferentReligion
+            // 
+            this.MacroDifferentReligion.Location = new System.Drawing.Point(176, 44);
+            this.MacroDifferentReligion.Name = "MacroDifferentReligion";
+            this.MacroDifferentReligion.Size = new System.Drawing.Size(346, 23);
+            this.MacroDifferentReligion.TabIndex = 18;
+            this.MacroDifferentReligion.Text = "Select provinces of different religion";
+            this.MacroDifferentReligion.UseVisualStyleBackColor = true;
+            this.MacroDifferentReligion.Click += new System.EventHandler(this.MacroDifferentReligion_Click);
+            // 
+            // MacroSameReligion
+            // 
+            this.MacroSameReligion.Location = new System.Drawing.Point(176, 15);
+            this.MacroSameReligion.Name = "MacroSameReligion";
+            this.MacroSameReligion.Size = new System.Drawing.Size(346, 23);
+            this.MacroSameReligion.TabIndex = 14;
+            this.MacroSameReligion.Text = "Select provinces of this religion";
+            this.MacroSameReligion.UseVisualStyleBackColor = true;
+            this.MacroSameReligion.Click += new System.EventHandler(this.MacroSameReligion_Click);
+            // 
+            // label54
+            // 
+            this.label54.AutoSize = true;
+            this.label54.Location = new System.Drawing.Point(6, 35);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(45, 13);
+            this.label54.TabIndex = 13;
+            this.label54.Text = "Religion";
+            // 
+            // MacroReligionBox
+            // 
+            this.MacroReligionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.MacroReligionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.MacroReligionBox.FormattingEnabled = true;
+            this.MacroReligionBox.Location = new System.Drawing.Point(9, 55);
+            this.MacroReligionBox.Name = "MacroReligionBox";
+            this.MacroReligionBox.Size = new System.Drawing.Size(152, 24);
+            this.MacroReligionBox.TabIndex = 12;
+            this.MacroReligionBox.TabStop = false;
             // 
             // MacroCulturePage
             // 
+            this.MacroCulturePage.Controls.Add(this.MacroSameCountryCulture);
+            this.MacroCulturePage.Controls.Add(this.MacroDifferentCountryCulture);
+            this.MacroCulturePage.Controls.Add(this.MacroDifferentCulture);
+            this.MacroCulturePage.Controls.Add(this.MacroSameCulture);
+            this.MacroCulturePage.Controls.Add(this.label56);
+            this.MacroCulturePage.Controls.Add(this.MacroCultureBox);
             this.MacroCulturePage.Location = new System.Drawing.Point(4, 40);
             this.MacroCulturePage.Name = "MacroCulturePage";
-            this.MacroCulturePage.Size = new System.Drawing.Size(538, 142);
+            this.MacroCulturePage.Size = new System.Drawing.Size(528, 142);
             this.MacroCulturePage.TabIndex = 2;
             this.MacroCulturePage.Text = "Culture";
             this.MacroCulturePage.UseVisualStyleBackColor = true;
             // 
+            // MacroSameCountryCulture
+            // 
+            this.MacroSameCountryCulture.Location = new System.Drawing.Point(176, 74);
+            this.MacroSameCountryCulture.Name = "MacroSameCountryCulture";
+            this.MacroSameCountryCulture.Size = new System.Drawing.Size(346, 23);
+            this.MacroSameCountryCulture.TabIndex = 26;
+            this.MacroSameCountryCulture.Text = "Select provinces of countries with this primary culture\r\n";
+            this.MacroSameCountryCulture.UseVisualStyleBackColor = true;
+            this.MacroSameCountryCulture.Click += new System.EventHandler(this.MacroSameCountryCulture_Click);
+            // 
+            // MacroDifferentCountryCulture
+            // 
+            this.MacroDifferentCountryCulture.Location = new System.Drawing.Point(176, 103);
+            this.MacroDifferentCountryCulture.Name = "MacroDifferentCountryCulture";
+            this.MacroDifferentCountryCulture.Size = new System.Drawing.Size(346, 23);
+            this.MacroDifferentCountryCulture.TabIndex = 25;
+            this.MacroDifferentCountryCulture.Text = "Select provinces of countries with different primary culture";
+            this.MacroDifferentCountryCulture.UseVisualStyleBackColor = true;
+            this.MacroDifferentCountryCulture.Click += new System.EventHandler(this.MacroDifferentCountryCulture_Click);
+            // 
+            // MacroDifferentCulture
+            // 
+            this.MacroDifferentCulture.Location = new System.Drawing.Point(176, 45);
+            this.MacroDifferentCulture.Name = "MacroDifferentCulture";
+            this.MacroDifferentCulture.Size = new System.Drawing.Size(346, 23);
+            this.MacroDifferentCulture.TabIndex = 24;
+            this.MacroDifferentCulture.Text = "Select provinces of different culture";
+            this.MacroDifferentCulture.UseVisualStyleBackColor = true;
+            this.MacroDifferentCulture.Click += new System.EventHandler(this.MacroDifferentCulture_Click);
+            // 
+            // MacroSameCulture
+            // 
+            this.MacroSameCulture.Location = new System.Drawing.Point(176, 16);
+            this.MacroSameCulture.Name = "MacroSameCulture";
+            this.MacroSameCulture.Size = new System.Drawing.Size(346, 23);
+            this.MacroSameCulture.TabIndex = 23;
+            this.MacroSameCulture.Text = "Select provinces of this culture";
+            this.MacroSameCulture.UseVisualStyleBackColor = true;
+            this.MacroSameCulture.Click += new System.EventHandler(this.MacroSameCulture_Click);
+            // 
+            // label56
+            // 
+            this.label56.AutoSize = true;
+            this.label56.Location = new System.Drawing.Point(6, 36);
+            this.label56.Name = "label56";
+            this.label56.Size = new System.Drawing.Size(40, 13);
+            this.label56.TabIndex = 22;
+            this.label56.Text = "Culture";
+            // 
+            // MacroCultureBox
+            // 
+            this.MacroCultureBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.MacroCultureBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.MacroCultureBox.FormattingEnabled = true;
+            this.MacroCultureBox.Location = new System.Drawing.Point(9, 56);
+            this.MacroCultureBox.Name = "MacroCultureBox";
+            this.MacroCultureBox.Size = new System.Drawing.Size(152, 24);
+            this.MacroCultureBox.TabIndex = 21;
+            this.MacroCultureBox.TabStop = false;
+            // 
             // MacroFortPage
             // 
+            this.MacroFortPage.Controls.Add(this.label58);
+            this.MacroFortPage.Controls.Add(this.MacroOutsideFort);
+            this.MacroFortPage.Controls.Add(this.MacroInsideFort);
+            this.MacroFortPage.Controls.Add(this.MacroWithoutFort);
+            this.MacroFortPage.Controls.Add(this.MacroWithFort);
             this.MacroFortPage.Location = new System.Drawing.Point(4, 40);
             this.MacroFortPage.Name = "MacroFortPage";
-            this.MacroFortPage.Size = new System.Drawing.Size(538, 142);
+            this.MacroFortPage.Size = new System.Drawing.Size(528, 142);
             this.MacroFortPage.TabIndex = 3;
             this.MacroFortPage.Text = "Fort";
             this.MacroFortPage.UseVisualStyleBackColor = true;
             // 
+            // label58
+            // 
+            this.label58.AutoSize = true;
+            this.label58.Location = new System.Drawing.Point(331, 91);
+            this.label58.Name = "label58";
+            this.label58.Size = new System.Drawing.Size(135, 13);
+            this.label58.TabIndex = 4;
+            this.label58.Text = "Those two include forts too";
+            // 
+            // MacroOutsideFort
+            // 
+            this.MacroOutsideFort.Enabled = false;
+            this.MacroOutsideFort.Location = new System.Drawing.Point(35, 101);
+            this.MacroOutsideFort.Name = "MacroOutsideFort";
+            this.MacroOutsideFort.Size = new System.Drawing.Size(290, 23);
+            this.MacroOutsideFort.TabIndex = 3;
+            this.MacroOutsideFort.Text = "Select provinces outside forts\' zone";
+            this.MacroOutsideFort.UseVisualStyleBackColor = true;
+            // 
+            // MacroInsideFort
+            // 
+            this.MacroInsideFort.Enabled = false;
+            this.MacroInsideFort.Location = new System.Drawing.Point(35, 72);
+            this.MacroInsideFort.Name = "MacroInsideFort";
+            this.MacroInsideFort.Size = new System.Drawing.Size(290, 23);
+            this.MacroInsideFort.TabIndex = 2;
+            this.MacroInsideFort.Text = "Select provinces inside forts\' zone";
+            this.MacroInsideFort.UseVisualStyleBackColor = true;
+            this.MacroInsideFort.Click += new System.EventHandler(this.MacroInsideFort_Click);
+            // 
+            // MacroWithoutFort
+            // 
+            this.MacroWithoutFort.Location = new System.Drawing.Point(35, 43);
+            this.MacroWithoutFort.Name = "MacroWithoutFort";
+            this.MacroWithoutFort.Size = new System.Drawing.Size(290, 23);
+            this.MacroWithoutFort.TabIndex = 1;
+            this.MacroWithoutFort.Text = "Select provinces without a fort";
+            this.MacroWithoutFort.UseVisualStyleBackColor = true;
+            this.MacroWithoutFort.Click += new System.EventHandler(this.MacroWithoutFort_Click);
+            // 
+            // MacroWithFort
+            // 
+            this.MacroWithFort.Location = new System.Drawing.Point(35, 14);
+            this.MacroWithFort.Name = "MacroWithFort";
+            this.MacroWithFort.Size = new System.Drawing.Size(290, 23);
+            this.MacroWithFort.TabIndex = 0;
+            this.MacroWithFort.Text = "Select provinces with a fort";
+            this.MacroWithFort.UseVisualStyleBackColor = true;
+            this.MacroWithFort.Click += new System.EventHandler(this.MacroWithFort_Click);
+            // 
             // MacroAreaPage
             // 
+            this.MacroAreaPage.Controls.Add(this.label59);
+            this.MacroAreaPage.Controls.Add(this.MacroDifferentArea);
+            this.MacroAreaPage.Controls.Add(this.MacroSameArea);
+            this.MacroAreaPage.Controls.Add(this.MacroAreaBox);
             this.MacroAreaPage.Location = new System.Drawing.Point(4, 40);
             this.MacroAreaPage.Name = "MacroAreaPage";
-            this.MacroAreaPage.Size = new System.Drawing.Size(538, 142);
+            this.MacroAreaPage.Size = new System.Drawing.Size(528, 142);
             this.MacroAreaPage.TabIndex = 4;
             this.MacroAreaPage.Text = "Area";
             this.MacroAreaPage.UseVisualStyleBackColor = true;
             // 
             // MacroRegionPage
             // 
+            this.MacroRegionPage.Controls.Add(this.label60);
+            this.MacroRegionPage.Controls.Add(this.MacroDifferentRegion);
+            this.MacroRegionPage.Controls.Add(this.MacroSameRegion);
+            this.MacroRegionPage.Controls.Add(this.MacroRegionBox);
             this.MacroRegionPage.Location = new System.Drawing.Point(4, 40);
             this.MacroRegionPage.Name = "MacroRegionPage";
-            this.MacroRegionPage.Size = new System.Drawing.Size(538, 142);
+            this.MacroRegionPage.Size = new System.Drawing.Size(528, 142);
             this.MacroRegionPage.TabIndex = 5;
             this.MacroRegionPage.Text = "Region";
             this.MacroRegionPage.UseVisualStyleBackColor = true;
             // 
             // MacroSuperregionPage
             // 
+            this.MacroSuperregionPage.Controls.Add(this.label61);
+            this.MacroSuperregionPage.Controls.Add(this.MacroDifferentSuperregion);
+            this.MacroSuperregionPage.Controls.Add(this.MacroSameSuperregion);
+            this.MacroSuperregionPage.Controls.Add(this.MacroSuperregionBox);
             this.MacroSuperregionPage.Location = new System.Drawing.Point(4, 40);
             this.MacroSuperregionPage.Name = "MacroSuperregionPage";
-            this.MacroSuperregionPage.Size = new System.Drawing.Size(538, 142);
+            this.MacroSuperregionPage.Size = new System.Drawing.Size(528, 142);
             this.MacroSuperregionPage.TabIndex = 6;
             this.MacroSuperregionPage.Text = "Superregion";
             this.MacroSuperregionPage.UseVisualStyleBackColor = true;
             // 
             // MacroContinentPage
             // 
+            this.MacroContinentPage.Controls.Add(this.label62);
+            this.MacroContinentPage.Controls.Add(this.MacroDifferentContinent);
+            this.MacroContinentPage.Controls.Add(this.MacroSameContinent);
+            this.MacroContinentPage.Controls.Add(this.MacroContinentBox);
             this.MacroContinentPage.Location = new System.Drawing.Point(4, 40);
             this.MacroContinentPage.Name = "MacroContinentPage";
-            this.MacroContinentPage.Size = new System.Drawing.Size(538, 142);
+            this.MacroContinentPage.Size = new System.Drawing.Size(528, 142);
             this.MacroContinentPage.TabIndex = 7;
             this.MacroContinentPage.Text = "Continent";
             this.MacroContinentPage.UseVisualStyleBackColor = true;
             // 
             // MacroHREPage
             // 
+            this.MacroHREPage.Controls.Add(this.MacroHRECountry);
+            this.MacroHREPage.Controls.Add(this.MacroHREProvOutCountry);
+            this.MacroHREPage.Controls.Add(this.MacroOutsideHRE);
+            this.MacroHREPage.Controls.Add(this.MacroInsideHRE);
             this.MacroHREPage.Location = new System.Drawing.Point(4, 40);
             this.MacroHREPage.Name = "MacroHREPage";
-            this.MacroHREPage.Size = new System.Drawing.Size(538, 142);
+            this.MacroHREPage.Size = new System.Drawing.Size(528, 142);
             this.MacroHREPage.TabIndex = 8;
             this.MacroHREPage.Text = "HRE";
             this.MacroHREPage.UseVisualStyleBackColor = true;
             // 
             // MacroTradenodePage
             // 
+            this.MacroTradenodePage.Controls.Add(this.MacroDifferentTradenode);
+            this.MacroTradenodePage.Controls.Add(this.MacroSameTradenode);
+            this.MacroTradenodePage.Controls.Add(this.label63);
+            this.MacroTradenodePage.Controls.Add(this.MacroTradeNodeBox);
             this.MacroTradenodePage.Location = new System.Drawing.Point(4, 40);
             this.MacroTradenodePage.Name = "MacroTradenodePage";
-            this.MacroTradenodePage.Size = new System.Drawing.Size(538, 142);
+            this.MacroTradenodePage.Size = new System.Drawing.Size(528, 142);
             this.MacroTradenodePage.TabIndex = 9;
             this.MacroTradenodePage.Text = "Tradenode";
             this.MacroTradenodePage.UseVisualStyleBackColor = true;
             // 
-            // MacroDiscoveredByPage
+            // MacroTechGroupPage
             // 
-            this.MacroDiscoveredByPage.Location = new System.Drawing.Point(4, 40);
-            this.MacroDiscoveredByPage.Name = "MacroDiscoveredByPage";
-            this.MacroDiscoveredByPage.Size = new System.Drawing.Size(538, 142);
-            this.MacroDiscoveredByPage.TabIndex = 10;
-            this.MacroDiscoveredByPage.Text = "Discovered by";
-            this.MacroDiscoveredByPage.UseVisualStyleBackColor = true;
+            this.MacroTechGroupPage.Controls.Add(this.MacroSameTechGroup);
+            this.MacroTechGroupPage.Controls.Add(this.MacroNotDiscoveredBy);
+            this.MacroTechGroupPage.Controls.Add(this.MacroDifferentTechGroup);
+            this.MacroTechGroupPage.Controls.Add(this.MacroDiscoveredBy);
+            this.MacroTechGroupPage.Controls.Add(this.label64);
+            this.MacroTechGroupPage.Controls.Add(this.MacroTechGroupBox);
+            this.MacroTechGroupPage.Location = new System.Drawing.Point(4, 40);
+            this.MacroTechGroupPage.Name = "MacroTechGroupPage";
+            this.MacroTechGroupPage.Size = new System.Drawing.Size(528, 142);
+            this.MacroTechGroupPage.TabIndex = 10;
+            this.MacroTechGroupPage.Text = "Technology group";
+            this.MacroTechGroupPage.UseVisualStyleBackColor = true;
+            // 
+            // groupBox19
+            // 
+            this.groupBox19.Controls.Add(this.MacroDeselectAllProvincesButton);
+            this.groupBox19.Controls.Add(this.MacroSelectAllProvincesButton);
+            this.groupBox19.Location = new System.Drawing.Point(3, 6);
+            this.groupBox19.Name = "groupBox19";
+            this.groupBox19.Size = new System.Drawing.Size(546, 72);
+            this.groupBox19.TabIndex = 3;
+            this.groupBox19.TabStop = false;
+            this.groupBox19.Text = "Main";
+            // 
+            // MacroDeselectAllProvincesButton
+            // 
+            this.MacroDeselectAllProvincesButton.Location = new System.Drawing.Point(6, 19);
+            this.MacroDeselectAllProvincesButton.Name = "MacroDeselectAllProvincesButton";
+            this.MacroDeselectAllProvincesButton.Size = new System.Drawing.Size(268, 41);
+            this.MacroDeselectAllProvincesButton.TabIndex = 1;
+            this.MacroDeselectAllProvincesButton.Text = "Deselct all provinces";
+            this.MacroDeselectAllProvincesButton.UseVisualStyleBackColor = true;
+            this.MacroDeselectAllProvincesButton.Click += new System.EventHandler(this.MacroDeselectAllProvincesButton_Click);
+            // 
+            // MacroSelectAllProvincesButton
+            // 
+            this.MacroSelectAllProvincesButton.Location = new System.Drawing.Point(278, 19);
+            this.MacroSelectAllProvincesButton.Name = "MacroSelectAllProvincesButton";
+            this.MacroSelectAllProvincesButton.Size = new System.Drawing.Size(262, 41);
+            this.MacroSelectAllProvincesButton.TabIndex = 2;
+            this.MacroSelectAllProvincesButton.Text = "Select all provinces";
+            this.MacroSelectAllProvincesButton.UseVisualStyleBackColor = true;
+            this.MacroSelectAllProvincesButton.Click += new System.EventHandler(this.MacroSelectAllProvincesButton_Click);
             // 
             // ChangesTab
             // 
@@ -3035,90 +3426,324 @@
             this.TradeCompanyMapmode.Text = "Trade com. mapmode";
             this.TradeCompanyMapmode.UseVisualStyleBackColor = true;
             // 
-            // tabPage1
+            // BorderingDebugButton
             // 
-            this.tabPage1.Controls.Add(this.SaveProvinceAdj);
-            this.tabPage1.Controls.Add(this.SaveProvinceName);
-            this.tabPage1.Controls.Add(this.SaveLocalisationButton);
-            this.tabPage1.Controls.Add(this.ProvinceAdjectiveLocalisationBox);
-            this.tabPage1.Controls.Add(this.label52);
-            this.tabPage1.Controls.Add(this.ProvinceNameLocalisationBox);
-            this.tabPage1.Controls.Add(this.label51);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(537, 524);
-            this.tabPage1.TabIndex = 2;
-            this.tabPage1.Text = "Localisation";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.BorderingDebugButton.Location = new System.Drawing.Point(1209, 868);
+            this.BorderingDebugButton.Name = "BorderingDebugButton";
+            this.BorderingDebugButton.Size = new System.Drawing.Size(136, 22);
+            this.BorderingDebugButton.TabIndex = 23;
+            this.BorderingDebugButton.Text = "Bordering debug";
+            this.BorderingDebugButton.UseVisualStyleBackColor = true;
+            this.BorderingDebugButton.Click += new System.EventHandler(this.BorderingDebugButton_Click);
             // 
-            // label51
+            // MacroDifferentArea
             // 
-            this.label51.AutoSize = true;
-            this.label51.Location = new System.Drawing.Point(12, 11);
-            this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(81, 13);
-            this.label51.TabIndex = 0;
-            this.label51.Text = "Province name:";
+            this.MacroDifferentArea.Location = new System.Drawing.Point(21, 87);
+            this.MacroDifferentArea.Name = "MacroDifferentArea";
+            this.MacroDifferentArea.Size = new System.Drawing.Size(483, 23);
+            this.MacroDifferentArea.TabIndex = 29;
+            this.MacroDifferentArea.Text = "Select provinces not in this area";
+            this.MacroDifferentArea.UseVisualStyleBackColor = true;
+            this.MacroDifferentArea.Click += new System.EventHandler(this.MacroDifferentArea_Click);
             // 
-            // ProvinceNameLocalisationBox
+            // MacroSameArea
             // 
-            this.ProvinceNameLocalisationBox.Location = new System.Drawing.Point(15, 27);
-            this.ProvinceNameLocalisationBox.Name = "ProvinceNameLocalisationBox";
-            this.ProvinceNameLocalisationBox.Size = new System.Drawing.Size(251, 20);
-            this.ProvinceNameLocalisationBox.TabIndex = 1;
+            this.MacroSameArea.Location = new System.Drawing.Point(21, 58);
+            this.MacroSameArea.Name = "MacroSameArea";
+            this.MacroSameArea.Size = new System.Drawing.Size(483, 23);
+            this.MacroSameArea.TabIndex = 28;
+            this.MacroSameArea.Text = "Select provinces in this area";
+            this.MacroSameArea.UseVisualStyleBackColor = true;
+            this.MacroSameArea.Click += new System.EventHandler(this.MacroSameArea_Click);
             // 
-            // ProvinceAdjectiveLocalisationBox
+            // MacroAreaBox
             // 
-            this.ProvinceAdjectiveLocalisationBox.Location = new System.Drawing.Point(15, 66);
-            this.ProvinceAdjectiveLocalisationBox.Name = "ProvinceAdjectiveLocalisationBox";
-            this.ProvinceAdjectiveLocalisationBox.Size = new System.Drawing.Size(251, 20);
-            this.ProvinceAdjectiveLocalisationBox.TabIndex = 3;
+            this.MacroAreaBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.MacroAreaBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.MacroAreaBox.FormattingEnabled = true;
+            this.MacroAreaBox.Location = new System.Drawing.Point(21, 28);
+            this.MacroAreaBox.Name = "MacroAreaBox";
+            this.MacroAreaBox.Size = new System.Drawing.Size(259, 24);
+            this.MacroAreaBox.TabIndex = 27;
+            this.MacroAreaBox.TabStop = false;
             // 
-            // label52
+            // label59
             // 
-            this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(12, 50);
-            this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(98, 13);
-            this.label52.TabIndex = 2;
-            this.label52.Text = "Province adjective:";
+            this.label59.AutoSize = true;
+            this.label59.Location = new System.Drawing.Point(18, 12);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(29, 13);
+            this.label59.TabIndex = 30;
+            this.label59.Text = "Area";
             // 
-            // SaveLocalisationButton
+            // label60
             // 
-            this.SaveLocalisationButton.Location = new System.Drawing.Point(15, 92);
-            this.SaveLocalisationButton.Name = "SaveLocalisationButton";
-            this.SaveLocalisationButton.Size = new System.Drawing.Size(251, 23);
-            this.SaveLocalisationButton.TabIndex = 4;
-            this.SaveLocalisationButton.Text = "Save localisation";
-            this.SaveLocalisationButton.UseVisualStyleBackColor = true;
-            this.SaveLocalisationButton.Click += new System.EventHandler(this.SaveLocalisationButton_Click);
+            this.label60.AutoSize = true;
+            this.label60.Location = new System.Drawing.Point(18, 13);
+            this.label60.Name = "label60";
+            this.label60.Size = new System.Drawing.Size(41, 13);
+            this.label60.TabIndex = 34;
+            this.label60.Text = "Region";
             // 
-            // SaveProvinceName
+            // MacroDifferentRegion
             // 
-            this.SaveProvinceName.Location = new System.Drawing.Point(272, 27);
-            this.SaveProvinceName.Name = "SaveProvinceName";
-            this.SaveProvinceName.Size = new System.Drawing.Size(75, 20);
-            this.SaveProvinceName.TabIndex = 5;
-            this.SaveProvinceName.Text = "Save";
-            this.SaveProvinceName.UseVisualStyleBackColor = true;
-            this.SaveProvinceName.Click += new System.EventHandler(this.SaveProvinceName_Click);
+            this.MacroDifferentRegion.Location = new System.Drawing.Point(21, 88);
+            this.MacroDifferentRegion.Name = "MacroDifferentRegion";
+            this.MacroDifferentRegion.Size = new System.Drawing.Size(483, 23);
+            this.MacroDifferentRegion.TabIndex = 33;
+            this.MacroDifferentRegion.Text = "Select provinces not in this region";
+            this.MacroDifferentRegion.UseVisualStyleBackColor = true;
+            this.MacroDifferentRegion.Click += new System.EventHandler(this.MacroDifferentRegion_Click);
             // 
-            // SaveProvinceAdj
+            // MacroSameRegion
             // 
-            this.SaveProvinceAdj.Location = new System.Drawing.Point(272, 66);
-            this.SaveProvinceAdj.Name = "SaveProvinceAdj";
-            this.SaveProvinceAdj.Size = new System.Drawing.Size(75, 20);
-            this.SaveProvinceAdj.TabIndex = 6;
-            this.SaveProvinceAdj.Text = "Save";
-            this.SaveProvinceAdj.UseVisualStyleBackColor = true;
-            this.SaveProvinceAdj.Click += new System.EventHandler(this.SaveProvinceAdj_Click);
+            this.MacroSameRegion.Location = new System.Drawing.Point(21, 59);
+            this.MacroSameRegion.Name = "MacroSameRegion";
+            this.MacroSameRegion.Size = new System.Drawing.Size(483, 23);
+            this.MacroSameRegion.TabIndex = 32;
+            this.MacroSameRegion.Text = "Select provinces in this region\r\n";
+            this.MacroSameRegion.UseVisualStyleBackColor = true;
+            this.MacroSameRegion.Click += new System.EventHandler(this.MacroSameRegion_Click);
+            // 
+            // MacroRegionBox
+            // 
+            this.MacroRegionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.MacroRegionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.MacroRegionBox.FormattingEnabled = true;
+            this.MacroRegionBox.Location = new System.Drawing.Point(21, 29);
+            this.MacroRegionBox.Name = "MacroRegionBox";
+            this.MacroRegionBox.Size = new System.Drawing.Size(265, 24);
+            this.MacroRegionBox.TabIndex = 31;
+            this.MacroRegionBox.TabStop = false;
+            // 
+            // label61
+            // 
+            this.label61.AutoSize = true;
+            this.label61.Location = new System.Drawing.Point(18, 11);
+            this.label61.Name = "label61";
+            this.label61.Size = new System.Drawing.Size(64, 13);
+            this.label61.TabIndex = 38;
+            this.label61.Text = "Superregion";
+            // 
+            // MacroDifferentSuperregion
+            // 
+            this.MacroDifferentSuperregion.Location = new System.Drawing.Point(21, 86);
+            this.MacroDifferentSuperregion.Name = "MacroDifferentSuperregion";
+            this.MacroDifferentSuperregion.Size = new System.Drawing.Size(483, 23);
+            this.MacroDifferentSuperregion.TabIndex = 37;
+            this.MacroDifferentSuperregion.Text = "Select provinces not in this superregion";
+            this.MacroDifferentSuperregion.UseVisualStyleBackColor = true;
+            this.MacroDifferentSuperregion.Click += new System.EventHandler(this.MacroDifferentSuperregion_Click);
+            // 
+            // MacroSameSuperregion
+            // 
+            this.MacroSameSuperregion.Location = new System.Drawing.Point(21, 57);
+            this.MacroSameSuperregion.Name = "MacroSameSuperregion";
+            this.MacroSameSuperregion.Size = new System.Drawing.Size(483, 23);
+            this.MacroSameSuperregion.TabIndex = 36;
+            this.MacroSameSuperregion.Text = "Select provinces in this superregion\r\n";
+            this.MacroSameSuperregion.UseVisualStyleBackColor = true;
+            this.MacroSameSuperregion.Click += new System.EventHandler(this.MacroSameSuperregion_Click);
+            // 
+            // MacroSuperregionBox
+            // 
+            this.MacroSuperregionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.MacroSuperregionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.MacroSuperregionBox.FormattingEnabled = true;
+            this.MacroSuperregionBox.Location = new System.Drawing.Point(21, 27);
+            this.MacroSuperregionBox.Name = "MacroSuperregionBox";
+            this.MacroSuperregionBox.Size = new System.Drawing.Size(264, 24);
+            this.MacroSuperregionBox.TabIndex = 35;
+            this.MacroSuperregionBox.TabStop = false;
+            // 
+            // label62
+            // 
+            this.label62.AutoSize = true;
+            this.label62.Location = new System.Drawing.Point(11, 44);
+            this.label62.Name = "label62";
+            this.label62.Size = new System.Drawing.Size(52, 13);
+            this.label62.TabIndex = 42;
+            this.label62.Text = "Continent";
+            // 
+            // MacroDifferentContinent
+            // 
+            this.MacroDifferentContinent.Location = new System.Drawing.Point(172, 75);
+            this.MacroDifferentContinent.Name = "MacroDifferentContinent";
+            this.MacroDifferentContinent.Size = new System.Drawing.Size(346, 23);
+            this.MacroDifferentContinent.TabIndex = 41;
+            this.MacroDifferentContinent.Text = "Select provinces not in this continent";
+            this.MacroDifferentContinent.UseVisualStyleBackColor = true;
+            this.MacroDifferentContinent.Click += new System.EventHandler(this.MacroDifferentContinent_Click);
+            // 
+            // MacroSameContinent
+            // 
+            this.MacroSameContinent.Location = new System.Drawing.Point(172, 46);
+            this.MacroSameContinent.Name = "MacroSameContinent";
+            this.MacroSameContinent.Size = new System.Drawing.Size(346, 23);
+            this.MacroSameContinent.TabIndex = 40;
+            this.MacroSameContinent.Text = "Select provinces in this continent\r\n";
+            this.MacroSameContinent.UseVisualStyleBackColor = true;
+            this.MacroSameContinent.Click += new System.EventHandler(this.MacroSameContinent_Click);
+            // 
+            // MacroContinentBox
+            // 
+            this.MacroContinentBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.MacroContinentBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.MacroContinentBox.FormattingEnabled = true;
+            this.MacroContinentBox.Location = new System.Drawing.Point(14, 60);
+            this.MacroContinentBox.Name = "MacroContinentBox";
+            this.MacroContinentBox.Size = new System.Drawing.Size(152, 24);
+            this.MacroContinentBox.TabIndex = 39;
+            this.MacroContinentBox.TabStop = false;
+            // 
+            // MacroOutsideHRE
+            // 
+            this.MacroOutsideHRE.Location = new System.Drawing.Point(112, 103);
+            this.MacroOutsideHRE.Name = "MacroOutsideHRE";
+            this.MacroOutsideHRE.Size = new System.Drawing.Size(311, 23);
+            this.MacroOutsideHRE.TabIndex = 3;
+            this.MacroOutsideHRE.Text = "Select provinces outside HRE";
+            this.MacroOutsideHRE.UseVisualStyleBackColor = true;
+            this.MacroOutsideHRE.Click += new System.EventHandler(this.MacroOutsideHRE_Click);
+            // 
+            // MacroInsideHRE
+            // 
+            this.MacroInsideHRE.Location = new System.Drawing.Point(112, 16);
+            this.MacroInsideHRE.Name = "MacroInsideHRE";
+            this.MacroInsideHRE.Size = new System.Drawing.Size(311, 23);
+            this.MacroInsideHRE.TabIndex = 2;
+            this.MacroInsideHRE.Text = "Select provinces inside HRE";
+            this.MacroInsideHRE.UseVisualStyleBackColor = true;
+            this.MacroInsideHRE.Click += new System.EventHandler(this.MacroInsideHRE_Click);
+            // 
+            // MacroHREProvOutCountry
+            // 
+            this.MacroHREProvOutCountry.Location = new System.Drawing.Point(112, 45);
+            this.MacroHREProvOutCountry.Name = "MacroHREProvOutCountry";
+            this.MacroHREProvOutCountry.Size = new System.Drawing.Size(311, 23);
+            this.MacroHREProvOutCountry.TabIndex = 4;
+            this.MacroHREProvOutCountry.Text = "Select provinces inside HRE owned by non HRE countries";
+            this.MacroHREProvOutCountry.UseVisualStyleBackColor = true;
+            this.MacroHREProvOutCountry.Click += new System.EventHandler(this.MacroHREProvOutCountry_Click);
+            // 
+            // MacroHRECountry
+            // 
+            this.MacroHRECountry.Location = new System.Drawing.Point(112, 74);
+            this.MacroHRECountry.Name = "MacroHRECountry";
+            this.MacroHRECountry.Size = new System.Drawing.Size(311, 23);
+            this.MacroHRECountry.TabIndex = 5;
+            this.MacroHRECountry.Text = "Select provinces owned by HRE countries";
+            this.MacroHRECountry.UseVisualStyleBackColor = true;
+            this.MacroHRECountry.Click += new System.EventHandler(this.MacroHRECountry_Click);
+            // 
+            // MacroDifferentTradenode
+            // 
+            this.MacroDifferentTradenode.Location = new System.Drawing.Point(176, 70);
+            this.MacroDifferentTradenode.Name = "MacroDifferentTradenode";
+            this.MacroDifferentTradenode.Size = new System.Drawing.Size(346, 23);
+            this.MacroDifferentTradenode.TabIndex = 24;
+            this.MacroDifferentTradenode.Text = "Select provinces in different tradenodes";
+            this.MacroDifferentTradenode.UseVisualStyleBackColor = true;
+            this.MacroDifferentTradenode.Click += new System.EventHandler(this.MacroDifferentTradenode_Click);
+            // 
+            // MacroSameTradenode
+            // 
+            this.MacroSameTradenode.Location = new System.Drawing.Point(176, 41);
+            this.MacroSameTradenode.Name = "MacroSameTradenode";
+            this.MacroSameTradenode.Size = new System.Drawing.Size(346, 23);
+            this.MacroSameTradenode.TabIndex = 23;
+            this.MacroSameTradenode.Text = "Select provinces in this tradenode\r\n";
+            this.MacroSameTradenode.UseVisualStyleBackColor = true;
+            this.MacroSameTradenode.Click += new System.EventHandler(this.MacroSameTradenode_Click);
+            // 
+            // label63
+            // 
+            this.label63.AutoSize = true;
+            this.label63.Location = new System.Drawing.Point(6, 36);
+            this.label63.Name = "label63";
+            this.label63.Size = new System.Drawing.Size(59, 13);
+            this.label63.TabIndex = 22;
+            this.label63.Text = "Tradenode";
+            // 
+            // MacroTradeNodeBox
+            // 
+            this.MacroTradeNodeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.MacroTradeNodeBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.MacroTradeNodeBox.FormattingEnabled = true;
+            this.MacroTradeNodeBox.Location = new System.Drawing.Point(9, 56);
+            this.MacroTradeNodeBox.Name = "MacroTradeNodeBox";
+            this.MacroTradeNodeBox.Size = new System.Drawing.Size(152, 24);
+            this.MacroTradeNodeBox.TabIndex = 21;
+            this.MacroTradeNodeBox.TabStop = false;
+            // 
+            // MacroDifferentTechGroup
+            // 
+            this.MacroDifferentTechGroup.Location = new System.Drawing.Point(176, 106);
+            this.MacroDifferentTechGroup.Name = "MacroDifferentTechGroup";
+            this.MacroDifferentTechGroup.Size = new System.Drawing.Size(346, 23);
+            this.MacroDifferentTechGroup.TabIndex = 28;
+            this.MacroDifferentTechGroup.Text = "Select provinces owned by countries not in this tech group\r\n";
+            this.MacroDifferentTechGroup.UseVisualStyleBackColor = true;
+            this.MacroDifferentTechGroup.Click += new System.EventHandler(this.MacroDifferentTechGroup_Click);
+            // 
+            // MacroDiscoveredBy
+            // 
+            this.MacroDiscoveredBy.Location = new System.Drawing.Point(176, 22);
+            this.MacroDiscoveredBy.Name = "MacroDiscoveredBy";
+            this.MacroDiscoveredBy.Size = new System.Drawing.Size(346, 23);
+            this.MacroDiscoveredBy.TabIndex = 27;
+            this.MacroDiscoveredBy.Text = "Select provinces discovered by this tech group\r\n";
+            this.MacroDiscoveredBy.UseVisualStyleBackColor = true;
+            this.MacroDiscoveredBy.Click += new System.EventHandler(this.MacroDiscoveredBy_Click);
+            // 
+            // label64
+            // 
+            this.label64.AutoSize = true;
+            this.label64.Location = new System.Drawing.Point(6, 43);
+            this.label64.Name = "label64";
+            this.label64.Size = new System.Drawing.Size(93, 13);
+            this.label64.TabIndex = 26;
+            this.label64.Text = "Technology group";
+            // 
+            // MacroTechGroupBox
+            // 
+            this.MacroTechGroupBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.MacroTechGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.MacroTechGroupBox.FormattingEnabled = true;
+            this.MacroTechGroupBox.Location = new System.Drawing.Point(9, 63);
+            this.MacroTechGroupBox.Name = "MacroTechGroupBox";
+            this.MacroTechGroupBox.Size = new System.Drawing.Size(152, 24);
+            this.MacroTechGroupBox.TabIndex = 25;
+            this.MacroTechGroupBox.TabStop = false;
+            // 
+            // MacroNotDiscoveredBy
+            // 
+            this.MacroNotDiscoveredBy.Location = new System.Drawing.Point(176, 48);
+            this.MacroNotDiscoveredBy.Name = "MacroNotDiscoveredBy";
+            this.MacroNotDiscoveredBy.Size = new System.Drawing.Size(346, 23);
+            this.MacroNotDiscoveredBy.TabIndex = 29;
+            this.MacroNotDiscoveredBy.Text = "Select provinces not discovered by this tech group\r\n";
+            this.MacroNotDiscoveredBy.UseVisualStyleBackColor = true;
+            this.MacroNotDiscoveredBy.Click += new System.EventHandler(this.MacroNotDiscoveredBy_Click);
+            // 
+            // MacroSameTechGroup
+            // 
+            this.MacroSameTechGroup.Location = new System.Drawing.Point(176, 77);
+            this.MacroSameTechGroup.Name = "MacroSameTechGroup";
+            this.MacroSameTechGroup.Size = new System.Drawing.Size(346, 23);
+            this.MacroSameTechGroup.TabIndex = 30;
+            this.MacroSameTechGroup.Text = "Select provinces owned by countries in this tech group";
+            this.MacroSameTechGroup.UseVisualStyleBackColor = true;
+            this.MacroSameTechGroup.Click += new System.EventHandler(this.MacroSameTechGroup_Click);
             // 
             // ModEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.ClientSize = new System.Drawing.Size(1736, 905);
+            this.Controls.Add(this.BorderingDebugButton);
             this.Controls.Add(this.TradeCompanyMapmode);
             this.Controls.Add(this.GovernmentMapmode);
             this.Controls.Add(this.DiscoveredByMapmode);
@@ -3176,6 +3801,8 @@
             this.groupBox6.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CenterOfTradeNumeric)).EndInit();
@@ -3198,15 +3825,34 @@
             this.groupBox7.PerformLayout();
             this.AdditionalPage.ResumeLayout(false);
             this.MacroSelecter.ResumeLayout(false);
+            this.groupBox20.ResumeLayout(false);
+            this.groupBox20.PerformLayout();
             this.MacroSelectorTabs.ResumeLayout(false);
             this.MacroDevelopmentPage.ResumeLayout(false);
             this.MacroDevelopmentPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MacroDevNumeric)).EndInit();
             this.MacroReligionPage.ResumeLayout(false);
+            this.MacroReligionPage.PerformLayout();
+            this.MacroCulturePage.ResumeLayout(false);
+            this.MacroCulturePage.PerformLayout();
+            this.MacroFortPage.ResumeLayout(false);
+            this.MacroFortPage.PerformLayout();
+            this.MacroAreaPage.ResumeLayout(false);
+            this.MacroAreaPage.PerformLayout();
+            this.MacroRegionPage.ResumeLayout(false);
+            this.MacroRegionPage.PerformLayout();
+            this.MacroSuperregionPage.ResumeLayout(false);
+            this.MacroSuperregionPage.PerformLayout();
+            this.MacroContinentPage.ResumeLayout(false);
+            this.MacroContinentPage.PerformLayout();
+            this.MacroHREPage.ResumeLayout(false);
+            this.MacroTradenodePage.ResumeLayout(false);
+            this.MacroTradenodePage.PerformLayout();
+            this.MacroTechGroupPage.ResumeLayout(false);
+            this.MacroTechGroupPage.PerformLayout();
+            this.groupBox19.ResumeLayout(false);
             this.ChangesTab.ResumeLayout(false);
             this.SavingTab.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -3434,8 +4080,6 @@
         private System.Windows.Forms.TabPage MacroDevelopmentPage;
         private System.Windows.Forms.TabPage MacroReligionPage;
         private System.Windows.Forms.TabPage MacroCulturePage;
-        private System.Windows.Forms.Button MacroDeselectProvincesBelowDev;
-        private System.Windows.Forms.Button MacroDeselectProvincesAboveDev;
         private System.Windows.Forms.Button MacroSelectProvincesBelowDev;
         private System.Windows.Forms.Button MacroSelectProvincesAboveDev;
         private System.Windows.Forms.Label label46;
@@ -3447,8 +4091,7 @@
         private System.Windows.Forms.TabPage MacroContinentPage;
         private System.Windows.Forms.TabPage MacroHREPage;
         private System.Windows.Forms.TabPage MacroTradenodePage;
-        private System.Windows.Forms.TabPage MacroDiscoveredByPage;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.TabPage MacroTechGroupPage;
         private System.Windows.Forms.Button GovernmentMapmode;
         private System.Windows.Forms.GroupBox groupBox18;
         private System.Windows.Forms.Label label47;
@@ -3473,6 +4116,60 @@
         private System.Windows.Forms.Button SaveLocalisationButton;
         private System.Windows.Forms.Button SaveProvinceAdj;
         private System.Windows.Forms.Button SaveProvinceName;
+        private System.Windows.Forms.GroupBox groupBox20;
+        private System.Windows.Forms.Label label53;
+        private System.Windows.Forms.GroupBox groupBox19;
+        public System.Windows.Forms.ComboBox MacroReligionBox;
+        private System.Windows.Forms.Label label55;
+        private System.Windows.Forms.Button MacroSelectProvincesEqualDev;
+        private System.Windows.Forms.Button MacroDifferentReligion;
+        private System.Windows.Forms.Button MacroSameReligion;
+        private System.Windows.Forms.Label label54;
+        private System.Windows.Forms.Button MacroSameCountryReligion;
+        private System.Windows.Forms.Button MacroDifferentCountryReligion;
+        private System.Windows.Forms.Label label57;
+        private System.Windows.Forms.Button MacroSameCountryCulture;
+        private System.Windows.Forms.Button MacroDifferentCountryCulture;
+        private System.Windows.Forms.Button MacroDifferentCulture;
+        private System.Windows.Forms.Button MacroSameCulture;
+        private System.Windows.Forms.Label label56;
+        public System.Windows.Forms.ComboBox MacroCultureBox;
+        private System.Windows.Forms.Label label58;
+        private System.Windows.Forms.Button MacroOutsideFort;
+        private System.Windows.Forms.Button MacroInsideFort;
+        private System.Windows.Forms.Button MacroWithoutFort;
+        private System.Windows.Forms.Button MacroWithFort;
+        private System.Windows.Forms.Button BorderingDebugButton;
+        private System.Windows.Forms.Button MacroDifferentArea;
+        private System.Windows.Forms.Button MacroSameArea;
+        public System.Windows.Forms.ComboBox MacroAreaBox;
+        private System.Windows.Forms.Label label59;
+        private System.Windows.Forms.Label label60;
+        private System.Windows.Forms.Button MacroDifferentRegion;
+        private System.Windows.Forms.Button MacroSameRegion;
+        public System.Windows.Forms.ComboBox MacroRegionBox;
+        private System.Windows.Forms.Label label61;
+        private System.Windows.Forms.Button MacroDifferentSuperregion;
+        private System.Windows.Forms.Button MacroSameSuperregion;
+        public System.Windows.Forms.ComboBox MacroSuperregionBox;
+        private System.Windows.Forms.Label label62;
+        private System.Windows.Forms.Button MacroDifferentContinent;
+        private System.Windows.Forms.Button MacroSameContinent;
+        public System.Windows.Forms.ComboBox MacroContinentBox;
+        private System.Windows.Forms.Button MacroHRECountry;
+        private System.Windows.Forms.Button MacroHREProvOutCountry;
+        private System.Windows.Forms.Button MacroOutsideHRE;
+        private System.Windows.Forms.Button MacroInsideHRE;
+        private System.Windows.Forms.Button MacroDifferentTradenode;
+        private System.Windows.Forms.Button MacroSameTradenode;
+        private System.Windows.Forms.Label label63;
+        public System.Windows.Forms.ComboBox MacroTradeNodeBox;
+        private System.Windows.Forms.Button MacroSameTechGroup;
+        private System.Windows.Forms.Button MacroNotDiscoveredBy;
+        private System.Windows.Forms.Button MacroDifferentTechGroup;
+        private System.Windows.Forms.Button MacroDiscoveredBy;
+        private System.Windows.Forms.Label label64;
+        public System.Windows.Forms.ComboBox MacroTechGroupBox;
     }
 }
 

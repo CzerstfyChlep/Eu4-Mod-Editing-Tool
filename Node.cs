@@ -84,7 +84,7 @@ namespace Eu4ModEditor
 
                 nospaces = Regex.Replace(nospaces.Replace("\t", " "), @"\s+", " ").Trim();
 
-                Console.WriteLine(nospaces);
+                //Console.WriteLine(nospaces);
 
                 List<string> contentsl = nospaces.Split(' ').ToList();
                 contentsl.RemoveAll(x => x == " " || x == "");

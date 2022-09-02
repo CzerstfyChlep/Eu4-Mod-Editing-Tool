@@ -195,6 +195,7 @@
       <DependentUpon>RandomIdeaBox.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Eu4ModEditor_TemporaryKey.pfx" />
+    <None Include="Properties\DataSources\Religion.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -11,6 +11,8 @@ namespace Eu4ModEditor
         public int B = 0;
         public string DefinitionName = "";
 
+        public List<Province> BorderingProvinces = new List<Province>();
+
         public Dictionary<string, object> Variables = new Dictionary<string, object>();
 
         private List<string> Cores

@@ -523,7 +523,7 @@ namespace Eu4ModEditor
                             c.Religion = Religion.Religions.Find(x => x.Name == v.Value);
                             break;
                         case "primary_culture":
-                            c.PrimaryCulture = v.Value;
+                            c.PrimaryCulture = Culture.Cultures.Find(x => x.Name == v.Value);
                             break;
                         case "government_rank ":
                             c.GovernmentRank = int.Parse(v.Value);

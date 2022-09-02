@@ -10,6 +10,9 @@ namespace Eu4ModEditor
     {
         public static void RemoveAll()
         {
+            //TODO
+            //Replace by average values
+
             if (GlobalVariables.MultiProvinceMode)
             {
                 if (GlobalVariables.ClickedProvinces.Any())
@@ -57,6 +60,8 @@ namespace Eu4ModEditor
         }
         public static void RandomHighDev()
         {
+            //TODO
+            //Replace by average values
             if (GlobalVariables.MultiProvinceMode)
             {
                 if (GlobalVariables.ClickedProvinces.Any())
@@ -171,6 +176,8 @@ namespace Eu4ModEditor
         }
         public static void RandomMedDev()
         {
+            //TODO
+            //Replace by average values
             if (GlobalVariables.MultiProvinceMode)
             {
                 if (GlobalVariables.ClickedProvinces.Any())
@@ -261,6 +268,8 @@ namespace Eu4ModEditor
         }
         public static void RandomLowDev()
         {
+            //TODO
+            //Replace by average values
             if (GlobalVariables.MultiProvinceMode)
             {
                 if (GlobalVariables.ClickedProvinces.Any())
@@ -334,12 +343,13 @@ namespace Eu4ModEditor
                 else if (ManpowerRandom < 9)
                     ModEditor.form.ProvinceManpowerNumeric.Value = 2;
                 else
-                    ModEditor.form.
-ProvinceManpowerNumeric.Value = 3;
+                    ModEditor.form.ProvinceManpowerNumeric.Value = 3;
             }
         }
         public static void DevIncreaseAll()
         {
+            //TODO
+            //Replace by average values
             if (GlobalVariables.MultiProvinceMode)
             {
                 if (GlobalVariables.ClickedProvinces.Any())
@@ -370,6 +380,8 @@ ProvinceManpowerNumeric.Value = 3;
         }
         public static void ClearDev()
         {
+            //TODO
+            //Replace by average values
             if (GlobalVariables.MultiProvinceMode)
             {
                 if (GlobalVariables.ClickedProvinces.Any())

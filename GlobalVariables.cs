@@ -46,24 +46,8 @@ namespace Eu4ModEditor
         public static Thread UpdtGraphicsThread;
         public static bool ChangedSomething = false;
         public static bool MultiProvinceMode = false;
-        public static bool ControllerInternalChange = false;
-        public static bool HREInternalChange = false;
-        public static bool FortInternalChange = false;
-        public static bool GovernmentTypeInternalChange = false;
-        public static bool GovernmentReformInternalChange = false;
-        public static bool CountryReligionInternalChange = false;
-        public static bool CountryPrimaryCultureInternalChange = false;
-        public static bool CountryGovernmentRankInternalChange = false;
-        public static bool ProvinceCenterOfTradeInternalChange = false;
-        public static bool CountryCapitalInternalChange = false;
-        public static bool CountryTechGroupInternalChange = false;
-        public static bool AreaInternalChange = false;
-        public static bool RegionInternalChange = false;
-        public static bool SuperregionInternalChange = false;
-        public static bool TradeNodeInternalChange = false;
+
         public static bool ShowSeaTilesAreaMapmode = false;
-        public static bool ContinentInternalChange = false;
-        public static bool TradeCompanyInternalChange = false;
 
         public static bool CreateNewFilesReadOnly = false;
         public static bool NewObjectsNewFiles = false;
@@ -143,6 +127,12 @@ namespace Eu4ModEditor
 
         public static Dictionary<string, string> LocalisationEntries = new Dictionary<string, string>();
         public static Dictionary<string, string> ModLocalisationEntries = new Dictionary<string, string>();
+
+
+        public static bool BorderingMode = false;
+
+        public static int MapHeight = 0;
+        public static int MapWidth = 0;
     }
 }
 

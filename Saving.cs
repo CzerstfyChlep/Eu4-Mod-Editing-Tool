@@ -192,16 +192,16 @@ namespace Eu4ModEditor
                         }
                     }
 
-                    if (country.PrimaryCulture != "NoCulture")
+                    if (country.PrimaryCulture != Culture.NoCulture)
                     {
                         Variable primculture = nf.MainNode.Variables.Find(x => x.Name == "primary_culture");
                         if (primculture != null)
                         {
-                            primculture.Value = country.PrimaryCulture;
+                            primculture.Value = country.PrimaryCulture.ToString();
                         }
                         else
                         {
-                            primculture = new Variable("primary_culture", country.PrimaryCulture);
+                            primculture = new Variable("primary_culture", country.PrimaryCulture.ToString());
                             nf.MainNode.Variables.Add(primculture);
                         }
                     }
