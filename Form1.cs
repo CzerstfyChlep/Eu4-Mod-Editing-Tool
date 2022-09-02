@@ -612,6 +612,11 @@ namespace Eu4ModEditor
             AddToClickedProvinces(new List<Province> { p }, Update);
         }
 
+        void UpdateTotalSelectedLabel()
+        {
+            MacroTotalSelected.Text = $"Selected: {GlobalVariables.ClickedProvinces.Count}/{GlobalVariables.Provinces.Count} ({((double)GlobalVariables.ClickedProvinces.Count / GlobalVariables.Provinces.Count).ToString("p")})";
+        }
+
         void AddToClickedProvinces(List<Province> p, bool Update = true)
         {
             List<Province> UpdateMapList = new List<Province>();
@@ -646,6 +651,7 @@ namespace Eu4ModEditor
             ProvinceManpowerNumeric.Enabled = false;
             ProvinceProductionNumeric.Enabled = false;
 
+            UpdateTotalSelectedLabel();
 
             UpdateMap();
 
@@ -667,6 +673,7 @@ namespace Eu4ModEditor
                 }
             }
             MapManagement.UpdateClickedMap(UpdateMapList, Color.LightYellow, false);
+            UpdateTotalSelectedLabel();
             UpdateMap();
         }
 
@@ -3155,15 +3162,12 @@ namespace Eu4ModEditor
 
         private void MacroDeselectAllProvincesButton_Click(object sender, EventArgs e)
         {
-            GlobalVariables.ClickedProvinces.Clear();
-            GlobalVariables.MultiProvinceMode = false;
-            MapManagement.UpdateClickedMap(GlobalVariables.Provinces, Color.White, false);
-            UpdateMap();
+            RemoveFromClickedProvinces(GlobalVariables.Provinces);
         }
 
         private void MacroSelectAllProvincesButton_Click(object sender, EventArgs e)
         {
-            AddToClickedProvinces(GlobalVariables.Provinces.Where(x => !x.Lake && !x.Sea && !x.Wasteland).ToList());
+            AddToClickedProvinces(GlobalVariables.Provinces.ToList());
         }
 
         private void MacroSelectProvincesAboveDev_Click(object sender, EventArgs e)
@@ -4089,6 +4093,11 @@ namespace Eu4ModEditor
                 }
             }
             PerformMacroFunc(ToSelect);
+        }
+
+        private void MacroSelectAllExceptSeas_Click(object sender, EventArgs e)
+        {
+            AddToClickedProvinces(GlobalVariables.Provinces.Where(x => !x.Lake && !x.Sea && !x.Wasteland).ToList());
         }
     }
 }
