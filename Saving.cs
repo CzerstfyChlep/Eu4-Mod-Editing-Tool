@@ -87,8 +87,8 @@ namespace Eu4ModEditor
                     else
                         nf.MainNode.Variables.RemoveAll(x => x.Name == "hre");
 
-                    if (province.Controller != "")
-                        nf.MainNode.ChangeVariable("controller", province.Controller, true);
+                    if (province.Controller != null)
+                        nf.MainNode.ChangeVariable("controller", province.Controller.Tag, true);
                     else if(province.OwnerCountry != null)
                         nf.MainNode.ChangeVariable("controller", province.OwnerCountry.Tag, true);
                     if (province.Fort)

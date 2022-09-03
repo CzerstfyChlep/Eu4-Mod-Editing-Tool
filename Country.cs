@@ -11,6 +11,9 @@ namespace Eu4ModEditor
         public Color Color = Color.Black;
         public List<Province> Provinces = new List<Province>();
         public Province Capital;
+
+        public static Country NoCountry = new Country();
+
         public Government Government
         {
             get
@@ -109,7 +112,10 @@ namespace Eu4ModEditor
 
         public override string ToString()
         {
-            return FullName;
+            if (FullName != "")
+                return FullName + ", " + Tag;
+            else
+                return "";
         }
 
         public Dictionary<string, object> Variables = new Dictionary<string, object>();

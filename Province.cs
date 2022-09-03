@@ -100,16 +100,16 @@ namespace Eu4ModEditor
                 Variables["OwnerCountry"] = value;
             }
         }
-        public string Controller
+        public Country Controller
         {
             get
             {
-                return Variables["Controller"] as string;
+                return Variables["Controller"] as Country;
             }
             set
             {
                 if (GlobalVariables.FullyLoaded)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "Controller", Variables["Controller"], value as string));
+                    GlobalVariables.Changes.Add(new VariableChange(this, "Controller", Variables["Controller"], value as Country));
                 Variables["Controller"] = value;
             }
         }
@@ -423,7 +423,7 @@ namespace Eu4ModEditor
             Variables.Add("Cores", new List<string>());
             Variables.Add("Claims", new List<string>());
             Variables.Add("OwnerCountry", null);
-            Variables.Add("Controller", "");
+            Variables.Add("Controller", null);
             Variables.Add("Tax", 0);
             Variables.Add("Production", 0);
             Variables.Add("Manpower", 0);

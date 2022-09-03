@@ -133,6 +133,28 @@ namespace Eu4ModEditor
 
         public static int MapHeight = 0;
         public static int MapWidth = 0;
+
+        public static ProvinceStack mainStack = new ProvinceStack();
+
+
+        //Stats
+
+
+        public static int TotalDevelopment = 0;
+        public static int TotalTax = 0;
+        public static int TotalProduction = 0;
+        public static int TotalManpower = 0;
+
+        public static decimal AverageDev = 0;
+        public static decimal AverageTax = 0;
+        public static decimal AverageProduction = 0;
+        public static decimal AverageManpower = 0;
+
+
+        public static List<Task> ClickedProvincesTasks = new List<Task>();
+
+
+
     }
 }
 
