@@ -628,6 +628,243 @@ namespace Eu4ModEditor
         {
             MacroTotalSelected.Text = $"Selected: {GlobalVariables.ClickedProvinces.Count}/{GlobalVariables.Provinces.Count} ({((double)GlobalVariables.ClickedProvinces.Count / GlobalVariables.Provinces.Count).ToString("p")})";
         }
+        public void RefreshTradeGoodsTab()
+        {
+            foreach (GroupBox gb in TradeGoodsInfoPanel.Controls)
+            {
+                TradeGood tg = ((TradeGood)gb.Tag);
+                gb.Controls[1].Text = "Provinces:" + tg.TotalProvinces;
+                gb.Controls[2].Text = "Share: " + RoundUp(((double)tg.TotalProvinces / GlobalVariables.TotalUsableProvinces), 2) * 100 + "%";
+                if (tg.TotalProvinces > 0)
+                    gb.Controls[3].Text = "Avg. Dev: " + RoundUp(((double)tg.TotalDev / tg.TotalProvinces), 1);
+                else
+                    gb.Controls[3].Text = "Avg. Dev: 0";
+            }
+        }
+        public void UpdateCoresPanel()
+        {
+            CoresPanel.Controls.Clear();
+            if (GlobalVariables.ClickedProvince != null)
+            {
+                foreach (string core in GlobalVariables.ClickedProvince.GetCores())
+                {
+                    Label corel = new Label();
+                    corel.Text = core;
+                    corel.MouseClick += CoreClick;
+                    CoresPanel.Controls.Add(corel);
+                    corel.Tag = core;
+                    corel.BackColor = Color.DarkGray;
+                    corel.ForeColor = Color.White;
+                    corel.TextAlign = ContentAlignment.MiddleCenter;
+                    corel.AutoSize = true;
+                }
+                foreach (string claim in GlobalVariables.ClickedProvince.GetClaims())
+                {
+                    Label claiml = new Label();
+                    claiml.Text = claim;
+                    claiml.MouseClick += ClaimClick;
+                    CoresPanel.Controls.Add(claiml);
+                    claiml.Tag = claim;
+                    claiml.BackColor = Color.Goldenrod;
+                    claiml.ForeColor = Color.Black;
+                    claiml.TextAlign = ContentAlignment.MiddleCenter;
+                    claiml.AutoSize = true;
+                }
+
+            }
+            else if (GlobalVariables.ClickedProvinces.Any())
+            {
+                List<string> added = new List<string>() { };
+
+                foreach (Province p in GlobalVariables.ClickedProvinces)
+                {
+                    foreach (string core in p.GetCores())
+                    {
+                        if (!added.Contains(core))
+                        {
+                            added.Add(core);
+                            Label corel = new Label();
+                            corel.Text = core;
+                            corel.MouseClick += CoreClick;
+                            CoresPanel.Controls.Add(corel);
+                            corel.Tag = core;
+                            corel.BackColor = Color.DarkGray;
+                            corel.ForeColor = Color.White;
+                            corel.TextAlign = ContentAlignment.MiddleCenter;
+                            corel.AutoSize = true;
+                        }
+                    }
+                    foreach (string claim in p.GetClaims())
+                    {
+                        Label claiml = new Label();
+                        claiml.Text = claim;
+                        claiml.MouseClick += ClaimClick;
+                        CoresPanel.Controls.Add(claiml);
+                        claiml.Tag = claim;
+                        claiml.BackColor = Color.Goldenrod;
+                        claiml.ForeColor = Color.Black;
+                        claiml.TextAlign = ContentAlignment.MiddleCenter;
+                        claiml.AutoSize = true;
+                    }
+                }
+            }
+        }
+        public void UpdateSavesTab()
+        {
+            SaveFilesPanel.Controls.Clear();
+
+            int count = 0;
+            foreach (object obj in GlobalVariables.Saves)
+            {
+                if (count == 30)
+                    break;
+                count++;
+                string name = "";
+                string path = "";
+                string path2 = "";
+                if (obj is Province)
+                {
+                    Province p = obj as Province;
+                    name = "Province " + p.ID;
+                    path = p.HistoryFile;
+                }
+                else if (obj is Country)
+                {
+                    Country c = obj as Country;
+                    name = "Country " + c.Tag;
+                    path = c.HistoryFile;
+                    path2 = c.CommonFile;
+                }
+
+                GroupBox gb = new GroupBox();
+                gb.Text = name;
+                gb.Size = new Size(507, 37);
+                SaveFilesPanel.Controls.Add(gb);
+
+                Label pathl = new Label();
+                pathl.AutoSize = true;
+                pathl.Location = new Point(8, 16);
+                pathl.Text = "Path: " + path.Replace(GlobalVariables.pathtomod, "");
+                pathl.Click += OpenFile;
+                pathl.Tag = path;
+                gb.Controls.Add(pathl);
+
+                if (path2 != "" && false)
+                {
+                    Label pathl2 = new Label();
+                    pathl2.AutoSize = true;
+                    pathl2.Location = new Point(140, 16);
+                    pathl2.Text = "Path: " + path2.Replace(GlobalVariables.pathtomod, "");
+                    pathl2.Click += OpenFile;
+                    pathl2.Tag = path2;
+                    gb.Controls.Add(pathl2);
+                }
+
+                Button save = new Button();
+                save.Location = new Point(303, 10);
+                save.Text = "Save";
+                save.Size = new Size(75, 23);
+                save.Tag = GlobalVariables.Saves.IndexOf(obj);
+                save.Click += SaveFile;
+                gb.Controls.Add(save);
+
+                Button load = new Button();
+                load.Location = new Point(384, 10);
+                load.Text = "Load again";
+                load.Size = new Size(115, 23);
+                load.Tag = GlobalVariables.Saves.IndexOf(obj);
+                load.Click += LoadFileAgain;
+                gb.Controls.Add(load);
+
+
+            }
+        }
+        public void UpdateDiscoveredBy()
+        {
+            DiscoveredByPanel.Controls.Clear();
+            if (GlobalVariables.ClickedProvince != null)
+            {
+                foreach (string tech in GlobalVariables.ClickedProvince.GetDiscoveredBy())
+                {
+                    Label techl = new Label();
+                    techl.Text = tech;
+                    techl.MouseClick += TechClick;
+                    DiscoveredByPanel.Controls.Add(techl);
+                    techl.Tag = tech;
+                    techl.BackColor = Color.DarkGray;
+                    techl.ForeColor = Color.White;
+                    techl.TextAlign = ContentAlignment.MiddleCenter;
+                    techl.AutoSize = true;
+                }
+            }
+            else if (GlobalVariables.ClickedProvinces.Any())
+            {
+                List<string> added = new List<string>() { };
+
+                foreach (Province p in GlobalVariables.ClickedProvinces)
+                {
+                    foreach (string tech in p.GetDiscoveredBy())
+                    {
+                        if (!added.Contains(tech))
+                        {
+                            added.Add(tech);
+                            Label techl = new Label();
+                            techl.Text = tech;
+                            techl.MouseClick += TechClick;
+                            DiscoveredByPanel.Controls.Add(techl);
+                            techl.Tag = tech;
+                            techl.BackColor = Color.DarkGray;
+                            techl.ForeColor = Color.White;
+                            techl.TextAlign = ContentAlignment.MiddleCenter;
+                            techl.AutoSize = true;
+                        }
+                    }
+                }
+            }
+        }
+        public void UpdateBuildings()
+        {
+            BuildingsPanel.Controls.Clear();
+            if (GlobalVariables.ClickedProvince != null)
+            {
+                foreach (Building bl in GlobalVariables.ClickedProvince.GetBuildings())
+                {
+                    Label bll = new Label();
+                    bll.Text = bl.Name;
+                    bll.MouseClick += BuildingClick;
+                    BuildingsPanel.Controls.Add(bll);
+                    bll.Tag = bl;
+                    bll.BackColor = Color.DarkGray;
+                    bll.ForeColor = Color.White;
+                    bll.TextAlign = ContentAlignment.MiddleCenter;
+                    bll.AutoSize = true;
+                }
+            }
+            else if (GlobalVariables.ClickedProvinces.Any())
+            {
+                List<Building> added = new List<Building>() { };
+
+                foreach (Province p in GlobalVariables.ClickedProvinces)
+                {
+                    foreach (Building bl in p.GetBuildings())
+                    {
+                        if (!added.Contains(bl))
+                        {
+                            added.Add(bl);
+                            Label bll = new Label();
+                            bll.Text = bl.Name;
+                            bll.MouseClick += BuildingClick;
+                            BuildingsPanel.Controls.Add(bll);
+                            bll.Tag = bl;
+                            bll.BackColor = Color.DarkGray;
+                            bll.ForeColor = Color.White;
+                            bll.TextAlign = ContentAlignment.MiddleCenter;
+                            bll.AutoSize = true;
+                        }
+                    }
+                }
+            }
+        }
         #endregion
 
 
@@ -693,110 +930,25 @@ namespace Eu4ModEditor
             AddToClickedProvinces(toAdd);
             UpdateMap();
         }
-        #endregion
-
-
-        #region Clicked Provinces
-        void ChangeClickedProvince(Province p)
+        private void CapitalSetClickedButton_Click(object sender, EventArgs e)
         {
-            //if (GlobalVariables.ClickedProvince != null && GlobalVariables.ChangedSomething)
-            //if (!GlobalVariables.ToUpdate.Contains(GlobalVariables.ClickedProvince))
-            //   GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
-
             if (GlobalVariables.ClickedProvince != null)
-                MapManagement.UpdateClickedMap(new List<Province>() { GlobalVariables.ClickedProvince }, Color.White, false);
-
-            if (GlobalVariables.TradeDestClickingMode)
             {
-                GlobalVariables.TradeDestClickingMode = false;
-                if (GlobalVariables.mapmode != MapManagement.UpdateMapOptions.TradeNode)
-                    return;
-
-                if (p.TradeNode == null)
-                    return;
-
-                if (TradeNodeBox.SelectedIndex == 0)
-                    return;
-
-                AddTradeDestination(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1], p.TradeNode);
-
-                return;
-            }
-
-            UpdateProvincePanel(p);
-
-            //label5.Text = p.TradeGood.Price + " " + p.TradeGood.GoldLike;
-
-            if (p.OwnerCountry != null)
-            {
-                if (GlobalVariables.SelectedDiscoveredByTechGroup != p.OwnerCountry.TechnologyGroup && GlobalVariables.mapmode == MapManagement.UpdateMapOptions.DiscoveredBy)
-                {
-                    GlobalVariables.SelectedDiscoveredByTechGroup = p.OwnerCountry.TechnologyGroup;
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.DiscoveredBy);
-                }
+                CountryCapitalIDBox.Text = GlobalVariables.ClickedProvince.ID.ToString();
             }
         }
-        void AddToClickedProvinces(Province p, bool Update = true)
+        private void ReloadMapsButton_Click(object sender, EventArgs e)
         {
-            AddToClickedProvinces(new List<Province> { p }, Update);
-        }
-        void AddToClickedProvinces(List<Province> p, bool Update = true)
-        {
-            List<Province> UpdateMapList = new List<Province>();
-            foreach (Province pr in p)
-            {
-                // if (!GlobalVariables.ToUpdate.Contains(pr))
-                //    GlobalVariables.ToUpdate.Add(pr);
-                if (!GlobalVariables.ClickedProvinces.Contains(pr))
-                {
-                    GlobalVariables.ClickedProvinces.Add(pr);
-                    UpdateMapList.Add(pr);
-                }
-            }
-
-            MapManagement.UpdateClickedMap(UpdateMapList, Color.LightYellow);
-
-            if (GlobalVariables.ClickedProvince != null)
-                MapManagement.UpdateClickedMap(new List<Province>() { GlobalVariables.ClickedProvince }, Color.White, false);
-            GlobalVariables.ClickedProvince = null;
-            GlobalVariables.MultiProvinceMode = true;
-            ProvinceLabelID.Text = "ID: N/A";
-            ProvinceColorLabelR.Text = "R: N/A";
-            ProvinceColorLabelG.Text = "G: N/A";
-            ProvinceColorLabelB.Text = "B: N/A";
-            ProvinceSeaLakeLabel.Text = "S/L: N/A";
-
-
-            //TODO
-            // Add averages and enable adding one for each
-
-            ProvinceTaxNumeric.Enabled = false;
-            ProvinceManpowerNumeric.Enabled = false;
-            ProvinceProductionNumeric.Enabled = false;
-
-            UpdateTotalSelectedLabel();
-
-            UpdateMap();
-
-        }
-        void RemoveFromClickedProvinces(Province p, bool Update = true)
-        {
-            RemoveFromClickedProvinces(new List<Province> { p }, Update);
-        }
-        void RemoveFromClickedProvinces(List<Province> p, bool Update = true)
-        {
-            List<Province> UpdateMapList = new List<Province>();
-            foreach (Province pr in p)
-            {
-                if (GlobalVariables.ClickedProvinces.Contains(pr))
-                {
-                    GlobalVariables.ClickedProvinces.Remove(pr);
-                    UpdateMapList.Add(pr);
-                }
-            }
-            MapManagement.UpdateClickedMap(UpdateMapList, Color.LightYellow, false);
-            UpdateTotalSelectedLabel();
-            UpdateMap();
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Development);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.TradeGood);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Religion);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Culture);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Political);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Government);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
+            RefreshTradeGoodsTab();
         }
         private void RemoveDevButton_Click(object sender, EventArgs e)
         {
@@ -930,6 +1082,1074 @@ namespace Eu4ModEditor
             }
             form.Focus();
         }
+        private void ShowHideSeaTilesAreaMapmode_Click(object sender, EventArgs e)
+        {
+            GlobalVariables.ShowSeaTilesAreaMapmode = !GlobalVariables.ShowSeaTilesAreaMapmode;
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Continent);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Superregion)
+                UpdateMap();
+        }
+        private void AreaNameChangeSave_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.Areas.Any(x => x.Name == AreaNameChangeBox.Text))
+                AreaNameChangeBox.Text = AreaBox.Text;
+            else
+            {
+                GlobalVariables.Areas[AreaBox.SelectedIndex - 1].Name = AreaNameChangeBox.Text;
+                AreaBox.Items[AreaBox.SelectedIndex] = AreaNameChangeBox.Text;
+            }
+        }
+        private void SaveAreaFile_Click(object sender, EventArgs e)
+        {
+            //TODO
+            //Save on ReadOnly
+            if (GlobalVariables.ReadOnly[9])
+                return;
+            NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\area.txt");
+            List<Node> newNodes = new List<Node>();
+            foreach (Area a in GlobalVariables.Areas)
+            {
+                Node n = nf.MainNode.Nodes.Find(x => x.Name == a.Name);
+                if (n != null)
+                {
+                    n.PureValues.Clear();
+                    foreach (Province p in a.Provinces)
+                        n.AddPureValue(p.ID.ToString());
+                }
+                else
+                {
+                    n = new Node(a.Name);
+                    foreach (Province p in a.Provinces)
+                        n.AddPureValue(p.ID.ToString());
+                }
+                newNodes.Add(n);
+            }
+            nf.MainNode.Nodes.Clear();
+            nf.MainNode.Nodes.AddRange(newNodes);
+            nf.SaveFile(GlobalVariables.pathtomod + "map\\area.txt");
+        }
+        private void AddNewArea_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.Areas.Any(x => x.Name == AddNewAreaBox.Text))
+                AddNewAreaBox.Text = "Already taken!";
+            else
+            {
+                Area a = new Area(AddNewAreaBox.Text);
+                AreaBox.Items.Add(a.Name);
+
+                if (GlobalVariables.ClickedProvinces.Any())
+                {
+                    int index = AreaBox.Items.Count - 2;
+                    foreach (Province p in GlobalVariables.ClickedProvinces)
+                    {
+                        if (p.Area != null)
+                            p.Area.Provinces.Remove(p);
+                        p.Area = GlobalVariables.Areas[index];
+                        GlobalVariables.Areas[index].Provinces.Add(p);
+                        //if (!GlobalVariables.ToUpdate.Contains(p))
+                        // GlobalVariables.ToUpdate.Add(p);
+                    }
+                    MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Area);
+                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area)
+                        UpdateMap();
+                    //Saving.SaveThingsToUpdate();
+                }
+
+                AddNewAreaBox.Text = "";
+            }
+        }
+        private void RegionNameChangeSave_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.Regions.Any(x => x.Name == RegionNameChangeBox.Text))
+                RegionNameChangeBox.Text = RegionBox.Text;
+            else
+            {
+                GlobalVariables.Regions[RegionBox.SelectedIndex - 1].Name = RegionNameChangeBox.Text;
+                RegionBox.Items[RegionBox.SelectedIndex] = RegionNameChangeBox.Text;
+            }
+        }
+        private void AddNewRegion_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.Regions.Any(x => x.Name == AddNewRegionBox.Text))
+                AddNewRegionBox.Text = "Already taken!";
+            else
+            {
+                Region a = new Region(AddNewRegionBox.Text);
+                RegionBox.Items.Add(a.Name);
+                List<Province> provincestoupdate = new List<Province>();
+                if (GlobalVariables.ClickedProvinces.Any())
+                {
+                    int index = RegionBox.Items.Count - 2;
+                    foreach (Province p in GlobalVariables.ClickedProvinces)
+                    {
+                        if (p.Area != null)
+                        {
+                            provincestoupdate.AddRange(p.Area.Provinces);
+                            if (p.Area.Region != null)
+                            {
+                                p.Area.Region.Areas.Remove(p.Area);
+
+                            }
+                            p.Area.Region = GlobalVariables.Regions[index];
+                            GlobalVariables.Regions[index].Areas.Add(p.Area);
+                        }
+                    }
+                    provincestoupdate = provincestoupdate.Distinct().ToList();
+                    MapManagement.UpdateMap(provincestoupdate, MapManagement.UpdateMapOptions.Region);
+                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region)
+                        UpdateMap();
+                    //Saving.SaveThingsToUpdate();
+                }
+
+                AddNewRegionBox.Text = "";
+            }
+        }
+        private void SaveRegionFile_Click(object sender, EventArgs e)
+        {
+
+            //TODO 
+            //Save on Read Only
+            if (GlobalVariables.ReadOnly[11])
+                return;
+            NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\region.txt");
+            List<Node> newNodes = new List<Node>();
+            foreach (Region r in GlobalVariables.Regions)
+            {
+                Node n = nf.MainNode.Nodes.Find(x => x.Name == r.Name);
+
+                if (n != null)
+                {
+                    Node purevaluesnode = n.Nodes.Find(x => x.Name == "areas");
+                    if (purevaluesnode != null)
+                    {
+                        purevaluesnode.PureValues.Clear();
+                        foreach (Area a in r.Areas)
+                            purevaluesnode.AddPureValue(a.Name);
+                    }
+                    else
+                    {
+                        purevaluesnode = new Node("areas", n);
+                        n.Nodes.Add(purevaluesnode);
+                        foreach (Area a in r.Areas)
+                            purevaluesnode.AddPureValue(a.Name);
+                    }
+                }
+                else
+                {
+                    n = new Node(r.Name);
+                    Node purevaluesnode = new Node("areas", n);
+                    n.Nodes.Add(purevaluesnode);
+                    foreach (Area a in r.Areas)
+                        purevaluesnode.AddPureValue(a.Name);
+                }
+                newNodes.Add(n);
+            }
+            nf.MainNode.Nodes.Clear();
+            nf.MainNode.Nodes.AddRange(newNodes);
+            nf.SaveFile(GlobalVariables.pathtomod + "map\\region.txt");
+        }
+        private void OpenWordCreator_Click(object sender, EventArgs e)
+        {
+            //TODO
+            //Make this engine better
+            LanguageWindow lw = new LanguageWindow();
+            lw.Show();
+        }
+        private void AddNewTradeNodeButton_Click(object sender, EventArgs e)
+        {
+            if (TradeNodeNameBox.Text == "" || TradeNodeNameBox.Text == " ")
+                return;
+            if (TradeNodeColorButton.BackColor == Color.Transparent)
+                return;
+            if (GlobalVariables.TradeNodes.Any(x => x.Name == TradeNodeNameBox.Text))
+                return;
+
+            Tradenode tn = new Tradenode();
+            tn.Name = TradeNodeNameBox.Text.ToLower().Replace(' ', '_');
+            tn.Color = TradeNodeColorButton.BackColor;
+            GlobalVariables.TradeNodes.Add(tn);
+            TradeNodeBox.Items.Add(tn.Name);
+            ProvinceTradeNodeBox.Items.Add(tn.Name);
+
+            if (GlobalVariables.ClickedProvince != null)
+            {
+                if (GlobalVariables.ClickedProvince.TradeNode != null)
+                    GlobalVariables.ClickedProvince.TradeNode.Provinces.Remove(GlobalVariables.ClickedProvince);
+
+
+                tn.Provinces.Add(GlobalVariables.ClickedProvince);
+                GlobalVariables.ClickedProvince.TradeNode = tn;
+                tn.Location = GlobalVariables.ClickedProvince;
+            }
+            else if (GlobalVariables.ClickedProvinces.Any())
+            {
+                foreach (Province p in GlobalVariables.ClickedProvinces)
+                {
+                    if (p.TradeNode != null)
+                        p.TradeNode.Provinces.Remove(p);
+                    tn.Provinces.Add(p);
+                    p.TradeNode = tn;
+                }
+            }
+
+            TradeNodeNameBox.Text = "";
+            TradeNodeColorButton.BackColor = Color.Transparent;
+            TradeNodeBox.SelectedIndex = TradeNodeBox.Items.Count - 1;
+
+            MapManagement.UpdateMap(tn.Provinces, MapManagement.UpdateMapOptions.TradeNode);
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
+                UpdateMap();
+        }
+        public void TradeNodeClick(object sender, MouseEventArgs e)
+        {
+            if (TradeNodeBox.SelectedIndex == 0)
+                return;
+            Label l = (Label)sender;
+            Tradenode tn = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1];
+            if (e.Button == MouseButtons.Left)
+            {
+                TradeNodeBox.SelectedIndex = int.Parse(l.Tag.ToString()) + 1;
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                tn.Destination.RemoveAll(x => x.TradeNode == GlobalVariables.TradeNodes[int.Parse(l.Tag.ToString())]);
+                GlobalVariables.TradeNodes[int.Parse(l.Tag.ToString())].Incoming.Remove(tn);
+                TradeNodeDestinationsBox.Controls.Remove(l);
+                AddTradeNodeDestinationBox.Items.Clear();
+                foreach (Tradenode tr in GlobalVariables.TradeNodes)
+                {
+                    if (!tn.Destination.Any(x => x.TradeNode == tr) && tn != tr && !tn.Incoming.Contains(tr))
+                        AddTradeNodeDestinationBox.Items.Add(tr.Name);
+                }
+            }
+        }
+        private void TradeNodeNameSaveButton_Click(object sender, EventArgs e)
+        {
+            if (TradeNodeBox.SelectedIndex == 0)
+                return;
+            if (ChangeTradeNodeNameBox.Text == "" || ChangeTradeNodeNameBox.Text == " ")
+            {
+                ChangeTradeNodeNameBox.Text = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Name;
+                return;
+            }
+            if (GlobalVariables.TradeNodes.Any(x => x.Name == ChangeTradeNodeNameBox.Text))
+            {
+                ChangeTradeNodeNameBox.Text = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Name;
+                return;
+            }
+            GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Name = ChangeTradeNodeNameBox.Text.ToLower().Replace(' ', '_');
+            TradeNodeBox.Items[TradeNodeBox.SelectedIndex] = ChangeTradeNodeNameBox.Text.ToLower().Replace(' ', '_');
+            ProvinceTradeNodeBox.Items[TradeNodeBox.SelectedIndex] = ChangeTradeNodeNameBox.Text.ToLower().Replace(' ', '_');
+        }
+        private void AddTradeNodeDestinationButton_Click(object sender, EventArgs e)
+        {
+            if (TradeNodeBox.SelectedIndex == 0)
+                return;
+            Tradenode tn = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1];
+            Tradenode tr = GlobalVariables.TradeNodes.Find(x => x.Name == AddTradeNodeDestinationBox.SelectedItem.ToString());
+            AddTradeDestination(tn, tr);
+        }
+        private void ChangeTradeNodeRandomColorButton_Click(object sender, EventArgs e)
+        {
+            if (TradeNodeBox.SelectedIndex == 0)
+                return;
+            ChangeTradeNodeColorButton.BackColor = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
+            GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Color = ChangeTradeNodeColorButton.BackColor;
+            MapManagement.UpdateMap(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeNode);
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
+                UpdateMap();
+        }
+        private void ChangeTradeNodeColorButton_Click(object sender, EventArgs e)
+        {
+            if (TradeNodeBox.SelectedIndex == 0)
+                return;
+            ColorDialog cd = new ColorDialog();
+            if (cd.ShowDialog() == DialogResult.OK)
+            {
+                GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Color = cd.Color;
+                ChangeTradeNodeColorButton.BackColor = cd.Color;
+                MapManagement.UpdateMap(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeNode);
+                if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
+                    UpdateMap();
+            }
+        }
+        private void TradeNodeLocationSetAsCliecked_Click(object sender, EventArgs e)
+        {
+            if (TradeNodeBox.SelectedIndex == 0)
+                return;
+            if (GlobalVariables.ClickedProvince != null)
+                TradeNodeProvinceLocationBox.Text = GlobalVariables.ClickedProvince.ID + "";
+        }
+        private void TradeNodeLocationSave_Click(object sender, EventArgs e)
+        {
+            if (TradeNodeBox.SelectedIndex == 0)
+                return;
+            int n = 0;
+            if (!int.TryParse(TradeNodeProvinceLocationBox.Text, out n))
+            {
+                if (GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location != null)
+                    TradeNodeProvinceLocationBox.Text = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location.ID + "";
+                return;
+            }
+            GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location = GlobalVariables.Provinces[n - 1];
+            MapManagement.UpdateMap(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeNode);
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
+                UpdateMap();
+        }
+        private void TradeNodeSelectAllProvinces_Click(object sender, EventArgs e)
+        {
+            if (TradeNodeBox.SelectedIndex == 0)
+                return;
+
+            AddToClickedProvinces(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces);
+        }
+        private void RemoveTradeNodeButton_Click(object sender, EventArgs e)
+        {
+            if (TradeNodeBox.SelectedIndex == 0)
+                return;
+            Tradenode tn = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1];
+            GlobalVariables.TradeNodes.Remove(tn);
+            List<Province> toup = new List<Province>();
+            toup.AddRange(tn.Provinces);
+            foreach (Province p in tn.Provinces)
+                p.TradeNode = null;
+            foreach (Destination ds in tn.Destination)
+                ds.TradeNode.Incoming.Remove(tn);
+            foreach (Tradenode tr in GlobalVariables.TradeNodes)
+                tr.Destination.RemoveAll(x => x.TradeNode == tn);
+            MapManagement.UpdateMap(toup, MapManagement.UpdateMapOptions.TradeNode);
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
+                UpdateMap();
+            TradeNodeBox.Items.Remove(tn.Name);
+            ProvinceTradeNodeBox.Items.Remove(tn.Name);
+            TradeNodeBox.SelectedIndex = 0;
+
+        }
+        private void TradeNodeColorButton_Click(object sender, EventArgs e)
+        {
+            ColorDialog cd = new ColorDialog();
+            if (cd.ShowDialog() == DialogResult.OK)
+            {
+                TradeNodeColorButton.BackColor = cd.Color;
+            }
+        }
+        private void TradeNodeRandomColorButton_Click(object sender, EventArgs e)
+        {
+            TradeNodeColorButton.BackColor = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
+        }
+        private void SaveTradeNodeFile_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.ReadOnly[12])
+                return;
+            NodeFile nf = new NodeFile();
+            List<Tradenode> left = new List<Tradenode>();
+            left.AddRange(GlobalVariables.TradeNodes);
+            List<Tradenode> done = new List<Tradenode>();
+            do
+            {
+                foreach (Tradenode tn in left)
+                {
+                    if (tn.Incoming.Any(x => !done.Contains(x)))
+                        continue;
+                    Node n = new Node(tn.Name);
+                    if (tn.Location != null)
+                        n.Variables.Add(new Variable("location", tn.Location.ID + ""));
+                    else if (tn.Provinces.Any())
+                        n.Variables.Add(new Variable("location", tn.Provinces[0].ID + ""));
+                    if (tn.Inland)
+                        n.Variables.Add(new Variable("inland", "yes"));
+                    if (!tn.Destination.Any())
+                        n.Variables.Add(new Variable("end", "yes"));
+                    Node cl = new Node("color");
+                    cl.PureValues = new List<PureValue>() { new PureValue(tn.Color.R + ""), new PureValue(tn.Color.G + ""), new PureValue(tn.Color.B + "") };
+                    n.Nodes.Add(cl);
+                    foreach (Destination ds in tn.Destination)
+                    {
+                        Node des = new Node("outgoing");
+                        des.Variables.Add(new Variable("name", "\"" + ds.TradeNode.Name + "\""));
+                        Node path = new Node("path");
+                        foreach (string s in ds.Path)
+                            path.AddPureValue(s);
+                        des.Nodes.Add(path);
+                        Node control = new Node("control");
+                        foreach (string s in ds.Control)
+                            control.AddPureValue(s);
+                        des.Nodes.Add(control);
+                        n.Nodes.Add(des);
+                    }
+                    Node members = new Node("members");
+                    tn.Provinces.ForEach(x => members.AddPureValue(x.ID + ""));
+                    n.Nodes.Add(members);
+                    nf.MainNode.Nodes.Add(n);
+                    done.Add(tn);
+                }
+                left.RemoveAll(x => done.Contains(x));
+            } while (left.Any());
+            nf.SaveFile(GlobalVariables.pathtomod + "common\\tradenodes\\00_tradenodes.txt");
+        }
+        private void AddTradeNodeDestClickButton_Click(object sender, EventArgs e)
+        {
+            GlobalVariables.TradeDestClickingMode = true;
+        }
+        private void AddToHREButton_Click(object sender, EventArgs e)
+        {
+            ChangeProvinceInfo(ChangeProvinceMode.HRE, true);
+        }
+        private void RemoveFromHREButton_Click(object sender, EventArgs e)
+        {
+            ChangeProvinceInfo(ChangeProvinceMode.HRE, false);
+        }
+        private void AddFortButton_Click(object sender, EventArgs e)
+        {
+            ChangeProvinceInfo(ChangeProvinceMode.Fort, true);
+        }
+        private void RemoveFortButton_Click(object sender, EventArgs e)
+        {
+            ChangeProvinceInfo(ChangeProvinceMode.Fort, false);
+        }
+        private void ContinentNameChangeSave_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.Continents.Any(x => x.Name == ContinentNameChangeBox.Text))
+                ContinentNameChangeBox.Text = ContinentBox.Text;
+            else
+            {
+                GlobalVariables.Continents[ContinentBox.SelectedIndex - 1].Name = ContinentNameChangeBox.Text;
+                ContinentBox.Items[ContinentBox.SelectedIndex] = ContinentNameChangeBox.Text;
+            }
+        }
+        private void SaveContinentFile_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.ReadOnly[13])
+                return;
+            NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\continent.txt");
+            List<Node> newNodes = new List<Node>();
+            foreach (Continent c in GlobalVariables.Continents)
+            {
+                Node n = nf.MainNode.Nodes.Find(x => x.Name == c.Name);
+                if (n != null)
+                {
+                    n.PureValues.Clear();
+                    foreach (Province p in c.Provinces)
+                        n.AddPureValue(p.ID.ToString());
+                }
+                else
+                {
+                    n = new Node(c.Name);
+                    foreach (Province p in c.Provinces)
+                        n.AddPureValue(p.ID.ToString());
+                }
+                newNodes.Add(n);
+            }
+            nf.MainNode.Nodes.Clear();
+            nf.MainNode.Nodes.AddRange(newNodes);
+            nf.SaveFile(GlobalVariables.pathtomod + "map\\continent.txt");
+        }
+        private void AddNewContinent_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.Continents.Any(x => x.Name == AddNewContinentBox.Text))
+                AddNewContinentBox.Text = "Already taken!";
+            else
+            {
+                Continent c = new Continent(AddNewContinentBox.Text);
+                ContinentBox.Items.Add(c.Name);
+
+                if (GlobalVariables.ClickedProvinces.Any())
+                {
+                    int index = ContinentBox.Items.Count - 2;
+                    foreach (Province p in GlobalVariables.ClickedProvinces)
+                    {
+                        if (p.Continent != null)
+                            p.Continent.Provinces.Remove(p);
+                        p.Continent = GlobalVariables.Continents[index];
+                        GlobalVariables.Continents[index].Provinces.Add(p);
+                        if (!GlobalVariables.ToUpdate.Contains(p))
+                            GlobalVariables.ToUpdate.Add(p);
+                    }
+                    MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Continent);
+                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent)
+                        UpdateMap();
+                    // Saving.SaveThingsToUpdate();
+                }
+
+                AddNewContinentBox.Text = "";
+            }
+        }
+        private void AddCoreButton_Click(object sender, EventArgs e)
+        {
+            int index = AddCoreBox.SelectedIndex;
+            Country c = GlobalVariables.Countries[index];
+            ChangeProvinceInfo(ChangeProvinceMode.Core, c.Tag);
+            UpdateCoresPanel();
+        }
+        private void AddOwnerCoreButton_Click(object sender, EventArgs e)
+        {
+            ChangeProvinceInfo(ChangeProvinceMode.CoreOwner, null);
+            UpdateCoresPanel();
+        }
+        public void CoreClick(object sender, MouseEventArgs e)
+        {
+            Label l = sender as Label;
+            if (e.Button == MouseButtons.Right)
+            {
+                ChangeProvinceInfo(ChangeProvinceMode.Core, l.Tag, true);
+            }
+            //if (!GlobalVariables.ToUpdate.Contains(GlobalVariables.ClickedProvince))
+            //GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
+            //Saving.SaveThingsToUpdate();
+            UpdateCoresPanel();
+        }
+        public void ClaimClick(object sender, MouseEventArgs e)
+        {
+            Label l = sender as Label;
+            if (e.Button == MouseButtons.Right)
+            {
+                ChangeProvinceInfo(ChangeProvinceMode.Claim, l.Tag, true);
+            }
+            UpdateCoresPanel();
+        }
+        private void AddCenterOfTrade_Click(object sender, EventArgs e)
+        {
+            ChangeProvinceInfo(ChangeProvinceMode.CoT, 1);
+        }
+        private void RemoveCenterOfTrade_Click(object sender, EventArgs e)
+        {
+            ChangeProvinceInfo(ChangeProvinceMode.CoT, 0);
+        }
+        private void RandomIdeaBoxButton_Click(object sender, EventArgs e)
+        {
+            RandomIdeaBox rib = new RandomIdeaBox();
+            rib.Show();
+        }
+        private void RefreshChanges_Click(object sender, EventArgs e)
+        {
+            UpdateChangesTab();
+        }
+        private void SaveAllChangesButton_Click(object sender, EventArgs e)
+        {
+            MergeChanges();
+            foreach (VariableChange vc in GlobalVariables.Changes)
+            {
+                if (!GlobalVariables.Saves.Contains(vc.Object))
+                    GlobalVariables.Saves.Add(vc.Object);
+            }
+            GlobalVariables.Changes.Clear();
+            UpdateChangesTab();
+            UpdateSavesTab();
+        }
+        private void RevertAllChangesButton_Click(object sender, EventArgs e)
+        {
+            MergeChanges();
+            foreach (VariableChange vc in GlobalVariables.Changes)
+            {
+                if (vc.Object is Province)
+                {
+                    (vc.Object as Province).Variables[vc.VariableName] = vc.PreviousValue;
+                }
+                else if (vc.Object is Country)
+                {
+                    (vc.Object as Country).Variables[vc.VariableName] = vc.PreviousValue;
+                }
+                GlobalVariables.Changes.Remove(vc);
+            }
+            UpdateChangesTab();
+            UpdateSavesTab();
+        }
+        private void SaveTradeCompanyFile_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.ReadOnly[19] && (!GlobalVariables.CreateNewFilesReadOnly && !GlobalVariables.NewObjectsNewFiles))
+                return;
+
+
+            //NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\continent.txt");
+            //List<Node> newNodes = new List<Node>();
+
+
+
+            foreach (TradeCompany tc in GlobalVariables.TradeCompanies)
+            {
+                if (!tc.MadeChanges)
+                    continue;
+                tc.MadeChanges = false;
+                NodeFile toSaveTo = DetermineSaveLocation(GlobalVariables.ModNodeFileTypes.TradeCompanies, tc.ParentFile);
+                //MessageBox.Show(GetModNodeFileName(GlobalVariables.ModNodeFileTypes.TradeCompanies));
+
+                if (toSaveTo == null)
+                    continue;
+                tc.ParentFile = toSaveTo;
+                Node n = tc.ParentFile.MainNode.Nodes.Find(x => x.Name == tc.Name);
+                if (n == null)
+                {
+                    n = new Node(tc.Name, toSaveTo.MainNode);
+                    tc.ParentFile.MainNode.Nodes.Add(n);
+                    n.Parent = tc.ParentFile.MainNode;
+
+                    Node color = new Node("color", n)
+                    {
+                        PureValues = new List<PureValue>() { new PureValue(tc.Color.R.ToString()), new PureValue(tc.Color.G.ToString()), new PureValue(tc.Color.B.ToString()) }
+                    };
+                    n.Nodes.Add(color);
+                    Node provinces = new Node("provinces", n);
+                    n.Nodes.Add(provinces);
+                    foreach (Province p in tc.Provinces)
+                        provinces.AddPureValue(p.ID.ToString());
+                    foreach (string name in tc.Names)
+                    {
+                        Node nm = new Node("names", n);
+                        n.Nodes.Add(nm);
+                        nm.ChangeVariable("name", name, true);
+                    }
+
+                }
+                else
+                {
+                    n.Nodes.Find(x => x.Name == "color").PureValues = new List<PureValue>() { new PureValue(tc.Color.R.ToString()), new PureValue(tc.Color.G.ToString()), new PureValue(tc.Color.B.ToString()) };
+                    Node pnode = n.Nodes.Find(x => x.Name == "provinces");
+                    pnode.PureValues.Clear();
+                    foreach (Province p in tc.Provinces)
+                        pnode.AddPureValue(p.ID.ToString());
+                    int N = 0;
+                    List<Node> ToRemove = new List<Node>();
+                    foreach (Node namenode in n.Nodes.FindAll(x => x.Name == "names"))
+                    {
+                        if (N >= tc.Names.Count)
+                        {
+                            ToRemove.Add(namenode);
+                            continue;
+                        }
+                        namenode.ChangeVariable("name", tc.Names[N]);
+                        N++;
+                    }
+                    if (N < tc.Names.Count)
+                    {
+                        for (; N < tc.Names.Count; N++)
+                        {
+                            Node nm = new Node("names", n);
+                            n.Nodes.Add(nm);
+                            nm.ChangeVariable("name", tc.Names[N], true);
+                        }
+                    }
+                    n.Nodes.RemoveAll(x => ToRemove.Contains(x));
+
+                }
+                toSaveTo.SaveFile(toSaveTo.Path);
+            }
+        }
+        private void TradeCompanyRandomColor_Click(object sender, EventArgs e)
+        {
+            if (TradeCompanyBox.SelectedIndex == 0)
+                return;
+            TradeCompanyColorButton.BackColor = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
+            GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1].Color = TradeCompanyColorButton.BackColor;
+            GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1].MadeChanges = true;
+            MapManagement.UpdateMap(GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeCompany);
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeCompany)
+                UpdateMap();
+        }
+        private void SaveProvinceName_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.ClickedProvince == null)
+                return;
+            if (GlobalVariables.ModLocalisationEntries.Keys.Contains("PROV" + GlobalVariables.ClickedProvince.ID))
+                GlobalVariables.ModLocalisationEntries["PROV" + GlobalVariables.ClickedProvince.ID] = ProvinceNameLocalisationBox.Text;
+            else if (GlobalVariables.LocalisationEntries.Keys.Contains("PROV" + GlobalVariables.ClickedProvince.ID))
+            {
+                if (GlobalVariables.LocalisationEntries["PROV" + GlobalVariables.ClickedProvince.ID] != ProvinceNameLocalisationBox.Text)
+                    GlobalVariables.ModLocalisationEntries["PROV" + GlobalVariables.ClickedProvince.ID] = ProvinceNameLocalisationBox.Text;
+            }
+        }
+        private void SaveProvinceAdj_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.ClickedProvince == null)
+                return;
+            if (GlobalVariables.ModLocalisationEntries.Keys.Contains("PROV_ADJ" + GlobalVariables.ClickedProvince.ID))
+                GlobalVariables.ModLocalisationEntries["PROV_ADJ" + GlobalVariables.ClickedProvince.ID] = ProvinceAdjectiveLocalisationBox.Text;
+            else if (GlobalVariables.LocalisationEntries.Keys.Contains("PROV_ADJ" + GlobalVariables.ClickedProvince.ID))
+            {
+                if (GlobalVariables.LocalisationEntries["PROV_ADJ" + GlobalVariables.ClickedProvince.ID] != ProvinceAdjectiveLocalisationBox.Text)
+                    GlobalVariables.ModLocalisationEntries["PROV_ADJ" + GlobalVariables.ClickedProvince.ID] = ProvinceAdjectiveLocalisationBox.Text;
+            }
+        }
+        private void SaveLocalisationButton_Click(object sender, EventArgs e)
+        {
+            string tosave = "";
+            string filename = "";
+            switch (GlobalVariables.LocalisationLanguage)
+            {
+                case GlobalVariables.Languages.English:
+                    filename = "localisation\\mod_edt_loc_l_english.yml";
+                    tosave = "l_english:\n";
+                    break;
+                case GlobalVariables.Languages.French:
+                    filename = "localisation\\mod_edt_loc_l_french.yml";
+                    tosave = "l_french:\n";
+                    break;
+                case GlobalVariables.Languages.German:
+                    filename = "localisation\\mod_edt_loc_l_german.yml";
+                    tosave = "l_german:\n";
+                    break;
+                case GlobalVariables.Languages.Spanish:
+                    filename = "localisation\\mod_edt_loc_l_spanish.yml";
+                    tosave = "l_spanish:\n";
+                    break;
+            }
+            foreach (string key in GlobalVariables.ModLocalisationEntries.Keys)
+            {
+                tosave += " " + key + ": \"" + GlobalVariables.ModLocalisationEntries[key] + "\"\n";
+            }
+            if (!Directory.Exists(GlobalVariables.pathtomod + "localisation"))
+                Directory.CreateDirectory(GlobalVariables.pathtomod + "localisation");
+            File.WriteAllText(GlobalVariables.pathtomod + filename, tosave);
+        }
+        private void SuperregionNameChangeSave_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.Superregions.Any(x => x.Name == SuperregionNameChangeBox.Text))
+                SuperregionNameChangeBox.Text = SuperregionBox.Text;
+            else
+            {
+                GlobalVariables.Superregions[SuperregionBox.SelectedIndex - 1].Name = SuperregionNameChangeBox.Text;
+                SuperregionBox.Items[SuperregionBox.SelectedIndex] = SuperregionNameChangeBox.Text;
+            }
+        }
+        private void AddNewSuperregion_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.Superregions.Any(x => x.Name == AddNewSuperregionBox.Text))
+                AddNewSuperregionBox.Text = "Already taken!";
+            else
+            {
+                Superregion c = new Superregion(AddNewSuperregionBox.Text);
+                SuperregionBox.Items.Add(c.Name);
+
+                ChangeProvinceInfo(ChangeProvinceMode.Superregion, SuperregionBox.Items.Count - 2);
+                AddNewSuperregionBox.Text = "";
+            }
+        }
+        private void SaveSuperregionFile_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.ReadOnly[18])
+                return;
+            NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\superregion.txt");
+            List<Node> newNodes = new List<Node>();
+            foreach (Superregion sr in GlobalVariables.Superregions)
+            {
+                Node n = nf.MainNode.Nodes.Find(x => x.Name == sr.Name);
+
+                if (n != null)
+                {
+                    n.PureValues.Clear();
+                    foreach (Region r in sr.Regions)
+                        n.AddPureValue(r.Name);
+                }
+                else
+                {
+                    n = new Node(sr.Name);
+                    foreach (Region r in sr.Regions)
+                        n.AddPureValue(r.Name);
+                }
+                newNodes.Add(n);
+            }
+            nf.MainNode.Nodes.Clear();
+            nf.MainNode.Nodes.AddRange(newNodes);
+            nf.SaveFile(GlobalVariables.pathtomod + "map\\superregion.txt");
+        }
+        private void TradeComapnyNameChangeSave_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.TradeCompanies.Any(x => x.Name == TradeCompanyNameChangeBox.Text))
+                TradeCompanyNameChangeBox.Text = TradeCompanyBox.Text;
+            else
+            {
+                GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1].Name = TradeCompanyNameChangeBox.Text;
+                TradeCompanyBox.Items[TradeCompanyBox.SelectedIndex] = TradeCompanyNameChangeBox.Text;
+            }
+        }
+        private void AddNewTradeCompany_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.TradeCompanies.Any(x => x.Name == AddNewTradeCompanyBox.Text))
+                AddNewTradeCompanyBox.Text = "Already taken!";
+            else
+            {
+                TradeCompany c = new TradeCompany() { Name = AddNewTradeCompanyBox.Text };
+                GlobalVariables.TradeCompanies.Add(c);
+                TradeCompanyBox.Items.Add(c.Name);
+
+                if (GlobalVariables.ClickedProvinces.Any())
+                {
+                    int index = TradeCompanyBox.Items.Count - 2;
+                    foreach (Province p in GlobalVariables.ClickedProvinces)
+                    {
+                        if (p.TradeCompany != null)
+                            p.TradeCompany.Provinces.Remove(p);
+                        p.TradeCompany = GlobalVariables.TradeCompanies[index];
+                        p.TradeCompany.MadeChanges = true;
+                        GlobalVariables.TradeCompanies[index].Provinces.Add(p);
+                        if (!GlobalVariables.ToUpdate.Contains(p))
+                            GlobalVariables.ToUpdate.Add(p);
+                    }
+                    MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.TradeCompany);
+                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeCompany)
+                        UpdateMap();
+                    // Saving.SaveThingsToUpdate();
+                }
+
+                AddNewTradeCompanyBox.Text = "";
+            }
+        }
+        private void TradeCompanyColorButton_Click(object sender, EventArgs e)
+        {
+            if (TradeCompanyBox.SelectedIndex == 0)
+                return;
+            ColorDialog cd = new ColorDialog();
+            if (cd.ShowDialog() == DialogResult.OK)
+            {
+                GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1].Color = cd.Color;
+                GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1].MadeChanges = true;
+                TradeCompanyColorButton.BackColor = cd.Color;
+                MapManagement.UpdateMap(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeNode);
+                if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
+                    UpdateMap();
+
+            }
+        }
+        private void AddClaimButton_Click(object sender, EventArgs e)
+        {
+            int index = AddCoreBox.SelectedIndex;
+            Country c = GlobalVariables.Countries[index];
+            ChangeProvinceInfo(ChangeProvinceMode.Claim, c.Tag);
+            UpdateCoresPanel();
+        }
+        private void HideSeaTiles3_Click(object sender, EventArgs e)
+        {
+            GlobalVariables.ShowSeaTilesAreaMapmode = !GlobalVariables.ShowSeaTilesAreaMapmode;
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Continent);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Superregion)
+                UpdateMap();
+        }
+        private void HideSeaTiles_Click(object sender, EventArgs e)
+        {
+            GlobalVariables.ShowSeaTilesAreaMapmode = !GlobalVariables.ShowSeaTilesAreaMapmode;
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Continent);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Superregion)
+                UpdateMap();
+        }
+        private void HideSeaTiles2_Click(object sender, EventArgs e)
+        {
+            GlobalVariables.ShowSeaTilesAreaMapmode = !GlobalVariables.ShowSeaTilesAreaMapmode;
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Continent);
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Superregion)
+                UpdateMap();
+        }
+        private void RefreshSavesButton_Click(object sender, EventArgs e)
+        {
+            UpdateSavesTab();
+        }
+        private void OpenProvinceFileButton_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.ClickedProvince != null)
+                Process.Start(GlobalVariables.ClickedProvince.HistoryFile);
+        }
+        private void ReloadProvinceFromFileButton_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.ClickedProvince != null)
+                Saving.LoadObject(GlobalVariables.ClickedProvince);
+            UpdateProvincePanel(GlobalVariables.ClickedProvince);
+        }
+        private void ReloadProvinceAllMapmodesButton_Click(object sender, EventArgs e)
+        {
+            MapManagement.ReloadProvince(GlobalVariables.ClickedProvince);
+        }
+        private void SaveAllFilesButton_Click(object sender, EventArgs e)
+        {
+            foreach (object obj in GlobalVariables.Saves)
+            {
+                Saving.SaveObject(obj);
+            }
+            GlobalVariables.Saves.Clear();
+            UpdateSavesTab();
+        }
+        private void LoadAllFilesAgainButton_Click(object sender, EventArgs e)
+        {
+            foreach (object obj in GlobalVariables.Saves)
+            {
+                Saving.LoadObject(obj);
+            }
+            GlobalVariables.Saves.Clear();
+            UpdateSavesTab();
+        }
+        private void OpenCountryHistoryFileButton_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.SelectedCountry != null)
+                Process.Start(GlobalVariables.SelectedCountry.HistoryFile);
+        }
+        private void AddDiscoveredByButton_Click(object sender, EventArgs e)
+        {
+            if (DiscoveredByBox.SelectedItem.ToString() != "")
+                ChangeProvinceInfo(ChangeProvinceMode.DiscoveredBy, DiscoveredByBox.SelectedItem, false);
+            UpdateDiscoveredBy();
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.DiscoveredBy);
+        }
+        private void MakeCityButton_Click(object sender, EventArgs e)
+        {
+            ChangeProvinceInfo(ChangeProvinceMode.City, true);
+            UpdateProvincePanel();
+        }
+        private void RemoveCityButton_Click(object sender, EventArgs e)
+        {
+            ChangeProvinceInfo(ChangeProvinceMode.City, false);
+            UpdateProvincePanel();
+        }
+        private void AddBuildingButton_Click(object sender, EventArgs e)
+        {
+            if (BuildingsBox.SelectedIndex != -1)
+            {
+                Building bl = GlobalVariables.Buildings.Find(x => x.Name == BuildingsBox.SelectedItem.ToString());
+                if (bl != null)
+                    ChangeProvinceInfo(ChangeProvinceMode.Building, bl);
+                UpdateBuildings();
+            }
+        }
+        public void BuildingClick(object sender, MouseEventArgs e)
+        {
+            Label l = sender as Label;
+            if (e.Button == MouseButtons.Right)
+            {
+                ChangeProvinceInfo(ChangeProvinceMode.Building, (Building)l.Tag, true);
+            }
+            UpdateBuildings();
+        }
+        public void TechClick(object sender, MouseEventArgs e)
+        {
+            Label l = sender as Label;
+            if (e.Button == MouseButtons.Right)
+            {
+                ChangeProvinceInfo(ChangeProvinceMode.DiscoveredBy, (string)l.Tag, true);
+            }
+            UpdateDiscoveredBy();
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.DiscoveredBy);
+
+        }
+        private void AddOwnerDiscoveredByButton_Click(object sender, EventArgs e)
+        {
+            ChangeProvinceInfo(ChangeProvinceMode.DiscoveredByOwner, null);
+            UpdateDiscoveredBy();
+            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.DiscoveredBy);
+        }
+        #endregion
+
+
+        #region Clicked Provinces
+        void ChangeClickedProvince(Province p)
+        {
+            //if (GlobalVariables.ClickedProvince != null && GlobalVariables.ChangedSomething)
+            //if (!GlobalVariables.ToUpdate.Contains(GlobalVariables.ClickedProvince))
+            //   GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
+
+            if (GlobalVariables.ClickedProvince != null)
+                MapManagement.UpdateClickedMap(new List<Province>() { GlobalVariables.ClickedProvince }, Color.White, false);
+
+            if (GlobalVariables.TradeDestClickingMode)
+            {
+                GlobalVariables.TradeDestClickingMode = false;
+                if (GlobalVariables.mapmode != MapManagement.UpdateMapOptions.TradeNode)
+                    return;
+
+                if (p.TradeNode == null)
+                    return;
+
+                if (TradeNodeBox.SelectedIndex == 0)
+                    return;
+
+                AddTradeDestination(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1], p.TradeNode);
+
+                return;
+            }
+
+            UpdateProvincePanel(p);
+
+            //label5.Text = p.TradeGood.Price + " " + p.TradeGood.GoldLike;
+
+            if (p.OwnerCountry != null)
+            {
+                if (GlobalVariables.SelectedDiscoveredByTechGroup != p.OwnerCountry.TechnologyGroup && GlobalVariables.mapmode == MapManagement.UpdateMapOptions.DiscoveredBy)
+                {
+                    GlobalVariables.SelectedDiscoveredByTechGroup = p.OwnerCountry.TechnologyGroup;
+                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.DiscoveredBy);
+                }
+            }
+        }
+        void AddToClickedProvinces(Province p, bool Update = true)
+        {
+            AddToClickedProvinces(new List<Province> { p }, Update);
+        }
+        void AddToClickedProvinces(List<Province> p, bool Update = true)
+        {
+            List<Province> UpdateMapList = new List<Province>();
+            foreach (Province pr in p)
+            {
+                // if (!GlobalVariables.ToUpdate.Contains(pr))
+                //    GlobalVariables.ToUpdate.Add(pr);
+                if (!GlobalVariables.ClickedProvinces.Contains(pr))
+                {
+                    GlobalVariables.ClickedProvinces.Add(pr);
+                    UpdateMapList.Add(pr);
+                }
+            }
+
+            MapManagement.UpdateClickedMap(UpdateMapList, Color.LightYellow);
+
+            if (GlobalVariables.ClickedProvince != null)
+                MapManagement.UpdateClickedMap(new List<Province>() { GlobalVariables.ClickedProvince }, Color.White, false);
+            GlobalVariables.ClickedProvince = null;
+            GlobalVariables.MultiProvinceMode = true;
+            ProvinceLabelID.Text = "ID: N/A";
+            ProvinceColorLabelR.Text = "R: N/A";
+            ProvinceColorLabelG.Text = "G: N/A";
+            ProvinceColorLabelB.Text = "B: N/A";
+            ProvinceSeaLakeLabel.Text = "S/L: N/A";
+
+
+            //TODO
+            // Add averages and enable adding one for each
+
+            ProvinceTaxNumeric.Enabled = false;
+            ProvinceManpowerNumeric.Enabled = false;
+            ProvinceProductionNumeric.Enabled = false;
+
+            UpdateTotalSelectedLabel();
+
+            UpdateMap();
+
+        }
+        void RemoveFromClickedProvinces(Province p, bool Update = true)
+        {
+            RemoveFromClickedProvinces(new List<Province> { p }, Update);
+        }
+        void RemoveFromClickedProvinces(List<Province> p, bool Update = true)
+        {
+            List<Province> UpdateMapList = new List<Province>();
+            foreach (Province pr in p)
+            {
+                if (GlobalVariables.ClickedProvinces.Contains(pr))
+                {
+                    GlobalVariables.ClickedProvinces.Remove(pr);
+                    UpdateMapList.Add(pr);
+                }
+            }
+            MapManagement.UpdateClickedMap(UpdateMapList, Color.LightYellow, false);
+            UpdateTotalSelectedLabel();
+            UpdateMap();
+        }
+
         #endregion
 
         #region Important forms stuff
@@ -1200,547 +2420,6 @@ namespace Eu4ModEditor
                 }
             }
         }
-
-        #endregion
-
-
-        #region Macros
-        private void MacroSelectProvincesEqualDev_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            int mode = 0;
-            if ((ModifierKeys & Keys.Shift) == Keys.Shift)
-                mode = 1;
-            else if ((ModifierKeys & Keys.Control) == Keys.Control)
-                mode = 2;
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (p.Tax + p.Production + p.Manpower == MacroDevNumeric.Value)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-
-            switch (mode)
-            {
-                case 0:
-                    RemoveFromClickedProvinces(GlobalVariables.ClickedProvinces.ToList());
-                    AddToClickedProvinces(ToSelect);
-                    break;
-                case 1:
-                    AddToClickedProvinces(ToSelect);
-                    break;
-                case 2:
-                    RemoveFromClickedProvinces(ToSelect);
-                    break;
-            }
-            UpdateDiscoveredBy();
-        }
-
-        public void PerformMacroFunc(List<Province> Select)
-        {
-            int mode = 0;
-            if ((ModifierKeys & Keys.Shift) == Keys.Shift)
-                mode = 1;
-            else if ((ModifierKeys & Keys.Control) == Keys.Control)
-                mode = 2;
-            switch (mode)
-            {
-                case 0:
-                    RemoveFromClickedProvinces(GlobalVariables.ClickedProvinces.ToList());
-                    AddToClickedProvinces(Select);
-                    break;
-                case 1:
-                    AddToClickedProvinces(Select);
-                    break;
-                case 2:
-                    RemoveFromClickedProvinces(Select);
-                    break;
-            }
-            UpdateDiscoveredBy();
-        }
-
-        private void MacroSameReligion_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (p.Religion == MacroReligionBox.SelectedItem)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroDifferentReligion_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (p.Religion != MacroReligionBox.SelectedItem)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroSameCountryReligion_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (p.OwnerCountry?.Religion == MacroReligionBox.SelectedItem)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroDifferentCountryReligion_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (p.OwnerCountry?.Religion != MacroReligionBox.SelectedItem && p.OwnerCountry?.Religion != null)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroSameCulture_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (p.Culture == MacroCultureBox.SelectedItem)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroDifferentCulture_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (p.Culture != MacroCultureBox.SelectedItem)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroSameCountryCulture_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (p.OwnerCountry?.PrimaryCulture == MacroCultureBox.SelectedItem)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroDifferentCountryCulture_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (p.OwnerCountry?.PrimaryCulture != MacroCultureBox.SelectedItem && p.OwnerCountry?.PrimaryCulture != null)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroWithFort_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (p.Fort)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroWithoutFort_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (!p.Fort)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroInsideFort_Click(object sender, EventArgs e)
-        {
-            /*List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if ()
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-            */
-        }
-
-        private void BorderingDebugButton_Click(object sender, EventArgs e)
-        {
-            GlobalVariables.BorderingMode = !GlobalVariables.BorderingMode;
-        }
-
-        private void MacroSameArea_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces)
-            {
-                if (p.Area == MacroAreaBox.SelectedItem)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroDifferentArea_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces)
-            {
-                if (p.Area != MacroAreaBox.SelectedItem)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroSameRegion_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces)
-            {
-                if (p.Area?.Region == MacroRegionBox.SelectedItem)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroDifferentRegion_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces)
-            {
-                if (p.Area?.Region != MacroRegionBox.SelectedItem && p.Area?.Region != null)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroSameSuperregion_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces)
-            {
-                if (p.Area?.Region?.Superregion == MacroSuperregionBox.SelectedItem)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroDifferentSuperregion_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces)
-            {
-                if (p.Area?.Region?.Superregion != MacroSuperregionBox.SelectedItem && p.Area?.Region?.Superregion != null)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroSameContinent_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces)
-            {
-                if (p.Continent == MacroContinentBox.SelectedItem)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroDifferentContinent_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces)
-            {
-                if (p.Continent != MacroContinentBox.SelectedItem && p.Continent != null)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroInsideHRE_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (p.HRE)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroHREProvOutCountry_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (p.HRE && !(p.OwnerCountry?.Capital?.HRE ?? false))
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroHRECountry_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (p.OwnerCountry?.Capital?.HRE ?? false)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroOutsideHRE_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (!p.HRE)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroSameTradenode_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces)
-            {
-                if (p.TradeNode == MacroTradeNodeBox.SelectedItem)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroDifferentTradenode_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces)
-            {
-                if (p.TradeNode != MacroTradeNodeBox.SelectedItem && p.TradeNode != null)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroDiscoveredBy_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces)
-            {
-                if (p.GetDiscoveredBy().Contains(MacroTechGroupBox.SelectedItem))
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroNotDiscoveredBy_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces)
-            {
-                if (!p.GetDiscoveredBy().Contains(MacroTechGroupBox.SelectedItem))
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroSameTechGroup_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces)
-            {
-                if (p.OwnerCountry?.TechnologyGroup == MacroTechGroupBox.SelectedItem.ToString())
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroDifferentTechGroup_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces)
-            {
-                if (p.OwnerCountry?.TechnologyGroup != MacroTechGroupBox.SelectedItem.ToString() && p.OwnerCountry?.TechnologyGroup != null)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-            PerformMacroFunc(ToSelect);
-        }
-
-        private void MacroSelectAllExceptSeas_Click(object sender, EventArgs e)
-        {
-            AddToClickedProvinces(GlobalVariables.Provinces.Where(x => !x.Lake && !x.Sea && !x.Wasteland).ToList());
-        }
-        #endregion
-
-        void MoveCameraTo(Province p)
-        {
-            //TODO
-            //when scaling the game don't forget about this!
-
-            if (p != null)
-            {
-                GlobalVariables.CameraPosition = new Point(0, 0);
-                if (p.Pixels.Any())
-                {
-                    Point dest = p.Pixels[0];
-                    int x = 0;
-                    do
-                    {
-                        x += 220;
-                    } while (dest.X - 440 > x);
-                    x -= 220;
-                    if (x < 0)
-                        x = 0;
-                    int y = 0;
-                    do
-                    {
-                        y += 160;
-                    } while (dest.Y - 320 > y);
-                    y -= 160;
-                    if (y < 0)
-                        y = 0;
-
-                    if (x + 1090 >= GlobalVariables.ProvincesMap.Width)
-                        x = GlobalVariables.ProvincesMap.Width - 1090;
-                    if (y + 770 >= GlobalVariables.ProvincesMap.Height)
-                        y = GlobalVariables.ProvincesMap.Height - 770;
-
-                    GlobalVariables.CameraPosition = new Point(x, y);
-                }
-                UpdateMap();
-            }
-        }
-
-        public void ChangeValueInternally(Control control, object value)
-        {
-            GlobalVariables.InternalChanges = true;
-            if (control is NumericUpDown)
-                ((NumericUpDown)control).Value = (int)value;
-            else if (control is CheckBox)
-                ((CheckBox)control).Checked = (bool)value;
-            else if (control is ComboBox)
-            {
-                if (value is int) {
-                    if ((int)value == -1)
-                        ((ComboBox)control).SelectedIndex = 0;
-                    else
-                        ((ComboBox)control).SelectedIndex = (int)value;
-                }
-                else
-                {
-                    ((ComboBox)control).SelectedItem = value;
-                }
-            }
-            else if (control is TextBox)
-                ((TextBox)control).Text = (string)value;
-            GlobalVariables.InternalChanges = false; 
-        }
-        
-
-
-        
-
-        private void CapitalSetClickedButton_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.ClickedProvince != null)
-            {
-                CountryCapitalIDBox.Text = GlobalVariables.ClickedProvince.ID.ToString();
-            }
-        }
-
-        private void ReloadMapsButton_Click(object sender, EventArgs e)
-        {
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Development);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.TradeGood);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Religion);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Culture);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Political);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Government);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
-            RefreshTradeGoodsTab();
-        }
-
         private void LatentTradeGoodBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (GlobalVariables.MultiProvinceMode)
@@ -1776,57 +2455,29 @@ namespace Eu4ModEditor
                 if (GlobalVariables.InternalChanges)
                     return;
                 if (GlobalVariables.ClickedProvince != null)
+                {
+                    if (GlobalVariables.ClickedProvince.LatentTradeGood != null)
                     {
-                        if (GlobalVariables.ClickedProvince.LatentTradeGood != null)
-                        {
-                            GlobalVariables.ClickedProvince.LatentTradeGood.TotalProvinces--;
-                            GlobalVariables.ClickedProvince.LatentTradeGood.TotalDev -= GlobalVariables.ClickedProvince.Tax + GlobalVariables.ClickedProvince.Production + GlobalVariables.ClickedProvince.Manpower;
-                        }
-                        GlobalVariables.ClickedProvince.LatentTradeGood = GlobalVariables.TradeGoods.Find(x => x.ReadableName == (string)LatentTradeGoodBox.SelectedItem);
-                        if (GlobalVariables.ClickedProvince.LatentTradeGood != null)
-                        {
-                            GlobalVariables.ClickedProvince.LatentTradeGood.TotalProvinces++;
-                            GlobalVariables.ClickedProvince.LatentTradeGood.TotalDev += GlobalVariables.ClickedProvince.Tax + GlobalVariables.ClickedProvince.Production + GlobalVariables.ClickedProvince.Manpower;
-                        }
+                        GlobalVariables.ClickedProvince.LatentTradeGood.TotalProvinces--;
+                        GlobalVariables.ClickedProvince.LatentTradeGood.TotalDev -= GlobalVariables.ClickedProvince.Tax + GlobalVariables.ClickedProvince.Production + GlobalVariables.ClickedProvince.Manpower;
                     }
-                    MapManagement.UpdateMap(GlobalVariables.ClickedProvince, MapManagement.UpdateMapOptions.TradeGood);
-                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeGood)
-                        UpdateMap();
-                    GlobalVariables.ChangedSomething = true;
-                    //if (!GlobalVariables.ToUpdate.Contains(GlobalVariables.ClickedProvince))
-                    //GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
-                    RefreshTradeGoodsTab();
-                
+                    GlobalVariables.ClickedProvince.LatentTradeGood = GlobalVariables.TradeGoods.Find(x => x.ReadableName == (string)LatentTradeGoodBox.SelectedItem);
+                    if (GlobalVariables.ClickedProvince.LatentTradeGood != null)
+                    {
+                        GlobalVariables.ClickedProvince.LatentTradeGood.TotalProvinces++;
+                        GlobalVariables.ClickedProvince.LatentTradeGood.TotalDev += GlobalVariables.ClickedProvince.Tax + GlobalVariables.ClickedProvince.Production + GlobalVariables.ClickedProvince.Manpower;
+                    }
+                }
+                MapManagement.UpdateMap(GlobalVariables.ClickedProvince, MapManagement.UpdateMapOptions.TradeGood);
+                if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeGood)
+                    UpdateMap();
+                GlobalVariables.ChangedSomething = true;
+                //if (!GlobalVariables.ToUpdate.Contains(GlobalVariables.ClickedProvince))
+                //GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
+                RefreshTradeGoodsTab();
+
             }
         }
-
-        public void RefreshTradeGoodsTab()
-        {
-            foreach (GroupBox gb in TradeGoodsInfoPanel.Controls)
-            {
-                TradeGood tg = ((TradeGood)gb.Tag);
-                gb.Controls[1].Text = "Provinces:" + tg.TotalProvinces;
-                gb.Controls[2].Text = "Share: " + RoundUp(((double)tg.TotalProvinces / GlobalVariables.TotalUsableProvinces), 2) * 100 + "%";
-                if (tg.TotalProvinces > 0)
-                    gb.Controls[3].Text = "Avg. Dev: " + RoundUp(((double)tg.TotalDev / tg.TotalProvinces), 1);
-                else
-                    gb.Controls[3].Text = "Avg. Dev: 0";
-            }
-        }
-
-        public double RoundUp(double value, int places)
-        {
-            value *= Math.Pow(10, places);
-            value = (int)value;
-            value /= Math.Pow(10, places);
-            return value;
-        }
-
-        public void ShowMessageBox(string text, string title = "Info")
-        {
-            MessageBox.Show(text, title);
-        }
-
         private void AreaBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!GlobalVariables.InternalChanges)
@@ -1836,90 +2487,6 @@ namespace Eu4ModEditor
             }
             AreaNameChangeBox.Text = AreaBox.Text;
         }
-
-        private void ShowHideSeaTilesAreaMapmode_Click(object sender, EventArgs e)
-        {
-            GlobalVariables.ShowSeaTilesAreaMapmode = !GlobalVariables.ShowSeaTilesAreaMapmode;
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Continent);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
-            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Superregion)
-                UpdateMap();
-        }
-
-        private void AreaNameChangeSave_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.Areas.Any(x => x.Name == AreaNameChangeBox.Text))
-                AreaNameChangeBox.Text = AreaBox.Text;
-            else
-            {
-                GlobalVariables.Areas[AreaBox.SelectedIndex - 1].Name = AreaNameChangeBox.Text;
-                AreaBox.Items[AreaBox.SelectedIndex] = AreaNameChangeBox.Text;
-            }
-        }
-
-        private void SaveAreaFile_Click(object sender, EventArgs e)
-        {
-            //TODO
-            //Save on ReadOnly
-            if (GlobalVariables.ReadOnly[9])
-                return;
-            NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\area.txt");
-            List<Node> newNodes = new List<Node>();
-            foreach (Area a in GlobalVariables.Areas)
-            {
-                Node n = nf.MainNode.Nodes.Find(x => x.Name == a.Name);
-                if (n != null)
-                {
-                    n.PureValues.Clear();
-                    foreach (Province p in a.Provinces)
-                        n.AddPureValue(p.ID.ToString());
-                }
-                else
-                {
-                    n = new Node(a.Name);
-                    foreach (Province p in a.Provinces)
-                        n.AddPureValue(p.ID.ToString());
-                }
-                newNodes.Add(n);
-            }
-            nf.MainNode.Nodes.Clear();
-            nf.MainNode.Nodes.AddRange(newNodes);
-            nf.SaveFile(GlobalVariables.pathtomod + "map\\area.txt");
-        }
-
-        private void AddNewArea_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.Areas.Any(x => x.Name == AddNewAreaBox.Text))
-                AddNewAreaBox.Text = "Already taken!";
-            else
-            {
-                Area a = new Area(AddNewAreaBox.Text);
-                AreaBox.Items.Add(a.Name);
-
-                if (GlobalVariables.ClickedProvinces.Any())
-                {
-                    int index = AreaBox.Items.Count - 2;
-                    foreach (Province p in GlobalVariables.ClickedProvinces)
-                    {
-                        if (p.Area != null)
-                            p.Area.Provinces.Remove(p);
-                        p.Area = GlobalVariables.Areas[index];
-                        GlobalVariables.Areas[index].Provinces.Add(p);
-                        //if (!GlobalVariables.ToUpdate.Contains(p))
-                        // GlobalVariables.ToUpdate.Add(p);
-                    }
-                    MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Area);
-                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area)
-                        UpdateMap();
-                    //Saving.SaveThingsToUpdate();
-                }
-
-                AddNewAreaBox.Text = "";
-            }
-        }
-
         private void RegionBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (!GlobalVariables.InternalChanges)
@@ -1929,108 +2496,6 @@ namespace Eu4ModEditor
             }
             RegionNameChangeBox.Text = RegionBox.Text;
         }
-
-        private void RegionNameChangeSave_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.Regions.Any(x => x.Name == RegionNameChangeBox.Text))
-                RegionNameChangeBox.Text = RegionBox.Text;
-            else
-            {
-                GlobalVariables.Regions[RegionBox.SelectedIndex - 1].Name = RegionNameChangeBox.Text;
-                RegionBox.Items[RegionBox.SelectedIndex] = RegionNameChangeBox.Text;
-            }
-        }
-
-        private void AddNewRegion_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.Regions.Any(x => x.Name == AddNewRegionBox.Text))
-                AddNewRegionBox.Text = "Already taken!";
-            else
-            {
-                Region a = new Region(AddNewRegionBox.Text);
-                RegionBox.Items.Add(a.Name);
-                List<Province> provincestoupdate = new List<Province>();
-                if (GlobalVariables.ClickedProvinces.Any())
-                {
-                    int index = RegionBox.Items.Count - 2;
-                    foreach (Province p in GlobalVariables.ClickedProvinces)
-                    {
-                        if (p.Area != null)
-                        {
-                            provincestoupdate.AddRange(p.Area.Provinces);
-                            if (p.Area.Region != null)
-                            {
-                                p.Area.Region.Areas.Remove(p.Area);
-
-                            }
-                            p.Area.Region = GlobalVariables.Regions[index];
-                            GlobalVariables.Regions[index].Areas.Add(p.Area);
-                        }
-                    }
-                    provincestoupdate = provincestoupdate.Distinct().ToList();
-                    MapManagement.UpdateMap(provincestoupdate, MapManagement.UpdateMapOptions.Region);
-                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region)
-                        UpdateMap();
-                    //Saving.SaveThingsToUpdate();
-                }
-
-                AddNewRegionBox.Text = "";
-            }
-        }
-
-        private void SaveRegionFile_Click(object sender, EventArgs e)
-        {
-
-            //TODO 
-            //Save on Read Only
-            if (GlobalVariables.ReadOnly[11])
-                return;
-            NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\region.txt");
-            List<Node> newNodes = new List<Node>();
-            foreach (Region r in GlobalVariables.Regions)
-            {
-                Node n = nf.MainNode.Nodes.Find(x => x.Name == r.Name);
-
-                if (n != null)
-                {
-                    Node purevaluesnode = n.Nodes.Find(x => x.Name == "areas");
-                    if (purevaluesnode != null)
-                    {
-                        purevaluesnode.PureValues.Clear();
-                        foreach (Area a in r.Areas)
-                            purevaluesnode.AddPureValue(a.Name);
-                    }
-                    else
-                    {
-                        purevaluesnode = new Node("areas", n);
-                        n.Nodes.Add(purevaluesnode);
-                        foreach (Area a in r.Areas)
-                            purevaluesnode.AddPureValue(a.Name);
-                    }
-                }
-                else
-                {
-                    n = new Node(r.Name);
-                    Node purevaluesnode = new Node("areas", n);
-                    n.Nodes.Add(purevaluesnode);
-                    foreach (Area a in r.Areas)
-                        purevaluesnode.AddPureValue(a.Name);
-                }
-                newNodes.Add(n);
-            }
-            nf.MainNode.Nodes.Clear();
-            nf.MainNode.Nodes.AddRange(newNodes);
-            nf.SaveFile(GlobalVariables.pathtomod + "map\\region.txt");
-        }
-
-        private void OpenWordCreator_Click(object sender, EventArgs e)
-        {
-            //TODO
-            //Make this engine better
-            LanguageWindow lw = new LanguageWindow();
-            lw.Show();
-        }
-
         private void ProvinceTradeNodeBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (GlobalVariables.MultiProvinceMode)
@@ -2086,53 +2551,6 @@ namespace Eu4ModEditor
                     UpdateMap();
             }
         }
-
-        private void AddNewTradeNodeButton_Click(object sender, EventArgs e)
-        {
-            if (TradeNodeNameBox.Text == "" || TradeNodeNameBox.Text == " ")
-                return;
-            if (TradeNodeColorButton.BackColor == Color.Transparent)
-                return;
-            if (GlobalVariables.TradeNodes.Any(x => x.Name == TradeNodeNameBox.Text))
-                return;
-
-            Tradenode tn = new Tradenode();
-            tn.Name = TradeNodeNameBox.Text.ToLower().Replace(' ', '_');
-            tn.Color = TradeNodeColorButton.BackColor;
-            GlobalVariables.TradeNodes.Add(tn);
-            TradeNodeBox.Items.Add(tn.Name);
-            ProvinceTradeNodeBox.Items.Add(tn.Name);
-
-            if (GlobalVariables.ClickedProvince != null)
-            {
-                if (GlobalVariables.ClickedProvince.TradeNode != null)
-                    GlobalVariables.ClickedProvince.TradeNode.Provinces.Remove(GlobalVariables.ClickedProvince);
-
-
-                tn.Provinces.Add(GlobalVariables.ClickedProvince);
-                GlobalVariables.ClickedProvince.TradeNode = tn;
-                tn.Location = GlobalVariables.ClickedProvince;
-            }
-            else if (GlobalVariables.ClickedProvinces.Any())
-            {
-                foreach (Province p in GlobalVariables.ClickedProvinces)
-                {
-                    if (p.TradeNode != null)
-                        p.TradeNode.Provinces.Remove(p);
-                    tn.Provinces.Add(p);
-                    p.TradeNode = tn;
-                }
-            }
-
-            TradeNodeNameBox.Text = "";
-            TradeNodeColorButton.BackColor = Color.Transparent;
-            TradeNodeBox.SelectedIndex = TradeNodeBox.Items.Count - 1;
-
-            MapManagement.UpdateMap(tn.Provinces, MapManagement.UpdateMapOptions.TradeNode);
-            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
-                UpdateMap();
-        }
-
         private void TradeNodeBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (TradeNodeBox.SelectedIndex != 0)
@@ -2182,267 +2600,12 @@ namespace Eu4ModEditor
                 TradeNodeProvincesBox.Text = "";
             }
         }
-
-        public void TradeNodeClick(object sender, MouseEventArgs e)
-        {
-            if (TradeNodeBox.SelectedIndex == 0)
-                return;
-            Label l = (Label)sender;
-            Tradenode tn = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1];
-            if (e.Button == MouseButtons.Left)
-            {
-                TradeNodeBox.SelectedIndex = int.Parse(l.Tag.ToString()) + 1;
-            }
-            else if (e.Button == MouseButtons.Right)
-            {
-                tn.Destination.RemoveAll(x => x.TradeNode == GlobalVariables.TradeNodes[int.Parse(l.Tag.ToString())]);
-                GlobalVariables.TradeNodes[int.Parse(l.Tag.ToString())].Incoming.Remove(tn);
-                TradeNodeDestinationsBox.Controls.Remove(l);
-                AddTradeNodeDestinationBox.Items.Clear();
-                foreach (Tradenode tr in GlobalVariables.TradeNodes)
-                {
-                    if (!tn.Destination.Any(x => x.TradeNode == tr) && tn != tr && !tn.Incoming.Contains(tr))
-                        AddTradeNodeDestinationBox.Items.Add(tr.Name);
-                }
-            }
-        }
-
-        private void TradeNodeNameSaveButton_Click(object sender, EventArgs e)
-        {
-            if (TradeNodeBox.SelectedIndex == 0)
-                return;
-            if (ChangeTradeNodeNameBox.Text == "" || ChangeTradeNodeNameBox.Text == " ")
-            {
-                ChangeTradeNodeNameBox.Text = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Name;
-                return;
-            }
-            if (GlobalVariables.TradeNodes.Any(x => x.Name == ChangeTradeNodeNameBox.Text))
-            {
-                ChangeTradeNodeNameBox.Text = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Name;
-                return;
-            }
-            GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Name = ChangeTradeNodeNameBox.Text.ToLower().Replace(' ', '_');
-            TradeNodeBox.Items[TradeNodeBox.SelectedIndex] = ChangeTradeNodeNameBox.Text.ToLower().Replace(' ', '_');
-            ProvinceTradeNodeBox.Items[TradeNodeBox.SelectedIndex] = ChangeTradeNodeNameBox.Text.ToLower().Replace(' ', '_');
-        }
-
-        public void AddTradeDestination(Tradenode start, Tradenode end)
-        {
-
-            if (start.Incoming.Contains(end))
-                return;
-            if (end.Incoming.Contains(start))
-                return;
-
-            Label tnl = new Label();
-            tnl.Text = end.Name;
-            tnl.MouseClick += TradeNodeClick;
-            TradeNodeDestinationsBox.Controls.Add(tnl);
-            tnl.Tag = GlobalVariables.TradeNodes.IndexOf(end);
-            tnl.BackColor = Color.DarkGray;
-            tnl.ForeColor = Color.White;
-            tnl.TextAlign = ContentAlignment.MiddleCenter;
-            tnl.AutoSize = true;
-            start.Destination.Add(new Destination() { TradeNode = end });
-            end.Incoming.Add(start);
-            AddTradeNodeDestinationBox.Items.Clear();
-            foreach (Tradenode tnn in GlobalVariables.TradeNodes)
-            {
-                if (!start.Destination.Any(x => x.TradeNode == tnn) && start != tnn)
-                    AddTradeNodeDestinationBox.Items.Add(tnn.Name);
-            }
-        }
-
-        private void AddTradeNodeDestinationButton_Click(object sender, EventArgs e)
-        {
-            if (TradeNodeBox.SelectedIndex == 0)
-                return;
-            Tradenode tn = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1];
-            Tradenode tr = GlobalVariables.TradeNodes.Find(x => x.Name == AddTradeNodeDestinationBox.SelectedItem.ToString());
-            AddTradeDestination(tn, tr);
-        }
-
-        private void ChangeTradeNodeRandomColorButton_Click(object sender, EventArgs e)
-        {
-            if (TradeNodeBox.SelectedIndex == 0)
-                return;
-            ChangeTradeNodeColorButton.BackColor = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
-            GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Color = ChangeTradeNodeColorButton.BackColor;
-            MapManagement.UpdateMap(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeNode);
-            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
-                UpdateMap();
-        }
-
-        private void ChangeTradeNodeColorButton_Click(object sender, EventArgs e)
-        {
-            if (TradeNodeBox.SelectedIndex == 0)
-                return;
-            ColorDialog cd = new ColorDialog();
-            if (cd.ShowDialog() == DialogResult.OK)
-            {
-                GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Color = cd.Color;
-                ChangeTradeNodeColorButton.BackColor = cd.Color;
-                MapManagement.UpdateMap(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeNode);
-                if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
-                    UpdateMap();
-            }
-        }
-
         private void TradeNodeInlandCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             if (TradeNodeBox.SelectedIndex == 0)
                 return;
             GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Inland = TradeNodeInlandCheckbox.Checked;
         }
-
-        private void TradeNodeLocationSetAsCliecked_Click(object sender, EventArgs e)
-        {
-            if (TradeNodeBox.SelectedIndex == 0)
-                return;
-            if (GlobalVariables.ClickedProvince != null)
-                TradeNodeProvinceLocationBox.Text = GlobalVariables.ClickedProvince.ID + "";
-        }
-
-        private void TradeNodeLocationSave_Click(object sender, EventArgs e)
-        {
-            if (TradeNodeBox.SelectedIndex == 0)
-                return;
-            int n = 0;
-            if (!int.TryParse(TradeNodeProvinceLocationBox.Text, out n))
-            {
-                if (GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location != null)
-                    TradeNodeProvinceLocationBox.Text = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location.ID + "";
-                return;
-            }
-            GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location = GlobalVariables.Provinces[n - 1];
-            MapManagement.UpdateMap(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeNode);
-            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
-                UpdateMap();
-        }
-
-        private void TradeNodeSelectAllProvinces_Click(object sender, EventArgs e)
-        {
-            if (TradeNodeBox.SelectedIndex == 0)
-                return;
-
-            AddToClickedProvinces(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces);
-        }
-
-        private void RemoveTradeNodeButton_Click(object sender, EventArgs e)
-        {
-            if (TradeNodeBox.SelectedIndex == 0)
-                return;
-            Tradenode tn = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1];
-            GlobalVariables.TradeNodes.Remove(tn);
-            List<Province> toup = new List<Province>();
-            toup.AddRange(tn.Provinces);
-            foreach (Province p in tn.Provinces)
-                p.TradeNode = null;
-            foreach (Destination ds in tn.Destination)
-                ds.TradeNode.Incoming.Remove(tn);
-            foreach (Tradenode tr in GlobalVariables.TradeNodes)
-                tr.Destination.RemoveAll(x => x.TradeNode == tn);
-            MapManagement.UpdateMap(toup, MapManagement.UpdateMapOptions.TradeNode);
-            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
-                UpdateMap();
-            TradeNodeBox.Items.Remove(tn.Name);
-            ProvinceTradeNodeBox.Items.Remove(tn.Name);
-            TradeNodeBox.SelectedIndex = 0;
-
-        }
-
-        private void TradeNodeColorButton_Click(object sender, EventArgs e)
-        {
-            ColorDialog cd = new ColorDialog();
-            if (cd.ShowDialog() == DialogResult.OK)
-            {
-                TradeNodeColorButton.BackColor = cd.Color;
-            }
-        }
-
-        private void TradeNodeRandomColorButton_Click(object sender, EventArgs e)
-        {
-            TradeNodeColorButton.BackColor = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
-        }
-
-        private void SaveTradeNodeFile_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.ReadOnly[12])
-                return;
-            NodeFile nf = new NodeFile();
-            List<Tradenode> left = new List<Tradenode>();
-            left.AddRange(GlobalVariables.TradeNodes);
-            List<Tradenode> done = new List<Tradenode>();
-            do
-            {
-                foreach (Tradenode tn in left)
-                {
-                    if (tn.Incoming.Any(x => !done.Contains(x)))
-                        continue;
-                    Node n = new Node(tn.Name);
-                    if (tn.Location != null)
-                        n.Variables.Add(new Variable("location", tn.Location.ID + ""));
-                    else if (tn.Provinces.Any())
-                        n.Variables.Add(new Variable("location", tn.Provinces[0].ID + ""));
-                    if (tn.Inland)
-                        n.Variables.Add(new Variable("inland", "yes"));
-                    if (!tn.Destination.Any())
-                        n.Variables.Add(new Variable("end", "yes"));
-                    Node cl = new Node("color");
-                    cl.PureValues = new List<PureValue>() { new PureValue(tn.Color.R + "" ), new PureValue(tn.Color.G + ""), new PureValue(tn.Color.B + "") };
-                    n.Nodes.Add(cl);
-                    foreach (Destination ds in tn.Destination)
-                    {
-                        Node des = new Node("outgoing");
-                        des.Variables.Add(new Variable("name", "\"" + ds.TradeNode.Name + "\""));
-                        Node path = new Node("path");
-                        foreach (string s in ds.Path)
-                            path.AddPureValue(s);                   
-                        des.Nodes.Add(path);
-                        Node control = new Node("control");
-                        foreach (string s in ds.Control)
-                            control.AddPureValue(s);
-                        des.Nodes.Add(control);
-                        n.Nodes.Add(des);
-                    }
-                    Node members = new Node("members");
-                    tn.Provinces.ForEach(x => members.AddPureValue(x.ID + ""));
-                    n.Nodes.Add(members);
-                    nf.MainNode.Nodes.Add(n);
-                    done.Add(tn);
-                }
-                left.RemoveAll(x => done.Contains(x));
-            } while (left.Any());
-            nf.SaveFile(GlobalVariables.pathtomod + "common\\tradenodes\\00_tradenodes.txt");
-        }
-
-        private void AddTradeNodeDestClickButton_Click(object sender, EventArgs e)
-        {
-            GlobalVariables.TradeDestClickingMode = true;
-        }
-
-        private void AddToHREButton_Click(object sender, EventArgs e)
-        {
-            ChangeProvinceInfo(ChangeProvinceMode.HRE, true);
-        }
-
-        private void RemoveFromHREButton_Click(object sender, EventArgs e)
-        {
-            ChangeProvinceInfo(ChangeProvinceMode.HRE, false);
-        }
-
-
-
-        private void AddFortButton_Click(object sender, EventArgs e)
-        {
-            ChangeProvinceInfo(ChangeProvinceMode.Fort, true);
-        }
-
-        private void RemoveFortButton_Click(object sender, EventArgs e)
-        {
-            ChangeProvinceInfo(ChangeProvinceMode.Fort, false);
-        }
-
         private void ContinentBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (GlobalVariables.MultiProvinceMode)
@@ -2504,464 +2667,654 @@ namespace Eu4ModEditor
             }
             ContinentNameChangeBox.Text = ContinentBox.Text;
         }
-
-        private void ContinentNameChangeSave_Click(object sender, EventArgs e)
+        private void TradeCompanyBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (GlobalVariables.Continents.Any(x => x.Name == ContinentNameChangeBox.Text))
-                ContinentNameChangeBox.Text = ContinentBox.Text;
-            else
+            if (GlobalVariables.MultiProvinceMode)
             {
-                GlobalVariables.Continents[ContinentBox.SelectedIndex - 1].Name = ContinentNameChangeBox.Text;
-                ContinentBox.Items[ContinentBox.SelectedIndex] = ContinentNameChangeBox.Text;
-            }
-        }
-
-        private void SaveContinentFile_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.ReadOnly[13])
-                return;
-            NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\continent.txt");
-            List<Node> newNodes = new List<Node>();
-            foreach (Continent c in GlobalVariables.Continents)
-            {
-                Node n = nf.MainNode.Nodes.Find(x => x.Name == c.Name);
-                if (n != null)
-                {
-                    n.PureValues.Clear();
-                    foreach (Province p in c.Provinces)
-                        n.AddPureValue(p.ID.ToString());
-                }
-                else
-                {
-                    n = new Node(c.Name);
-                    foreach (Province p in c.Provinces)
-                        n.AddPureValue(p.ID.ToString());
-                }
-                newNodes.Add(n);
-            }
-            nf.MainNode.Nodes.Clear();
-            nf.MainNode.Nodes.AddRange(newNodes);
-            nf.SaveFile(GlobalVariables.pathtomod + "map\\continent.txt");
-        }
-
-        private void AddNewContinent_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.Continents.Any(x => x.Name == AddNewContinentBox.Text))
-                AddNewContinentBox.Text = "Already taken!";
-            else
-            {
-                Continent c = new Continent(AddNewContinentBox.Text);
-                ContinentBox.Items.Add(c.Name);
-
                 if (GlobalVariables.ClickedProvinces.Any())
                 {
-                    int index = ContinentBox.Items.Count - 2;
+                    int index = TradeCompanyBox.SelectedIndex - 1;
+
                     foreach (Province p in GlobalVariables.ClickedProvinces)
                     {
-                        if (p.Continent != null)
-                            p.Continent.Provinces.Remove(p);
-                        p.Continent = GlobalVariables.Continents[index];
-                        GlobalVariables.Continents[index].Provinces.Add(p);
-                        if (!GlobalVariables.ToUpdate.Contains(p))
-                            GlobalVariables.ToUpdate.Add(p);
-                    }
-                    MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Continent);
-                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent)
-                        UpdateMap();
-                    // Saving.SaveThingsToUpdate();
-                }
-
-                AddNewContinentBox.Text = "";
-            }
-        }
-
-        private void AddCoreButton_Click(object sender, EventArgs e)
-        {
-            int index = AddCoreBox.SelectedIndex;
-            Country c = GlobalVariables.Countries[index];
-            ChangeProvinceInfo(ChangeProvinceMode.Core, c.Tag);
-            UpdateCoresPanel();
-        }
-
-        private void AddOwnerCoreButton_Click(object sender, EventArgs e)
-        {
-            ChangeProvinceInfo(ChangeProvinceMode.CoreOwner, null);
-            UpdateCoresPanel();
-        }
-
-        public void UpdateCoresPanel()
-        {
-            CoresPanel.Controls.Clear();
-            if (GlobalVariables.ClickedProvince != null)
-            {
-                foreach (string core in GlobalVariables.ClickedProvince.GetCores())
-                {
-                    Label corel = new Label();
-                    corel.Text = core;
-                    corel.MouseClick += CoreClick;
-                    CoresPanel.Controls.Add(corel);
-                    corel.Tag = core;
-                    corel.BackColor = Color.DarkGray;
-                    corel.ForeColor = Color.White;
-                    corel.TextAlign = ContentAlignment.MiddleCenter;
-                    corel.AutoSize = true;
-                }
-                foreach (string claim in GlobalVariables.ClickedProvince.GetClaims())
-                {
-                    Label claiml = new Label();
-                    claiml.Text = claim;
-                    claiml.MouseClick += ClaimClick;
-                    CoresPanel.Controls.Add(claiml);
-                    claiml.Tag = claim;
-                    claiml.BackColor = Color.Goldenrod;
-                    claiml.ForeColor = Color.Black;
-                    claiml.TextAlign = ContentAlignment.MiddleCenter;
-                    claiml.AutoSize = true;
-                }
-
-            }
-            else if (GlobalVariables.ClickedProvinces.Any())
-            {
-                List<string> added = new List<string>() { };
-
-                foreach (Province p in GlobalVariables.ClickedProvinces)
-                {
-                    foreach (string core in p.GetCores())
-                    {
-                        if (!added.Contains(core))
+                        if (p.TradeCompany != null)
                         {
-                            added.Add(core);
-                            Label corel = new Label();
-                            corel.Text = core;
-                            corel.MouseClick += CoreClick;
-                            CoresPanel.Controls.Add(corel);
-                            corel.Tag = core;
-                            corel.BackColor = Color.DarkGray;
-                            corel.ForeColor = Color.White;
-                            corel.TextAlign = ContentAlignment.MiddleCenter;
-                            corel.AutoSize = true;
+                            p.TradeCompany.Provinces.Remove(p);
+                            p.TradeCompany.MadeChanges = true;
                         }
+                        if (index == -1)
+                        {
+                            p.TradeCompany = null;
+                        }
+                        else
+                        {
+                            p.TradeCompany = GlobalVariables.TradeCompanies[index];
+                            p.TradeCompany.MadeChanges = true;
+                            GlobalVariables.TradeCompanies[index].Provinces.Add(p);
+                        }
+                        //if (!GlobalVariables.ToUpdate.Contains(p))
+                        //GlobalVariables.ToUpdate.Add(p);
                     }
-                    foreach (string claim in p.GetClaims())
+                    MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.TradeCompany);
+                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeCompany)
+                        UpdateMap();
+                    //Saving.SaveThingsToUpdate();
+                }
+            }
+            else
+            {
+                if (!GlobalVariables.InternalChanges)
+                {
+                    if (GlobalVariables.ClickedProvince != null)
                     {
-                        Label claiml = new Label();
-                        claiml.Text = claim;
-                        claiml.MouseClick += ClaimClick;
-                        CoresPanel.Controls.Add(claiml);
-                        claiml.Tag = claim;
-                        claiml.BackColor = Color.Goldenrod;
-                        claiml.ForeColor = Color.Black;
-                        claiml.TextAlign = ContentAlignment.MiddleCenter;
-                        claiml.AutoSize = true;
+                        if (GlobalVariables.ClickedProvince.TradeCompany != null)
+                        {
+                            GlobalVariables.ClickedProvince.TradeCompany.Provinces.Remove(GlobalVariables.ClickedProvince);
+                            GlobalVariables.ClickedProvince.TradeCompany.MadeChanges = true;
+                        }
+
+                        if (TradeCompanyBox.SelectedIndex == 0)
+                        {
+                            GlobalVariables.ClickedProvince.TradeCompany = null;
+                        }
+                        else
+                        {
+                            GlobalVariables.ClickedProvince.TradeCompany = GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1];
+                            GlobalVariables.ClickedProvince.TradeCompany.MadeChanges = true;
+                            GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1].Provinces.Add(GlobalVariables.ClickedProvince);
+                        }
+
+                        MapManagement.UpdateMap(GlobalVariables.ClickedProvince, MapManagement.UpdateMapOptions.TradeCompany);
                     }
+                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeCompany)
+                        UpdateMap();
+                    //if (!GlobalVariables.ToUpdate.Contains(GlobalVariables.ClickedProvince))
+                    //GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
                 }
             }
+            TradeCompanyNameChangeBox.Text = TradeCompanyBox.Text;
+            if (TradeCompanyBox.SelectedIndex != 0)
+                TradeCompanyColorButton.BackColor = GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1].Color;
         }
-
-        public void CoreClick(object sender, MouseEventArgs e)
+        private void ControllerBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Label l = sender as Label;
-            if (e.Button == MouseButtons.Right)
-            {
-                ChangeProvinceInfo(ChangeProvinceMode.Core, l.Tag, true);
-            }
-            //if (!GlobalVariables.ToUpdate.Contains(GlobalVariables.ClickedProvince))
-            //GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
-            //Saving.SaveThingsToUpdate();
-            UpdateCoresPanel();
+            if (!GlobalVariables.InternalChanges)
+                ChangeProvinceInfo(ChangeProvinceMode.Controller, ControllerBox.SelectedItem);
+
         }
-
-        public void ClaimClick(object sender, MouseEventArgs e)
-        {
-            Label l = sender as Label;
-            if (e.Button == MouseButtons.Right)
-            {
-                ChangeProvinceInfo(ChangeProvinceMode.Claim, l.Tag, true);
-            }
-            UpdateCoresPanel();
-        }
-
-
-
-        private void AddCenterOfTrade_Click(object sender, EventArgs e)
-        {
-            ChangeProvinceInfo(ChangeProvinceMode.CoT, 1);
-        }
-
-        private void RemoveCenterOfTrade_Click(object sender, EventArgs e)
-        {
-            ChangeProvinceInfo(ChangeProvinceMode.CoT, 0);
-        }
-
-        private void RandomIdeaBoxButton_Click(object sender, EventArgs e)
-        {
-            RandomIdeaBox rib = new RandomIdeaBox();
-            rib.Show();
-        }
-
-        public void MergeChanges()
-        {
-            List<VariableChange> newList = new List<VariableChange>();
-            foreach (VariableChange change in GlobalVariables.Changes)
-            {
-                if (change.VariableName == "Core" || change.VariableName == "DiscoveredBy" || change.VariableName == "Buildings" || change.VariableName == "Claims")
-                {
-                    newList.Add(change);
-                    continue;
-                }
-                VariableChange nv = newList.Find(x => x.Object == change.Object && x.VariableName == change.VariableName);
-                if (nv != null)
-                {
-                    nv.CurrentValue = change.CurrentValue;
-                }
-                else
-                    newList.Add(change);
-            }
-            GlobalVariables.Changes.Clear();
-            GlobalVariables.Changes.AddRange(newList);
-        }
-
-      
-
-        public void KeepAndSave(object sender, EventArgs e)
-        {
-            int index = (int)(sender as Control).Tag;
-            if (!GlobalVariables.Saves.Contains(GlobalVariables.Changes[index].Object))
-                GlobalVariables.Saves.Add(GlobalVariables.Changes[index].Object);
-            GlobalVariables.Changes.RemoveAt((int)(sender as Control).Tag);
-            UpdateChangesTab();
-            UpdateSavesTab();
-        }
-
-        public void Revert(object sender, EventArgs e)
-        {
-            VariableChange vc = GlobalVariables.Changes[(int)(sender as Control).Tag];
-            if (vc.Object is Province)
-            {
-                if (vc.VariableName != "Core" && vc.VariableName != "DiscoveredBy" && vc.VariableName != "Buildings" && vc.VariableName != "Claims")
-                    (vc.Object as Province).Variables[vc.VariableName] = vc.PreviousValue;
-                else if (vc.VariableName == "Core")
-                {
-                    if (vc.PreviousValue == null)
-                        ((vc.Object as Province).Variables["Cores"] as List<string>).Remove(vc.CurrentValue.ToString());
-                    else if (vc.CurrentValue == null)
-                        ((vc.Object as Province).Variables["Cores"] as List<string>).Add(vc.PreviousValue.ToString());
-                }
-                else if (vc.VariableName == "DiscoveredBy")
-                {
-                    if (vc.PreviousValue == null)
-                        ((vc.Object as Province).Variables["DiscoveredBy"] as List<string>).Remove(vc.CurrentValue.ToString());
-                    else if (vc.CurrentValue == null)
-                        ((vc.Object as Province).Variables["DiscoveredBy"] as List<string>).Add(vc.PreviousValue.ToString());
-                }
-                else if (vc.VariableName == "Buildings")
-                {
-                    if (vc.PreviousValue == null)
-                        ((vc.Object as Province).Variables["Buildings"] as List<Building>).Remove(vc.CurrentValue as Building);
-                    else if (vc.CurrentValue == null)
-                        ((vc.Object as Province).Variables["Buildings"] as List<Building>).Add(vc.PreviousValue as Building);
-                }
-                else if (vc.VariableName == "Claims")
-                {
-                    if (vc.PreviousValue == null)
-                        ((vc.Object as Province).Variables["Claims"] as List<string>).Remove(vc.CurrentValue.ToString());
-                    else if (vc.CurrentValue == null)
-                        ((vc.Object as Province).Variables["Claims"] as List<string>).Add(vc.PreviousValue.ToString());
-                }
-
-            }
-            else if (vc.Object is Country)
-            {
-                (vc.Object as Country).Variables[vc.VariableName] = vc.PreviousValue;
-            }
-            GlobalVariables.Changes.Remove(vc);
-            UpdateChangesTab();
-            UpdateSavesTab();
-        }
-        private void RefreshChanges_Click(object sender, EventArgs e)
-        {
-            UpdateChangesTab();
-        }
-
-        private void SaveAllChangesButton_Click(object sender, EventArgs e)
-        {
-            MergeChanges();
-            foreach (VariableChange vc in GlobalVariables.Changes)
-            {
-                if (!GlobalVariables.Saves.Contains(vc.Object))
-                    GlobalVariables.Saves.Add(vc.Object);
-            }
-            GlobalVariables.Changes.Clear();
-            UpdateChangesTab();
-            UpdateSavesTab();
-        }
-
-        private void RevertAllChangesButton_Click(object sender, EventArgs e)
-        {
-            MergeChanges();
-            foreach (VariableChange vc in GlobalVariables.Changes)
-            {
-                if (vc.Object is Province)
-                {
-                    (vc.Object as Province).Variables[vc.VariableName] = vc.PreviousValue;
-                }
-                else if (vc.Object is Country)
-                {
-                    (vc.Object as Country).Variables[vc.VariableName] = vc.PreviousValue;
-                }
-                GlobalVariables.Changes.Remove(vc);
-            }
-            UpdateChangesTab();
-            UpdateSavesTab();
-        }
-
-        public void UpdateSavesTab()
-        {
-            SaveFilesPanel.Controls.Clear();
-
-            int count = 0;
-            foreach (object obj in GlobalVariables.Saves)
-            {
-                if (count == 30)
-                    break;
-                count++;
-                string name = "";
-                string path = "";
-                string path2 = "";
-                if (obj is Province)
-                {
-                    Province p = obj as Province;
-                    name = "Province " + p.ID;
-                    path = p.HistoryFile;
-                }
-                else if (obj is Country)
-                {
-                    Country c = obj as Country;
-                    name = "Country " + c.Tag;
-                    path = c.HistoryFile;
-                    path2 = c.CommonFile;
-                }
-
-                GroupBox gb = new GroupBox();
-                gb.Text = name;
-                gb.Size = new Size(507, 37);
-                SaveFilesPanel.Controls.Add(gb);
-
-                Label pathl = new Label();
-                pathl.AutoSize = true;
-                pathl.Location = new Point(8, 16);
-                pathl.Text = "Path: " + path.Replace(GlobalVariables.pathtomod, "");
-                pathl.Click += OpenFile;
-                pathl.Tag = path;
-                gb.Controls.Add(pathl);
-
-                if (path2 != "" && false)
-                {
-                    Label pathl2 = new Label();
-                    pathl2.AutoSize = true;
-                    pathl2.Location = new Point(140, 16);
-                    pathl2.Text = "Path: " + path2.Replace(GlobalVariables.pathtomod, "");
-                    pathl2.Click += OpenFile;
-                    pathl2.Tag = path2;
-                    gb.Controls.Add(pathl2);
-                }
-
-                Button save = new Button();
-                save.Location = new Point(303, 10);
-                save.Text = "Save";
-                save.Size = new Size(75, 23);
-                save.Tag = GlobalVariables.Saves.IndexOf(obj);
-                save.Click += SaveFile;
-                gb.Controls.Add(save);
-
-                Button load = new Button();
-                load.Location = new Point(384, 10);
-                load.Text = "Load again";
-                load.Size = new Size(115, 23);
-                load.Tag = GlobalVariables.Saves.IndexOf(obj);
-                load.Click += LoadFileAgain;
-                gb.Controls.Add(load);
-
-
-            }
-        }
-
-        private void RefreshSavesButton_Click(object sender, EventArgs e)
-        {
-            UpdateSavesTab();
-        }
-
-        public void OpenFile(object sender, EventArgs e)
-        {
-            Process.Start((sender as Control).Tag.ToString());
-        }
-
-        public void SaveFile(object sender, EventArgs e)
-        {
-            Saving.SaveObject(GlobalVariables.Saves[(int)(sender as Control).Tag]);
-            GlobalVariables.Saves.RemoveAt((int)(sender as Control).Tag);
-            UpdateSavesTab();
-        }
-        public void LoadFileAgain(object sender, EventArgs e)
-        {
-            Saving.LoadObject(GlobalVariables.Saves[(int)(sender as Control).Tag]);
-            UpdateSavesTab();
-        }
-
-        private void OpenProvinceFileButton_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.ClickedProvince != null)
-                Process.Start(GlobalVariables.ClickedProvince.HistoryFile);
-        }
-
-        private void ReloadProvinceFromFileButton_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.ClickedProvince != null)
-                Saving.LoadObject(GlobalVariables.ClickedProvince);
-            UpdateProvincePanel(GlobalVariables.ClickedProvince);
-        }
-
-        private void ReloadProvinceAllMapmodesButton_Click(object sender, EventArgs e)
-        {
-            MapManagement.ReloadProvince(GlobalVariables.ClickedProvince);
-        }
-
-        private void SaveAllFilesButton_Click(object sender, EventArgs e)
-        {
-            foreach (object obj in GlobalVariables.Saves)
-            {
-                Saving.SaveObject(obj);
-            }
-            GlobalVariables.Saves.Clear();
-            UpdateSavesTab();
-        }
-
-        private void LoadAllFilesAgainButton_Click(object sender, EventArgs e)
-        {
-            foreach (object obj in GlobalVariables.Saves)
-            {
-                Saving.LoadObject(obj);
-            }
-            GlobalVariables.Saves.Clear();
-            UpdateSavesTab();
-        }
-
-        private void OpenCountryHistoryFileButton_Click(object sender, EventArgs e)
+        private void GovernmentTypeBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (GlobalVariables.SelectedCountry != null)
-                Process.Start(GlobalVariables.SelectedCountry.HistoryFile);
-        }
+            {
+                if (!GlobalVariables.InternalChanges)
+                {
+                    GlobalVariables.SelectedCountry.Government = GlobalVariables.Governments.Find(x => x.Type == GovernmentTypeBox.Items[GovernmentTypeBox.SelectedIndex].ToString());
+                    GlobalVariables.SelectedCountry.GovernmentReform = GlobalVariables.SelectedCountry.Government.reforms[0];
+                }
 
-        private void AddDiscoveredByButton_Click(object sender, EventArgs e)
-        {
-            if (DiscoveredByBox.SelectedItem.ToString() != "")
-                ChangeProvinceInfo(ChangeProvinceMode.DiscoveredBy, DiscoveredByBox.SelectedItem, false);
-            UpdateDiscoveredBy();
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.DiscoveredBy);
+                GovernmentReformBox.Items.Clear();
+                foreach (string reform in GlobalVariables.SelectedCountry.Government.reforms)
+                    GovernmentReformBox.Items.Add(reform);
+
+
+            }
         }
+        private void GovernmentReformBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!GlobalVariables.InternalChanges)
+                GlobalVariables.SelectedCountry.GovernmentReform = GovernmentReformBox.SelectedItem.ToString();
+        }
+        private void GovernmentRankNumeric_ValueChanged(object sender, EventArgs e)
+        {
+            if (GlobalVariables.InternalChanges)
+                return;
+            if (GlobalVariables.SelectedCountry != null)
+            {
+                if (GlobalVariables.SelectedCountry.GovernmentRank != GovernmentRankNumeric.Value)
+                    GlobalVariables.SelectedCountry.GovernmentRank = (int)GovernmentRankNumeric.Value;
+            }
+        }
+        private void CenterOfTradeNumeric_ValueChanged(object sender, EventArgs e)
+        {
+            if (GlobalVariables.InternalChanges)
+                return;
+            ChangeProvinceInfo(ChangeProvinceMode.CoT, (int)CenterOfTradeNumeric.Value);
+
+        }
+        private void SuperregionBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!GlobalVariables.InternalChanges)
+            {
+                int index = SuperregionBox.SelectedIndex - 1;
+                ChangeProvinceInfo(ChangeProvinceMode.Superregion, index);
+            }
+            SuperregionNameChangeBox.Text = SuperregionBox.Text;
+        }
+        #endregion
+
+
+        #region Macros
+        private void MacroSelectProvincesEqualDev_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            int mode = 0;
+            if ((ModifierKeys & Keys.Shift) == Keys.Shift)
+                mode = 1;
+            else if ((ModifierKeys & Keys.Control) == Keys.Control)
+                mode = 2;
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.Tax + p.Production + p.Manpower == MacroDevNumeric.Value)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+
+            switch (mode)
+            {
+                case 0:
+                    RemoveFromClickedProvinces(GlobalVariables.ClickedProvinces.ToList());
+                    AddToClickedProvinces(ToSelect);
+                    break;
+                case 1:
+                    AddToClickedProvinces(ToSelect);
+                    break;
+                case 2:
+                    RemoveFromClickedProvinces(ToSelect);
+                    break;
+            }
+            UpdateDiscoveredBy();
+        }
+        public void PerformMacroFunc(List<Province> Select)
+        {
+            int mode = 0;
+            if ((ModifierKeys & Keys.Shift) == Keys.Shift)
+                mode = 1;
+            else if ((ModifierKeys & Keys.Control) == Keys.Control)
+                mode = 2;
+            switch (mode)
+            {
+                case 0:
+                    RemoveFromClickedProvinces(GlobalVariables.ClickedProvinces.ToList());
+                    AddToClickedProvinces(Select);
+                    break;
+                case 1:
+                    AddToClickedProvinces(Select);
+                    break;
+                case 2:
+                    RemoveFromClickedProvinces(Select);
+                    break;
+            }
+            UpdateDiscoveredBy();
+        }
+        private void MacroSameReligion_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.Religion == MacroReligionBox.SelectedItem)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroDifferentReligion_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.Religion != MacroReligionBox.SelectedItem)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroSameCountryReligion_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.OwnerCountry?.Religion == MacroReligionBox.SelectedItem)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroDifferentCountryReligion_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.OwnerCountry?.Religion != MacroReligionBox.SelectedItem && p.OwnerCountry?.Religion != null)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroSameCulture_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.Culture == MacroCultureBox.SelectedItem)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroDifferentCulture_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.Culture != MacroCultureBox.SelectedItem)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroSameCountryCulture_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.OwnerCountry?.PrimaryCulture == MacroCultureBox.SelectedItem)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroDifferentCountryCulture_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.OwnerCountry?.PrimaryCulture != MacroCultureBox.SelectedItem && p.OwnerCountry?.PrimaryCulture != null)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroWithFort_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.Fort)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroWithoutFort_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (!p.Fort)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroInsideFort_Click(object sender, EventArgs e)
+        {
+            /*List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if ()
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+            */
+        }
+        private void BorderingDebugButton_Click(object sender, EventArgs e)
+        {
+            GlobalVariables.BorderingMode = !GlobalVariables.BorderingMode;
+        }
+        private void MacroSameArea_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces)
+            {
+                if (p.Area == MacroAreaBox.SelectedItem)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroDifferentArea_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces)
+            {
+                if (p.Area != MacroAreaBox.SelectedItem)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroSameRegion_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces)
+            {
+                if (p.Area?.Region == MacroRegionBox.SelectedItem)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroDifferentRegion_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces)
+            {
+                if (p.Area?.Region != MacroRegionBox.SelectedItem && p.Area?.Region != null)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroSameSuperregion_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces)
+            {
+                if (p.Area?.Region?.Superregion == MacroSuperregionBox.SelectedItem)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroDifferentSuperregion_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces)
+            {
+                if (p.Area?.Region?.Superregion != MacroSuperregionBox.SelectedItem && p.Area?.Region?.Superregion != null)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroSameContinent_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces)
+            {
+                if (p.Continent == MacroContinentBox.SelectedItem)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroDifferentContinent_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces)
+            {
+                if (p.Continent != MacroContinentBox.SelectedItem && p.Continent != null)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroInsideHRE_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.HRE)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroHREProvOutCountry_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.HRE && !(p.OwnerCountry?.Capital?.HRE ?? false))
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroHRECountry_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.OwnerCountry?.Capital?.HRE ?? false)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroOutsideHRE_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (!p.HRE)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroSameTradenode_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces)
+            {
+                if (p.TradeNode == MacroTradeNodeBox.SelectedItem)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroDifferentTradenode_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces)
+            {
+                if (p.TradeNode != MacroTradeNodeBox.SelectedItem && p.TradeNode != null)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }  
+        private void MacroDiscoveredBy_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces)
+            {
+                if (p.GetDiscoveredBy().Contains(MacroTechGroupBox.SelectedItem))
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroNotDiscoveredBy_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces)
+            {
+                if (!p.GetDiscoveredBy().Contains(MacroTechGroupBox.SelectedItem))
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroSameTechGroup_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces)
+            {
+                if (p.OwnerCountry?.TechnologyGroup == MacroTechGroupBox.SelectedItem.ToString())
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroDifferentTechGroup_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces)
+            {
+                if (p.OwnerCountry?.TechnologyGroup != MacroTechGroupBox.SelectedItem.ToString() && p.OwnerCountry?.TechnologyGroup != null)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+            PerformMacroFunc(ToSelect);
+        }
+        private void MacroSelectAllExceptSeas_Click(object sender, EventArgs e)
+        {
+            AddToClickedProvinces(GlobalVariables.Provinces.Where(x => !x.Lake && !x.Sea && !x.Wasteland).ToList());
+        }
+        private void MacroDeselectAllProvincesButton_Click(object sender, EventArgs e)
+        {
+            RemoveFromClickedProvinces(GlobalVariables.Provinces);
+        }
+        private void MacroSelectAllProvincesButton_Click(object sender, EventArgs e)
+        {
+            AddToClickedProvinces(GlobalVariables.Provinces.ToList());
+        }
+        private void MacroSelectProvincesAboveDev_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            int mode = 0;
+            if ((ModifierKeys & Keys.Shift) == Keys.Shift)
+                mode = 1;
+            else if ((ModifierKeys & Keys.Control) == Keys.Control)
+                mode = 2;
+            else if ((ModifierKeys & Keys.Alt) == Keys.Alt)
+                mode = 3;
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.Tax + p.Production + p.Manpower > MacroDevNumeric.Value)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+
+            switch (mode)
+            {
+                case 0:
+                    RemoveFromClickedProvinces(GlobalVariables.ClickedProvinces.ToList());
+                    AddToClickedProvinces(ToSelect);
+                    break;
+                case 1:
+                    AddToClickedProvinces(ToSelect);
+                    break;
+                case 2:
+                    RemoveFromClickedProvinces(ToSelect);
+                    break;
+                case 3:
+                    List<Province> filtered = new List<Province>(GlobalVariables.ClickedProvinces);
+                    filtered.RemoveAll(x => ToSelect.Contains(x));
+                    break;
+            }
+            UpdateDiscoveredBy();
+        }
+        private void MacroSelectProvincesBelowDev_Click(object sender, EventArgs e)
+        {
+            List<Province> ToSelect = new List<Province>();
+            int mode = 0;
+            if ((ModifierKeys & Keys.Shift) == Keys.Shift)
+                mode = 1;
+            else if ((ModifierKeys & Keys.Control) == Keys.Control)
+                mode = 2;
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.Tax + p.Production + p.Manpower < MacroDevNumeric.Value)
+                {
+                    ToSelect.Add(p);
+                }
+            }
+
+            switch (mode)
+            {
+                case 0:
+                    RemoveFromClickedProvinces(GlobalVariables.ClickedProvinces.ToList());
+                    AddToClickedProvinces(ToSelect);
+                    break;
+                case 1:
+                    AddToClickedProvinces(ToSelect);
+                    break;
+                case 2:
+                    RemoveFromClickedProvinces(ToSelect);
+                    break;
+            }
+            UpdateDiscoveredBy();
+        }
+        private void MacroDeselectProvincesAboveDev_Click(object sender, EventArgs e)
+        {
+            List<Province> ToDeselect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.Tax + p.Production + p.Manpower > MacroDevNumeric.Value)
+                {
+                    ToDeselect.Add(p);
+                }
+            }
+            GlobalVariables.ClickedProvinces.RemoveAll(x => ToDeselect.Contains(x));
+            MapManagement.UpdateClickedMap(ToDeselect, Color.White, false);
+            UpdateDiscoveredBy();
+        }
+        private void MacroDeselectProvincesBelowDev_Click(object sender, EventArgs e)
+        {
+            List<Province> ToDeselect = new List<Province>();
+            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
+            {
+                if (p.Tax + p.Production + p.Manpower < MacroDevNumeric.Value)
+                {
+                    ToDeselect.Add(p);
+                }
+            }
+            GlobalVariables.ClickedProvinces.RemoveAll(x => ToDeselect.Contains(x));
+            MapManagement.UpdateClickedMap(ToDeselect, Color.White, false);
+            UpdateDiscoveredBy();
+        }
+        #endregion
 
         public enum ChangeProvinceMode { CoT, Fort, HRE, Religion, Culture, DiscoveredBy, DiscoveredByOwner, Area, Owner, Controller, City, Building, Core, Claim, CoreOwner, Superregion, Region, Continent };
 
+        #region Functions
         public void ChangeProvinceInfo(ChangeProvinceMode mode, object change, object secondvalue = null)
         {
             List<Province> ApplyTo = new List<Province>();
@@ -3252,545 +3605,105 @@ namespace Eu4ModEditor
                     break;
             }
         }
-
-        private void AddOwnerDiscoveredByButton_Click(object sender, EventArgs e)
+        void MoveCameraTo(Province p)
         {
-            ChangeProvinceInfo(ChangeProvinceMode.DiscoveredByOwner, null);
-            UpdateDiscoveredBy();
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.DiscoveredBy);
-        }
+            //TODO
+            //when scaling the game don't forget about this!
 
-        public void UpdateDiscoveredBy()
-        {
-            DiscoveredByPanel.Controls.Clear();
-            if (GlobalVariables.ClickedProvince != null)
+            if (p != null)
             {
-                foreach (string tech in GlobalVariables.ClickedProvince.GetDiscoveredBy())
+                GlobalVariables.CameraPosition = new Point(0, 0);
+                if (p.Pixels.Any())
                 {
-                    Label techl = new Label();
-                    techl.Text = tech;
-                    techl.MouseClick += TechClick;
-                    DiscoveredByPanel.Controls.Add(techl);
-                    techl.Tag = tech;
-                    techl.BackColor = Color.DarkGray;
-                    techl.ForeColor = Color.White;
-                    techl.TextAlign = ContentAlignment.MiddleCenter;
-                    techl.AutoSize = true;
-                }
-            }
-            else if (GlobalVariables.ClickedProvinces.Any())
-            {
-                List<string> added = new List<string>() { };
-
-                foreach (Province p in GlobalVariables.ClickedProvinces)
-                {
-                    foreach (string tech in p.GetDiscoveredBy())
+                    Point dest = p.Pixels[0];
+                    int x = 0;
+                    do
                     {
-                        if (!added.Contains(tech))
-                        {
-                            added.Add(tech);
-                            Label techl = new Label();
-                            techl.Text = tech;
-                            techl.MouseClick += TechClick;
-                            DiscoveredByPanel.Controls.Add(techl);
-                            techl.Tag = tech;
-                            techl.BackColor = Color.DarkGray;
-                            techl.ForeColor = Color.White;
-                            techl.TextAlign = ContentAlignment.MiddleCenter;
-                            techl.AutoSize = true;
-                        }
-                    }
-                }
-            }
-        }
-
-        public void TechClick(object sender, MouseEventArgs e)
-        {
-            Label l = sender as Label;
-            if (e.Button == MouseButtons.Right)
-            {
-                ChangeProvinceInfo(ChangeProvinceMode.DiscoveredBy, (string)l.Tag, true);
-            }
-            UpdateDiscoveredBy();
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.DiscoveredBy);
-
-        }
-
-        private void ControllerBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!GlobalVariables.InternalChanges)            
-                ChangeProvinceInfo(ChangeProvinceMode.Controller, ControllerBox.SelectedItem);
-
-        }
-
-        private void GovernmentTypeBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (GlobalVariables.SelectedCountry != null)
-            {
-                if (!GlobalVariables.InternalChanges)
-                {
-                    GlobalVariables.SelectedCountry.Government = GlobalVariables.Governments.Find(x => x.Type == GovernmentTypeBox.Items[GovernmentTypeBox.SelectedIndex].ToString());
-                    GlobalVariables.SelectedCountry.GovernmentReform = GlobalVariables.SelectedCountry.Government.reforms[0];
-                }
-
-                GovernmentReformBox.Items.Clear();
-                foreach (string reform in GlobalVariables.SelectedCountry.Government.reforms)
-                    GovernmentReformBox.Items.Add(reform);
-
-
-            }
-        }
-
-        private void GovernmentReformBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!GlobalVariables.InternalChanges)
-                GlobalVariables.SelectedCountry.GovernmentReform = GovernmentReformBox.SelectedItem.ToString();
-        }
-
-        private void GovernmentRankNumeric_ValueChanged(object sender, EventArgs e)
-        {
-            if (GlobalVariables.InternalChanges)
-                return;
-            if (GlobalVariables.SelectedCountry != null)
-            {
-                if (GlobalVariables.SelectedCountry.GovernmentRank != GovernmentRankNumeric.Value)
-                    GlobalVariables.SelectedCountry.GovernmentRank = (int)GovernmentRankNumeric.Value;
-            }
-        }
-
-        private void CenterOfTradeNumeric_ValueChanged(object sender, EventArgs e)
-        {
-            if (GlobalVariables.InternalChanges)
-                return;
-            ChangeProvinceInfo(ChangeProvinceMode.CoT, (int)CenterOfTradeNumeric.Value);
-            
-        }
-
-        private void MakeCityButton_Click(object sender, EventArgs e)
-        {
-            ChangeProvinceInfo(ChangeProvinceMode.City, true);
-            UpdateProvincePanel();
-        }
-
-        private void RemoveCityButton_Click(object sender, EventArgs e)
-        {
-            ChangeProvinceInfo(ChangeProvinceMode.City, false);
-            UpdateProvincePanel();
-        }
-
-        private void AddBuildingButton_Click(object sender, EventArgs e)
-        {
-            if (BuildingsBox.SelectedIndex != -1)
-            {
-                Building bl = GlobalVariables.Buildings.Find(x => x.Name == BuildingsBox.SelectedItem.ToString());
-                if (bl != null)
-                    ChangeProvinceInfo(ChangeProvinceMode.Building, bl);
-                UpdateBuildings();
-            }
-        }
-
-        public void BuildingClick(object sender, MouseEventArgs e)
-        {
-            Label l = sender as Label;
-            if (e.Button == MouseButtons.Right)
-            {
-                ChangeProvinceInfo(ChangeProvinceMode.Building, (Building)l.Tag, true);
-            }
-            UpdateBuildings();
-        }
-
-
-
-        public void UpdateBuildings()
-        {
-            BuildingsPanel.Controls.Clear();
-            if (GlobalVariables.ClickedProvince != null)
-            {
-                foreach (Building bl in GlobalVariables.ClickedProvince.GetBuildings())
-                {
-                    Label bll = new Label();
-                    bll.Text = bl.Name;
-                    bll.MouseClick += BuildingClick;
-                    BuildingsPanel.Controls.Add(bll);
-                    bll.Tag = bl;
-                    bll.BackColor = Color.DarkGray;
-                    bll.ForeColor = Color.White;
-                    bll.TextAlign = ContentAlignment.MiddleCenter;
-                    bll.AutoSize = true;
-                }
-            }
-            else if (GlobalVariables.ClickedProvinces.Any())
-            {
-                List<Building> added = new List<Building>() { };
-
-                foreach (Province p in GlobalVariables.ClickedProvinces)
-                {
-                    foreach (Building bl in p.GetBuildings())
+                        x += 220;
+                    } while (dest.X - 440 > x);
+                    x -= 220;
+                    if (x < 0)
+                        x = 0;
+                    int y = 0;
+                    do
                     {
-                        if (!added.Contains(bl))
-                        {
-                            added.Add(bl);
-                            Label bll = new Label();
-                            bll.Text = bl.Name;
-                            bll.MouseClick += BuildingClick;
-                            BuildingsPanel.Controls.Add(bll);
-                            bll.Tag = bl;
-                            bll.BackColor = Color.DarkGray;
-                            bll.ForeColor = Color.White;
-                            bll.TextAlign = ContentAlignment.MiddleCenter;
-                            bll.AutoSize = true;
-                        }
-                    }
+                        y += 160;
+                    } while (dest.Y - 320 > y);
+                    y -= 160;
+                    if (y < 0)
+                        y = 0;
+
+                    if (x + 1090 >= GlobalVariables.ProvincesMap.Width)
+                        x = GlobalVariables.ProvincesMap.Width - 1090;
+                    if (y + 770 >= GlobalVariables.ProvincesMap.Height)
+                        y = GlobalVariables.ProvincesMap.Height - 770;
+
+                    GlobalVariables.CameraPosition = new Point(x, y);
                 }
-            }
-        }
-
-        private void AddClaimButton_Click(object sender, EventArgs e)
-        {
-            int index = AddCoreBox.SelectedIndex;
-            Country c = GlobalVariables.Countries[index];
-            ChangeProvinceInfo(ChangeProvinceMode.Claim, c.Tag);
-            UpdateCoresPanel();
-        }
-
-        private void HideSeaTiles3_Click(object sender, EventArgs e)
-        {
-            GlobalVariables.ShowSeaTilesAreaMapmode = !GlobalVariables.ShowSeaTilesAreaMapmode;
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Continent);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
-            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Superregion)
                 UpdateMap();
-        }
-
-        private void HideSeaTiles_Click(object sender, EventArgs e)
-        {
-            GlobalVariables.ShowSeaTilesAreaMapmode = !GlobalVariables.ShowSeaTilesAreaMapmode;
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Continent);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
-            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Superregion)
-                UpdateMap();
-        }
-
-        private void HideSeaTiles2_Click(object sender, EventArgs e)
-        {
-            GlobalVariables.ShowSeaTilesAreaMapmode = !GlobalVariables.ShowSeaTilesAreaMapmode;
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Continent);
-            MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
-            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent || GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Superregion)
-                UpdateMap();
-        }
-
-        private void SuperregionBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (!GlobalVariables.InternalChanges)
-            {
-                int index = SuperregionBox.SelectedIndex - 1;
-                ChangeProvinceInfo(ChangeProvinceMode.Superregion, index);
-            }
-            SuperregionNameChangeBox.Text = SuperregionBox.Text;
-        }
-
-        private void SuperregionNameChangeSave_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.Superregions.Any(x => x.Name == SuperregionNameChangeBox.Text))
-                SuperregionNameChangeBox.Text = SuperregionBox.Text;
-            else
-            {
-                GlobalVariables.Superregions[SuperregionBox.SelectedIndex - 1].Name = SuperregionNameChangeBox.Text;
-                SuperregionBox.Items[SuperregionBox.SelectedIndex] = SuperregionNameChangeBox.Text;
             }
         }
-
-        private void AddNewSuperregion_Click(object sender, EventArgs e)
+        public void ChangeValueInternally(Control control, object value)
         {
-            if (GlobalVariables.Superregions.Any(x => x.Name == AddNewSuperregionBox.Text))
-                AddNewSuperregionBox.Text = "Already taken!";
-            else
+            GlobalVariables.InternalChanges = true;
+            if (control is NumericUpDown)
+                ((NumericUpDown)control).Value = (int)value;
+            else if (control is CheckBox)
+                ((CheckBox)control).Checked = (bool)value;
+            else if (control is ComboBox)
             {
-                Superregion c = new Superregion(AddNewSuperregionBox.Text);
-                SuperregionBox.Items.Add(c.Name);
-
-                ChangeProvinceInfo(ChangeProvinceMode.Superregion, SuperregionBox.Items.Count - 2);
-                AddNewSuperregionBox.Text = "";
-            }
-        }
-
-        private void SaveSuperregionFile_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.ReadOnly[18])
-                return;
-            NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\superregion.txt");
-            List<Node> newNodes = new List<Node>();
-            foreach (Superregion sr in GlobalVariables.Superregions)
-            {
-                Node n = nf.MainNode.Nodes.Find(x => x.Name == sr.Name);
-
-                if (n != null)
+                if (value is int)
                 {
-                    n.PureValues.Clear();
-                    foreach (Region r in sr.Regions)
-                        n.AddPureValue(r.Name);
+                    if ((int)value == -1)
+                        ((ComboBox)control).SelectedIndex = 0;
+                    else
+                        ((ComboBox)control).SelectedIndex = (int)value;
                 }
                 else
                 {
-                    n = new Node(sr.Name);
-                    foreach (Region r in sr.Regions)
-                        n.AddPureValue(r.Name);
-                }
-                newNodes.Add(n);
-            }
-            nf.MainNode.Nodes.Clear();
-            nf.MainNode.Nodes.AddRange(newNodes);
-            nf.SaveFile(GlobalVariables.pathtomod + "map\\superregion.txt");
-        }
-
-        private void MacroDeselectAllProvincesButton_Click(object sender, EventArgs e)
-        {
-            RemoveFromClickedProvinces(GlobalVariables.Provinces);
-        }
-
-        private void MacroSelectAllProvincesButton_Click(object sender, EventArgs e)
-        {
-            AddToClickedProvinces(GlobalVariables.Provinces.ToList());
-        }
-
-        private void MacroSelectProvincesAboveDev_Click(object sender, EventArgs e)
-        {
-            List<Province> ToSelect = new List<Province>();
-            int mode = 0;
-            if ((ModifierKeys & Keys.Shift) == Keys.Shift)
-                mode = 1;
-            else if ((ModifierKeys & Keys.Control) == Keys.Control)
-                mode = 2;
-            else if ((ModifierKeys & Keys.Alt) == Keys.Alt)
-                mode = 3;
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (p.Tax + p.Production + p.Manpower > MacroDevNumeric.Value)
-                {
-                    ToSelect.Add(p);
+                    ((ComboBox)control).SelectedItem = value;
                 }
             }
-
-            switch(mode)
-            {
-                case 0:
-                    RemoveFromClickedProvinces(GlobalVariables.ClickedProvinces.ToList());
-                    AddToClickedProvinces(ToSelect);
-                    break;
-                case 1:
-                    AddToClickedProvinces(ToSelect);
-                    break;
-                case 2:
-                    RemoveFromClickedProvinces(ToSelect);
-                    break;
-                case 3:
-                    List<Province> filtered = new List<Province>(GlobalVariables.ClickedProvinces);
-                    filtered.RemoveAll(x => ToSelect.Contains(x));
-                    break;
-            }
-            UpdateDiscoveredBy();
+            else if (control is TextBox)
+                ((TextBox)control).Text = (string)value;
+            GlobalVariables.InternalChanges = false;
         }
-
-        private void MacroSelectProvincesBelowDev_Click(object sender, EventArgs e)
+        public double RoundUp(double value, int places)
         {
-            List<Province> ToSelect = new List<Province>();
-            int mode = 0;
-            if ((ModifierKeys & Keys.Shift) == Keys.Shift)
-                mode = 1;
-            else if ((ModifierKeys & Keys.Control) == Keys.Control)
-                mode = 2;
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (p.Tax + p.Production + p.Manpower < MacroDevNumeric.Value)
-                {
-                    ToSelect.Add(p);
-                }
-            }
-
-            switch (mode)
-            {
-                case 0:
-                    RemoveFromClickedProvinces(GlobalVariables.ClickedProvinces.ToList());
-                    AddToClickedProvinces(ToSelect);
-                    break;
-                case 1:
-                    AddToClickedProvinces(ToSelect);
-                    break;
-                case 2:
-                    RemoveFromClickedProvinces(ToSelect);
-                    break;
-            }
-            UpdateDiscoveredBy();
+            value *= Math.Pow(10, places);
+            value = (int)value;
+            value /= Math.Pow(10, places);
+            return value;
         }
-
-        private void MacroDeselectProvincesAboveDev_Click(object sender, EventArgs e)
+        public void ShowMessageBox(string text, string title = "Info")
         {
-            List<Province> ToDeselect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (p.Tax + p.Production + p.Manpower > MacroDevNumeric.Value)
-                {
-                    ToDeselect.Add(p);
-                }
-            }
-            GlobalVariables.ClickedProvinces.RemoveAll(x => ToDeselect.Contains(x));
-            MapManagement.UpdateClickedMap(ToDeselect, Color.White, false);
-            UpdateDiscoveredBy();
+            MessageBox.Show(text, title);
         }
-
-        private void MacroDeselectProvincesBelowDev_Click(object sender, EventArgs e)
+        public void AddTradeDestination(Tradenode start, Tradenode end)
         {
-            List<Province> ToDeselect = new List<Province>();
-            foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
-            {
-                if (p.Tax + p.Production + p.Manpower < MacroDevNumeric.Value)
-                {
-                    ToDeselect.Add(p);
-                }
-            }
-            GlobalVariables.ClickedProvinces.RemoveAll(x => ToDeselect.Contains(x));
-            MapManagement.UpdateClickedMap(ToDeselect, Color.White, false);
-            UpdateDiscoveredBy();
-        }
-
-        private void TradeCompanyBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (GlobalVariables.MultiProvinceMode)
-            {
-                if (GlobalVariables.ClickedProvinces.Any())
-                {
-                    int index = TradeCompanyBox.SelectedIndex - 1;
-
-                    foreach (Province p in GlobalVariables.ClickedProvinces)
-                    {
-                        if (p.TradeCompany != null)
-                        {
-                            p.TradeCompany.Provinces.Remove(p);
-                            p.TradeCompany.MadeChanges = true;
-                        }
-                        if (index == -1)
-                        {
-                            p.TradeCompany = null;
-                        }
-                        else
-                        {
-                            p.TradeCompany = GlobalVariables.TradeCompanies[index];
-                            p.TradeCompany.MadeChanges = true;
-                            GlobalVariables.TradeCompanies[index].Provinces.Add(p);
-                        }
-                        //if (!GlobalVariables.ToUpdate.Contains(p))
-                        //GlobalVariables.ToUpdate.Add(p);
-                    }
-                    MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.TradeCompany);
-                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeCompany)
-                        UpdateMap();
-                    //Saving.SaveThingsToUpdate();
-                }
-            }
-            else
-            {
-                if (!GlobalVariables.InternalChanges)
-                {
-                    if (GlobalVariables.ClickedProvince != null)
-                    {
-                        if (GlobalVariables.ClickedProvince.TradeCompany != null)
-                        {
-                            GlobalVariables.ClickedProvince.TradeCompany.Provinces.Remove(GlobalVariables.ClickedProvince);
-                            GlobalVariables.ClickedProvince.TradeCompany.MadeChanges = true;
-                        }
-
-                        if (TradeCompanyBox.SelectedIndex == 0)
-                        {
-                            GlobalVariables.ClickedProvince.TradeCompany = null;
-                        }
-                        else
-                        {
-                            GlobalVariables.ClickedProvince.TradeCompany = GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1];
-                            GlobalVariables.ClickedProvince.TradeCompany.MadeChanges = true;
-                            GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1].Provinces.Add(GlobalVariables.ClickedProvince);
-                        }
-
-                        MapManagement.UpdateMap(GlobalVariables.ClickedProvince, MapManagement.UpdateMapOptions.TradeCompany);
-                    }
-                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeCompany)
-                        UpdateMap();
-                    //if (!GlobalVariables.ToUpdate.Contains(GlobalVariables.ClickedProvince))
-                    //GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
-                }
-            }
-            TradeCompanyNameChangeBox.Text = TradeCompanyBox.Text;
-            if (TradeCompanyBox.SelectedIndex != 0)
-                TradeCompanyColorButton.BackColor = GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1].Color;
-        }
-
-        private void TradeComapnyNameChangeSave_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.TradeCompanies.Any(x => x.Name == TradeCompanyNameChangeBox.Text))
-                TradeCompanyNameChangeBox.Text = TradeCompanyBox.Text;
-            else
-            {
-                GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1].Name = TradeCompanyNameChangeBox.Text;
-                TradeCompanyBox.Items[TradeCompanyBox.SelectedIndex] = TradeCompanyNameChangeBox.Text;
-            }
-        }
-
-        private void AddNewTradeCompany_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.TradeCompanies.Any(x => x.Name == AddNewTradeCompanyBox.Text))
-                AddNewTradeCompanyBox.Text = "Already taken!";
-            else
-            {
-                TradeCompany c = new TradeCompany() { Name = AddNewTradeCompanyBox.Text };
-                GlobalVariables.TradeCompanies.Add(c);
-                TradeCompanyBox.Items.Add(c.Name);
-
-                if (GlobalVariables.ClickedProvinces.Any())
-                {
-                    int index = TradeCompanyBox.Items.Count - 2;
-                    foreach (Province p in GlobalVariables.ClickedProvinces)
-                    {
-                        if (p.TradeCompany != null)
-                            p.TradeCompany.Provinces.Remove(p);
-                        p.TradeCompany = GlobalVariables.TradeCompanies[index];
-                        p.TradeCompany.MadeChanges = true;
-                        GlobalVariables.TradeCompanies[index].Provinces.Add(p);
-                        if (!GlobalVariables.ToUpdate.Contains(p))
-                            GlobalVariables.ToUpdate.Add(p);
-                    }
-                    MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.TradeCompany);
-                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeCompany)
-                        UpdateMap();
-                    // Saving.SaveThingsToUpdate();
-                }
-
-                AddNewTradeCompanyBox.Text = "";
-            }
-        }
-
-        private void TradeCompanyColorButton_Click(object sender, EventArgs e)
-        {
-            if (TradeCompanyBox.SelectedIndex == 0)
+            if (start.Incoming.Contains(end))
                 return;
-            ColorDialog cd = new ColorDialog();
-            if (cd.ShowDialog() == DialogResult.OK)
-            {
-                GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1].Color = cd.Color;
-                GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1].MadeChanges = true;
-                TradeCompanyColorButton.BackColor = cd.Color;
-                MapManagement.UpdateMap(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeNode);
-                if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
-                    UpdateMap();
+            if (end.Incoming.Contains(start))
+                return;
 
+            Label tnl = new Label();
+            tnl.Text = end.Name;
+            tnl.MouseClick += TradeNodeClick;
+            TradeNodeDestinationsBox.Controls.Add(tnl);
+            tnl.Tag = GlobalVariables.TradeNodes.IndexOf(end);
+            tnl.BackColor = Color.DarkGray;
+            tnl.ForeColor = Color.White;
+            tnl.TextAlign = ContentAlignment.MiddleCenter;
+            tnl.AutoSize = true;
+            start.Destination.Add(new Destination() { TradeNode = end });
+            end.Incoming.Add(start);
+            AddTradeNodeDestinationBox.Items.Clear();
+            foreach (Tradenode tnn in GlobalVariables.TradeNodes)
+            {
+                if (!start.Destination.Any(x => x.TradeNode == tnn) && start != tnn)
+                    AddTradeNodeDestinationBox.Items.Add(tnn.Name);
             }
         }
-
         public List<NodeFile> GetModNodeFile(GlobalVariables.ModNodeFileTypes type)
         {
             switch ((int)type)
@@ -3830,7 +3743,7 @@ namespace Eu4ModEditor
                 case 4:
                     return "";
                 case 5:
-                    for(int a = 0; a < 99; a++)
+                    for (int a = 0; a < 99; a++)
                     {
                         if (File.Exists(GlobalVariables.pathtomod + $"\\common\\trade_companies\\{a.ToString("00")}_modeditor_trade_companies.txt"))
                             continue;
@@ -3846,7 +3759,6 @@ namespace Eu4ModEditor
                     return "";
             }
         }
-
         public NodeFile DetermineSaveLocation(GlobalVariables.ModNodeFileTypes type, NodeFile Parent)
         {
             NodeFile toSaveTo = null;
@@ -3883,168 +3795,133 @@ namespace Eu4ModEditor
                         toSaveTo.CreatedByEditor = true;
                         GetModNodeFile(type).Add(toSaveTo);
                     }
-                   
-                   
+
+
                 }
                 //editor will look for some already exisitng file (if it fails it won't save)
                 else
                 {
-                    toSaveTo = GetModNodeFile(type).First(x => !x.ReadOnly);       
+                    toSaveTo = GetModNodeFile(type).First(x => !x.ReadOnly);
                 }
             }
             return toSaveTo;
         }
+        #endregion
 
-        private void SaveTradeCompanyFile_Click(object sender, EventArgs e)
+        #region Saving
+        public void MergeChanges()
         {
-            if (GlobalVariables.ReadOnly[19] && (!GlobalVariables.CreateNewFilesReadOnly && !GlobalVariables.NewObjectsNewFiles))            
-                return;
-            
-
-            //NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\continent.txt");
-            //List<Node> newNodes = new List<Node>();
-
-
-
-            foreach (TradeCompany tc in GlobalVariables.TradeCompanies)
+            List<VariableChange> newList = new List<VariableChange>();
+            foreach (VariableChange change in GlobalVariables.Changes)
             {
-                if (!tc.MadeChanges)
-                    continue;
-                tc.MadeChanges = false;
-                NodeFile toSaveTo = DetermineSaveLocation(GlobalVariables.ModNodeFileTypes.TradeCompanies, tc.ParentFile);
-                //MessageBox.Show(GetModNodeFileName(GlobalVariables.ModNodeFileTypes.TradeCompanies));
-               
-                if (toSaveTo == null)
-                    continue;
-                tc.ParentFile = toSaveTo;
-                Node n = tc.ParentFile.MainNode.Nodes.Find(x => x.Name == tc.Name);
-                if (n == null)
+                if (change.VariableName == "Core" || change.VariableName == "DiscoveredBy" || change.VariableName == "Buildings" || change.VariableName == "Claims")
                 {
-                    n = new Node(tc.Name, toSaveTo.MainNode);
-                    tc.ParentFile.MainNode.Nodes.Add(n);
-                    n.Parent = tc.ParentFile.MainNode;
-
-                    Node color = new Node("color", n)
-                    {
-                        PureValues = new List<PureValue>() { new PureValue(tc.Color.R.ToString()), new PureValue( tc.Color.G.ToString()), new PureValue(tc.Color.B.ToString()) }
-                    };
-                    n.Nodes.Add(color);
-                    Node provinces = new Node("provinces", n);
-                    n.Nodes.Add(provinces);
-                    foreach (Province p in tc.Provinces)
-                        provinces.AddPureValue(p.ID.ToString());
-                    foreach(string name in tc.Names)
-                    {
-                        Node nm = new Node("names", n);
-                        n.Nodes.Add(nm);
-                        nm.ChangeVariable("name", name, true);
-                    }
-
+                    newList.Add(change);
+                    continue;
+                }
+                VariableChange nv = newList.Find(x => x.Object == change.Object && x.VariableName == change.VariableName);
+                if (nv != null)
+                {
+                    nv.CurrentValue = change.CurrentValue;
                 }
                 else
+                    newList.Add(change);
+            }
+            GlobalVariables.Changes.Clear();
+            GlobalVariables.Changes.AddRange(newList);
+        }
+        public void KeepAndSave(object sender, EventArgs e)
+        {
+            int index = (int)(sender as Control).Tag;
+            if (!GlobalVariables.Saves.Contains(GlobalVariables.Changes[index].Object))
+                GlobalVariables.Saves.Add(GlobalVariables.Changes[index].Object);
+            GlobalVariables.Changes.RemoveAt((int)(sender as Control).Tag);
+            UpdateChangesTab();
+            UpdateSavesTab();
+        }
+        public void Revert(object sender, EventArgs e)
+        {
+            VariableChange vc = GlobalVariables.Changes[(int)(sender as Control).Tag];
+            if (vc.Object is Province)
+            {
+                if (vc.VariableName != "Core" && vc.VariableName != "DiscoveredBy" && vc.VariableName != "Buildings" && vc.VariableName != "Claims")
+                    (vc.Object as Province).Variables[vc.VariableName] = vc.PreviousValue;
+                else if (vc.VariableName == "Core")
                 {
-                    n.Nodes.Find(x => x.Name == "color").PureValues = new List<PureValue>() { new PureValue(tc.Color.R.ToString()), new PureValue(tc.Color.G.ToString()), new PureValue(tc.Color.B.ToString()) };
-                    Node pnode = n.Nodes.Find(x => x.Name == "provinces");
-                    pnode.PureValues.Clear();
-                    foreach (Province p in tc.Provinces)
-                        pnode.AddPureValue(p.ID.ToString());
-                    int N = 0;
-                    List<Node> ToRemove = new List<Node>();
-                    foreach (Node namenode in n.Nodes.FindAll(x => x.Name == "names"))
-                    {
-                        if (N >= tc.Names.Count)
-                        {
-                            ToRemove.Add(namenode);
-                            continue;
-                        }
-                        namenode.ChangeVariable("name", tc.Names[N]);
-                        N++;
-                    }
-                    if (N < tc.Names.Count)
-                    {
-                        for (; N < tc.Names.Count; N++)
-                        {
-                            Node nm = new Node("names", n);
-                            n.Nodes.Add(nm);
-                            nm.ChangeVariable("name", tc.Names[N], true);
-                        }
-                    }
-                    n.Nodes.RemoveAll(x => ToRemove.Contains(x));
-
+                    if (vc.PreviousValue == null)
+                        ((vc.Object as Province).Variables["Cores"] as List<string>).Remove(vc.CurrentValue.ToString());
+                    else if (vc.CurrentValue == null)
+                        ((vc.Object as Province).Variables["Cores"] as List<string>).Add(vc.PreviousValue.ToString());
                 }
-                toSaveTo.SaveFile(toSaveTo.Path);
+                else if (vc.VariableName == "DiscoveredBy")
+                {
+                    if (vc.PreviousValue == null)
+                        ((vc.Object as Province).Variables["DiscoveredBy"] as List<string>).Remove(vc.CurrentValue.ToString());
+                    else if (vc.CurrentValue == null)
+                        ((vc.Object as Province).Variables["DiscoveredBy"] as List<string>).Add(vc.PreviousValue.ToString());
+                }
+                else if (vc.VariableName == "Buildings")
+                {
+                    if (vc.PreviousValue == null)
+                        ((vc.Object as Province).Variables["Buildings"] as List<Building>).Remove(vc.CurrentValue as Building);
+                    else if (vc.CurrentValue == null)
+                        ((vc.Object as Province).Variables["Buildings"] as List<Building>).Add(vc.PreviousValue as Building);
+                }
+                else if (vc.VariableName == "Claims")
+                {
+                    if (vc.PreviousValue == null)
+                        ((vc.Object as Province).Variables["Claims"] as List<string>).Remove(vc.CurrentValue.ToString());
+                    else if (vc.CurrentValue == null)
+                        ((vc.Object as Province).Variables["Claims"] as List<string>).Add(vc.PreviousValue.ToString());
+                }
+
             }
-        }
-
-        private void TradeCompanyRandomColor_Click(object sender, EventArgs e)
-        {
-            if (TradeCompanyBox.SelectedIndex == 0)
-                return;
-            TradeCompanyColorButton.BackColor = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
-            GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1].Color = TradeCompanyColorButton.BackColor;
-            GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1].MadeChanges = true;
-            MapManagement.UpdateMap(GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeCompany);
-            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeCompany)
-                UpdateMap();
-        }
-
-        private void SaveProvinceName_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.ClickedProvince == null)
-                return;
-            if (GlobalVariables.ModLocalisationEntries.Keys.Contains("PROV" + GlobalVariables.ClickedProvince.ID))
-                GlobalVariables.ModLocalisationEntries["PROV" + GlobalVariables.ClickedProvince.ID] = ProvinceNameLocalisationBox.Text;
-            else if (GlobalVariables.LocalisationEntries.Keys.Contains("PROV" + GlobalVariables.ClickedProvince.ID)) {
-                if (GlobalVariables.LocalisationEntries["PROV" + GlobalVariables.ClickedProvince.ID] != ProvinceNameLocalisationBox.Text)
-                    GlobalVariables.ModLocalisationEntries["PROV" + GlobalVariables.ClickedProvince.ID] = ProvinceNameLocalisationBox.Text;
-            }
-        }
-
-        private void SaveProvinceAdj_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.ClickedProvince == null)
-                return;
-            if (GlobalVariables.ModLocalisationEntries.Keys.Contains("PROV_ADJ" + GlobalVariables.ClickedProvince.ID))
-                GlobalVariables.ModLocalisationEntries["PROV_ADJ" + GlobalVariables.ClickedProvince.ID] = ProvinceAdjectiveLocalisationBox.Text;
-            else if (GlobalVariables.LocalisationEntries.Keys.Contains("PROV_ADJ" + GlobalVariables.ClickedProvince.ID))
+            else if (vc.Object is Country)
             {
-                if (GlobalVariables.LocalisationEntries["PROV_ADJ" + GlobalVariables.ClickedProvince.ID] != ProvinceAdjectiveLocalisationBox.Text)
-                    GlobalVariables.ModLocalisationEntries["PROV_ADJ" + GlobalVariables.ClickedProvince.ID] = ProvinceAdjectiveLocalisationBox.Text;
+                (vc.Object as Country).Variables[vc.VariableName] = vc.PreviousValue;
             }
+            GlobalVariables.Changes.Remove(vc);
+            UpdateChangesTab();
+            UpdateSavesTab();
         }
-
-        private void SaveLocalisationButton_Click(object sender, EventArgs e)
+        public void OpenFile(object sender, EventArgs e)
         {
-            string tosave = "";
-            string filename = "";
-            switch(GlobalVariables.LocalisationLanguage)
-            {
-                case GlobalVariables.Languages.English:
-                    filename = "localisation\\mod_edt_loc_l_english.yml";
-                    tosave = "l_english:\n";
-                    break;
-                case GlobalVariables.Languages.French:
-                    filename = "localisation\\mod_edt_loc_l_french.yml";
-                    tosave = "l_french:\n";
-                    break;
-                case GlobalVariables.Languages.German:
-                    filename = "localisation\\mod_edt_loc_l_german.yml";
-                    tosave = "l_german:\n";
-                    break;
-                case GlobalVariables.Languages.Spanish:
-                    filename = "localisation\\mod_edt_loc_l_spanish.yml";
-                    tosave = "l_spanish:\n";
-                    break;
-            }
-            foreach(string key in GlobalVariables.ModLocalisationEntries.Keys)
-            {
-                tosave += " " + key + ": \"" + GlobalVariables.ModLocalisationEntries[key] + "\"\n"; 
-            }
-            if(!Directory.Exists(GlobalVariables.pathtomod + "localisation"))
-                Directory.CreateDirectory(GlobalVariables.pathtomod + "localisation");
-            File.WriteAllText(GlobalVariables.pathtomod + filename, tosave);
+            Process.Start((sender as Control).Tag.ToString());
         }
+        public void SaveFile(object sender, EventArgs e)
+        {
+            Saving.SaveObject(GlobalVariables.Saves[(int)(sender as Control).Tag]);
+            GlobalVariables.Saves.RemoveAt((int)(sender as Control).Tag);
+            UpdateSavesTab();
+        }
+        public void LoadFileAgain(object sender, EventArgs e)
+        {
+            Saving.LoadObject(GlobalVariables.Saves[(int)(sender as Control).Tag]);
+            UpdateSavesTab();
+        }
+        #endregion
 
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }
