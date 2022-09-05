@@ -34,6 +34,12 @@ namespace Eu4ModEditor
             List<NodeFile> tradecompanyfiles = new List<NodeFile>();
             NodeFile Superregions;
 
+
+            GlobalVariables.Countries.Add(Country.NoCountry);
+
+
+
+
             Task llocalisation = new Task(() => {
 
                 if (GlobalVariables.UseMod[20] != 1)
@@ -1527,23 +1533,6 @@ namespace Eu4ModEditor
                         ModEditor.form.TradeGoodBox.Items.Add(tg.ReadableName);
                     else
                         ModEditor.form.LatentTradeGoodBox.Items.Add(tg.ReadableName);
-                }
-                foreach (Religion r in Religion.Religions)
-                {
-                    ModEditor.form.ReligionBox.Items.Add(r.ReadableName);
-                    ModEditor.form.CountryReligionBox.Items.Add(r.ReadableName);
-                }
-                foreach (Culture c in Culture.Cultures)
-                {
-                    ModEditor.form.CultureBox.Items.Add(c.Name);
-                    ModEditor.form.CountryPrimaryCultureBox.Items.Add(c.Name);
-                }
-                foreach (Country c in GlobalVariables.Countries)
-                {
-                    ModEditor.form.OwnerBox.Items.Add(c.FullName + ", " + c.Tag);
-                    ModEditor.form.CountryBox.Items.Add(c.FullName + ", " + c.Tag);
-                    ModEditor.form.AddCoreBox.Items.Add(c.FullName + ", " + c.Tag);
-                    ModEditor.form.ControllerBox.Items.Add(c.Tag);
                 }
                 foreach (Tradenode tn in GlobalVariables.TradeNodes)
                 {

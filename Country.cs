@@ -107,6 +107,8 @@ namespace Eu4ModEditor
             }
         }
 
+        public static Country NoCountry = new Country();
+
         public override string ToString()
         {
             return FullName;

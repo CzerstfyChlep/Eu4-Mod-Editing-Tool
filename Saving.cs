@@ -53,7 +53,7 @@ namespace Eu4ModEditor
                         nf.MainNode.Variables.Add(new Variable(bl.Name, "yes"));
                     }
 
-                    if (province.OwnerCountry != null)
+                    if (province.OwnerCountry != Country.NoCountry)
                     {
                         nf.MainNode.ChangeVariable("owner", province.OwnerCountry.Tag, true);
                     }
@@ -68,7 +68,7 @@ namespace Eu4ModEditor
                         nf.MainNode.ChangeVariable("base_manpower", province.Manpower.ToString(), true);
                     if (province.Production > 0)
                         nf.MainNode.ChangeVariable("base_production", province.Production.ToString(), true);
-                    if (province.Culture != null)
+                    if (province.Culture != Culture.NoCulture)
                     {
                         nf.MainNode.ChangeVariable("culture", province.Culture.Name, true);
                     }
@@ -87,10 +87,12 @@ namespace Eu4ModEditor
                     else
                         nf.MainNode.Variables.RemoveAll(x => x.Name == "hre");
 
-                    if (province.Controller != "")
-                        nf.MainNode.ChangeVariable("controller", province.Controller, true);
-                    else if(province.OwnerCountry != null)
+                    if (province.Controller != Country.NoCountry && province.Controller != null)
+                        nf.MainNode.ChangeVariable("controller", province.Controller.Tag, true);
+                    else if(province.OwnerCountry != Country.NoCountry && province.OwnerCountry != null)
                         nf.MainNode.ChangeVariable("controller", province.OwnerCountry.Tag, true);
+                    else
+                        nf.MainNode.Variables.RemoveAll(x => x.Name == "controller");
                     if (province.Fort)
                         nf.MainNode.ChangeVariable("fort_15th", "yes", true);
                     else
@@ -151,7 +153,7 @@ namespace Eu4ModEditor
                         country.HistoryFile = GlobalVariables.pathtomod + "history\\countries\\" + country.HistoryFile.Split('\\').Last();
                     }
 
-                    if (country.Religion != null) 
+                    if (country.Religion != null && country.Religion != Religion.NoReligion) 
                     {
                         Variable religion = nf.MainNode.Variables.Find(x => x.Name == "religion");
                         if (religion != null)
