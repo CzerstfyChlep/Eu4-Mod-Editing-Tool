@@ -116,10 +116,11 @@ namespace Eu4ModEditor
             DiscoveredByBox.KeyDown += InputManagement.IgnoreKeyPress;
             BuildingsBox.KeyDown += InputManagement.IgnoreKeyPress;
 
+
             HideSeaTiles.Click += ShowHideSeaTilesAreaMapmode_Click;
 
             boxes.AddRange(new ComboBox[] { OwnerBox, ReligionBox, CultureBox, TradeGoodBox, CountryBox, CountryReligionBox, AreaBox, RegionBox, ProvinceTradeNodeBox, TradeNodeBox, AddTradeNodeDestinationBox, ContinentBox, AddCoreBox, TechnologyGroupBox, CountryPrimaryCultureBox, DiscoveredByBox, BuildingsBox, SuperregionBox, TradeCompanyBox });
-            textboxes.AddRange(new TextBox[] { AreaNameChangeBox, AddNewAreaBox, AddNewRegionBox, RegionNameChangeBox, ChangeTradeNodeNameBox, TradeNodeNameBox, TradeNodeProvinceLocationBox, ContinentNameChangeBox, AddNewContinentBox, SuperregionNameChangeBox, AddNewSuperregionBox, TradeCompanyNameChangeBox, AddNewTradeCompanyBox });
+            textboxes.AddRange(new TextBox[] { AreaNameChangeBox, AddNewAreaBox, AddNewRegionBox, RegionNameChangeBox, ChangeTradeNodeNameBox, TradeNodeNameBox, TradeNodeProvinceLocationBox, ContinentNameChangeBox, AddNewContinentBox, SuperregionNameChangeBox, AddNewSuperregionBox, TradeCompanyNameChangeBox, AddNewTradeCompanyBox, ProvinceNameLocalisationBox, ProvinceAdjectiveLocalisationBox, CountryNameLocalisationBox, CountryAdjLocalisationBox });
             foreach (TradeGood tg in GlobalVariables.TradeGoods)
             {
                 CreateTradeGoodsInfoBox(tg);
@@ -197,6 +198,10 @@ namespace Eu4ModEditor
 
             MacroTechGroupBox.Items.AddRange(GlobalVariables.TechGroups.ToArray());
             MacroTechGroupBox.Sorted = true;
+
+            GraphicalCultureBox.Items.AddRange(new string[] { "westerngfx", "easterngfx", "muslimgfx",
+            "indiangfx", "asiangfx", "africangfx", "northamericagfx", "southamericagfx", "inuitgfx",
+            "aboriginalgfx", "polynesiangfx", "southeastasiangfx"});
             //TODO
             //Replace all InternalValueChanges with this
             //To do this I need a special class for binding all provinces
@@ -735,7 +740,7 @@ namespace Eu4ModEditor
                 pathl.Tag = path;
                 gb.Controls.Add(pathl);
 
-                if (path2 != "" && false)
+                if (path2 != "")
                 {
                     Label pathl2 = new Label();
                     pathl2.AutoSize = true;
@@ -877,7 +882,7 @@ namespace Eu4ModEditor
                     }
                     //UpdateMap();
                 }
-                this.Focus();
+                label1.Focus();
             }
         }
         public void SelectAllOfTradeGood(object sender, EventArgs e)
@@ -1554,8 +1559,7 @@ namespace Eu4ModEditor
         }
         private void AddCoreButton_Click(object sender, EventArgs e)
         {
-            int index = AddCoreBox.SelectedIndex;
-            Country c = GlobalVariables.Countries[index];
+            Country c = (Country)AddCoreBox.SelectedItem;
             ChangeProvinceInfo(ChangeProvinceMode.Core, c.Tag);
             UpdateCoresPanel();
         }
@@ -1734,6 +1738,8 @@ namespace Eu4ModEditor
                 if (GlobalVariables.LocalisationEntries["PROV" + GlobalVariables.ClickedProvinces[0].ID] != ProvinceNameLocalisationBox.Text)
                     GlobalVariables.ModLocalisationEntries["PROV" + GlobalVariables.ClickedProvinces[0].ID] = ProvinceNameLocalisationBox.Text;
             }
+            else
+                GlobalVariables.ModLocalisationEntries["PROV" + GlobalVariables.ClickedProvinces[0].ID] = ProvinceNameLocalisationBox.Text;
         }
         private void SaveProvinceAdj_Click(object sender, EventArgs e)
         {
@@ -1746,6 +1752,8 @@ namespace Eu4ModEditor
                 if (GlobalVariables.LocalisationEntries["PROV_ADJ" + GlobalVariables.ClickedProvinces[0].ID] != ProvinceAdjectiveLocalisationBox.Text)
                     GlobalVariables.ModLocalisationEntries["PROV_ADJ" + GlobalVariables.ClickedProvinces[0].ID] = ProvinceAdjectiveLocalisationBox.Text;
             }
+            else
+                GlobalVariables.ModLocalisationEntries["PROV_ADJ" + GlobalVariables.ClickedProvinces[0].ID] = ProvinceAdjectiveLocalisationBox.Text;
         }
         private void SaveLocalisationButton_Click(object sender, EventArgs e)
         {
@@ -2021,6 +2029,66 @@ namespace Eu4ModEditor
             UpdateDiscoveredBy();
             MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.DiscoveredBy);
         }
+        private void SaveCountryLocalisation_Click(object sender, EventArgs e)
+        {
+            string tosave = "";
+            string filename = "";
+            switch (GlobalVariables.LocalisationLanguage)
+            {
+                case GlobalVariables.Languages.English:
+                    filename = "localisation\\mod_edt_loc_l_english.yml";
+                    tosave = "l_english:\n";
+                    break;
+                case GlobalVariables.Languages.French:
+                    filename = "localisation\\mod_edt_loc_l_french.yml";
+                    tosave = "l_french:\n";
+                    break;
+                case GlobalVariables.Languages.German:
+                    filename = "localisation\\mod_edt_loc_l_german.yml";
+                    tosave = "l_german:\n";
+                    break;
+                case GlobalVariables.Languages.Spanish:
+                    filename = "localisation\\mod_edt_loc_l_spanish.yml";
+                    tosave = "l_spanish:\n";
+                    break;
+            }
+            foreach (string key in GlobalVariables.ModLocalisationEntries.Keys)
+            {
+                tosave += " " + key + ": \"" + GlobalVariables.ModLocalisationEntries[key] + "\"\n";
+            }
+            if (!Directory.Exists(GlobalVariables.pathtomod + "localisation"))
+                Directory.CreateDirectory(GlobalVariables.pathtomod + "localisation");
+            File.WriteAllText(GlobalVariables.pathtomod + filename, tosave);
+        }
+        private void SaveCountryName_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.SelectedCountry == null)
+                return;
+            if (GlobalVariables.ModLocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag))
+                GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag] = CountryNameLocalisationBox.Text;
+            else if (GlobalVariables.LocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag))
+            {
+                if (GlobalVariables.LocalisationEntries[GlobalVariables.SelectedCountry.Tag] != CountryNameLocalisationBox.Text)
+                    GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag] = CountryNameLocalisationBox.Text;
+            }
+            else
+                GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag] = CountryNameLocalisationBox.Text;
+        }
+
+        private void SaveCountryAdj_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.SelectedCountry == null)
+                return;
+            if (GlobalVariables.ModLocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag + "_ADJ"))
+                GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag + "_ADJ"] = CountryAdjLocalisationBox.Text;
+            else if (GlobalVariables.LocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag + "_ADJ"))
+            {
+                if (GlobalVariables.LocalisationEntries[GlobalVariables.SelectedCountry.Tag + "_ADJ"] != CountryAdjLocalisationBox.Text)
+                    GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag + "_ADJ"] = CountryAdjLocalisationBox.Text;
+            }
+            else
+                GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag + "_ADJ"] = CountryAdjLocalisationBox.Text;
+        }
         #endregion
 
 
@@ -2082,7 +2150,6 @@ namespace Eu4ModEditor
             UpdateTotalSelectedLabel();
             UpdateMap();
         }
-
         void AddAndRemoveFromClickedProvinces(List<Province> toremove, List<Province> toadd)
         {
             List<Province> UpdateMapList = new List<Province>();
@@ -2265,6 +2332,7 @@ namespace Eu4ModEditor
                 GovernmentTypeBox.Enabled = true;
                 GovernmentReformBox.Enabled = true;
                 GovernmentRankNumeric.Enabled = true;
+                GraphicalCultureBox.Enabled = true;
                 Country c = (Country)CountryBox.SelectedItem;
                 if (c != null)
                 {
@@ -2306,8 +2374,30 @@ namespace Eu4ModEditor
                     else
                         GovernmentTypeBox.SelectedIndex = 0;
 
+                    ChangeValueInternally(GraphicalCultureBox, GlobalVariables.SelectedCountry.GraphicalCulture);
+
                     ChangeValueInternally(GovernmentRankNumeric, GlobalVariables.SelectedCountry.GovernmentRank);
+
+
+                    SaveCountryAdj.Enabled = true;
+                    SaveCountryName.Enabled = true;
+
+                    if (GlobalVariables.ModLocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag))
+                        CountryNameLocalisationBox.Text = GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag];
+                    else if (GlobalVariables.LocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag))
+                        CountryNameLocalisationBox.Text = GlobalVariables.LocalisationEntries[GlobalVariables.SelectedCountry.Tag];
+                    else
+                        CountryNameLocalisationBox.Text = "";
+
+                    if (GlobalVariables.ModLocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag+"_ADJ"))
+                        CountryAdjLocalisationBox.Text = GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag+"_ADJ"];
+                    else if (GlobalVariables.LocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag + "_ADJ"))
+                        CountryAdjLocalisationBox.Text = GlobalVariables.LocalisationEntries[GlobalVariables.SelectedCountry.Tag + "_ADJ"];
+                    else
+                        CountryAdjLocalisationBox.Text = "";
+
                 }
+                
             }
             else
             {
@@ -2322,6 +2412,9 @@ namespace Eu4ModEditor
                 GovernmentTypeBox.Enabled = false;
                 GovernmentReformBox.Enabled = false;
                 GovernmentRankNumeric.Enabled = false;
+                GraphicalCultureBox.Enabled = false;
+                SaveCountryAdj.Enabled = true;
+                SaveCountryName.Enabled = true;
             }
         }
         private void OwnerBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -2632,6 +2725,15 @@ namespace Eu4ModEditor
                 ChangeProvinceInfo(ChangeProvinceMode.Superregion, index);
             }
             SuperregionNameChangeBox.Text = SuperregionBox.Text;
+        }
+        private void GraphicalCultureBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (GlobalVariables.InternalChanges)
+                return;
+            if (GlobalVariables.SelectedCountry != null)
+            {
+                GlobalVariables.SelectedCountry.GraphicalCulture = (string)GraphicalCultureBox.SelectedItem;
+            }
         }
         #endregion
 
@@ -3747,6 +3849,10 @@ namespace Eu4ModEditor
             Saving.LoadObject(GlobalVariables.Saves[(int)(sender as Control).Tag]);
             UpdateSavesTab();
         }
+
+
         #endregion
+
+
     }
 }

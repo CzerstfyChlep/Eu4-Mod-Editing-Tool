@@ -249,7 +249,31 @@ namespace Eu4ModEditor
                         governmentrank = new Variable("government_rank", country.GovernmentRank.ToString());
                         nf.MainNode.AddVariable(governmentrank);
                     }
-                    nf.SaveFile(country.HistoryFile);
+
+                    NodeFile cnf = new NodeFile(country.CommonFile);
+
+                    if (country.CommonFileGame)
+                    {
+                        country.CommonFileGame = false;
+                        if (!Directory.Exists(GlobalVariables.pathtomod + "common\\"))
+                            Directory.CreateDirectory(GlobalVariables.pathtomod + "common\\");
+                        if (!Directory.Exists(GlobalVariables.pathtomod + "common\\countries\\"))
+                            Directory.CreateDirectory(GlobalVariables.pathtomod + "common\\countries\\");
+                        country.CommonFile = GlobalVariables.pathtomod + "common\\countries\\" + country.CommonFile.Split('\\').Last();
+                    }
+
+                    Variable graphicalculture = cnf.MainNode.Variables.Find(x => x.Name == "graphical_culture");
+                    if (graphicalculture != null)
+                    {
+                        graphicalculture.Value = country.GraphicalCulture;
+                    }
+                    else
+                    {
+                        graphicalculture = new Variable("graphical_culture", country.GraphicalCulture);
+                        nf.MainNode.AddVariable(graphicalculture);
+                    }
+
+                    cnf.SaveFile(country.CommonFile);
                 }
             }
         }

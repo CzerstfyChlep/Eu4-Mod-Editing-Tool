@@ -45,11 +45,11 @@
             this.LoadingPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.ConfirmFileUsage = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.LanguageBox = new System.Windows.Forms.ComboBox();
             this.NewFilesForNewObjects = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.ReadOnlyNewFiles = new System.Windows.Forms.CheckBox();
-            this.LanguageBox = new System.Windows.Forms.ComboBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -234,10 +234,34 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Special options";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(13, 149);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(143, 13);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Language of localisation files";
+            // 
+            // LanguageBox
+            // 
+            this.LanguageBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.LanguageBox.FormattingEnabled = true;
+            this.LanguageBox.Items.AddRange(new object[] {
+            "English",
+            "French",
+            "German",
+            "Spanish"});
+            this.LanguageBox.Location = new System.Drawing.Point(16, 168);
+            this.LanguageBox.Name = "LanguageBox";
+            this.LanguageBox.Size = new System.Drawing.Size(136, 21);
+            this.LanguageBox.TabIndex = 3;
+            // 
             // NewFilesForNewObjects
             // 
             this.NewFilesForNewObjects.Checked = true;
             this.NewFilesForNewObjects.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.NewFilesForNewObjects.Enabled = false;
             this.NewFilesForNewObjects.Location = new System.Drawing.Point(16, 89);
             this.NewFilesForNewObjects.Name = "NewFilesForNewObjects";
             this.NewFilesForNewObjects.Size = new System.Drawing.Size(208, 57);
@@ -258,35 +282,13 @@
             // ReadOnlyNewFiles
             // 
             this.ReadOnlyNewFiles.AutoSize = true;
+            this.ReadOnlyNewFiles.Enabled = false;
             this.ReadOnlyNewFiles.Location = new System.Drawing.Point(16, 21);
             this.ReadOnlyNewFiles.Name = "ReadOnlyNewFiles";
             this.ReadOnlyNewFiles.Size = new System.Drawing.Size(208, 17);
             this.ReadOnlyNewFiles.TabIndex = 0;
             this.ReadOnlyNewFiles.Text = "Create new files when Read Only is on";
             this.ReadOnlyNewFiles.UseVisualStyleBackColor = true;
-            // 
-            // LanguageBox
-            // 
-            this.LanguageBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.LanguageBox.FormattingEnabled = true;
-            this.LanguageBox.Items.AddRange(new object[] {
-            "English",
-            "French",
-            "German",
-            "Spanish"});
-            this.LanguageBox.Location = new System.Drawing.Point(16, 168);
-            this.LanguageBox.Name = "LanguageBox";
-            this.LanguageBox.Size = new System.Drawing.Size(136, 21);
-            this.LanguageBox.TabIndex = 3;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 149);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(143, 13);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Language of localisation files";
             // 
             // LoadingScreen
             // 
@@ -301,6 +303,7 @@
             this.Name = "LoadingScreen";
             this.Tag = "game";
             this.Text = "Loading screen";
+            this.Load += new System.EventHandler(this.LoadingScreen_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);

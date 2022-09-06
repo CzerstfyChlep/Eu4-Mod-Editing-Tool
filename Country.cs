@@ -111,6 +111,20 @@ namespace Eu4ModEditor
             }
         }
 
+        public string GraphicalCulture
+        {
+            get
+            {
+                return (string)Variables["GraphicalCulture"];
+            }
+            set
+            {
+                if (GlobalVariables.FullyLoaded)
+                    GlobalVariables.Changes.Add(new VariableChange(this, "GraphicalCulture", Variables["GraphicalCulture"], value));
+                Variables["GraphicalCulture"] = value;
+            }
+        }
+
         public static Country NoCountry = new Country();
 
         public override string ToString()
@@ -129,6 +143,7 @@ namespace Eu4ModEditor
             Variables.Add("Government", "");
             Variables.Add("GovernmentReform", "");
             Variables.Add("GovernmentRank", 1);
+            Variables.Add("GraphicalCulture", "westerngfx");
         }
 
         public int TotalDevelopment

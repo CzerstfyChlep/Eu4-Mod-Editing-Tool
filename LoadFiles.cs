@@ -112,10 +112,10 @@ namespace Eu4ModEditor
                                         string value = "";
                                         name = linetoread.Split(':')[0].Trim();
                                         value = linetoread.Split(':')[1].Split('"')[1];
-                                        if (GlobalVariables.LocalisationEntries.Keys.Contains(name))
-                                            GlobalVariables.LocalisationEntries[name] = value;
+                                        if (GlobalVariables.ModLocalisationEntries.Keys.Contains(name))
+                                            GlobalVariables.ModLocalisationEntries[name] = value;
                                         else
-                                            GlobalVariables.LocalisationEntries.Add(name, value);
+                                            GlobalVariables.ModLocalisationEntries.Add(name, value);
                                     }
 
                                 }
@@ -1254,7 +1254,7 @@ namespace Eu4ModEditor
                                 c.CommonFileGame = true;
                         }
                         NodeFile nodefile = new NodeFile(file);
-                        string[] colort = nodefile.MainNode.Nodes.Find(x => x.Name == "color").GetPureValuesAsArray();
+                        string[] colort = nodefile.MainNode.Nodes.Find(x => x.Name == "color").GetPureValuesAsArray();                        
                         try
                         {
                             c.Color = Color.FromArgb(int.Parse(colort[0]), int.Parse(colort[1]), int.Parse(colort[2]));
@@ -1264,6 +1264,10 @@ namespace Eu4ModEditor
                             c.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
                             MessageBox.Show("Some error in " + file);
                         }
+
+                        Variable gfxcul = nodefile.MainNode.Variables.Find(x => x.Name == "graphical_culture");
+                        if (gfxcul != null)
+                            c.GraphicalCulture = gfxcul.Value;
                     }
                 }
             });

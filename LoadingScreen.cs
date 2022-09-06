@@ -483,5 +483,10 @@ namespace Eu4ModEditor
                 }
             }
         }
+
+        private void LoadingScreen_Load(object sender, EventArgs e)
+        {
+            LanguageBox.SelectedIndex = 0;
+        }
     }
 }
