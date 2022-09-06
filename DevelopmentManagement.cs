@@ -12,43 +12,7 @@ namespace Eu4ModEditor
         {
             //TODO
             //Replace by average values
-
-            if (GlobalVariables.MultiProvinceMode)
-            {
-                if (GlobalVariables.ClickedProvinces.Any())
-                {
-                    foreach (Province p in GlobalVariables.ClickedProvinces)
-                    {
-                        int change = 0;
-                        if (p.Tax > 1)
-                        {
-                            change++;
-                            p.Tax--;
-                        }
-
-                        if (p.Production > 1)
-                        {
-                            p.Production--;
-                            change++;
-                        }
-                        if (p.Manpower > 1)
-                        {
-                            p.Manpower--;
-                            change++;
-                        }
-                        if (p.TradeGood != null)
-                        {
-                            p.TradeGood.TotalDev -= change;
-                        }
-                        if (!GlobalVariables.ToUpdate.Contains(p))
-                            GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
-                    }
-                    MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Development);
-                    ModEditor.form.UpdateDevCount();
-                    //Saving.SaveThingsToUpdate();
-                }
-            }
-            else
+            if (GlobalVariables.ClickedProvinces.Any())
             {
                 if (ModEditor.form.ProvinceTaxNumeric.Value > 1)
                     ModEditor.form.ProvinceTaxNumeric.DownButton();
@@ -62,72 +26,8 @@ namespace Eu4ModEditor
         {
             //TODO
             //Replace by average values
-            if (GlobalVariables.MultiProvinceMode)
-            {
-                if (GlobalVariables.ClickedProvinces.Any())
-                {
-                    foreach (Province p in GlobalVariables.ClickedProvinces)
-                    {
-                        int TaxRandom = GlobalVariables.GlobalRandom.Next(0, 10);
-                        if (p.TradeGood != null)
-                        {
-                            p.TradeGood.TotalDev -= p.Tax + p.Production + p.Manpower;
-                        }
-                        if (TaxRandom < 1)
-                            p.Tax = 1;
-                        else if (TaxRandom < 2)
-                            p.Tax = 2;
-                        else if (TaxRandom < 4)
-                            p.Tax = 3;
-                        else if (TaxRandom < 7)
-                            p.Tax = 4;
-                        else if (TaxRandom < 9)
-                            p.Tax = 5;
-                        else
-                            p.Tax = 6;
-
-
-                        int ProductionRandom = GlobalVariables.GlobalRandom.Next(0, 10);
-                        if (ProductionRandom < 1)
-                            p.Production = 1;
-                        else if (ProductionRandom < 2)
-                            p.Production = 2;
-                        else if (ProductionRandom < 4)
-                            p.Production = 3;
-                        else if (ProductionRandom < 7)
-                            p.Production = 4;
-                        else if (ProductionRandom < 9)
-                            p.Production = 5;
-                        else
-                            p.Production = 6;
-
-
-                        int ManpowerRandom = GlobalVariables.GlobalRandom.Next(0, 10);
-                        if (ManpowerRandom < 1)
-                            p.Manpower = 1;
-                        else if (ManpowerRandom < 2)
-                            p.Manpower = 2;
-                        else if (ManpowerRandom < 4)
-                            p.Manpower = 3;
-                        else if (ManpowerRandom < 7)
-                            p.Manpower = 4;
-                        else if (ManpowerRandom < 9)
-                            p.Manpower = 5;
-                        else
-                            p.Manpower = 6;
-                        if (p.TradeGood != null)
-                        {
-                            p.TradeGood.TotalDev += p.Tax + p.Production + p.Manpower;
-                        }
-                        if (!GlobalVariables.ToUpdate.Contains(p))
-                            GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
-                    }
-                    MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Development);
-                    ModEditor.form.UpdateDevCount();
-                    //Saving.SaveThingsToUpdate();
-                }
-            }
-            else
+            
+            if(GlobalVariables.ClickedProvinces.Any())
             {               
                 int TaxRandom = GlobalVariables.GlobalRandom.Next(0, 10);
                 if (TaxRandom < 1)
@@ -178,60 +78,7 @@ namespace Eu4ModEditor
         {
             //TODO
             //Replace by average values
-            if (GlobalVariables.MultiProvinceMode)
-            {
-                if (GlobalVariables.ClickedProvinces.Any())
-                {
-                    foreach (Province p in GlobalVariables.ClickedProvinces)
-                    {
-                        if (p.TradeGood != null)
-                        {
-                            p.TradeGood.TotalDev -= p.Tax + p.Production + p.Manpower;
-                        }
-                        int TaxRandom = GlobalVariables.GlobalRandom.Next(0, 10);
-                        if (TaxRandom < 2)
-                            p.Tax = 1;
-                        else if (TaxRandom < 6)
-                            p.Tax = 2;
-                        else if (TaxRandom < 9)
-                            p.Tax = 3;
-                        else
-                            p.Tax = 4;
-
-
-                        int ProductionRandom = GlobalVariables.GlobalRandom.Next(0, 10);
-                        if (ProductionRandom < 2)
-                            p.Production = 1;
-                        else if (ProductionRandom < 6)
-                            p.Production = 2;
-                        else if (ProductionRandom < 9)
-                            p.Production = 3;
-                        else
-                            p.Production = 4;
-
-
-                        int ManpowerRandom = GlobalVariables.GlobalRandom.Next(0, 10);
-                        if (ManpowerRandom < 2)
-                            p.Manpower = 1;
-                        else if (ManpowerRandom < 6)
-                            p.Manpower = 2;
-                        else if (ManpowerRandom < 9)
-                            p.Manpower = 3;
-                        else
-                            p.Manpower = 4;
-                        if (p.TradeGood != null)
-                        {
-                            p.TradeGood.TotalDev += p.Tax + p.Production + p.Manpower;
-                        }
-                        if (!GlobalVariables.ToUpdate.Contains(p))
-                            GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
-                    }
-                    MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Development);
-                    ModEditor.form.UpdateDevCount();
-                    //Saving.SaveThingsToUpdate();
-                }
-            }
-            else
+            if (GlobalVariables.ClickedProvinces.Any())
             {
                 int TaxRandom = GlobalVariables.GlobalRandom.Next(0, 10);
                 if (TaxRandom < 2)
@@ -270,54 +117,7 @@ namespace Eu4ModEditor
         {
             //TODO
             //Replace by average values
-            if (GlobalVariables.MultiProvinceMode)
-            {
-                if (GlobalVariables.ClickedProvinces.Any())
-                {
-                    foreach (Province p in GlobalVariables.ClickedProvinces)
-                    {
-                        if (p.TradeGood != null)
-                        {
-                            p.TradeGood.TotalDev -= p.Tax + p.Production + p.Manpower;
-                        }
-                        int TaxRandom = GlobalVariables.GlobalRandom.Next(0, 10);
-                        if (TaxRandom < 5)
-                            p.Tax = 1;
-                        else if (TaxRandom < 9)
-                            p.Tax = 2;
-                        else
-                            p.Tax = 3;
-
-
-                        int ProductionRandom = GlobalVariables.GlobalRandom.Next(0, 10);
-                        if (ProductionRandom < 6)
-                            p.Production = 1;
-                        else if (ProductionRandom < 9)
-                            p.Production = 2;
-                        else
-                            p.Production = 3;
-
-
-                        int ManpowerRandom = GlobalVariables.GlobalRandom.Next(0, 10);
-                        if (ManpowerRandom < 5)
-                            p.Manpower = 1;
-                        else if (ManpowerRandom < 9)
-                            p.Manpower = 2;
-                        else
-                            p.Manpower = 3;
-                        if (p.TradeGood != null)
-                        {
-                            p.TradeGood.TotalDev += p.Tax + p.Production + p.Manpower;
-                        }
-                        if (!GlobalVariables.ToUpdate.Contains(p))
-                            GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
-                    }
-                    MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Development);
-                    ModEditor.form.UpdateDevCount();
-                    //Saving.SaveThingsToUpdate();
-                }
-            }
-            else
+            if (GlobalVariables.ClickedProvinces.Any())
             {
                 int TaxRandom = GlobalVariables.GlobalRandom.Next(0, 10);
                 if (TaxRandom < 5)
@@ -350,28 +150,7 @@ namespace Eu4ModEditor
         {
             //TODO
             //Replace by average values
-            if (GlobalVariables.MultiProvinceMode)
-            {
-                if (GlobalVariables.ClickedProvinces.Any())
-                {
-                    foreach (Province p in GlobalVariables.ClickedProvinces)
-                    {
-                        if (p.TradeGood != null)
-                        {
-                            p.TradeGood.TotalDev += 3;
-                        }
-                        p.Tax++;
-                        p.Production++;
-                        p.Manpower++;
-                        if (!GlobalVariables.ToUpdate.Contains(p))
-                            GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
-                    }
-                    MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Development);
-                    ModEditor.form.UpdateDevCount();
-                    //Saving.SaveThingsToUpdate();
-                }
-            }
-            else
+            if (GlobalVariables.ClickedProvinces.Any())
             {
                 ModEditor.form.ProvinceTaxNumeric.UpButton();
                 ModEditor.form.ProvinceProductionNumeric.UpButton();
@@ -382,38 +161,22 @@ namespace Eu4ModEditor
         {
             //TODO
             //Replace by average values
-            if (GlobalVariables.MultiProvinceMode)
+            if (GlobalVariables.ClickedProvinces.Any())
             {
-                if (GlobalVariables.ClickedProvinces.Any())
+                foreach (Province p in GlobalVariables.ClickedProvinces)
                 {
-                    foreach (Province p in GlobalVariables.ClickedProvinces)
-                    {
 
-                        if (p.TradeGood != null)
-                        {
-                            p.TradeGood.TotalDev -= p.Tax + p.Production + p.Manpower;
-                        }
-                        p.Tax = 0;
-                        p.Production = 0;
-                        p.Manpower = 0;
-                        if (!GlobalVariables.ToUpdate.Contains(p))
-                            GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
+                    if (p.TradeGood != null)
+                    {
+                        p.TradeGood.TotalDev -= p.Tax + p.Production + p.Manpower;
                     }
-                    MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Development);
-                    //Saving.SaveThingsToUpdate();
+                    p.Tax = 0;
+                    p.Production = 0;
+                    p.Manpower = 0;
+                    if (!GlobalVariables.ToUpdate.Contains(p))
+                        GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvinces);
                 }
-            }
-            else
-            {
-                if (GlobalVariables.ClickedProvince != null)
-                {
-                    GlobalVariables.ClickedProvince.Tax = 0;
-                    GlobalVariables.ClickedProvince.Production = 0;
-                    GlobalVariables.ClickedProvince.Manpower = 0;
-                    GlobalVariables.ToUpdate.Add(GlobalVariables.ClickedProvince);
-                    //Saving.SaveThingsToUpdate();
-                    MapManagement.UpdateMap(GlobalVariables.ClickedProvince, MapManagement.UpdateMapOptions.Development);
-                }
+                MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Development);
             }
         }
     }

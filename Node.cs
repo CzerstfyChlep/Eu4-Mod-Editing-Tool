@@ -37,8 +37,6 @@ namespace Eu4ModEditor
 
         public void ReadFile(string path)
         {
-            if (!File.Exists(path))
-                return;
             Path = path;
             FileName = path.Split('\\').Last().Replace(".txt", "");
             Node CurrentNode = new Node("__MainNode");
@@ -149,8 +147,7 @@ namespace Eu4ModEditor
                                 else if (equals)
                                 {
                                     Variable v = new Variable(pretxt, textmem == "" ? contents[a] : textmem);
-                                    CurrentNode.Variables.Add(v);
-                                    CurrentNode.ItemOrder.Add(v);
+                                    CurrentNode.AddVariable(v);
                                     equals = false;
                                     pretxt = "";
                                 }
@@ -507,6 +504,12 @@ namespace Eu4ModEditor
             ItemOrder.Add(n);
             return n;
         }
+        public void AddNode(Node node)
+        {
+            Nodes.Add(node);
+            ItemOrder.Add(node);
+            node.Parent = this;
+        }
         public PureValue AddPureValue(string name, bool sep = false)
         {
             PureValue pv = new PureValue(name, sep);
@@ -519,6 +522,18 @@ namespace Eu4ModEditor
             foreach (PureValue pv in PureValues)
                 s.Add(pv.Name);
             return s.ToArray();
+        }
+        public Variable AddVariable(string name, string value)
+        {
+            Variable v = new Variable(name, value);
+            Variables.Add(v);
+            ItemOrder.Add(v);
+            return v;
+        }
+        public void AddVariable(Variable v)
+        {
+            Variables.Add(v);
+            ItemOrder.Add(v);
         }
     }
     public class Variable : NodeItem

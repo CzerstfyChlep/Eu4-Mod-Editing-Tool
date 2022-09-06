@@ -36,24 +36,24 @@ namespace Eu4ModEditor
                    
                     foreach (string tag in province.GetCores())
                     {
-                        nf.MainNode.Variables.Add(new Variable("add_core", tag));
+                        nf.MainNode.AddVariable(new Variable("add_core", tag));
                     }
 
                     foreach (string tag in province.GetClaims())
                     {
-                        nf.MainNode.Variables.Add(new Variable("add_claim", tag));
+                        nf.MainNode.AddVariable(new Variable("add_claim", tag));
                     }
 
                     foreach (string techgroup in province.GetDiscoveredBy())
                     {
-                        nf.MainNode.Variables.Add(new Variable("discovered_by", techgroup));
+                        nf.MainNode.AddVariable(new Variable("discovered_by", techgroup));
                     }
                     foreach(Building bl in province.GetBuildings())
                     {
-                        nf.MainNode.Variables.Add(new Variable(bl.Name, "yes"));
+                        nf.MainNode.AddVariable(new Variable(bl.Name, "yes"));
                     }
 
-                    if (province.OwnerCountry != Country.NoCountry)
+                    if (province.OwnerCountry != Country.NoCountry && province.OwnerCountry != null)
                     {
                         nf.MainNode.ChangeVariable("owner", province.OwnerCountry.Tag, true);
                     }
@@ -68,7 +68,7 @@ namespace Eu4ModEditor
                         nf.MainNode.ChangeVariable("base_manpower", province.Manpower.ToString(), true);
                     if (province.Production > 0)
                         nf.MainNode.ChangeVariable("base_production", province.Production.ToString(), true);
-                    if (province.Culture != Culture.NoCulture)
+                    if (province.Culture != Culture.NoCulture && province.Culture != null)
                     {
                         nf.MainNode.ChangeVariable("culture", province.Culture.Name, true);
                     }
@@ -120,8 +120,7 @@ namespace Eu4ModEditor
                         }
                         else
                         {
-                            n = new Node("latent_trade_goods", nf.MainNode);
-                            nf.MainNode.Nodes.Add(n);
+                            n = nf.MainNode.AddNode("latent_trade_goods");
                             n.AddPureValue(province.LatentTradeGood.Name);
                         }
                     }
@@ -163,7 +162,7 @@ namespace Eu4ModEditor
                         else
                         {
                             religion = new Variable("religion", country.Religion.Name);
-                            nf.MainNode.Variables.Add(religion);
+                            nf.MainNode.AddVariable(religion);
                         }
                     }
                     if (country.Capital != null)
@@ -176,7 +175,7 @@ namespace Eu4ModEditor
                         else
                         {
                             capital = new Variable("capital", country.CapitalID.ToString());
-                            nf.MainNode.Variables.Add(capital);
+                            nf.MainNode.AddVariable(capital);
                         }
                     }
 
@@ -190,11 +189,11 @@ namespace Eu4ModEditor
                         else
                         {
                             techgroup = new Variable("technology_group", country.TechnologyGroup);
-                            nf.MainNode.Variables.Add(techgroup);
+                            nf.MainNode.AddVariable(techgroup);
                         }
                     }
 
-                    if (country.PrimaryCulture != Culture.NoCulture)
+                    if (country.PrimaryCulture != Culture.NoCulture && country.PrimaryCulture != null)
                     {
                         Variable primculture = nf.MainNode.Variables.Find(x => x.Name == "primary_culture");
                         if (primculture != null)
@@ -204,7 +203,7 @@ namespace Eu4ModEditor
                         else
                         {
                             primculture = new Variable("primary_culture", country.PrimaryCulture.ToString());
-                            nf.MainNode.Variables.Add(primculture);
+                            nf.MainNode.AddVariable(primculture);
                         }
                     }
                     else
@@ -224,7 +223,7 @@ namespace Eu4ModEditor
                         else
                         {
                             government = new Variable("government", country.Government.Type);
-                            nf.MainNode.Variables.Add(government);
+                            nf.MainNode.AddVariable(government);                              
                         }
                         List<string> startingreforms = new List<string>();
                         GlobalVariables.Governments.ForEach(x => startingreforms.AddRange(x.reforms));
@@ -236,7 +235,7 @@ namespace Eu4ModEditor
                         else
                         {
                             reform = new Variable("add_government_reform", country.GovernmentReform);
-                            nf.MainNode.Variables.Add(reform);
+                            nf.MainNode.AddVariable(reform);                                
                         }
                     }
 
@@ -248,10 +247,8 @@ namespace Eu4ModEditor
                     else
                     {
                         governmentrank = new Variable("government_rank", country.GovernmentRank.ToString());
-                        nf.MainNode.Variables.Add(governmentrank);
+                        nf.MainNode.AddVariable(governmentrank);
                     }
-
-
                     nf.SaveFile(country.HistoryFile);
                 }
             }
@@ -276,7 +273,7 @@ namespace Eu4ModEditor
                         nf.MainNode.Variables.RemoveAll(x => x.Name == "add_core");
                         foreach (string tag in province.GetCores())
                         {
-                            nf.MainNode.Variables.Add(new Variable("add_core", tag));
+                            nf.MainNode.AddVariable("add_core", tag);
                         }
 
                         if (province.OwnerCountry != null)
@@ -327,8 +324,7 @@ namespace Eu4ModEditor
                             }
                             else
                             {
-                                n = new Node("latent_trade_goods", nf.MainNode);
-                                nf.MainNode.Nodes.Add(n);
+                                n = nf.MainNode.AddNode("latent_trade_goods");
                                 n.AddPureValue(province.LatentTradeGood.Name);
                             }
                         }
@@ -359,7 +355,7 @@ namespace Eu4ModEditor
                             else
                             {
                                 religion = new Variable("religion", country.Religion.Name);
-                                nf.MainNode.Variables.Add(religion);
+                                nf.MainNode.AddVariable(religion);
                             }
                         }
                         if (country.Capital != null)
@@ -372,7 +368,7 @@ namespace Eu4ModEditor
                             else
                             {
                                 capital = new Variable("capital", country.CapitalID.ToString());
-                                nf.MainNode.Variables.Add(capital);
+                                nf.MainNode.AddVariable(capital);
                             }
                         }
 
@@ -529,7 +525,7 @@ namespace Eu4ModEditor
                     }
 
 
-                    MapManagement.ReloadProvince(province);
+                    MapManagement.ReloadProvince(new List<Province> { province });
                 }
 
                 else if (toLoad.GetType() == typeof(Country) && false)
@@ -548,7 +544,7 @@ namespace Eu4ModEditor
                         else
                         {
                             religion = new Variable("religion", country.Religion.Name);
-                            nf.MainNode.Variables.Add(religion);
+                            nf.MainNode.AddVariable(religion);
                         }
                     }
                     if (country.Capital != null)
@@ -561,7 +557,7 @@ namespace Eu4ModEditor
                         else
                         {
                             capital = new Variable("capital", country.CapitalID.ToString());
-                            nf.MainNode.Variables.Add(capital);
+                            nf.MainNode.AddVariable(capital);
                         }
                     }
 

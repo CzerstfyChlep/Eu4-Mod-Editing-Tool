@@ -735,7 +735,7 @@ namespace Eu4ModEditor
                                     }
                                     break;
                                 case "controller":
-                                    province.Controller = v.Value;
+                                    province.Controller = GlobalVariables.Countries.Find(x => x.Tag == v.Value.ToUpper());
                                     break;
                                 case "culture":
                                     province.Culture = Culture.Cultures.Find(x => x.Name == v.Value);

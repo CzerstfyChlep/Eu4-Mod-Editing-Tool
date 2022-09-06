@@ -161,7 +161,7 @@ namespace Eu4ModEditor
                         Color c = Color.White;
                         Color stripec = Color.White;
                         bool verticalstripes = false;
-                        if (p.OwnerCountry != null)
+                        if (p.OwnerCountry != null && p.OwnerCountry != Country.NoCountry)
                         {
                             c = p.OwnerCountry.Color;
                             if (p.OwnerCountry.Capital == p)
@@ -926,7 +926,7 @@ namespace Eu4ModEditor
             GlobalVariables.ClickedMask.UnlockBits();
         }
 
-        public static void ReloadProvince(Province p)
+        public static void ReloadProvince(List<Province> p)
         {
             UpdateMap(p, UpdateMapOptions.Area);
             UpdateMap(p, UpdateMapOptions.Continent);

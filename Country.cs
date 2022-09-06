@@ -67,6 +67,10 @@ namespace Eu4ModEditor
         public bool HistoryFileGame = false;
         public string CommonFile;
         public bool CommonFileGame = false;
+
+        public string TagFile;
+
+
         public string GovernmentReform
         {
             get

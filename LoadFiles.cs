@@ -1073,17 +1073,6 @@ namespace Eu4ModEditor
             });
             raycast.Start();
             progress.UpdateProgress(23, 0);
-
-
-
-
-
-
-           
-            
-
-
-
             await tradegoodsAll;
             if (tradegoodsAll.IsFaulted)
                 progress.UpdateProgress(1, 1);
@@ -1206,7 +1195,6 @@ namespace Eu4ModEditor
             });
             lcountries.Start();
             progress.UpdateProgress(9, 0);
-
 
             await lcountries;
             if (lcountries.IsFaulted)
@@ -1382,7 +1370,7 @@ namespace Eu4ModEditor
                         if (p.HistoryFile == null)
                         {
                             string s = GlobalVariables.pathtomod + "history\\provinces\\" + (GlobalVariables.Provinces.IndexOf(p) + 1) + ".txt";
-                            File.Create(s);
+                            //File.Create(s);
                             p.HistoryFile = s;
                         }
                     }
@@ -1748,7 +1736,7 @@ namespace Eu4ModEditor
                         }
                         break;
                     case "controller":
-                        province.Controller = v.Value;
+                        province.Controller = GlobalVariables.Countries.Find(x => x.Tag == v.Value.ToUpper());
                         break;
                     case "culture":
                         province.Culture = Culture.Cultures.Find(x => x.Name == v.Value);

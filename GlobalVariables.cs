@@ -36,7 +36,7 @@ namespace Eu4ModEditor
         public static List<TradeGood> TradeGoods = new List<TradeGood>();
         public static List<TradeGood> LatentTradeGoods = new List<TradeGood>();
         public static Random GlobalRandom = new Random();
-        public static Province ClickedProvince;
+        //public static Province ClickedProvince;
         public static string pathtomod = "";
         public static string pathtogame = "";
         public static Point CameraPosition = new Point(0, 0);
@@ -44,8 +44,6 @@ namespace Eu4ModEditor
         public static Bitmap ProvincesMapBitmap;
         public static Bitmap DevelopmentBitmap;
         public static Thread UpdtGraphicsThread;
-        public static bool ChangedSomething = false;
-        public static bool MultiProvinceMode = false;
 
         public static bool ShowSeaTilesAreaMapmode = false;
 
