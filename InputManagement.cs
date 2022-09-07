@@ -30,12 +30,12 @@ namespace Eu4ModEditor
                 GlobalVariables.CameraPosition.Y -= 160;
             else if (name == "DownButton")
                 GlobalVariables.CameraPosition.Y += 160;
-            if (GlobalVariables.CameraPosition.X + 1090 >= GlobalVariables.ProvincesMap.Width)
-                GlobalVariables.CameraPosition.X = GlobalVariables.ProvincesMap.Width - 1090;
+            if (GlobalVariables.CameraPosition.X + GlobalVariables.MapDrawingWidth >= GlobalVariables.ProvincesMap.Width)
+                GlobalVariables.CameraPosition.X = GlobalVariables.ProvincesMap.Width - GlobalVariables.MapDrawingWidth;
             else if (GlobalVariables.CameraPosition.X < 0)
                 GlobalVariables.CameraPosition.X = 0;
-            if (GlobalVariables.CameraPosition.Y + 770 >= GlobalVariables.ProvincesMap.Height)
-                GlobalVariables.CameraPosition.Y = GlobalVariables.ProvincesMap.Height - 770;
+            if (GlobalVariables.CameraPosition.Y + GlobalVariables.MapDrawingHeight >= GlobalVariables.ProvincesMap.Height)
+                GlobalVariables.CameraPosition.Y = GlobalVariables.ProvincesMap.Height - GlobalVariables.MapDrawingHeight;
             else if (GlobalVariables.CameraPosition.Y < 0)
                 GlobalVariables.CameraPosition.Y = 0;
            

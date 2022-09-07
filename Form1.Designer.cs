@@ -167,6 +167,14 @@
             this.ProvinceColorLabelG = new System.Windows.Forms.Label();
             this.ProvinceColorLabelR = new System.Windows.Forms.Label();
             this.CountryPage = new System.Windows.Forms.TabPage();
+            this.groupBox22 = new System.Windows.Forms.GroupBox();
+            this.SaveCountryAdj = new System.Windows.Forms.Button();
+            this.label67 = new System.Windows.Forms.Label();
+            this.SaveCountryName = new System.Windows.Forms.Button();
+            this.CountryNameLocalisationBox = new System.Windows.Forms.TextBox();
+            this.SaveCountryLocalisation = new System.Windows.Forms.Button();
+            this.label66 = new System.Windows.Forms.Label();
+            this.CountryAdjLocalisationBox = new System.Windows.Forms.TextBox();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
             this.GovernmentRankNumeric = new System.Windows.Forms.NumericUpDown();
             this.label40 = new System.Windows.Forms.Label();
@@ -176,6 +184,8 @@
             this.label38 = new System.Windows.Forms.Label();
             this.OpenCountryHistoryFileButton = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.label65 = new System.Windows.Forms.Label();
+            this.GraphicalCultureBox = new System.Windows.Forms.ComboBox();
             this.label35 = new System.Windows.Forms.Label();
             this.CountryPrimaryCultureBox = new System.Windows.Forms.ComboBox();
             this.label34 = new System.Windows.Forms.Label();
@@ -342,17 +352,6 @@
             this.DiscoveredByMapmode = new System.Windows.Forms.Button();
             this.GovernmentMapmode = new System.Windows.Forms.Button();
             this.TradeCompanyMapmode = new System.Windows.Forms.Button();
-            this.BorderingDebugButton = new System.Windows.Forms.Button();
-            this.GraphicalCultureBox = new System.Windows.Forms.ComboBox();
-            this.label65 = new System.Windows.Forms.Label();
-            this.groupBox22 = new System.Windows.Forms.GroupBox();
-            this.SaveCountryAdj = new System.Windows.Forms.Button();
-            this.SaveCountryName = new System.Windows.Forms.Button();
-            this.SaveCountryLocalisation = new System.Windows.Forms.Button();
-            this.CountryAdjLocalisationBox = new System.Windows.Forms.TextBox();
-            this.label66 = new System.Windows.Forms.Label();
-            this.CountryNameLocalisationBox = new System.Windows.Forms.TextBox();
-            this.label67 = new System.Windows.Forms.Label();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.ProvinceTabControl.SuspendLayout();
@@ -378,6 +377,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ProvinceTaxNumeric)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.CountryPage.SuspendLayout();
+            this.groupBox22.SuspendLayout();
             this.groupBox14.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GovernmentRankNumeric)).BeginInit();
             this.groupBox4.SuspendLayout();
@@ -405,7 +405,6 @@
             this.groupBox19.SuspendLayout();
             this.ChangesTab.SuspendLayout();
             this.SavingTab.SuspendLayout();
-            this.groupBox22.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tabs
@@ -421,7 +420,7 @@
             this.Tabs.Location = new System.Drawing.Point(1171, 12);
             this.Tabs.Name = "Tabs";
             this.Tabs.SelectedIndex = 0;
-            this.Tabs.Size = new System.Drawing.Size(564, 837);
+            this.Tabs.Size = new System.Drawing.Size(564, 844);
             this.Tabs.TabIndex = 0;
             // 
             // ProvinceTab
@@ -435,7 +434,7 @@
             this.ProvinceTab.Location = new System.Drawing.Point(4, 22);
             this.ProvinceTab.Name = "ProvinceTab";
             this.ProvinceTab.Padding = new System.Windows.Forms.Padding(3);
-            this.ProvinceTab.Size = new System.Drawing.Size(556, 811);
+            this.ProvinceTab.Size = new System.Drawing.Size(556, 818);
             this.ProvinceTab.TabIndex = 0;
             this.ProvinceTab.Text = "Province";
             this.ProvinceTab.UseVisualStyleBackColor = true;
@@ -1935,10 +1934,88 @@
             this.CountryPage.Location = new System.Drawing.Point(4, 22);
             this.CountryPage.Name = "CountryPage";
             this.CountryPage.Padding = new System.Windows.Forms.Padding(3);
-            this.CountryPage.Size = new System.Drawing.Size(556, 811);
+            this.CountryPage.Size = new System.Drawing.Size(556, 818);
             this.CountryPage.TabIndex = 1;
             this.CountryPage.Text = "Country";
             this.CountryPage.UseVisualStyleBackColor = true;
+            // 
+            // groupBox22
+            // 
+            this.groupBox22.Controls.Add(this.SaveCountryAdj);
+            this.groupBox22.Controls.Add(this.label67);
+            this.groupBox22.Controls.Add(this.SaveCountryName);
+            this.groupBox22.Controls.Add(this.CountryNameLocalisationBox);
+            this.groupBox22.Controls.Add(this.SaveCountryLocalisation);
+            this.groupBox22.Controls.Add(this.label66);
+            this.groupBox22.Controls.Add(this.CountryAdjLocalisationBox);
+            this.groupBox22.Location = new System.Drawing.Point(6, 374);
+            this.groupBox22.Name = "groupBox22";
+            this.groupBox22.Size = new System.Drawing.Size(349, 178);
+            this.groupBox22.TabIndex = 43;
+            this.groupBox22.TabStop = false;
+            this.groupBox22.Text = "Localisation";
+            // 
+            // SaveCountryAdj
+            // 
+            this.SaveCountryAdj.Location = new System.Drawing.Point(266, 72);
+            this.SaveCountryAdj.Name = "SaveCountryAdj";
+            this.SaveCountryAdj.Size = new System.Drawing.Size(75, 20);
+            this.SaveCountryAdj.TabIndex = 50;
+            this.SaveCountryAdj.Text = "Save";
+            this.SaveCountryAdj.UseVisualStyleBackColor = true;
+            this.SaveCountryAdj.Click += new System.EventHandler(this.SaveCountryAdj_Click);
+            // 
+            // label67
+            // 
+            this.label67.AutoSize = true;
+            this.label67.Location = new System.Drawing.Point(6, 17);
+            this.label67.Name = "label67";
+            this.label67.Size = new System.Drawing.Size(75, 13);
+            this.label67.TabIndex = 44;
+            this.label67.Text = "Country name:";
+            // 
+            // SaveCountryName
+            // 
+            this.SaveCountryName.Location = new System.Drawing.Point(266, 33);
+            this.SaveCountryName.Name = "SaveCountryName";
+            this.SaveCountryName.Size = new System.Drawing.Size(75, 20);
+            this.SaveCountryName.TabIndex = 49;
+            this.SaveCountryName.Text = "Save";
+            this.SaveCountryName.UseVisualStyleBackColor = true;
+            this.SaveCountryName.Click += new System.EventHandler(this.SaveCountryName_Click);
+            // 
+            // CountryNameLocalisationBox
+            // 
+            this.CountryNameLocalisationBox.Location = new System.Drawing.Point(9, 33);
+            this.CountryNameLocalisationBox.Name = "CountryNameLocalisationBox";
+            this.CountryNameLocalisationBox.Size = new System.Drawing.Size(251, 20);
+            this.CountryNameLocalisationBox.TabIndex = 45;
+            // 
+            // SaveCountryLocalisation
+            // 
+            this.SaveCountryLocalisation.Location = new System.Drawing.Point(9, 98);
+            this.SaveCountryLocalisation.Name = "SaveCountryLocalisation";
+            this.SaveCountryLocalisation.Size = new System.Drawing.Size(251, 23);
+            this.SaveCountryLocalisation.TabIndex = 48;
+            this.SaveCountryLocalisation.Text = "Save localisation";
+            this.SaveCountryLocalisation.UseVisualStyleBackColor = true;
+            this.SaveCountryLocalisation.Click += new System.EventHandler(this.SaveCountryLocalisation_Click);
+            // 
+            // label66
+            // 
+            this.label66.AutoSize = true;
+            this.label66.Location = new System.Drawing.Point(6, 56);
+            this.label66.Name = "label66";
+            this.label66.Size = new System.Drawing.Size(92, 13);
+            this.label66.TabIndex = 46;
+            this.label66.Text = "Country adjective:";
+            // 
+            // CountryAdjLocalisationBox
+            // 
+            this.CountryAdjLocalisationBox.Location = new System.Drawing.Point(9, 72);
+            this.CountryAdjLocalisationBox.Name = "CountryAdjLocalisationBox";
+            this.CountryAdjLocalisationBox.Size = new System.Drawing.Size(251, 20);
+            this.CountryAdjLocalisationBox.TabIndex = 47;
             // 
             // groupBox14
             // 
@@ -2073,6 +2150,28 @@
             this.groupBox4.TabIndex = 35;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Country";
+            // 
+            // label65
+            // 
+            this.label65.AutoSize = true;
+            this.label65.Location = new System.Drawing.Point(274, 140);
+            this.label65.Name = "label65";
+            this.label65.Size = new System.Drawing.Size(87, 13);
+            this.label65.TabIndex = 39;
+            this.label65.Text = "Graphical culture";
+            // 
+            // GraphicalCultureBox
+            // 
+            this.GraphicalCultureBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.GraphicalCultureBox.Enabled = false;
+            this.GraphicalCultureBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.GraphicalCultureBox.FormattingEnabled = true;
+            this.GraphicalCultureBox.Location = new System.Drawing.Point(367, 135);
+            this.GraphicalCultureBox.Name = "GraphicalCultureBox";
+            this.GraphicalCultureBox.Size = new System.Drawing.Size(154, 24);
+            this.GraphicalCultureBox.TabIndex = 38;
+            this.GraphicalCultureBox.TabStop = false;
+            this.GraphicalCultureBox.SelectedIndexChanged += new System.EventHandler(this.GraphicalCultureBox_SelectedIndexChanged);
             // 
             // label35
             // 
@@ -2294,7 +2393,7 @@
             this.TradeGoodsTab.Controls.Add(this.TradeGoodsInfoPanel);
             this.TradeGoodsTab.Location = new System.Drawing.Point(4, 22);
             this.TradeGoodsTab.Name = "TradeGoodsTab";
-            this.TradeGoodsTab.Size = new System.Drawing.Size(556, 811);
+            this.TradeGoodsTab.Size = new System.Drawing.Size(556, 818);
             this.TradeGoodsTab.TabIndex = 3;
             this.TradeGoodsTab.Text = "Trade Goods";
             this.TradeGoodsTab.UseVisualStyleBackColor = true;
@@ -2314,7 +2413,7 @@
             this.TradeNodesTab.Controls.Add(this.groupBox7);
             this.TradeNodesTab.Location = new System.Drawing.Point(4, 22);
             this.TradeNodesTab.Name = "TradeNodesTab";
-            this.TradeNodesTab.Size = new System.Drawing.Size(556, 811);
+            this.TradeNodesTab.Size = new System.Drawing.Size(556, 818);
             this.TradeNodesTab.TabIndex = 4;
             this.TradeNodesTab.Text = "Trade Nodes";
             this.TradeNodesTab.UseVisualStyleBackColor = true;
@@ -2647,7 +2746,7 @@
             this.AdditionalPage.Controls.Add(this.OpenWordCreator);
             this.AdditionalPage.Location = new System.Drawing.Point(4, 22);
             this.AdditionalPage.Name = "AdditionalPage";
-            this.AdditionalPage.Size = new System.Drawing.Size(556, 811);
+            this.AdditionalPage.Size = new System.Drawing.Size(556, 818);
             this.AdditionalPage.TabIndex = 2;
             this.AdditionalPage.Text = "Additional Tools";
             this.AdditionalPage.UseVisualStyleBackColor = true;
@@ -2680,7 +2779,7 @@
             this.MacroSelecter.Controls.Add(this.groupBox19);
             this.MacroSelecter.Location = new System.Drawing.Point(4, 22);
             this.MacroSelecter.Name = "MacroSelecter";
-            this.MacroSelecter.Size = new System.Drawing.Size(556, 811);
+            this.MacroSelecter.Size = new System.Drawing.Size(556, 818);
             this.MacroSelecter.TabIndex = 8;
             this.MacroSelecter.Text = "MacroSelector";
             this.MacroSelecter.UseVisualStyleBackColor = true;
@@ -3502,7 +3601,7 @@
             this.ChangesTab.Controls.Add(this.ChangesLayoutPanel);
             this.ChangesTab.Location = new System.Drawing.Point(4, 22);
             this.ChangesTab.Name = "ChangesTab";
-            this.ChangesTab.Size = new System.Drawing.Size(556, 811);
+            this.ChangesTab.Size = new System.Drawing.Size(556, 818);
             this.ChangesTab.TabIndex = 5;
             this.ChangesTab.Text = "Changes";
             this.ChangesTab.UseVisualStyleBackColor = true;
@@ -3553,7 +3652,7 @@
             this.SavingTab.Controls.Add(this.RefreshSavesButton);
             this.SavingTab.Location = new System.Drawing.Point(4, 22);
             this.SavingTab.Name = "SavingTab";
-            this.SavingTab.Size = new System.Drawing.Size(556, 811);
+            this.SavingTab.Size = new System.Drawing.Size(556, 818);
             this.SavingTab.TabIndex = 7;
             this.SavingTab.Text = "Saving";
             this.SavingTab.UseVisualStyleBackColor = true;
@@ -3688,9 +3787,9 @@
             // 
             // ReloadMapsButton
             // 
-            this.ReloadMapsButton.Location = new System.Drawing.Point(1595, 852);
+            this.ReloadMapsButton.Location = new System.Drawing.Point(1148, 855);
             this.ReloadMapsButton.Name = "ReloadMapsButton";
-            this.ReloadMapsButton.Size = new System.Drawing.Size(136, 38);
+            this.ReloadMapsButton.Size = new System.Drawing.Size(49, 46);
             this.ReloadMapsButton.TabIndex = 12;
             this.ReloadMapsButton.Text = "Reload Maps";
             this.ReloadMapsButton.UseVisualStyleBackColor = true;
@@ -3786,125 +3885,13 @@
             this.TradeCompanyMapmode.Text = "Trade com. mapmode";
             this.TradeCompanyMapmode.UseVisualStyleBackColor = true;
             // 
-            // BorderingDebugButton
-            // 
-            this.BorderingDebugButton.Location = new System.Drawing.Point(1209, 868);
-            this.BorderingDebugButton.Name = "BorderingDebugButton";
-            this.BorderingDebugButton.Size = new System.Drawing.Size(136, 22);
-            this.BorderingDebugButton.TabIndex = 23;
-            this.BorderingDebugButton.Text = "Bordering debug";
-            this.BorderingDebugButton.UseVisualStyleBackColor = true;
-            this.BorderingDebugButton.Visible = false;
-            this.BorderingDebugButton.Click += new System.EventHandler(this.BorderingDebugButton_Click);
-            // 
-            // GraphicalCultureBox
-            // 
-            this.GraphicalCultureBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.GraphicalCultureBox.Enabled = false;
-            this.GraphicalCultureBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.GraphicalCultureBox.FormattingEnabled = true;
-            this.GraphicalCultureBox.Location = new System.Drawing.Point(367, 135);
-            this.GraphicalCultureBox.Name = "GraphicalCultureBox";
-            this.GraphicalCultureBox.Size = new System.Drawing.Size(154, 24);
-            this.GraphicalCultureBox.TabIndex = 38;
-            this.GraphicalCultureBox.TabStop = false;
-            this.GraphicalCultureBox.SelectedIndexChanged += new System.EventHandler(this.GraphicalCultureBox_SelectedIndexChanged);
-            // 
-            // label65
-            // 
-            this.label65.AutoSize = true;
-            this.label65.Location = new System.Drawing.Point(274, 140);
-            this.label65.Name = "label65";
-            this.label65.Size = new System.Drawing.Size(87, 13);
-            this.label65.TabIndex = 39;
-            this.label65.Text = "Graphical culture";
-            // 
-            // groupBox22
-            // 
-            this.groupBox22.Controls.Add(this.SaveCountryAdj);
-            this.groupBox22.Controls.Add(this.label67);
-            this.groupBox22.Controls.Add(this.SaveCountryName);
-            this.groupBox22.Controls.Add(this.CountryNameLocalisationBox);
-            this.groupBox22.Controls.Add(this.SaveCountryLocalisation);
-            this.groupBox22.Controls.Add(this.label66);
-            this.groupBox22.Controls.Add(this.CountryAdjLocalisationBox);
-            this.groupBox22.Location = new System.Drawing.Point(6, 374);
-            this.groupBox22.Name = "groupBox22";
-            this.groupBox22.Size = new System.Drawing.Size(349, 178);
-            this.groupBox22.TabIndex = 43;
-            this.groupBox22.TabStop = false;
-            this.groupBox22.Text = "Localisation";
-            // 
-            // SaveCountryAdj
-            // 
-            this.SaveCountryAdj.Location = new System.Drawing.Point(266, 72);
-            this.SaveCountryAdj.Name = "SaveCountryAdj";
-            this.SaveCountryAdj.Size = new System.Drawing.Size(75, 20);
-            this.SaveCountryAdj.TabIndex = 50;
-            this.SaveCountryAdj.Text = "Save";
-            this.SaveCountryAdj.UseVisualStyleBackColor = true;
-            this.SaveCountryAdj.Click += new System.EventHandler(this.SaveCountryAdj_Click);
-            // 
-            // SaveCountryName
-            // 
-            this.SaveCountryName.Location = new System.Drawing.Point(266, 33);
-            this.SaveCountryName.Name = "SaveCountryName";
-            this.SaveCountryName.Size = new System.Drawing.Size(75, 20);
-            this.SaveCountryName.TabIndex = 49;
-            this.SaveCountryName.Text = "Save";
-            this.SaveCountryName.UseVisualStyleBackColor = true;
-            this.SaveCountryName.Click += new System.EventHandler(this.SaveCountryName_Click);
-            // 
-            // SaveCountryLocalisation
-            // 
-            this.SaveCountryLocalisation.Location = new System.Drawing.Point(9, 98);
-            this.SaveCountryLocalisation.Name = "SaveCountryLocalisation";
-            this.SaveCountryLocalisation.Size = new System.Drawing.Size(251, 23);
-            this.SaveCountryLocalisation.TabIndex = 48;
-            this.SaveCountryLocalisation.Text = "Save localisation";
-            this.SaveCountryLocalisation.UseVisualStyleBackColor = true;
-            this.SaveCountryLocalisation.Click += new System.EventHandler(this.SaveCountryLocalisation_Click);
-            // 
-            // CountryAdjLocalisationBox
-            // 
-            this.CountryAdjLocalisationBox.Location = new System.Drawing.Point(9, 72);
-            this.CountryAdjLocalisationBox.Name = "CountryAdjLocalisationBox";
-            this.CountryAdjLocalisationBox.Size = new System.Drawing.Size(251, 20);
-            this.CountryAdjLocalisationBox.TabIndex = 47;
-            // 
-            // label66
-            // 
-            this.label66.AutoSize = true;
-            this.label66.Location = new System.Drawing.Point(6, 56);
-            this.label66.Name = "label66";
-            this.label66.Size = new System.Drawing.Size(92, 13);
-            this.label66.TabIndex = 46;
-            this.label66.Text = "Country adjective:";
-            // 
-            // CountryNameLocalisationBox
-            // 
-            this.CountryNameLocalisationBox.Location = new System.Drawing.Point(9, 33);
-            this.CountryNameLocalisationBox.Name = "CountryNameLocalisationBox";
-            this.CountryNameLocalisationBox.Size = new System.Drawing.Size(251, 20);
-            this.CountryNameLocalisationBox.TabIndex = 45;
-            // 
-            // label67
-            // 
-            this.label67.AutoSize = true;
-            this.label67.Location = new System.Drawing.Point(6, 17);
-            this.label67.Name = "label67";
-            this.label67.Size = new System.Drawing.Size(75, 13);
-            this.label67.TabIndex = 44;
-            this.label67.Text = "Country name:";
-            // 
             // ModEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.ClientSize = new System.Drawing.Size(1736, 905);
-            this.Controls.Add(this.BorderingDebugButton);
+            this.ClientSize = new System.Drawing.Size(1274, 905);
             this.Controls.Add(this.TradeCompanyMapmode);
             this.Controls.Add(this.GovernmentMapmode);
             this.Controls.Add(this.DiscoveredByMapmode);
@@ -3928,7 +3915,6 @@
             this.Controls.Add(this.UpButton);
             this.Controls.Add(this.Tabs);
             this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "ModEditor";
@@ -3973,6 +3959,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.CountryPage.ResumeLayout(false);
+            this.groupBox22.ResumeLayout(false);
+            this.groupBox22.PerformLayout();
             this.groupBox14.ResumeLayout(false);
             this.groupBox14.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.GovernmentRankNumeric)).EndInit();
@@ -4016,8 +4004,6 @@
             this.groupBox19.ResumeLayout(false);
             this.ChangesTab.ResumeLayout(false);
             this.SavingTab.ResumeLayout(false);
-            this.groupBox22.ResumeLayout(false);
-            this.groupBox22.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -4304,7 +4290,6 @@
         private System.Windows.Forms.Button MacroInsideFort;
         private System.Windows.Forms.Button MacroWithoutFort;
         private System.Windows.Forms.Button MacroWithFort;
-        private System.Windows.Forms.Button BorderingDebugButton;
         private System.Windows.Forms.Button MacroDifferentArea;
         private System.Windows.Forms.Button MacroSameArea;
         public System.Windows.Forms.ComboBox MacroAreaBox;

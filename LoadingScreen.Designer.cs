@@ -50,6 +50,8 @@
             this.NewFilesForNewObjects = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.ReadOnlyNewFiles = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.AppSizeBox = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -59,7 +61,7 @@
             // 
             this.GameDirectoryBox.Location = new System.Drawing.Point(20, 41);
             this.GameDirectoryBox.Name = "GameDirectoryBox";
-            this.GameDirectoryBox.Size = new System.Drawing.Size(465, 20);
+            this.GameDirectoryBox.Size = new System.Drawing.Size(701, 20);
             this.GameDirectoryBox.TabIndex = 0;
             // 
             // label1
@@ -85,13 +87,13 @@
             // 
             this.ModDirectoryBox.Location = new System.Drawing.Point(20, 89);
             this.ModDirectoryBox.Name = "ModDirectoryBox";
-            this.ModDirectoryBox.Size = new System.Drawing.Size(465, 20);
+            this.ModDirectoryBox.Size = new System.Drawing.Size(701, 20);
             this.ModDirectoryBox.TabIndex = 2;
             // 
             // GameDirectoryButton
             // 
             this.GameDirectoryButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.GameDirectoryButton.Location = new System.Drawing.Point(491, 41);
+            this.GameDirectoryButton.Location = new System.Drawing.Point(727, 41);
             this.GameDirectoryButton.Name = "GameDirectoryButton";
             this.GameDirectoryButton.Size = new System.Drawing.Size(37, 20);
             this.GameDirectoryButton.TabIndex = 4;
@@ -101,7 +103,7 @@
             // 
             // ModDirectoryButton
             // 
-            this.ModDirectoryButton.Location = new System.Drawing.Point(491, 89);
+            this.ModDirectoryButton.Location = new System.Drawing.Point(727, 89);
             this.ModDirectoryButton.Name = "ModDirectoryButton";
             this.ModDirectoryButton.Size = new System.Drawing.Size(37, 20);
             this.ModDirectoryButton.TabIndex = 5;
@@ -113,7 +115,7 @@
             // 
             this.CheckFilesButton.Location = new System.Drawing.Point(20, 115);
             this.CheckFilesButton.Name = "CheckFilesButton";
-            this.CheckFilesButton.Size = new System.Drawing.Size(508, 23);
+            this.CheckFilesButton.Size = new System.Drawing.Size(701, 23);
             this.CheckFilesButton.TabIndex = 6;
             this.CheckFilesButton.Text = "Check and set files";
             this.CheckFilesButton.UseVisualStyleBackColor = true;
@@ -130,7 +132,7 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(538, 195);
+            this.groupBox1.Size = new System.Drawing.Size(775, 146);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Step 1";
@@ -145,7 +147,7 @@
             this.groupBox2.Controls.Add(this.LoadingPanel);
             this.groupBox2.Controls.Add(this.ConfirmFileUsage);
             this.groupBox2.Enabled = false;
-            this.groupBox2.Location = new System.Drawing.Point(12, 213);
+            this.groupBox2.Location = new System.Drawing.Point(12, 161);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(775, 502);
             this.groupBox2.TabIndex = 8;
@@ -222,14 +224,16 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label5);
+            this.groupBox3.Controls.Add(this.AppSizeBox);
             this.groupBox3.Controls.Add(this.label4);
             this.groupBox3.Controls.Add(this.LanguageBox);
             this.groupBox3.Controls.Add(this.NewFilesForNewObjects);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.ReadOnlyNewFiles);
-            this.groupBox3.Location = new System.Drawing.Point(552, 12);
+            this.groupBox3.Location = new System.Drawing.Point(796, 12);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(235, 195);
+            this.groupBox3.Size = new System.Drawing.Size(235, 248);
             this.groupBox3.TabIndex = 7;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Special options";
@@ -290,11 +294,32 @@
             this.ReadOnlyNewFiles.Text = "Create new files when Read Only is on";
             this.ReadOnlyNewFiles.UseVisualStyleBackColor = true;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(13, 197);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(47, 13);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "App size";
+            // 
+            // AppSizeBox
+            // 
+            this.AppSizeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AppSizeBox.FormattingEnabled = true;
+            this.AppSizeBox.Items.AddRange(new object[] {
+            "1752 x 944",
+            "1290 x 944"});
+            this.AppSizeBox.Location = new System.Drawing.Point(16, 216);
+            this.AppSizeBox.Name = "AppSizeBox";
+            this.AppSizeBox.Size = new System.Drawing.Size(136, 21);
+            this.AppSizeBox.TabIndex = 5;
+            // 
             // LoadingScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(799, 719);
+            this.ClientSize = new System.Drawing.Size(1041, 674);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -337,5 +362,7 @@
         private System.Windows.Forms.CheckBox NewFilesForNewObjects;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox LanguageBox;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox AppSizeBox;
     }
 }

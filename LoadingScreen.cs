@@ -294,6 +294,7 @@ namespace Eu4ModEditor
                         GlobalVariables.LocalisationLanguage = GlobalVariables.Languages.English;
                         break;
                 }
+                GlobalVariables.AppSizeOption = AppSizeBox.SelectedIndex;
                 this.Close();
             }
         }
@@ -487,6 +488,7 @@ namespace Eu4ModEditor
         private void LoadingScreen_Load(object sender, EventArgs e)
         {
             LanguageBox.SelectedIndex = 0;
+            AppSizeBox.SelectedIndex = 0;
         }
     }
 }
