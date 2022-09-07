@@ -417,61 +417,61 @@ namespace Eu4ModEditor
                         lastwassep = true;
                     }
                 }
+                text += "\n";
             }
-            else
-            {
-                foreach (NodeItem ni in n.ItemOrder)
-                {
-                    if (ni is Variable)
-                    {
-                        Variable v = (Variable)ni;
-                        text += v.Name + " = " + v.Value;
-                        if (v.Comment != "")
-                            text += "#" + v.Comment;
-                        text += "\n";
-                        foreach (CommentLine cl in n.Comments)
-                        {
-                            if (cl.Below == v)
-                                text += "#" + cl.Text + "\n";
-                        }
-                    }
-                    else if (ni is Node)
-                    {
-                        Node inner = (Node)ni;
-                        text += inner.Name + " = {";
-                        if (inner.FirstBracketComment != "")
-                            text += " #" + inner.FirstBracketComment + "\n";
-                        if (inner.UseInnerText && false)
-                        {
-                            text += " " + inner.PureInnerText + " ";
-                        }
-                        else
-                        {
-                            text += "\n";
-                            string innertext = NodeToText(inner);
-                            string tabbedtext = "";
-                            foreach (string line in innertext.Split('\n'))
-                            {
-                                if (line != "")
-                                {
-                                    tabbedtext += "\t" + line + "\n";
-                                }
-                            }
-                            text += tabbedtext;
-                        }
-                        text += "}";
-                        if (ni.Comment != "")
-                            text += "#" + ni.Comment;
-                        text += "\n";
 
-                        foreach (CommentLine cl in n.Comments)
+            foreach (NodeItem ni in n.ItemOrder)
+            {
+                if (ni is Variable)
+                {
+                    Variable v = (Variable)ni;
+                    text += v.Name + " = " + v.Value;
+                    if (v.Comment != "")
+                        text += "#" + v.Comment;
+                    text += "\n";
+                    foreach (CommentLine cl in n.Comments)
+                    {
+                        if (cl.Below == v)
+                            text += "#" + cl.Text + "\n";
+                    }
+                }
+                else if (ni is Node)
+                {
+                    Node inner = (Node)ni;
+                    text += inner.Name + " = {";
+                    if (inner.FirstBracketComment != "")
+                        text += " #" + inner.FirstBracketComment + "\n";
+                    if (inner.UseInnerText && false)
+                    {
+                        text += " " + inner.PureInnerText + " ";
+                    }
+                    else
+                    {
+                        text += "\n";
+                        string innertext = NodeToText(inner);
+                        string tabbedtext = "";
+                        foreach (string line in innertext.Split('\n'))
                         {
-                            if (cl.Below == inner)
-                                text += "#" + cl.Text + "\n";
+                            if (line != "")
+                            {
+                                tabbedtext += "\t" + line + "\n";
+                            }
                         }
+                        text += tabbedtext;
+                    }
+                    text += "}";
+                    if (ni.Comment != "")
+                        text += "#" + ni.Comment;
+                    text += "\n";
+
+                    foreach (CommentLine cl in n.Comments)
+                    {
+                        if (cl.Below == inner)
+                            text += "#" + cl.Text + "\n";
                     }
                 }
             }
+
             return text;
         }
         public bool ChangeVariable(string name, string value, bool forceadd = false)

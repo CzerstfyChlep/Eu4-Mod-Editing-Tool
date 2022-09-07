@@ -136,6 +136,8 @@ namespace Eu4ModEditor
 
         public static int MapDrawingWidth = 1090;
         public static int MapDrawingHeight = 770;
+
+        public static bool Exited = false;
     }
 }
 

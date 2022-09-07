@@ -352,6 +352,7 @@
             this.DiscoveredByMapmode = new System.Windows.Forms.Button();
             this.GovernmentMapmode = new System.Windows.Forms.Button();
             this.TradeCompanyMapmode = new System.Windows.Forms.Button();
+            this.StatisticsButton = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.ProvinceTabControl.SuspendLayout();
@@ -2742,6 +2743,7 @@
             // 
             // AdditionalPage
             // 
+            this.AdditionalPage.Controls.Add(this.StatisticsButton);
             this.AdditionalPage.Controls.Add(this.RandomIdeaBoxButton);
             this.AdditionalPage.Controls.Add(this.OpenWordCreator);
             this.AdditionalPage.Location = new System.Drawing.Point(4, 22);
@@ -3885,13 +3887,24 @@
             this.TradeCompanyMapmode.Text = "Trade com. mapmode";
             this.TradeCompanyMapmode.UseVisualStyleBackColor = true;
             // 
+            // StatisticsButton
+            // 
+            this.StatisticsButton.Enabled = false;
+            this.StatisticsButton.Location = new System.Drawing.Point(6, 64);
+            this.StatisticsButton.Name = "StatisticsButton";
+            this.StatisticsButton.Size = new System.Drawing.Size(543, 23);
+            this.StatisticsButton.TabIndex = 2;
+            this.StatisticsButton.Text = "Statistics";
+            this.StatisticsButton.UseVisualStyleBackColor = true;
+            this.StatisticsButton.Click += new System.EventHandler(this.StatisticsButton_Click);
+            // 
             // ModEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
-            this.ClientSize = new System.Drawing.Size(1274, 905);
+            this.ClientSize = new System.Drawing.Size(1736, 905);
             this.Controls.Add(this.TradeCompanyMapmode);
             this.Controls.Add(this.GovernmentMapmode);
             this.Controls.Add(this.DiscoveredByMapmode);
@@ -4334,6 +4347,7 @@
         private System.Windows.Forms.Button SaveCountryLocalisation;
         private System.Windows.Forms.Label label66;
         private System.Windows.Forms.TextBox CountryAdjLocalisationBox;
+        private System.Windows.Forms.Button StatisticsButton;
     }
 }
 

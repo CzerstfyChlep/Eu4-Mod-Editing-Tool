@@ -161,6 +161,12 @@
     <Compile Include="Region.cs" />
     <Compile Include="Religion.cs" />
     <Compile Include="Saving.cs" />
+    <Compile Include="StatisticsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StatisticsForm.designer.cs">
+      <DependentUpon>StatisticsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Superregion.cs" />
     <Compile Include="SyncLoad.cs" />
     <Compile Include="TradeCompany.cs" />
@@ -193,6 +199,9 @@
     </Compile>
     <EmbeddedResource Include="RandomIdeaBox.resx">
       <DependentUpon>RandomIdeaBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StatisticsForm.resx">
+      <DependentUpon>StatisticsForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Eu4ModEditor_TemporaryKey.pfx" />
     <None Include="Properties\DataSources\Religion.datasource" />

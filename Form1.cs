@@ -2215,7 +2215,7 @@ namespace Eu4ModEditor
         public void OnExitDo(object sender, EventArgs e)
         {
             GlobalVariables.UpdtGraphicsThread.Abort();
-
+            GlobalVariables.Exited = true;
             //TODO
             //Save files to temp?
         }
@@ -3862,8 +3862,13 @@ namespace Eu4ModEditor
         }
 
 
+
         #endregion
 
-
+        private void StatisticsButton_Click(object sender, EventArgs e)
+        {
+            StatisticsForm sf = new StatisticsForm();
+            sf.Show();
+        }
     }
 }
