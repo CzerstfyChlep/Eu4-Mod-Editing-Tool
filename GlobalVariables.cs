@@ -133,11 +133,14 @@ namespace Eu4ModEditor
         public static int MapWidth = 0;
 
         public static int AppSizeOption = 0;
+        public static bool DarkMode = false;
 
         public static int MapDrawingWidth = 1090;
         public static int MapDrawingHeight = 770;
 
         public static bool Exited = false;
+
+
     }
 }
 

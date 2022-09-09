@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RandomIdeaBox));
             this.RandomIdeaButton = new System.Windows.Forms.Button();
             this.OutputBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
@@ -57,6 +58,7 @@
             this.ClientSize = new System.Drawing.Size(201, 77);
             this.Controls.Add(this.OutputBox);
             this.Controls.Add(this.RandomIdeaButton);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "RandomIdeaBox";
             this.Text = "Random Idea";

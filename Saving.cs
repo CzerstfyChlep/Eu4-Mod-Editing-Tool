@@ -33,7 +33,7 @@ namespace Eu4ModEditor
                         province.HistoryFile = GlobalVariables.pathtomod + "history\\provinces\\" + province.HistoryFile.Split('\\').Last();
                     }                                               
                     nf.MainNode.Variables.RemoveAll(x => x.Name == "add_core" || x.Name == "discovered_by" || GlobalVariables.Buildings.Any(y=>y.Name == x.Name) || x.Name == "add_claim");
-                   
+                    nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "add_core" || x.Name == "discovered_by" || GlobalVariables.Buildings.Any(y => y.Name == x.Name) || x.Name == "add_claim");
                     foreach (string tag in province.GetCores())
                     {
                         nf.MainNode.AddVariable(new Variable("add_core", tag));
@@ -60,6 +60,7 @@ namespace Eu4ModEditor
                     else
                     {
                         nf.MainNode.Variables.RemoveAll(x => x.Name == "owner");
+                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "owner");
                     }
 
                     if(province.Tax > 0)
@@ -75,32 +76,48 @@ namespace Eu4ModEditor
                     else
                     {
                         nf.MainNode.Variables.RemoveAll(x => x.Name == "culture");
+                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "culture");
                     }
                     if(province.TradeGood != null && province.TradeGood != TradeGood.nothing)
                         nf.MainNode.ChangeVariable("trade_goods", province.TradeGood.Name, true);
                     if (province.Religion != null && province.Religion != Religion.NoReligion)
                         nf.MainNode.ChangeVariable("religion", province.Religion.Name, true);
                     else
+                    {
                         nf.MainNode.Variables.RemoveAll(x => x.Name == "religion");
+                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "religion");
+                    }
                     if (province.HRE)
                         nf.MainNode.ChangeVariable("hre", "yes", true);
                     else
+                    {
                         nf.MainNode.Variables.RemoveAll(x => x.Name == "hre");
+                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "hre");
+                    }
 
                     if (province.Controller != Country.NoCountry && province.Controller != null)
                         nf.MainNode.ChangeVariable("controller", province.Controller.Tag, true);
-                    else if(province.OwnerCountry != Country.NoCountry && province.OwnerCountry != null)
+                    else if (province.OwnerCountry != Country.NoCountry && province.OwnerCountry != null)
                         nf.MainNode.ChangeVariable("controller", province.OwnerCountry.Tag, true);
                     else
+                    {
                         nf.MainNode.Variables.RemoveAll(x => x.Name == "controller");
+                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "controller");
+                    }
                     if (province.Fort)
                         nf.MainNode.ChangeVariable("fort_15th", "yes", true);
                     else
+                    {
                         nf.MainNode.Variables.RemoveAll(x => x.Name == "fort_15th");
+                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "fort_15th");
+                    }
                     if (province.CenterOfTrade > 0)
                         nf.MainNode.ChangeVariable("center_of_trade", province.CenterOfTrade + "", true);
                     else
+                    {
                         nf.MainNode.Variables.RemoveAll(x => x.Name == "center_of_trade");
+                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "center_of_trade");
+                    }
 
                     if (!province.Sea && !province.Lake && !province.Wasteland)
                     {
@@ -127,7 +144,10 @@ namespace Eu4ModEditor
                     else
                     {
                         if (n != null)
+                        {
                             nf.MainNode.Nodes.Remove(n);
+                            nf.MainNode.ItemOrder.Remove(n);
+                        }
                     }
 
 
@@ -210,7 +230,10 @@ namespace Eu4ModEditor
                     {
                         Variable primculture = nf.MainNode.Variables.Find(x => x.Name == "primary_culture");
                         if (primculture != null)
+                        {
                             nf.MainNode.Variables.Remove(primculture);
+                            nf.MainNode.ItemOrder.Remove(primculture);
+                        }
                     }
 
                     if (country.Government != null)
@@ -295,6 +318,7 @@ namespace Eu4ModEditor
                             continue;
 
                         nf.MainNode.Variables.RemoveAll(x => x.Name == "add_core");
+                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "add_core");
                         foreach (string tag in province.GetCores())
                         {
                             nf.MainNode.AddVariable("add_core", tag);
@@ -307,6 +331,7 @@ namespace Eu4ModEditor
                         else
                         {
                             nf.MainNode.Variables.RemoveAll(x => x.Name == "owner");
+                            nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "owner");
                         }
 
                         nf.MainNode.ChangeVariable("base_tax", province.Tax.ToString(), true);
@@ -319,24 +344,37 @@ namespace Eu4ModEditor
                         else
                         {
                             nf.MainNode.Variables.RemoveAll(x => x.Name == "culture");
+                            nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "culture");
                         }
                         nf.MainNode.ChangeVariable("trade_goods", province.TradeGood.Name, true);
-                        if(province.Religion != null)
+                        if (province.Religion != null)
                             nf.MainNode.ChangeVariable("religion", province.Religion.Name, true);
                         else
+                        {
                             nf.MainNode.Variables.RemoveAll(x => x.Name == "religion");
+                            nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "religion");
+                        }
                         if (province.HRE)
                             nf.MainNode.ChangeVariable("hre", "yes", true);
                         else
+                        {
                             nf.MainNode.Variables.RemoveAll(x => x.Name == "hre");
-                        if(province.Fort)
+                            nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "hre");
+                        }
+                        if (province.Fort)
                             nf.MainNode.ChangeVariable("fort_15th", "yes", true);
                         else
+                        {
                             nf.MainNode.Variables.RemoveAll(x => x.Name == "fort_15th");
+                            nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "fort_15th");
+                        }
                         if (province.CenterOfTrade > 0)
                             nf.MainNode.ChangeVariable("center_of_trade", province.CenterOfTrade + "", true);
                         else
+                        {
                             nf.MainNode.Variables.RemoveAll(x => x.Name == "center_of_trade");
+                            nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "center_of_trade");
+                        }
 
                         Node n = nf.MainNode.Nodes.Find(x => x.Name == "latent_trade_goods");
                         if (province.LatentTradeGood != null)
@@ -355,7 +393,10 @@ namespace Eu4ModEditor
                         else
                         {
                             if (n != null)
+                            {
                                 nf.MainNode.Nodes.Remove(n);
+                                nf.MainNode.ItemOrder.Remove(n);
+                            }
                         }
 
                        

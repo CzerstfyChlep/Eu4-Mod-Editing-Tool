@@ -68,6 +68,13 @@ namespace Eu4ModEditor
         public string CommonFile;
         public bool CommonFileGame = false;
 
+        public List<MonarchName> MonarchNames = new List<MonarchName>();
+        public List<string> LeaderNames = new List<string>();
+        public List<string> ShipNames = new List<string>();
+        public List<string> ArmyNames = new List<string>();
+        public List<string> FleetNames = new List<string>();
+
+
         public string TagFile;
 
 
@@ -110,7 +117,6 @@ namespace Eu4ModEditor
                 Variables["GovernmentRank"] = value;
             }
         }
-
         public string GraphicalCulture
         {
             get
@@ -124,9 +130,7 @@ namespace Eu4ModEditor
                 Variables["GraphicalCulture"] = value;
             }
         }
-
         public static Country NoCountry = new Country();
-
         public override string ToString()
         {
             return FullName;
@@ -155,6 +159,17 @@ namespace Eu4ModEditor
                     x += province.Tax + province.Production + province.Manpower;
                 return x;
             }
+        }
+    }
+
+    public class MonarchName
+    {
+        public string Name = "";
+        public int Chance = 0;
+        public MonarchName(string name, int chance)
+        {
+            Name = name;
+            Chance = chance;
         }
     }
 }

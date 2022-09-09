@@ -61,22 +61,35 @@ namespace Eu4ModEditor
             GlobalVariables.PressedKeys.Add(e.KeyCode.GetHashCode());
             if (!ModEditor.boxes.Any(x => x.DroppedDown) && !ModEditor.textboxes.Any(x=>x.Focused))
             {
+                    switch (e.KeyCode)
+                    {
+                        case Keys.A:
+                            __HandleMoveButton("LeftButton");
+                            break;
+                        case Keys.D:
+                            __HandleMoveButton("RightButton");
+                            break;
+                        case Keys.W:
+                            __HandleMoveButton("UpButton");
+                            break;
+                        case Keys.S:
+                            __HandleMoveButton("DownButton");
+                            break;
+                        case Keys.Q:
+                            //DevelopmentManagement.ClearDev();
+                            break;
+                    }
+             
+                
+            }
+            else if(!ModEditor.boxes.Any(x => x.DroppedDown) && ModEditor.textboxes.Any(x => x.Focused))
+            {
                 switch (e.KeyCode)
                 {
-                    case Keys.A:
-                        __HandleMoveButton("LeftButton");
-                        break;
-                    case Keys.D:
-                        __HandleMoveButton("RightButton");
-                        break;
-                    case Keys.W:
-                        __HandleMoveButton("UpButton");
-                        break;
-                    case Keys.S:
-                        __HandleMoveButton("DownButton");
-                        break;
-                    case Keys.Q:
-                        //DevelopmentManagement.ClearDev();
+                    case Keys.Enter:
+                    case Keys.Escape:
+                        GlobalVariables.MainForm.ActiveControl = null;             
+                        e.SuppressKeyPress = true;
                         break;
                 }
             }

@@ -88,6 +88,8 @@ namespace Eu4ModEditor
 
             KeyUp += InputManagement.HandleKeyUp;
 
+           
+
             RightButton.MouseClick += InputManagement.HandleMoveButton;
             LeftButton.MouseClick += InputManagement.HandleMoveButton;
             UpButton.MouseClick += InputManagement.HandleMoveButton;
@@ -116,11 +118,29 @@ namespace Eu4ModEditor
             DiscoveredByBox.KeyDown += InputManagement.IgnoreKeyPress;
             BuildingsBox.KeyDown += InputManagement.IgnoreKeyPress;
 
+            MonarchNameBox.LostFocus += FocusLost;
+            CountryNameLocalisationBox.LostFocus += FocusLost;
+            CountryAdjLocalisationBox.LostFocus += FocusLost;
+            CountryCapitalIDBox.LostFocus += FocusLost;
+            ProvinceNameLocalisationBox.LostFocus += FocusLost;
+            ProvinceAdjectiveLocalisationBox.LostFocus += FocusLost;
+            AreaNameChangeBox.LostFocus += FocusLost;
+            RegionNameChangeBox.LostFocus += FocusLost;
+            ContinentNameChangeBox.LostFocus += FocusLost;
+            SuperregionNameChangeBox.LostFocus += FocusLost;
+            TradeCompanyNameChangeBox.LostFocus += FocusLost;
+            ChangeTradeNodeNameBox.LostFocus += FocusLost;
+            TradeNodeProvinceLocationBox.LostFocus += FocusLost;
+
+            LeaderNamesBox.LostFocus += FocusLost;
+            ShipNamesBox.LostFocus += FocusLost;
+            ArmyNamesBox.LostFocus += FocusLost;
+            FleetNamesBox.LostFocus += FocusLost;
 
             HideSeaTiles.Click += ShowHideSeaTilesAreaMapmode_Click;
 
             boxes.AddRange(new ComboBox[] { OwnerBox, ReligionBox, CultureBox, TradeGoodBox, CountryBox, CountryReligionBox, AreaBox, RegionBox, ProvinceTradeNodeBox, TradeNodeBox, AddTradeNodeDestinationBox, ContinentBox, AddCoreBox, TechnologyGroupBox, CountryPrimaryCultureBox, DiscoveredByBox, BuildingsBox, SuperregionBox, TradeCompanyBox });
-            textboxes.AddRange(new TextBox[] { AreaNameChangeBox, AddNewAreaBox, AddNewRegionBox, RegionNameChangeBox, ChangeTradeNodeNameBox, TradeNodeNameBox, TradeNodeProvinceLocationBox, ContinentNameChangeBox, AddNewContinentBox, SuperregionNameChangeBox, AddNewSuperregionBox, TradeCompanyNameChangeBox, AddNewTradeCompanyBox, ProvinceNameLocalisationBox, ProvinceAdjectiveLocalisationBox, CountryNameLocalisationBox, CountryAdjLocalisationBox });
+            textboxes.AddRange(new TextBox[] { AreaNameChangeBox, AddNewAreaBox, AddNewRegionBox, RegionNameChangeBox, ChangeTradeNodeNameBox, TradeNodeNameBox, TradeNodeProvinceLocationBox, ContinentNameChangeBox, AddNewContinentBox, SuperregionNameChangeBox, AddNewSuperregionBox, TradeCompanyNameChangeBox, AddNewTradeCompanyBox, ProvinceNameLocalisationBox, ProvinceAdjectiveLocalisationBox, CountryNameLocalisationBox, CountryAdjLocalisationBox, MonarchNameBox, MonarchNameChancesTextBox, LeaderNamesBox, ShipNamesBox, ArmyNamesBox, FleetNamesBox });
             foreach (TradeGood tg in GlobalVariables.TradeGoods)
             {
                 CreateTradeGoodsInfoBox(tg);
@@ -202,11 +222,6 @@ namespace Eu4ModEditor
             GraphicalCultureBox.Items.AddRange(new string[] { "westerngfx", "easterngfx", "muslimgfx",
             "indiangfx", "asiangfx", "africangfx", "northamericagfx", "southamericagfx", "inuitgfx",
             "aboriginalgfx", "polynesiangfx", "southeastasiangfx"});
-            //TODO
-            //Replace all InternalValueChanges with this
-            //To do this I need a special class for binding all provinces
-            //ToTest.DataBindings.Add("Value", GlobalVariables.ClickedProvince, "Tax", true, DataSourceUpdateMode.OnPropertyChanged, 0);
-
             //SIZING
             if(GlobalVariables.AppSizeOption == 1)
             {
@@ -217,8 +232,49 @@ namespace Eu4ModEditor
                 DownButton.Width = 620;
                 RightButton.Location = new Point(665, RightButton.Location.Y);
             }
+
+
+            //GIVE FOCUS
+
+            MonarchNamePanel.MouseEnter += GainFocus;
+
+            //TABS CHANGE
+
+            Tabs.Selected += TabChanged;
+            NamesTabs.Selected += TabChanged;
+
+
+            //
+            //
+            //          TO DO TO DO TO DO
+            //
+            //
+            //
+            //    !!!!!MAKE ALL UPDATES CHECK FOR SELECTED TAB!!!!!
+            //
+
+
         }
 
+
+        public void TabChanged(object sender, EventArgs e)
+        {
+            if(sender == Tabs)
+            {
+                if(Tabs.SelectedTab == CountryPage)
+                {
+                    UpdateCountryPage();
+                    if (NamesTabs.SelectedTab == MonarchNamesTab)
+                        UpdateMonarchNames();
+                }
+                
+            }
+            else if(sender == NamesTabs)
+            {
+                if (NamesTabs.SelectedTab == MonarchNamesTab)
+                    UpdateMonarchNames();
+            }
+        }
 
         public static List<ComboBox> boxes = new List<ComboBox>();
         public static List<GroupBox> TradeGoodInfoBoxes = new List<GroupBox>();
@@ -839,8 +895,230 @@ namespace Eu4ModEditor
                 }
             }
         }
+
+        public void UpdateCountryPage()
+        {
+            if (CountryBox.SelectedIndex != 0)
+            {
+                MoveToCapitalButton.Enabled = true;
+                SelectAllProvincesButton.Enabled = true;
+                CountryCapitalIDBox.Enabled = true;
+                SaveCapitalIDButton.Enabled = true;
+                CapitalSetClickedButton.Enabled = true;
+                CountryReligionBox.Enabled = true;
+                TechnologyGroupBox.Enabled = true;
+                CountryPrimaryCultureBox.Enabled = true;
+                GovernmentTypeBox.Enabled = true;
+                GovernmentReformBox.Enabled = true;
+                GovernmentRankNumeric.Enabled = true;
+                GraphicalCultureBox.Enabled = true;
+                if (GlobalVariables.SelectedCountry != null)
+                {
+                    CountryNameBox.Text = GlobalVariables.SelectedCountry.FullName;
+                    CountryTagBox.Text = GlobalVariables.SelectedCountry.Tag;
+                    TotalDevelopmentBox.Text = GlobalVariables.SelectedCountry.TotalDevelopment.ToString();
+                    CountryProvinceCountBox.Text = GlobalVariables.SelectedCountry.Provinces.Count().ToString();
+                    if (GlobalVariables.SelectedCountry.Capital != null)
+                        CountryCapitalIDBox.Text = GlobalVariables.SelectedCountry.Capital.ID.ToString();
+                    else
+                        CountryCapitalIDBox.Text = "";
+
+                    if (GlobalVariables.SelectedCountry.Religion != Religion.NoReligion)
+                        ChangeValueInternally(CountryReligionBox, GlobalVariables.SelectedCountry.Religion);
+                    else
+                        ChangeValueInternally(CountryReligionBox, Religion.NoReligion);
+
+                    if (GlobalVariables.SelectedCountry.TechnologyGroup != "")
+                        ChangeValueInternally(TechnologyGroupBox, GlobalVariables.SelectedCountry.TechnologyGroup);
+                    else
+                        ChangeValueInternally(CountryReligionBox, 0);
+
+                    if (GlobalVariables.SelectedCountry.PrimaryCulture != Culture.NoCulture)
+                        ChangeValueInternally(CountryReligionBox, GlobalVariables.SelectedCountry.PrimaryCulture);
+                    else
+                        ChangeValueInternally(CountryReligionBox, Culture.NoCulture);
+
+                    if (GlobalVariables.SelectedCountry.Capital != null)
+                        ChangeValueInternally(CountryCapitalIDBox, GlobalVariables.SelectedCountry.Capital.ID.ToString());
+                    else
+                        ChangeValueInternally(CountryCapitalIDBox, "");
+
+                    if (GlobalVariables.SelectedCountry.Government != null)
+                    {
+                        ChangeValueInternally(GovernmentTypeBox, GovernmentTypeBox.Items.IndexOf(GlobalVariables.SelectedCountry.Government.Type));
+                        ChangeValueInternally(GovernmentReformBox, GovernmentReformBox.Items.IndexOf(GlobalVariables.SelectedCountry.GovernmentReform));
+                    }
+                    else
+                        GovernmentTypeBox.SelectedIndex = 0;
+
+                    ChangeValueInternally(GraphicalCultureBox, GlobalVariables.SelectedCountry.GraphicalCulture);
+
+                    ChangeValueInternally(GovernmentRankNumeric, GlobalVariables.SelectedCountry.GovernmentRank);
+
+
+                    SaveCountryAdj.Enabled = true;
+                    SaveCountryName.Enabled = true;
+
+                    if (GlobalVariables.ModLocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag))
+                        CountryNameLocalisationBox.Text = GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag];
+                    else if (GlobalVariables.LocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag))
+                        CountryNameLocalisationBox.Text = GlobalVariables.LocalisationEntries[GlobalVariables.SelectedCountry.Tag];
+                    else
+                        CountryNameLocalisationBox.Text = "";
+
+                    if (GlobalVariables.ModLocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag + "_ADJ"))
+                        CountryAdjLocalisationBox.Text = GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag + "_ADJ"];
+                    else if (GlobalVariables.LocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag + "_ADJ"))
+                        CountryAdjLocalisationBox.Text = GlobalVariables.LocalisationEntries[GlobalVariables.SelectedCountry.Tag + "_ADJ"];
+                    else
+                        CountryAdjLocalisationBox.Text = "";
+                    if (Tabs.SelectedTab == CountryPage && NamesTabs.SelectedTab == MonarchNamesTab)
+                        UpdateMonarchNames();
+                    //if (Tabs.SelectedTab == CountryPage && NamesTabs.SelectedTab == LeaderNamesTab)
+                    UpdateNames(UpdateNamesOptions.Leader);
+                    UpdateNames(UpdateNamesOptions.Ship);
+                    UpdateNames(UpdateNamesOptions.Army);
+                    UpdateNames(UpdateNamesOptions.Fleet);
+                }
+
+            }
+            else
+            {
+                MoveToCapitalButton.Enabled = false;
+                SelectAllProvincesButton.Enabled = false;
+                CountryCapitalIDBox.Enabled = false;
+                SaveCapitalIDButton.Enabled = false;
+                CapitalSetClickedButton.Enabled = false;
+                CountryReligionBox.Enabled = false;
+                TechnologyGroupBox.Enabled = false;
+                CountryPrimaryCultureBox.Enabled = false;
+                GovernmentTypeBox.Enabled = false;
+                GovernmentReformBox.Enabled = false;
+                GovernmentRankNumeric.Enabled = false;
+                GraphicalCultureBox.Enabled = false;
+                SaveCountryAdj.Enabled = true;
+                SaveCountryName.Enabled = true;
+            }
+        }
+
+        public List<TextBox> MonarchNamesTXTBOXES = new List<TextBox>();
+
+        public void UpdateMonarchNames()
+        {
+            MonarchNamePanel.Controls.Clear();
+            textboxes.RemoveAll(x => MonarchNamesTXTBOXES.Contains(x));
+            MonarchNamesTXTBOXES.Clear();
+            if (GlobalVariables.SelectedCountry != null)
+            { 
+                foreach(MonarchName mn in GlobalVariables.SelectedCountry.MonarchNames)
+                {
+                    Panel p = new Panel();
+                    p.Width = 240;
+                    p.Height = 30;
+                    p.Tag = mn;
+                    MonarchNamePanel.Controls.Add(p);
+
+                    TextBox tbname = new TextBox
+                    {
+                        Width = 140,
+                        Height = 20,
+                        Location = new Point(3, 5),
+                        Tag = "name",
+                        Text = mn.Name,               
+                    };
+                    tbname.LostFocus += FocusLost;
+                    MonarchNamesTXTBOXES.Add(tbname);
+                    p.Controls.Add(tbname);
+
+                    TextBox tbchance = new TextBox
+                    {
+                        Width = 42,
+                        Height = 20,
+                        Location = new Point(150, 5),
+                        Tag = "chance",
+                        Text = mn.Chance.ToString(),
+
+                    };
+                    tbchance.LostFocus += FocusLost;
+                    MonarchNamesTXTBOXES.Add(tbchance);
+                    p.Controls.Add(tbchance);
+
+                    Button b = new Button
+                    {
+                        Width = 34,
+                        Height = 23,
+                        Text = "X",
+                        Location = new Point(200, 3),
+                        Tag = mn
+                    };
+                    b.Click += RemoveMonarchNameClick;
+                    p.Controls.Add(b);
+                }
+                textboxes.AddRange(MonarchNamesTXTBOXES);
+            }
+        }
+
+        public enum UpdateNamesOptions { Leader, Ship, Army, Fleet }
+
+        public void UpdateNames(UpdateNamesOptions option)
+        {
+            switch (option)
+            {
+                case UpdateNamesOptions.Leader:
+                    if (GlobalVariables.SelectedCountry != null)
+                    {
+                        string towrite = "";
+                        foreach (string name in GlobalVariables.SelectedCountry.LeaderNames)
+                            towrite += name + ", ";
+                        LeaderNamesBox.Text = towrite;
+                    }
+                    break;
+                case UpdateNamesOptions.Ship:
+                    if (GlobalVariables.SelectedCountry != null)
+                    {
+                        string towrite = "";
+                        foreach (string name in GlobalVariables.SelectedCountry.ShipNames)
+                            towrite += name + ", ";
+                        ShipNamesBox.Text = towrite;
+                    }
+                    break;
+                case UpdateNamesOptions.Army:
+                    if (GlobalVariables.SelectedCountry != null)
+                    {
+                        string towrite = "";
+                        foreach (string name in GlobalVariables.SelectedCountry.ArmyNames)
+                            towrite += name + ", ";
+                        ArmyNamesBox.Text = towrite;
+                    }
+                    break;
+                case UpdateNamesOptions.Fleet:
+                    if (GlobalVariables.SelectedCountry != null)
+                    {
+                        string towrite = "";
+                        foreach (string name in GlobalVariables.SelectedCountry.FleetNames)
+                            towrite += name + ", ";
+                        FleetNamesBox.Text = towrite;
+                    }
+                    break;
+            }
+        }
+
+
+
+        public void AutoSizeTextbox(object sender, EventArgs e)
+        {
+            TextBox pSender = (TextBox)sender;
+            pSender.Width = (int)graphics.MeasureString(pSender.Text, pSender.Font).Width + 5;
+        }
         #endregion
 
+
+        #region Focus Gain
+        public void GainFocus(object sender, EventArgs e)
+        {
+            //(sender as Control).Focus();
+        }
+        #endregion
 
         #region Click Handlers
         void MouseClickHandler(object sender, MouseEventArgs e)
@@ -893,8 +1171,9 @@ namespace Eu4ModEditor
                     }
                     //UpdateMap();
                 }
-                label1.Focus();
+                
             }
+            this.ActiveControl = null;
         }
         public void SelectAllOfTradeGood(object sender, EventArgs e)
         {
@@ -918,7 +1197,34 @@ namespace Eu4ModEditor
             if (GlobalVariables.ClickedProvinces.Count == 1)
             {
                 CountryCapitalIDBox.Text = GlobalVariables.ClickedProvinces[0].ID.ToString();
+                if (CountryCapitalIDBox.Text.Any(x => !nums.Contains(x)))
+                {
+                    CountryCapitalIDBox.Text = CountryCapitalIDBox.Text.Where(x => nums.Contains(x)).ToString();
+                }
+
+                if (GlobalVariables.SelectedCountry != null)
+                {
+                    if (CountryCapitalIDBox.Text != "")
+                    {
+                        int n = int.Parse(CountryCapitalIDBox.Text);
+                        Province p = GlobalVariables.Provinces.Find(x => x.ID == n);
+                        if (p != null)
+                        {
+                            GlobalVariables.SelectedCountry.CapitalID = int.Parse(CountryCapitalIDBox.Text);
+                            GlobalVariables.SelectedCountry.Capital = p;
+                            //GlobalVariables.ToUpdate.Add(GlobalVariables.SelectedCountry);
+
+                            MapManagement.UpdateMap(GlobalVariables.SelectedCountry.Provinces, MapManagement.UpdateMapOptions.Political);
+                            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Political)
+                                UpdateMap();
+
+                            //Saving.SaveThingsToUpdate();
+
+                        }
+                    }
+                }
             }
+
         }
         private void ReloadMapsButton_Click(object sender, EventArgs e)
         {
@@ -1069,6 +1375,7 @@ namespace Eu4ModEditor
                             UpdateMap();
 
                         //Saving.SaveThingsToUpdate();
+
                     }
                 }
             }
@@ -1369,7 +1676,21 @@ namespace Eu4ModEditor
             if (TradeNodeBox.SelectedIndex == 0)
                 return;
             if (GlobalVariables.ClickedProvinces.Any())
+            {
                 TradeNodeProvinceLocationBox.Text = GlobalVariables.ClickedProvinces[0].ID + "";
+                int n = 0;
+                if (!int.TryParse(TradeNodeProvinceLocationBox.Text, out n))
+                {
+                    if (GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location != null)
+                        TradeNodeProvinceLocationBox.Text = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location.ID + "";
+                    return;
+                }
+                GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location = GlobalVariables.Provinces[n - 1];
+                MapManagement.UpdateMap(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeNode);
+                if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
+                    UpdateMap();
+            }
+
         }
         private void TradeNodeLocationSave_Click(object sender, EventArgs e)
         {
@@ -1722,7 +2043,7 @@ namespace Eu4ModEditor
                         }
                     }
                     n.Nodes.RemoveAll(x => ToRemove.Contains(x));
-
+                    n.ItemOrder.RemoveAll(x => ToRemove.Contains(x));
                 }
                 toSaveTo.SaveFile(toSaveTo.Path);
             }
@@ -2085,7 +2406,6 @@ namespace Eu4ModEditor
             else
                 GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag] = CountryNameLocalisationBox.Text;
         }
-
         private void SaveCountryAdj_Click(object sender, EventArgs e)
         {
             if (GlobalVariables.SelectedCountry == null)
@@ -2099,6 +2419,45 @@ namespace Eu4ModEditor
             }
             else
                 GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag + "_ADJ"] = CountryAdjLocalisationBox.Text;
+        }
+        private void StatisticsButton_Click(object sender, EventArgs e)
+        {
+            StatisticsForm sf = new StatisticsForm();
+            sf.Show();
+        }
+        private void DarkmodeButton_Click(object sender, EventArgs e)
+        {
+            GlobalVariables.DarkMode = !GlobalVariables.DarkMode;
+            ChangeDarkMode();
+        }
+        private void AddMonarchNameButton_Click(object sender, EventArgs e)
+        {
+            if (GlobalVariables.SelectedCountry != null)
+            {
+                if (GlobalVariables.SelectedCountry.MonarchNames.Any(x=>x.Name == MonarchNameBox.Text))
+                {
+                    MessageBox.Show("This name already is on the list!");
+                    return;
+                }
+                if (MonarchNameChancesTextBox.Text.Any(x => !char.IsNumber(x) && x != '-'))
+                {
+                    MessageBox.Show("You can only have numbers in the chances box!");
+                    return;
+                }
+                int n = 0;
+                if (MonarchNameChancesTextBox.Text != "")
+                    n = int.Parse(MonarchNameChancesTextBox.Text);
+                GlobalVariables.SelectedCountry.MonarchNames.Add(new MonarchName(MonarchNameBox.Text, n));
+                UpdateMonarchNames();
+            }
+        }
+        public void RemoveMonarchNameClick(object sender, EventArgs e)
+        {
+            if (GlobalVariables.SelectedCountry != null)
+            {
+                GlobalVariables.SelectedCountry.MonarchNames.Remove((MonarchName)(sender as Control).Tag);
+            }
+            UpdateMonarchNames();
         }
         #endregion
 
@@ -2330,103 +2689,14 @@ namespace Eu4ModEditor
         }
         private void CountryBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (CountryBox.SelectedIndex != 0)
+
+            Country c = (Country)CountryBox.SelectedItem;
+            if (c != null)
             {
-                MoveToCapitalButton.Enabled = true;
-                SelectAllProvincesButton.Enabled = true;
-                CountryCapitalIDBox.Enabled = true;
-                SaveCapitalIDButton.Enabled = true;
-                CapitalSetClickedButton.Enabled = true;
-                CountryReligionBox.Enabled = true;
-                TechnologyGroupBox.Enabled = true;
-                CountryPrimaryCultureBox.Enabled = true;
-                GovernmentTypeBox.Enabled = true;
-                GovernmentReformBox.Enabled = true;
-                GovernmentRankNumeric.Enabled = true;
-                GraphicalCultureBox.Enabled = true;
-                Country c = (Country)CountryBox.SelectedItem;
-                if (c != null)
-                {
-                    GlobalVariables.SelectedCountry = c;
-                    CountryNameBox.Text = GlobalVariables.SelectedCountry.FullName;
-                    CountryTagBox.Text = GlobalVariables.SelectedCountry.Tag;
-                    TotalDevelopmentBox.Text = GlobalVariables.SelectedCountry.TotalDevelopment.ToString();
-                    CountryProvinceCountBox.Text = GlobalVariables.SelectedCountry.Provinces.Count().ToString();
-                    if (GlobalVariables.SelectedCountry.Capital != null)
-                        CountryCapitalIDBox.Text = GlobalVariables.SelectedCountry.Capital.ID.ToString();
-                    else
-                        CountryCapitalIDBox.Text = "";
-
-                    if (GlobalVariables.SelectedCountry.Religion != Religion.NoReligion)
-                        ChangeValueInternally(CountryReligionBox, GlobalVariables.SelectedCountry.Religion);
-                    else
-                        ChangeValueInternally(CountryReligionBox, Religion.NoReligion);
-
-                    if (GlobalVariables.SelectedCountry.TechnologyGroup != "")
-                        ChangeValueInternally(TechnologyGroupBox, GlobalVariables.SelectedCountry.TechnologyGroup);
-                    else
-                        ChangeValueInternally(CountryReligionBox, 0);
-
-                    if (GlobalVariables.SelectedCountry.PrimaryCulture != Culture.NoCulture)
-                        ChangeValueInternally(CountryReligionBox, GlobalVariables.SelectedCountry.PrimaryCulture);
-                    else
-                        ChangeValueInternally(CountryReligionBox, Culture.NoCulture);
-
-                    if (GlobalVariables.SelectedCountry.Capital != null)
-                        ChangeValueInternally(CountryCapitalIDBox, GlobalVariables.SelectedCountry.Capital.ID.ToString());
-                    else
-                        ChangeValueInternally(CountryCapitalIDBox, "");
-
-                    if (GlobalVariables.SelectedCountry.Government != null)
-                    {
-                        ChangeValueInternally(GovernmentTypeBox, GovernmentTypeBox.Items.IndexOf(GlobalVariables.SelectedCountry.Government.Type));
-                        ChangeValueInternally(GovernmentReformBox, GovernmentReformBox.Items.IndexOf(GlobalVariables.SelectedCountry.GovernmentReform));
-                    }
-                    else
-                        GovernmentTypeBox.SelectedIndex = 0;
-
-                    ChangeValueInternally(GraphicalCultureBox, GlobalVariables.SelectedCountry.GraphicalCulture);
-
-                    ChangeValueInternally(GovernmentRankNumeric, GlobalVariables.SelectedCountry.GovernmentRank);
-
-
-                    SaveCountryAdj.Enabled = true;
-                    SaveCountryName.Enabled = true;
-
-                    if (GlobalVariables.ModLocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag))
-                        CountryNameLocalisationBox.Text = GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag];
-                    else if (GlobalVariables.LocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag))
-                        CountryNameLocalisationBox.Text = GlobalVariables.LocalisationEntries[GlobalVariables.SelectedCountry.Tag];
-                    else
-                        CountryNameLocalisationBox.Text = "";
-
-                    if (GlobalVariables.ModLocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag+"_ADJ"))
-                        CountryAdjLocalisationBox.Text = GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag+"_ADJ"];
-                    else if (GlobalVariables.LocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag + "_ADJ"))
-                        CountryAdjLocalisationBox.Text = GlobalVariables.LocalisationEntries[GlobalVariables.SelectedCountry.Tag + "_ADJ"];
-                    else
-                        CountryAdjLocalisationBox.Text = "";
-
-                }
-                
+                GlobalVariables.SelectedCountry = c;
             }
-            else
-            {
-                MoveToCapitalButton.Enabled = false;
-                SelectAllProvincesButton.Enabled = false;
-                CountryCapitalIDBox.Enabled = false;
-                SaveCapitalIDButton.Enabled = false;
-                CapitalSetClickedButton.Enabled = false;
-                CountryReligionBox.Enabled = false;
-                TechnologyGroupBox.Enabled = false;
-                CountryPrimaryCultureBox.Enabled = false;
-                GovernmentTypeBox.Enabled = false;
-                GovernmentReformBox.Enabled = false;
-                GovernmentRankNumeric.Enabled = false;
-                GraphicalCultureBox.Enabled = false;
-                SaveCountryAdj.Enabled = true;
-                SaveCountryName.Enabled = true;
-            }
+            if (Tabs.SelectedTab == CountryPage)
+                UpdateCountryPage();
         }
         private void OwnerBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -3767,6 +4037,10 @@ namespace Eu4ModEditor
             }
             return toSaveTo;
         }
+        public void ChangeDarkMode()
+        {
+
+        }
         #endregion
 
         #region Saving
@@ -3865,10 +4139,374 @@ namespace Eu4ModEditor
 
         #endregion
 
-        private void StatisticsButton_Click(object sender, EventArgs e)
+        #region Focus lost
+        private void FocusLost (object sender, EventArgs e)
         {
-            StatisticsForm sf = new StatisticsForm();
-            sf.Show();
+            if(sender is TextBox)
+            {
+                TextBox stb = (TextBox)sender;
+                switch (stb.Name)
+                {
+                    case "CountryNameLocalisationBox":
+                        MessageBox.Show("LOL");
+                        if (GlobalVariables.SelectedCountry == null)
+                            return;
+                        if (GlobalVariables.ModLocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag))
+                            GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag] = CountryNameLocalisationBox.Text;
+                        else if (GlobalVariables.LocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag))
+                        {
+                            if (GlobalVariables.LocalisationEntries[GlobalVariables.SelectedCountry.Tag] != CountryNameLocalisationBox.Text)
+                                GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag] = CountryNameLocalisationBox.Text;
+                        }
+                        else
+                            GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag] = CountryNameLocalisationBox.Text;
+                        break;
+                    case "CountryAdjLocalisationBox":
+                        if (GlobalVariables.SelectedCountry == null)
+                            return;
+                        if (GlobalVariables.ModLocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag + "_ADJ"))
+                            GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag + "_ADJ"] = CountryAdjLocalisationBox.Text;
+                        else if (GlobalVariables.LocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag + "_ADJ"))
+                        {
+                            if (GlobalVariables.LocalisationEntries[GlobalVariables.SelectedCountry.Tag + "_ADJ"] != CountryAdjLocalisationBox.Text)
+                                GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag + "_ADJ"] = CountryAdjLocalisationBox.Text;
+                        }
+                        else
+                            GlobalVariables.ModLocalisationEntries[GlobalVariables.SelectedCountry.Tag + "_ADJ"] = CountryAdjLocalisationBox.Text;
+                        break;
+                    case "CountryCapitalIDBox":
+                        if (CountryCapitalIDBox.Text.Any(x => !nums.Contains(x)))
+                        {
+                            CountryCapitalIDBox.Text = CountryCapitalIDBox.Text.Where(x => nums.Contains(x)).ToString();
+                        }
+
+                        if (GlobalVariables.SelectedCountry != null)
+                        {
+                            if (CountryCapitalIDBox.Text != "")
+                            {
+                                int nn = int.Parse(CountryCapitalIDBox.Text);
+                                Province p = GlobalVariables.Provinces.Find(x => x.ID == nn);
+                                if (p != null)
+                                {
+                                    GlobalVariables.SelectedCountry.CapitalID = int.Parse(CountryCapitalIDBox.Text);
+                                    GlobalVariables.SelectedCountry.Capital = p;
+                                    //GlobalVariables.ToUpdate.Add(GlobalVariables.SelectedCountry);
+
+                                    MapManagement.UpdateMap(GlobalVariables.SelectedCountry.Provinces, MapManagement.UpdateMapOptions.Political);
+                                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Political)
+                                        UpdateMap();
+
+                                    //Saving.SaveThingsToUpdate();
+
+                                }
+                            }
+                        }
+                        break;
+                    case "ProvinceNameLocalisationBox":
+                        if (!GlobalVariables.ClickedProvinces.Any())
+                            return;
+                        if (GlobalVariables.ModLocalisationEntries.Keys.Contains("PROV" + GlobalVariables.ClickedProvinces[0].ID))
+                            GlobalVariables.ModLocalisationEntries["PROV" + GlobalVariables.ClickedProvinces[0].ID] = ProvinceNameLocalisationBox.Text;
+                        else if (GlobalVariables.LocalisationEntries.Keys.Contains("PROV" + GlobalVariables.ClickedProvinces[0].ID))
+                        {
+                            if (GlobalVariables.LocalisationEntries["PROV" + GlobalVariables.ClickedProvinces[0].ID] != ProvinceNameLocalisationBox.Text)
+                                GlobalVariables.ModLocalisationEntries["PROV" + GlobalVariables.ClickedProvinces[0].ID] = ProvinceNameLocalisationBox.Text;
+                        }
+                        else
+                            GlobalVariables.ModLocalisationEntries["PROV" + GlobalVariables.ClickedProvinces[0].ID] = ProvinceNameLocalisationBox.Text;
+                        break;
+                    case "ProvinceAdjectiveLocalisationBox":
+                        if (!GlobalVariables.ClickedProvinces.Any())
+                            return;
+                        if (GlobalVariables.ModLocalisationEntries.Keys.Contains("PROV_ADJ" + GlobalVariables.ClickedProvinces[0].ID))
+                            GlobalVariables.ModLocalisationEntries["PROV_ADJ" + GlobalVariables.ClickedProvinces[0].ID] = ProvinceAdjectiveLocalisationBox.Text;
+                        else if (GlobalVariables.LocalisationEntries.Keys.Contains("PROV_ADJ" + GlobalVariables.ClickedProvinces[0].ID))
+                        {
+                            if (GlobalVariables.LocalisationEntries["PROV_ADJ" + GlobalVariables.ClickedProvinces[0].ID] != ProvinceAdjectiveLocalisationBox.Text)
+                                GlobalVariables.ModLocalisationEntries["PROV_ADJ" + GlobalVariables.ClickedProvinces[0].ID] = ProvinceAdjectiveLocalisationBox.Text;
+                        }
+                        else
+                            GlobalVariables.ModLocalisationEntries["PROV_ADJ" + GlobalVariables.ClickedProvinces[0].ID] = ProvinceAdjectiveLocalisationBox.Text;
+                        break;
+                    case "AreaNameChangeBox":
+                        if (GlobalVariables.Areas.Any(x => x.Name == AreaNameChangeBox.Text))
+                            AreaNameChangeBox.Text = AreaBox.Text;
+                        else
+                        {
+                            GlobalVariables.Areas[AreaBox.SelectedIndex - 1].Name = AreaNameChangeBox.Text;
+                            AreaBox.Items[AreaBox.SelectedIndex] = AreaNameChangeBox.Text;
+                        }
+                        break;
+                    case "RegionNameChangeBox":
+                        if (GlobalVariables.Regions.Any(x => x.Name == RegionNameChangeBox.Text))
+                            RegionNameChangeBox.Text = RegionBox.Text;
+                        else
+                        {
+                            GlobalVariables.Regions[RegionBox.SelectedIndex - 1].Name = RegionNameChangeBox.Text;
+                            RegionBox.Items[RegionBox.SelectedIndex] = RegionNameChangeBox.Text;
+                        }
+                        break;
+                    case "ContinentNameChangeBox":
+                        if (GlobalVariables.Continents.Any(x => x.Name == ContinentNameChangeBox.Text))
+                            ContinentNameChangeBox.Text = ContinentBox.Text;
+                        else
+                        {
+                            GlobalVariables.Continents[ContinentBox.SelectedIndex - 1].Name = ContinentNameChangeBox.Text;
+                            ContinentBox.Items[ContinentBox.SelectedIndex] = ContinentNameChangeBox.Text;
+                        }
+                        break;
+                    case "SuperregionNameChangeBox":
+                        if (GlobalVariables.Superregions.Any(x => x.Name == SuperregionNameChangeBox.Text))
+                            SuperregionNameChangeBox.Text = SuperregionBox.Text;
+                        else
+                        {
+                            GlobalVariables.Superregions[SuperregionBox.SelectedIndex - 1].Name = SuperregionNameChangeBox.Text;
+                            SuperregionBox.Items[SuperregionBox.SelectedIndex] = SuperregionNameChangeBox.Text;
+                        }
+                        break;
+                    case "TradeCompanyNameChangeBox":
+                        if (GlobalVariables.TradeCompanies.Any(x => x.Name == TradeCompanyNameChangeBox.Text))
+                            TradeCompanyNameChangeBox.Text = TradeCompanyBox.Text;
+                        else
+                        {
+                            GlobalVariables.TradeCompanies[TradeCompanyBox.SelectedIndex - 1].Name = TradeCompanyNameChangeBox.Text;
+                            TradeCompanyBox.Items[TradeCompanyBox.SelectedIndex] = TradeCompanyNameChangeBox.Text;
+                        }
+                        break;
+                    case "ChangeTradeNodeNameBox":
+                        if (TradeNodeBox.SelectedIndex == 0)
+                            return;
+                        if (ChangeTradeNodeNameBox.Text == "" || ChangeTradeNodeNameBox.Text == " ")
+                        {
+                            ChangeTradeNodeNameBox.Text = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Name;
+                            return;
+                        }
+                        if (GlobalVariables.TradeNodes.Any(x => x.Name == ChangeTradeNodeNameBox.Text))
+                        {
+                            ChangeTradeNodeNameBox.Text = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Name;
+                            return;
+                        }
+                        GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Name = ChangeTradeNodeNameBox.Text.ToLower().Replace(' ', '_');
+                        TradeNodeBox.Items[TradeNodeBox.SelectedIndex] = ChangeTradeNodeNameBox.Text.ToLower().Replace(' ', '_');
+                        ProvinceTradeNodeBox.Items[TradeNodeBox.SelectedIndex] = ChangeTradeNodeNameBox.Text.ToLower().Replace(' ', '_');
+                        break;
+                    case "TradeNodeProvinceLocationBox":
+                        if (TradeNodeBox.SelectedIndex == 0)
+                            return;
+                        int n = 0;
+                        if (!int.TryParse(TradeNodeProvinceLocationBox.Text, out n))
+                        {
+                            if (GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location != null)
+                                TradeNodeProvinceLocationBox.Text = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location.ID + "";
+                            return;
+                        }
+                        GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location = GlobalVariables.Provinces[n - 1];
+                        MapManagement.UpdateMap(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeNode);
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
+                            UpdateMap();
+                        break;
+                    case "LeaderNamesBox":
+                        if (GlobalVariables.SelectedCountry != null)
+                        {
+                            if (stb.Text == "" || string.IsNullOrWhiteSpace(stb.Text))
+                            {
+                                GlobalVariables.SelectedCountry.LeaderNames.Clear();
+                            }
+                            else
+                            {
+                                string[] split = LeaderNamesBox.Text.Split(',');
+                                List<string> newnames = new List<string>();
+                                foreach(string leadername in split)
+                                {
+                                    if (!string.IsNullOrWhiteSpace(leadername))
+                                        newnames.Add(leadername.Replace("\"", "").Trim());
+                                }
+                                newnames = newnames.Distinct().ToList();
+                                GlobalVariables.SelectedCountry.LeaderNames = new List<string>(newnames);
+                            }
+                        }
+                        break;
+                    case "ShipNamesBox":
+                        if (GlobalVariables.SelectedCountry != null)
+                        {
+                            if (stb.Text == "" || string.IsNullOrWhiteSpace(stb.Text))
+                            {
+                                GlobalVariables.SelectedCountry.ShipNames.Clear();
+                            }
+                            else
+                            {
+                                string[] split = ShipNamesBox.Text.Split(',');
+                                List<string> newnames = new List<string>();
+                                foreach (string shipname in split)
+                                {
+                                    if (!string.IsNullOrWhiteSpace(shipname))
+                                        newnames.Add(shipname.Replace("\"", "").Trim());
+                                }
+                                newnames = newnames.Distinct().ToList();
+                                GlobalVariables.SelectedCountry.ShipNames = new List<string>(newnames);
+                            }
+                        }
+                        break;
+                    case "ArmyNamesBox":
+                        if (GlobalVariables.SelectedCountry != null)
+                        {
+                            if (stb.Text == "" || string.IsNullOrWhiteSpace(stb.Text))
+                            {
+                                GlobalVariables.SelectedCountry.ArmyNames.Clear();
+                            }
+                            else
+                            {
+                                string[] split = ArmyNamesBox.Text.Split(',');
+                                List<string> newnames = new List<string>();
+                                foreach (string armyname in split)
+                                {
+                                    if(!string.IsNullOrWhiteSpace(armyname))
+                                        newnames.Add(armyname.Replace("\"", "").Trim());
+                                }
+                                newnames = newnames.Distinct().ToList();
+                                GlobalVariables.SelectedCountry.ArmyNames = new List<string>(newnames);
+                            }
+                        }
+                        break;
+                    case "FleetNamesBox":
+                        if (GlobalVariables.SelectedCountry != null)
+                        {
+                            if (stb.Text == "" || string.IsNullOrWhiteSpace(stb.Text))
+                            {
+                                GlobalVariables.SelectedCountry.FleetNames.Clear();
+                            }
+                            else
+                            {
+                                string[] split = FleetNamesBox.Text.Split(',');
+                                List<string> newnames = new List<string>();
+                                foreach (string fleetname in split)
+                                {
+                                    if (!string.IsNullOrWhiteSpace(fleetname))
+                                        newnames.Add(fleetname.Replace("\"", "").Trim());
+                                }
+                                newnames = newnames.Distinct().ToList();
+                                GlobalVariables.SelectedCountry.FleetNames = new List<string>(newnames);
+                            }
+                        }
+                        break;
+                    default:
+                        switch ((string)stb.Tag)
+                        {
+                            case "name":
+                                if (stb.Text == "" || string.IsNullOrWhiteSpace(stb.Text))
+                                    GlobalVariables.SelectedCountry.MonarchNames.Remove((MonarchName)stb.Parent.Tag);
+                                else
+                                {
+                                    if (GlobalVariables.SelectedCountry.MonarchNames.Any(x => x.Name == stb.Text && x != stb.Parent.Tag))
+                                    {
+                                        MessageBox.Show("This name already is on the list!");
+                                        stb.Text = ((MonarchName)stb.Parent.Tag).Name;
+                                    }
+                                    else if (((MonarchName)stb.Parent.Tag).Name != stb.Text)
+                                    {
+                                        ((MonarchName)stb.Parent.Tag).Name = stb.Text;
+                                        UpdateMonarchNames();
+                                    }
+                                }
+                                break;
+                            case "chance":
+                                if (stb.Text == "" || string.IsNullOrWhiteSpace(stb.Text))
+                                    ((MonarchName)stb.Parent.Tag).Chance = 0;
+                                else
+                                {
+                                    if (stb.Text.Any(x => !char.IsNumber(x) && x != '-'))
+                                    {
+                                        MessageBox.Show("You can only have numbers in the chances box!");
+                                        stb.Text = ((MonarchName)stb.Parent.Tag).Chance.ToString();
+                                    }
+                                    else if(((MonarchName)stb.Parent.Tag).Chance != int.Parse(stb.Text))
+                                    {
+                                        ((MonarchName)stb.Parent.Tag).Chance = int.Parse(stb.Text);
+                                        UpdateMonarchNames();
+                                    }
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+
+                        break;
+                }
+            }
+
+        }
+
+
+        #endregion
+
+        private void SaveNamesToFiles_Click(object sender, EventArgs e)
+        {
+            foreach(Country c in GlobalVariables.Countries)
+            {
+                if (!c.CommonFileGame && c.CommonFile != "" && c.CommonFile != null)
+                {
+                    NodeFile n = new NodeFile(c.CommonFile);
+
+                    Node monarchnames = n.MainNode.Nodes.Find(x => x.Name == "monarch_names");
+                    if (monarchnames == null)
+                        monarchnames = n.MainNode.AddNode("monarch_names");
+                    monarchnames.ItemOrder.Clear();
+                    monarchnames.Variables.Clear();
+                    foreach(MonarchName mn in c.MonarchNames)
+                    {
+                        monarchnames.AddVariable($"\"{mn.Name}\"", mn.Chance.ToString());
+                    }
+
+                    Node leadernames = n.MainNode.Nodes.Find(x => x.Name == "leader_names");
+                    if (leadernames == null)
+                        leadernames = n.MainNode.AddNode("leader_names");
+                    leadernames.PureValues.Clear();
+                    foreach (string ln in c.LeaderNames)
+                    {
+                        if (ln.Contains(" "))
+                            leadernames.PureValues.Add(new PureValue($"\"{ln}\""));
+                        else
+                            leadernames.PureValues.Add(new PureValue(ln));
+                    }
+
+                    Node shipnames = n.MainNode.Nodes.Find(x => x.Name == "ship_names");
+                    if (shipnames == null)
+                        shipnames = n.MainNode.AddNode("ship_names");
+                    shipnames.PureValues.Clear();
+                    foreach (string sn in c.ShipNames)
+                    {
+                        if (sn.Contains(" "))
+                            shipnames.PureValues.Add(new PureValue($"\"{sn}\""));
+                        else
+                            shipnames.PureValues.Add(new PureValue(sn));
+                    }
+
+                    Node fleetnames = n.MainNode.Nodes.Find(x => x.Name == "fleet_names");
+                    if (fleetnames == null)
+                        fleetnames = n.MainNode.AddNode("fleet_names");
+                    fleetnames.PureValues.Clear();
+                    foreach (string fn in c.FleetNames)
+                    {
+                        if (fn.Contains(" "))
+                            fleetnames.PureValues.Add(new PureValue($"\"{fn}\""));
+                        else
+                            fleetnames.PureValues.Add(new PureValue(fn));
+                    }
+
+                    Node armynames = n.MainNode.Nodes.Find(x => x.Name == "army_names");
+                    if (armynames == null)
+                        armynames = n.MainNode.AddNode("army_names");
+                    armynames.PureValues.Clear();
+                    foreach (string an in c.ArmyNames)
+                    {
+                        if (an.Contains(" "))
+                            armynames.PureValues.Add(new PureValue($"\"{an}\""));
+                        else
+                            armynames.PureValues.Add(new PureValue(an));
+                    }
+                    n.SaveFile(c.CommonFile);
+                }               
+            }
         }
     }
 }

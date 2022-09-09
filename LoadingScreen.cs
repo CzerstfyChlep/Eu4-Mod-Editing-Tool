@@ -24,6 +24,14 @@ namespace Eu4ModEditor
                 if (sp.Count() > 1)
                     ModDirectoryBox.Text = sp[1];
             }
+            if (File.Exists("modeditor_darkmode.txt"))
+            {
+                string txt = File.ReadAllText("modeditor_darkmode.txt");
+                if(bool.TryParse(txt, out bool dm))
+                    if(dm)
+                        GlobalVariables.DarkMode = true;
+                //ApplyDarkMode();
+            }
 
 
             int n = 0;
@@ -295,6 +303,7 @@ namespace Eu4ModEditor
                         break;
                 }
                 GlobalVariables.AppSizeOption = AppSizeBox.SelectedIndex;
+                File.WriteAllText("modeditor_darkmode.txt", GlobalVariables.DarkMode.ToString());
                 this.Close();
             }
         }
@@ -489,6 +498,31 @@ namespace Eu4ModEditor
         {
             LanguageBox.SelectedIndex = 0;
             AppSizeBox.SelectedIndex = 0;
+        }
+
+        private void DarkmodeOption_Click(object sender, EventArgs e)
+        {
+            GlobalVariables.DarkMode = !GlobalVariables.DarkMode;
+            ApplyDarkMode();
+
+        }
+
+        public void ApplyDarkMode()
+        {
+            this.BackColor = Color.Black;
+            this.ForeColor = Color.White;
+            foreach (Control b in Controls)
+            {
+                if(b is GroupBox){
+                    b.ForeColor = Color.White;
+                    b.BackColor = Color.Black;
+                    foreach (Control c in (b as GroupBox).Controls)
+                        if (c is Button)
+                            (c as Button).FlatStyle = FlatStyle.Flat;
+                }
+                if(b is Button)
+                    (b as Button).FlatStyle = FlatStyle.Flat;
+            }
         }
     }
 }

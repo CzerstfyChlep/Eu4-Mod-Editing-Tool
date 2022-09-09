@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -57,7 +58,7 @@ namespace Eu4ModEditor
             string pretxt = "";
             bool insideAp = false;
 
-            foreach (string line in File.ReadAllLines(path))
+            foreach (string line in File.ReadAllLines(path,Encoding.Default))
             {
                 string nospaces = "";
                 int n = 0;
@@ -534,6 +535,17 @@ namespace Eu4ModEditor
         {
             Variables.Add(v);
             ItemOrder.Add(v);
+        }
+
+        public void RemoveVariable(Variable v)
+        {
+            Variables.Remove(v);
+            ItemOrder.Remove(v);
+        }
+        public void RemoveNode(Node n)
+        {
+            Nodes.Remove(n);
+            ItemOrder.Remove(n);
         }
     }
     public class Variable : NodeItem

@@ -780,7 +780,16 @@ namespace Eu4ModEditor
                         string[] colorv = node.Nodes.Find(x => x.Name == "color").GetPureValuesAsArray();
                         if (colorv.Count() == 3)
                         {
-                            tg.Color = Color.FromArgb((int)(255 * double.Parse(colorv[0], CultureInfo.InvariantCulture)), (int)(255 * double.Parse(colorv[1], CultureInfo.InvariantCulture)), (int)(255 * double.Parse(colorv[2], CultureInfo.InvariantCulture)));
+                            double r = double.Parse(colorv[0], CultureInfo.InvariantCulture);
+                            if (r > 0 && r <= 1)
+                                r *= 255;
+                            double g = double.Parse(colorv[1], CultureInfo.InvariantCulture);
+                            if (g > 0 && g <= 1)
+                                g *= 255;
+                            double b = double.Parse(colorv[2], CultureInfo.InvariantCulture);
+                            if (b > 0 && b <= 1)
+                                b *= 255;
+                            tg.Color = Color.FromArgb((int)r, (int)g, (int)b);
                         }
                         else
                         {
@@ -1253,7 +1262,7 @@ namespace Eu4ModEditor
                             if (GameFiles[CountryCommonFiles.IndexOf(file)])
                                 c.CommonFileGame = true;
                         }
-                        NodeFile nodefile = new NodeFile(file);
+                        NodeFile nodefile = new NodeFile(file, false);
                         string[] colort = nodefile.MainNode.Nodes.Find(x => x.Name == "color").GetPureValuesAsArray();                        
                         try
                         {
@@ -1268,6 +1277,33 @@ namespace Eu4ModEditor
                         Variable gfxcul = nodefile.MainNode.Variables.Find(x => x.Name == "graphical_culture");
                         if (gfxcul != null)
                             c.GraphicalCulture = gfxcul.Value;
+
+                        Node monarchNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "monarch_names");
+                        if (monarchNamesNode != null)
+                            foreach (Variable monarchName in monarchNamesNode.Variables)
+                                if (!c.MonarchNames.Any(x=>x.Name == monarchName.Name.Replace("\"", "").Trim()))
+                                    c.MonarchNames.Add(new MonarchName(monarchName.Name.Replace("\"", "").Trim(), int.Parse(monarchName.Value)));
+                        Node leaderNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "leader_names");
+                        if (leaderNamesNode != null)
+                            foreach (PureValue leadername in leaderNamesNode.PureValues)
+                                if (!c.LeaderNames.Contains(leadername.Name.Replace("\"", "").Trim()))
+                                    c.LeaderNames.Add(leadername.Name.Replace("\"", "").Trim());
+                        Node shipNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "ship_names");
+                        if (shipNamesNode != null)
+                            foreach (PureValue shipname in shipNamesNode.PureValues)
+                                if (!c.ShipNames.Contains(shipname.Name.Replace("\"", "").Trim()))
+                                    c.ShipNames.Add(shipname.Name.Replace("\"", "").Trim());
+                        Node armyNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "army_names");
+                        if (armyNamesNode != null)
+                            foreach (PureValue armyname in armyNamesNode.PureValues)
+                                if (!c.ArmyNames.Contains(armyname.Name.Replace("\"", "").Trim()))
+                                    c.ArmyNames.Add(armyname.Name.Replace("\"", "").Trim());
+                        Node fleetNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "fleet_names");
+                        if (fleetNamesNode != null)
+                            foreach (PureValue fleetname in fleetNamesNode.PureValues)
+                                if (!c.FleetNames.Contains(fleetname.Name.Replace("\"", "").Trim()))
+                                    c.FleetNames.Add(fleetname.Name.Replace("\"", "").Trim());
+
                     }
                 }
             });

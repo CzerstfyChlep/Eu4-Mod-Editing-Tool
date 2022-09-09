@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LoadingScreen));
             this.GameDirectoryBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -45,13 +46,14 @@
             this.LoadingPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.ConfirmFileUsage = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.AppSizeBox = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.LanguageBox = new System.Windows.Forms.ComboBox();
             this.NewFilesForNewObjects = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.ReadOnlyNewFiles = new System.Windows.Forms.CheckBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.AppSizeBox = new System.Windows.Forms.ComboBox();
+            this.DarkmodeOption = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -224,6 +226,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.DarkmodeOption);
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Controls.Add(this.AppSizeBox);
             this.groupBox3.Controls.Add(this.label4);
@@ -233,10 +236,31 @@
             this.groupBox3.Controls.Add(this.ReadOnlyNewFiles);
             this.groupBox3.Location = new System.Drawing.Point(796, 12);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(235, 248);
+            this.groupBox3.Size = new System.Drawing.Size(235, 294);
             this.groupBox3.TabIndex = 7;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Special options";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(13, 197);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(47, 13);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "App size";
+            // 
+            // AppSizeBox
+            // 
+            this.AppSizeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.AppSizeBox.FormattingEnabled = true;
+            this.AppSizeBox.Items.AddRange(new object[] {
+            "1752 x 944",
+            "1290 x 944"});
+            this.AppSizeBox.Location = new System.Drawing.Point(16, 216);
+            this.AppSizeBox.Name = "AppSizeBox";
+            this.AppSizeBox.Size = new System.Drawing.Size(136, 21);
+            this.AppSizeBox.TabIndex = 5;
             // 
             // label4
             // 
@@ -294,26 +318,16 @@
             this.ReadOnlyNewFiles.Text = "Create new files when Read Only is on";
             this.ReadOnlyNewFiles.UseVisualStyleBackColor = true;
             // 
-            // label5
+            // DarkmodeOption
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(13, 197);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(47, 13);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "App size";
-            // 
-            // AppSizeBox
-            // 
-            this.AppSizeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.AppSizeBox.FormattingEnabled = true;
-            this.AppSizeBox.Items.AddRange(new object[] {
-            "1752 x 944",
-            "1290 x 944"});
-            this.AppSizeBox.Location = new System.Drawing.Point(16, 216);
-            this.AppSizeBox.Name = "AppSizeBox";
-            this.AppSizeBox.Size = new System.Drawing.Size(136, 21);
-            this.AppSizeBox.TabIndex = 5;
+            this.DarkmodeOption.Enabled = false;
+            this.DarkmodeOption.Location = new System.Drawing.Point(16, 252);
+            this.DarkmodeOption.Name = "DarkmodeOption";
+            this.DarkmodeOption.Size = new System.Drawing.Size(136, 23);
+            this.DarkmodeOption.TabIndex = 7;
+            this.DarkmodeOption.Text = "Toggle darkmode";
+            this.DarkmodeOption.UseVisualStyleBackColor = true;
+            this.DarkmodeOption.Click += new System.EventHandler(this.DarkmodeOption_Click);
             // 
             // LoadingScreen
             // 
@@ -324,6 +338,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "LoadingScreen";
             this.Tag = "game";
@@ -364,5 +379,6 @@
         private System.Windows.Forms.ComboBox LanguageBox;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox AppSizeBox;
+        private System.Windows.Forms.Button DarkmodeOption;
     }
 }

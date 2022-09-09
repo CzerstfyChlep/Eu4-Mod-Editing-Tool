@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StatisticsForm));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.StatsProvAvgManpower = new System.Windows.Forms.Label();
@@ -60,6 +61,20 @@
             this.TradenodesFilter = new System.Windows.Forms.Label();
             this.TradegoodsFilter = new System.Windows.Forms.Label();
             this.BuildingsFilter = new System.Windows.Forms.Label();
+            this.FilterTypeBox = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.FilterValueBox = new System.Windows.Forms.ComboBox();
+            this.AddRemoveFilter = new System.Windows.Forms.Button();
+            this.CountriesAll = new System.Windows.Forms.Button();
+            this.ReligionsAll = new System.Windows.Forms.Button();
+            this.ContinentsAll = new System.Windows.Forms.Button();
+            this.SuperregionsAll = new System.Windows.Forms.Button();
+            this.RegionsAll = new System.Windows.Forms.Button();
+            this.TechgroupsAll = new System.Windows.Forms.Button();
+            this.TradenodesAll = new System.Windows.Forms.Button();
+            this.TradegoodsAll = new System.Windows.Forms.Button();
+            this.BuildingsAll = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.TotalDev.SuspendLayout();
@@ -70,7 +85,7 @@
             // 
             this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.TotalDev);
-            this.groupBox1.Location = new System.Drawing.Point(787, 82);
+            this.groupBox1.Location = new System.Drawing.Point(454, 101);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(355, 138);
             this.groupBox1.TabIndex = 0;
@@ -258,7 +273,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(395, 9);
+            this.label1.Location = new System.Drawing.Point(12, 63);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(34, 13);
             this.label1.TabIndex = 1;
@@ -267,7 +282,7 @@
             // TagFilter
             // 
             this.TagFilter.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.TagFilter.Location = new System.Drawing.Point(395, 31);
+            this.TagFilter.Location = new System.Drawing.Point(12, 90);
             this.TagFilter.Name = "TagFilter";
             this.TagFilter.Size = new System.Drawing.Size(371, 40);
             this.TagFilter.TabIndex = 2;
@@ -276,7 +291,7 @@
             // ReligionFilter
             // 
             this.ReligionFilter.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.ReligionFilter.Location = new System.Drawing.Point(395, 81);
+            this.ReligionFilter.Location = new System.Drawing.Point(12, 144);
             this.ReligionFilter.Name = "ReligionFilter";
             this.ReligionFilter.Size = new System.Drawing.Size(371, 40);
             this.ReligionFilter.TabIndex = 3;
@@ -286,7 +301,7 @@
             // 
             this.groupBox3.Controls.Add(this.StatsProvTotalNum);
             this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Location = new System.Drawing.Point(787, 12);
+            this.groupBox3.Location = new System.Drawing.Point(454, 31);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(355, 64);
             this.groupBox3.TabIndex = 4;
@@ -314,7 +329,7 @@
             // ContinentFilter
             // 
             this.ContinentFilter.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.ContinentFilter.Location = new System.Drawing.Point(395, 132);
+            this.ContinentFilter.Location = new System.Drawing.Point(12, 195);
             this.ContinentFilter.Name = "ContinentFilter";
             this.ContinentFilter.Size = new System.Drawing.Size(371, 40);
             this.ContinentFilter.TabIndex = 5;
@@ -323,7 +338,7 @@
             // SuperregionFilter
             // 
             this.SuperregionFilter.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.SuperregionFilter.Location = new System.Drawing.Point(395, 184);
+            this.SuperregionFilter.Location = new System.Drawing.Point(12, 247);
             this.SuperregionFilter.Name = "SuperregionFilter";
             this.SuperregionFilter.Size = new System.Drawing.Size(371, 40);
             this.SuperregionFilter.TabIndex = 6;
@@ -332,7 +347,7 @@
             // RegionsFilter
             // 
             this.RegionsFilter.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.RegionsFilter.Location = new System.Drawing.Point(395, 234);
+            this.RegionsFilter.Location = new System.Drawing.Point(12, 297);
             this.RegionsFilter.Name = "RegionsFilter";
             this.RegionsFilter.Size = new System.Drawing.Size(371, 40);
             this.RegionsFilter.TabIndex = 7;
@@ -341,16 +356,16 @@
             // TechgroupsFilter
             // 
             this.TechgroupsFilter.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.TechgroupsFilter.Location = new System.Drawing.Point(395, 286);
+            this.TechgroupsFilter.Location = new System.Drawing.Point(12, 349);
             this.TechgroupsFilter.Name = "TechgroupsFilter";
             this.TechgroupsFilter.Size = new System.Drawing.Size(371, 40);
             this.TechgroupsFilter.TabIndex = 8;
-            this.TechgroupsFilter.Text = "Techgroups: All";
+            this.TechgroupsFilter.Text = "Tech groups: All";
             // 
             // TradenodesFilter
             // 
             this.TradenodesFilter.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.TradenodesFilter.Location = new System.Drawing.Point(395, 338);
+            this.TradenodesFilter.Location = new System.Drawing.Point(12, 401);
             this.TradenodesFilter.Name = "TradenodesFilter";
             this.TradenodesFilter.Size = new System.Drawing.Size(371, 40);
             this.TradenodesFilter.TabIndex = 9;
@@ -359,7 +374,7 @@
             // TradegoodsFilter
             // 
             this.TradegoodsFilter.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.TradegoodsFilter.Location = new System.Drawing.Point(395, 390);
+            this.TradegoodsFilter.Location = new System.Drawing.Point(12, 453);
             this.TradegoodsFilter.Name = "TradegoodsFilter";
             this.TradegoodsFilter.Size = new System.Drawing.Size(371, 40);
             this.TradegoodsFilter.TabIndex = 10;
@@ -368,17 +383,192 @@
             // BuildingsFilter
             // 
             this.BuildingsFilter.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.BuildingsFilter.Location = new System.Drawing.Point(395, 440);
+            this.BuildingsFilter.Location = new System.Drawing.Point(12, 503);
             this.BuildingsFilter.Name = "BuildingsFilter";
             this.BuildingsFilter.Size = new System.Drawing.Size(371, 40);
             this.BuildingsFilter.TabIndex = 11;
             this.BuildingsFilter.Text = "With buildings: All";
             // 
+            // FilterTypeBox
+            // 
+            this.FilterTypeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.FilterTypeBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.FilterTypeBox.FormattingEnabled = true;
+            this.FilterTypeBox.Items.AddRange(new object[] {
+            "Countries",
+            "Religions",
+            "Continents",
+            "Superregions",
+            "Regions",
+            "Tech groups",
+            "Tradenodes",
+            "Trade goods",
+            "Buildings"});
+            this.FilterTypeBox.Location = new System.Drawing.Point(12, 31);
+            this.FilterTypeBox.Name = "FilterTypeBox";
+            this.FilterTypeBox.Size = new System.Drawing.Size(111, 24);
+            this.FilterTypeBox.TabIndex = 31;
+            this.FilterTypeBox.TabStop = false;
+            this.FilterTypeBox.SelectedIndexChanged += new System.EventHandler(this.FilterTypeBox_SelectedIndexChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(9, 12);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(31, 13);
+            this.label2.TabIndex = 32;
+            this.label2.Text = "Type";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(138, 12);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(34, 13);
+            this.label3.TabIndex = 33;
+            this.label3.Text = "Value";
+            // 
+            // FilterValueBox
+            // 
+            this.FilterValueBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.FilterValueBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.FilterValueBox.FormattingEnabled = true;
+            this.FilterValueBox.Items.AddRange(new object[] {
+            "Countries",
+            "Religions",
+            "Continents",
+            "Superregions",
+            "Regions",
+            "Tech groups",
+            "Tradenodes",
+            "Trade goods",
+            "Buildings"});
+            this.FilterValueBox.Location = new System.Drawing.Point(141, 31);
+            this.FilterValueBox.Name = "FilterValueBox";
+            this.FilterValueBox.Size = new System.Drawing.Size(154, 24);
+            this.FilterValueBox.TabIndex = 34;
+            this.FilterValueBox.TabStop = false;
+            // 
+            // AddRemoveFilter
+            // 
+            this.AddRemoveFilter.Location = new System.Drawing.Point(301, 31);
+            this.AddRemoveFilter.Name = "AddRemoveFilter";
+            this.AddRemoveFilter.Size = new System.Drawing.Size(147, 23);
+            this.AddRemoveFilter.TabIndex = 35;
+            this.AddRemoveFilter.Text = "Add / Remove from filters";
+            this.AddRemoveFilter.UseVisualStyleBackColor = true;
+            this.AddRemoveFilter.Click += new System.EventHandler(this.AddRemoveFilter_Click);
+            // 
+            // CountriesAll
+            // 
+            this.CountriesAll.Location = new System.Drawing.Point(389, 90);
+            this.CountriesAll.Name = "CountriesAll";
+            this.CountriesAll.Size = new System.Drawing.Size(59, 40);
+            this.CountriesAll.TabIndex = 36;
+            this.CountriesAll.Text = "Set to All";
+            this.CountriesAll.UseVisualStyleBackColor = true;
+            this.CountriesAll.Click += new System.EventHandler(this.CountriesAll_Click);
+            // 
+            // ReligionsAll
+            // 
+            this.ReligionsAll.Location = new System.Drawing.Point(389, 144);
+            this.ReligionsAll.Name = "ReligionsAll";
+            this.ReligionsAll.Size = new System.Drawing.Size(59, 40);
+            this.ReligionsAll.TabIndex = 37;
+            this.ReligionsAll.Text = "Set to All";
+            this.ReligionsAll.UseVisualStyleBackColor = true;
+            this.ReligionsAll.Click += new System.EventHandler(this.ReligionsAll_Click);
+            // 
+            // ContinentsAll
+            // 
+            this.ContinentsAll.Location = new System.Drawing.Point(389, 195);
+            this.ContinentsAll.Name = "ContinentsAll";
+            this.ContinentsAll.Size = new System.Drawing.Size(59, 40);
+            this.ContinentsAll.TabIndex = 38;
+            this.ContinentsAll.Text = "Set to All";
+            this.ContinentsAll.UseVisualStyleBackColor = true;
+            this.ContinentsAll.Click += new System.EventHandler(this.ContinentsAll_Click);
+            // 
+            // SuperregionsAll
+            // 
+            this.SuperregionsAll.Location = new System.Drawing.Point(389, 247);
+            this.SuperregionsAll.Name = "SuperregionsAll";
+            this.SuperregionsAll.Size = new System.Drawing.Size(59, 40);
+            this.SuperregionsAll.TabIndex = 39;
+            this.SuperregionsAll.Text = "Set to All";
+            this.SuperregionsAll.UseVisualStyleBackColor = true;
+            this.SuperregionsAll.Click += new System.EventHandler(this.SuperregionsAll_Click);
+            // 
+            // RegionsAll
+            // 
+            this.RegionsAll.Location = new System.Drawing.Point(389, 297);
+            this.RegionsAll.Name = "RegionsAll";
+            this.RegionsAll.Size = new System.Drawing.Size(59, 40);
+            this.RegionsAll.TabIndex = 40;
+            this.RegionsAll.Text = "Set to All";
+            this.RegionsAll.UseVisualStyleBackColor = true;
+            this.RegionsAll.Click += new System.EventHandler(this.RegionsAll_Click);
+            // 
+            // TechgroupsAll
+            // 
+            this.TechgroupsAll.Location = new System.Drawing.Point(389, 349);
+            this.TechgroupsAll.Name = "TechgroupsAll";
+            this.TechgroupsAll.Size = new System.Drawing.Size(59, 40);
+            this.TechgroupsAll.TabIndex = 41;
+            this.TechgroupsAll.Text = "Set to All";
+            this.TechgroupsAll.UseVisualStyleBackColor = true;
+            this.TechgroupsAll.Click += new System.EventHandler(this.TechgroupsAll_Click);
+            // 
+            // TradenodesAll
+            // 
+            this.TradenodesAll.Location = new System.Drawing.Point(389, 401);
+            this.TradenodesAll.Name = "TradenodesAll";
+            this.TradenodesAll.Size = new System.Drawing.Size(59, 40);
+            this.TradenodesAll.TabIndex = 42;
+            this.TradenodesAll.Text = "Set to All";
+            this.TradenodesAll.UseVisualStyleBackColor = true;
+            this.TradenodesAll.Click += new System.EventHandler(this.TradenodesAll_Click);
+            // 
+            // TradegoodsAll
+            // 
+            this.TradegoodsAll.Location = new System.Drawing.Point(389, 453);
+            this.TradegoodsAll.Name = "TradegoodsAll";
+            this.TradegoodsAll.Size = new System.Drawing.Size(59, 40);
+            this.TradegoodsAll.TabIndex = 43;
+            this.TradegoodsAll.Text = "Set to All";
+            this.TradegoodsAll.UseVisualStyleBackColor = true;
+            this.TradegoodsAll.Click += new System.EventHandler(this.TradegoodsAll_Click);
+            // 
+            // BuildingsAll
+            // 
+            this.BuildingsAll.Location = new System.Drawing.Point(389, 503);
+            this.BuildingsAll.Name = "BuildingsAll";
+            this.BuildingsAll.Size = new System.Drawing.Size(59, 40);
+            this.BuildingsAll.TabIndex = 44;
+            this.BuildingsAll.Text = "Set to All";
+            this.BuildingsAll.UseVisualStyleBackColor = true;
+            this.BuildingsAll.Click += new System.EventHandler(this.BuildingsAll_Click);
+            // 
             // StatisticsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1154, 529);
+            this.ClientSize = new System.Drawing.Size(826, 554);
+            this.Controls.Add(this.BuildingsAll);
+            this.Controls.Add(this.TradegoodsAll);
+            this.Controls.Add(this.TradenodesAll);
+            this.Controls.Add(this.TechgroupsAll);
+            this.Controls.Add(this.RegionsAll);
+            this.Controls.Add(this.SuperregionsAll);
+            this.Controls.Add(this.ContinentsAll);
+            this.Controls.Add(this.ReligionsAll);
+            this.Controls.Add(this.CountriesAll);
+            this.Controls.Add(this.AddRemoveFilter);
+            this.Controls.Add(this.FilterValueBox);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.FilterTypeBox);
             this.Controls.Add(this.BuildingsFilter);
             this.Controls.Add(this.TradegoodsFilter);
             this.Controls.Add(this.TradenodesFilter);
@@ -391,6 +581,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.TagFilter);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "StatisticsForm";
             this.Text = "Statistics";
             this.groupBox1.ResumeLayout(false);
@@ -438,5 +629,19 @@
         private System.Windows.Forms.Label TradenodesFilter;
         private System.Windows.Forms.Label TradegoodsFilter;
         private System.Windows.Forms.Label BuildingsFilter;
+        public System.Windows.Forms.ComboBox FilterTypeBox;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label3;
+        public System.Windows.Forms.ComboBox FilterValueBox;
+        private System.Windows.Forms.Button AddRemoveFilter;
+        private System.Windows.Forms.Button CountriesAll;
+        private System.Windows.Forms.Button ReligionsAll;
+        private System.Windows.Forms.Button ContinentsAll;
+        private System.Windows.Forms.Button SuperregionsAll;
+        private System.Windows.Forms.Button RegionsAll;
+        private System.Windows.Forms.Button TechgroupsAll;
+        private System.Windows.Forms.Button TradenodesAll;
+        private System.Windows.Forms.Button TradegoodsAll;
+        private System.Windows.Forms.Button BuildingsAll;
     }
 }
