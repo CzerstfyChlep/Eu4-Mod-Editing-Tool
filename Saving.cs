@@ -273,6 +273,8 @@ namespace Eu4ModEditor
                         nf.MainNode.AddVariable(governmentrank);
                     }
 
+                    nf.SaveFile(country.HistoryFile);
+
                     NodeFile cnf = new NodeFile(country.CommonFile);
 
                     if (country.CommonFileGame)

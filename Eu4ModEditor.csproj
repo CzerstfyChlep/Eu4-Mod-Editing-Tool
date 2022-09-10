@@ -64,6 +64,9 @@
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>newicon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System">
       <Private>False</Private>
@@ -234,6 +237,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\newicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="newicon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -4148,7 +4148,7 @@ namespace Eu4ModEditor
                 switch (stb.Name)
                 {
                     case "CountryNameLocalisationBox":
-                        MessageBox.Show("LOL");
+                        //MessageBox.Show("LOL");
                         if (GlobalVariables.SelectedCountry == null)
                             return;
                         if (GlobalVariables.ModLocalisationEntries.Keys.Contains(GlobalVariables.SelectedCountry.Tag))
