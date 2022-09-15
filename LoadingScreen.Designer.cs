@@ -364,7 +364,7 @@
             this.MaximizeBox = false;
             this.Name = "LoadingScreen";
             this.Tag = "game";
-            this.Text = "Loading screen";
+            this.Text = "Loading screen - 1.1.6";
             this.Load += new System.EventHandler(this.LoadingScreen_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

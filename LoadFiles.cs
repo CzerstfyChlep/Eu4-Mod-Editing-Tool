@@ -1558,6 +1558,18 @@ namespace Eu4ModEditor
             else if (llocalisation.IsCompleted)
                 progress.UpdateProgress(22, 2);
 
+            Task umapmisc = new Task(() => {
+                foreach (Province p in GlobalVariables.Provinces)
+                {
+                    p.BorderPixels = GraphicsMethods.CreateBorders(p);
+                }
+                MapManagement.CreateClickMask();
+            });
+            umapmisc.Start();
+            await umapmisc;
+
+
+
             List<Task> MapTasks = new List<Task>();
             progress.UpdateProgress(18, 0);
             Task umapdev = new Task(() => {
@@ -1630,16 +1642,6 @@ namespace Eu4ModEditor
             });
             umapgovernment.Start();
             MapTasks.Add(umapgovernment);
-            Task umapmisc = new Task(() => {
-                foreach (Province p in GlobalVariables.Provinces)
-                {
-                    p.BorderPixels = GraphicsMethods.CreateBorders(p);
-                }
-                MapManagement.CreateClickMask();
-
-            });
-            umapmisc.Start();
-            MapTasks.Add(umapmisc);
 
             Task ucontrol = new Task(() => {
                 foreach (TradeGood tg in GlobalVariables.TradeGoods)
@@ -1672,9 +1674,10 @@ namespace Eu4ModEditor
             ucontrol.Start();
             progress.UpdateProgress(19, 0);
 
-
-
-            Task.WaitAll(MapTasks.ToArray());
+            foreach(Task t in MapTasks)
+            {
+                await t;
+            }
             progress.UpdateProgress(18, 2);
             await ucontrol;
             if (ucontrol.IsFaulted)

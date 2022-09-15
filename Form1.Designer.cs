@@ -378,7 +378,6 @@
             this.DiscoveredByMapmode = new System.Windows.Forms.Button();
             this.GovernmentMapmode = new System.Windows.Forms.Button();
             this.TradeCompanyMapmode = new System.Windows.Forms.Button();
-            this.testlabel = new System.Windows.Forms.Label();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.ProvinceTabControl.SuspendLayout();
@@ -4154,15 +4153,6 @@
             this.TradeCompanyMapmode.Text = "Trade com. mapmode";
             this.TradeCompanyMapmode.UseVisualStyleBackColor = true;
             // 
-            // testlabel
-            // 
-            this.testlabel.AutoSize = true;
-            this.testlabel.Location = new System.Drawing.Point(1278, 876);
-            this.testlabel.Name = "testlabel";
-            this.testlabel.Size = new System.Drawing.Size(41, 13);
-            this.testlabel.TabIndex = 23;
-            this.testlabel.Text = "label75";
-            // 
             // ModEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4170,7 +4160,6 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.ClientSize = new System.Drawing.Size(1736, 905);
-            this.Controls.Add(this.testlabel);
             this.Controls.Add(this.TradeCompanyMapmode);
             this.Controls.Add(this.GovernmentMapmode);
             this.Controls.Add(this.DiscoveredByMapmode);
@@ -4198,7 +4187,7 @@
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "ModEditor";
-            this.Text = "EUIV - Mod Editor - 1.1.4";
+            this.Text = "EUIV - Mod Editor - 1.1.6";
             this.Tabs.ResumeLayout(false);
             this.ProvinceTab.ResumeLayout(false);
             this.ProvinceTabControl.ResumeLayout(false);
@@ -4300,7 +4289,6 @@
             this.ChangesTab.ResumeLayout(false);
             this.SavingTab.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -4651,7 +4639,6 @@
         private System.Windows.Forms.TextBox FleetNamesBox;
         private System.Windows.Forms.Button SaveNamesToFiles;
         private System.Windows.Forms.Label label74;
-        private System.Windows.Forms.Label testlabel;
         private System.Windows.Forms.RichTextBox ConsoleBox;
         private System.Windows.Forms.TextBox ConsoleInputBox;
         private System.Windows.Forms.Panel panel1;
