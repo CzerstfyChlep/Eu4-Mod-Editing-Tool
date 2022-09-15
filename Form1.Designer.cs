@@ -4187,7 +4187,7 @@
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "ModEditor";
-            this.Text = "EUIV - Mod Editor - 1.1.6";
+            this.Text = "EUIV - Mod Editor - 1.1.7";
             this.Tabs.ResumeLayout(false);
             this.ProvinceTab.ResumeLayout(false);
             this.ProvinceTabControl.ResumeLayout(false);

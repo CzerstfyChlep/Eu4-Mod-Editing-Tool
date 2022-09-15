@@ -362,8 +362,9 @@ namespace Eu4ModEditor
                 //if (GlobalVariables.FullyLoaded)
                 //    GlobalVariables.Changes.Add(new VariableChange(this, "Area", Variables["Area"], value));
                 Variables["Area"] = value;
-                if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Area))
-                    GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Area));
+                if (GlobalVariables.FullyLoaded)
+                    if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Area))
+                        GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Area));
             }
         }
 
@@ -378,8 +379,9 @@ namespace Eu4ModEditor
                 //if(GlobalVariables.FullyLoaded)
                 //    GlobalVariables.Changes.Add(new VariableChange(this, "Continent", Variables["Continent"], value));
                 Variables["Continent"] = value;
-                if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Continent))
-                    GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Continent));
+                if(GlobalVariables.FullyLoaded)
+                    if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Continent))
+                        GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Continent));
             }
         }
 

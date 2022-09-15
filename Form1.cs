@@ -3848,7 +3848,8 @@ namespace Eu4ModEditor
                         {
                             if (p.Area.Region != null)
                             {
-                                provincestoupdatesuperregion.AddRange(p.Area.Provinces);
+                                foreach(Area a in p.Area.Region.Areas)
+                                    provincestoupdatesuperregion.AddRange(a.Provinces);
                                 if (p.Area.Region.Superregion != null)
                                 {
                                     p.Area.Region.Superregion.Regions.Remove(p.Area.Region);

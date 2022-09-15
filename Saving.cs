@@ -389,7 +389,7 @@ namespace Eu4ModEditor
                                             Node n = pn.AddNode("areas");
                                             foreach (Area a in r.Areas)
                                                 n.AddPureValue(a.Name);
-                                            nf.MainNode.AddNode(n);
+                                            nf.MainNode.AddNode(pn);
                                         }
                                     }
                                 }
