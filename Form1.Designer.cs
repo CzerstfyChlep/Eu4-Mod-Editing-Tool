@@ -73,6 +73,8 @@
             this.AddCoreBox = new System.Windows.Forms.ComboBox();
             this.CoresPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.AreaRegionPage = new System.Windows.Forms.TabPage();
+            this.label75 = new System.Windows.Forms.Label();
+            this.label74 = new System.Windows.Forms.Label();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
             this.TradeCompanyRandomColor = new System.Windows.Forms.Button();
             this.TradeCompanyColorButton = new System.Windows.Forms.Button();
@@ -81,7 +83,6 @@
             this.label48 = new System.Windows.Forms.Label();
             this.AddNewTradeCompanyBox = new System.Windows.Forms.TextBox();
             this.AddNewTradeCompany = new System.Windows.Forms.Button();
-            this.SaveTradeCompanyFile = new System.Windows.Forms.Button();
             this.TradeComapnyNameChangeSave = new System.Windows.Forms.Button();
             this.TradeCompanyNameChangeBox = new System.Windows.Forms.TextBox();
             this.TradeCompanyBox = new System.Windows.Forms.ComboBox();
@@ -91,7 +92,6 @@
             this.label44 = new System.Windows.Forms.Label();
             this.AddNewSuperregionBox = new System.Windows.Forms.TextBox();
             this.AddNewSuperregion = new System.Windows.Forms.Button();
-            this.SaveSuperregionFile = new System.Windows.Forms.Button();
             this.HideSeaTiles3 = new System.Windows.Forms.Button();
             this.SuperregionNameChangeSave = new System.Windows.Forms.Button();
             this.SuperregionNameChangeBox = new System.Windows.Forms.TextBox();
@@ -102,7 +102,6 @@
             this.label27 = new System.Windows.Forms.Label();
             this.AddNewAreaBox = new System.Windows.Forms.TextBox();
             this.AddNewArea = new System.Windows.Forms.Button();
-            this.SaveAreaFile = new System.Windows.Forms.Button();
             this.ShowHideSeaTilesAreaMapmode = new System.Windows.Forms.Button();
             this.AreaNameChangeSave = new System.Windows.Forms.Button();
             this.AreaNameChangeBox = new System.Windows.Forms.TextBox();
@@ -113,7 +112,6 @@
             this.label29 = new System.Windows.Forms.Label();
             this.AddNewRegionBox = new System.Windows.Forms.TextBox();
             this.AddNewRegion = new System.Windows.Forms.Button();
-            this.SaveRegionFile = new System.Windows.Forms.Button();
             this.HideSeaTiles = new System.Windows.Forms.Button();
             this.RegionNameChangeSave = new System.Windows.Forms.Button();
             this.RegionNameChangeBox = new System.Windows.Forms.TextBox();
@@ -124,7 +122,6 @@
             this.label31 = new System.Windows.Forms.Label();
             this.AddNewContinentBox = new System.Windows.Forms.TextBox();
             this.AddNewContinent = new System.Windows.Forms.Button();
-            this.SaveContinentFile = new System.Windows.Forms.Button();
             this.HideSeaTiles2 = new System.Windows.Forms.Button();
             this.ContinentNameChangeSave = new System.Windows.Forms.Button();
             this.ContinentNameChangeBox = new System.Windows.Forms.TextBox();
@@ -169,6 +166,7 @@
             this.ProvinceColorLabelR = new System.Windows.Forms.Label();
             this.CountryPage = new System.Windows.Forms.TabPage();
             this.groupBox23 = new System.Windows.Forms.GroupBox();
+            this.SaveNamesToFiles = new System.Windows.Forms.Button();
             this.NamesTabs = new System.Windows.Forms.TabControl();
             this.MonarchNamesTab = new System.Windows.Forms.TabPage();
             this.MonarchNameExplanationLabel = new System.Windows.Forms.Label();
@@ -179,9 +177,17 @@
             this.MonarchNameBox = new System.Windows.Forms.TextBox();
             this.MonarchNamePanel = new System.Windows.Forms.FlowLayoutPanel();
             this.LeaderNamesTab = new System.Windows.Forms.TabPage();
+            this.label68 = new System.Windows.Forms.Label();
+            this.LeaderNamesBox = new System.Windows.Forms.TextBox();
             this.ShipNamesTab = new System.Windows.Forms.TabPage();
+            this.label71 = new System.Windows.Forms.Label();
+            this.ShipNamesBox = new System.Windows.Forms.TextBox();
             this.ArmyNamesTab = new System.Windows.Forms.TabPage();
+            this.label72 = new System.Windows.Forms.Label();
+            this.ArmyNamesBox = new System.Windows.Forms.TextBox();
             this.FleetNamesTab = new System.Windows.Forms.TabPage();
+            this.label73 = new System.Windows.Forms.Label();
+            this.FleetNamesBox = new System.Windows.Forms.TextBox();
             this.groupBox22 = new System.Windows.Forms.GroupBox();
             this.SaveCountryAdj = new System.Windows.Forms.Button();
             this.label67 = new System.Windows.Forms.Label();
@@ -258,6 +264,9 @@
             this.label18 = new System.Windows.Forms.Label();
             this.TradeNodeNameBox = new System.Windows.Forms.TextBox();
             this.AdditionalPage = new System.Windows.Forms.TabPage();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.ConsoleBox = new System.Windows.Forms.RichTextBox();
+            this.ConsoleInputBox = new System.Windows.Forms.TextBox();
             this.DarkmodeButton = new System.Windows.Forms.Button();
             this.StatisticsButton = new System.Windows.Forms.Button();
             this.RandomIdeaBoxButton = new System.Windows.Forms.Button();
@@ -369,15 +378,7 @@
             this.DiscoveredByMapmode = new System.Windows.Forms.Button();
             this.GovernmentMapmode = new System.Windows.Forms.Button();
             this.TradeCompanyMapmode = new System.Windows.Forms.Button();
-            this.LeaderNamesBox = new System.Windows.Forms.TextBox();
-            this.label68 = new System.Windows.Forms.Label();
-            this.label71 = new System.Windows.Forms.Label();
-            this.ShipNamesBox = new System.Windows.Forms.TextBox();
-            this.label72 = new System.Windows.Forms.Label();
-            this.ArmyNamesBox = new System.Windows.Forms.TextBox();
-            this.label73 = new System.Windows.Forms.Label();
-            this.FleetNamesBox = new System.Windows.Forms.TextBox();
-            this.SaveNamesToFiles = new System.Windows.Forms.Button();
+            this.testlabel = new System.Windows.Forms.Label();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.ProvinceTabControl.SuspendLayout();
@@ -419,6 +420,7 @@
             this.groupBox8.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.AdditionalPage.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.MacroSelecter.SuspendLayout();
             this.groupBox21.SuspendLayout();
             this.groupBox20.SuspendLayout();
@@ -690,8 +692,6 @@
             this.ControllerBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ControllerBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.ControllerBox.FormattingEnabled = true;
-            this.ControllerBox.Items.AddRange(new object[] {
-            " "});
             this.ControllerBox.Location = new System.Drawing.Point(99, 50);
             this.ControllerBox.Name = "ControllerBox";
             this.ControllerBox.Size = new System.Drawing.Size(153, 24);
@@ -716,8 +716,6 @@
             this.OwnerBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.OwnerBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.OwnerBox.FormattingEnabled = true;
-            this.OwnerBox.Items.AddRange(new object[] {
-            " "});
             this.OwnerBox.Location = new System.Drawing.Point(99, 23);
             this.OwnerBox.Name = "OwnerBox";
             this.OwnerBox.Size = new System.Drawing.Size(153, 24);
@@ -950,6 +948,8 @@
             // 
             // AreaRegionPage
             // 
+            this.AreaRegionPage.Controls.Add(this.label75);
+            this.AreaRegionPage.Controls.Add(this.label74);
             this.AreaRegionPage.Controls.Add(this.groupBox18);
             this.AreaRegionPage.Controls.Add(this.groupBox17);
             this.AreaRegionPage.Controls.Add(this.groupBox5);
@@ -963,6 +963,25 @@
             this.AreaRegionPage.Text = "Area & Region";
             this.AreaRegionPage.UseVisualStyleBackColor = true;
             // 
+            // label75
+            // 
+            this.label75.AutoSize = true;
+            this.label75.Location = new System.Drawing.Point(18, 471);
+            this.label75.Name = "label75";
+            this.label75.Size = new System.Drawing.Size(497, 13);
+            this.label75.TabIndex = 40;
+            this.label75.Text = "All of those are being saved via Saving page now! You don\'t need to keep the chan" +
+    "ges in Changes tab!";
+            // 
+            // label74
+            // 
+            this.label74.AutoSize = true;
+            this.label74.Location = new System.Drawing.Point(279, 363);
+            this.label74.Name = "label74";
+            this.label74.Size = new System.Drawing.Size(247, 13);
+            this.label74.TabIndex = 39;
+            this.label74.Text = "Remove text from the name box to remove the item";
+            // 
             // groupBox18
             // 
             this.groupBox18.Controls.Add(this.TradeCompanyRandomColor);
@@ -972,23 +991,22 @@
             this.groupBox18.Controls.Add(this.label48);
             this.groupBox18.Controls.Add(this.AddNewTradeCompanyBox);
             this.groupBox18.Controls.Add(this.AddNewTradeCompany);
-            this.groupBox18.Controls.Add(this.SaveTradeCompanyFile);
             this.groupBox18.Controls.Add(this.TradeComapnyNameChangeSave);
             this.groupBox18.Controls.Add(this.TradeCompanyNameChangeBox);
             this.groupBox18.Controls.Add(this.TradeCompanyBox);
             this.groupBox18.Controls.Add(this.label49);
             this.groupBox18.Location = new System.Drawing.Point(6, 287);
             this.groupBox18.Name = "groupBox18";
-            this.groupBox18.Size = new System.Drawing.Size(260, 158);
+            this.groupBox18.Size = new System.Drawing.Size(260, 128);
             this.groupBox18.TabIndex = 38;
             this.groupBox18.TabStop = false;
             this.groupBox18.Text = "Province trade company";
             // 
             // TradeCompanyRandomColor
             // 
-            this.TradeCompanyRandomColor.Location = new System.Drawing.Point(180, 98);
+            this.TradeCompanyRandomColor.Location = new System.Drawing.Point(182, 98);
             this.TradeCompanyRandomColor.Name = "TradeCompanyRandomColor";
-            this.TradeCompanyRandomColor.Size = new System.Drawing.Size(75, 23);
+            this.TradeCompanyRandomColor.Size = new System.Drawing.Size(74, 23);
             this.TradeCompanyRandomColor.TabIndex = 34;
             this.TradeCompanyRandomColor.Text = "Random";
             this.TradeCompanyRandomColor.UseVisualStyleBackColor = true;
@@ -1047,16 +1065,6 @@
             this.AddNewTradeCompany.UseVisualStyleBackColor = true;
             this.AddNewTradeCompany.Click += new System.EventHandler(this.AddNewTradeCompany_Click);
             // 
-            // SaveTradeCompanyFile
-            // 
-            this.SaveTradeCompanyFile.Location = new System.Drawing.Point(9, 127);
-            this.SaveTradeCompanyFile.Name = "SaveTradeCompanyFile";
-            this.SaveTradeCompanyFile.Size = new System.Drawing.Size(139, 24);
-            this.SaveTradeCompanyFile.TabIndex = 27;
-            this.SaveTradeCompanyFile.Text = "Save trade company file";
-            this.SaveTradeCompanyFile.UseVisualStyleBackColor = true;
-            this.SaveTradeCompanyFile.Click += new System.EventHandler(this.SaveTradeCompanyFile_Click);
-            // 
             // TradeComapnyNameChangeSave
             // 
             this.TradeComapnyNameChangeSave.Location = new System.Drawing.Point(181, 50);
@@ -1105,7 +1113,6 @@
             this.groupBox17.Controls.Add(this.label44);
             this.groupBox17.Controls.Add(this.AddNewSuperregionBox);
             this.groupBox17.Controls.Add(this.AddNewSuperregion);
-            this.groupBox17.Controls.Add(this.SaveSuperregionFile);
             this.groupBox17.Controls.Add(this.HideSeaTiles3);
             this.groupBox17.Controls.Add(this.SuperregionNameChangeSave);
             this.groupBox17.Controls.Add(this.SuperregionNameChangeBox);
@@ -1152,16 +1159,6 @@
             this.AddNewSuperregion.Text = "Add";
             this.AddNewSuperregion.UseVisualStyleBackColor = true;
             this.AddNewSuperregion.Click += new System.EventHandler(this.AddNewSuperregion_Click);
-            // 
-            // SaveSuperregionFile
-            // 
-            this.SaveSuperregionFile.Location = new System.Drawing.Point(9, 102);
-            this.SaveSuperregionFile.Name = "SaveSuperregionFile";
-            this.SaveSuperregionFile.Size = new System.Drawing.Size(121, 24);
-            this.SaveSuperregionFile.TabIndex = 27;
-            this.SaveSuperregionFile.Text = "Save superregion file";
-            this.SaveSuperregionFile.UseVisualStyleBackColor = true;
-            this.SaveSuperregionFile.Click += new System.EventHandler(this.SaveSuperregionFile_Click);
             // 
             // HideSeaTiles3
             // 
@@ -1221,7 +1218,6 @@
             this.groupBox5.Controls.Add(this.label27);
             this.groupBox5.Controls.Add(this.AddNewAreaBox);
             this.groupBox5.Controls.Add(this.AddNewArea);
-            this.groupBox5.Controls.Add(this.SaveAreaFile);
             this.groupBox5.Controls.Add(this.ShowHideSeaTilesAreaMapmode);
             this.groupBox5.Controls.Add(this.AreaNameChangeSave);
             this.groupBox5.Controls.Add(this.AreaNameChangeBox);
@@ -1268,16 +1264,6 @@
             this.AddNewArea.Text = "Add";
             this.AddNewArea.UseVisualStyleBackColor = true;
             this.AddNewArea.Click += new System.EventHandler(this.AddNewArea_Click);
-            // 
-            // SaveAreaFile
-            // 
-            this.SaveAreaFile.Location = new System.Drawing.Point(9, 104);
-            this.SaveAreaFile.Name = "SaveAreaFile";
-            this.SaveAreaFile.Size = new System.Drawing.Size(88, 24);
-            this.SaveAreaFile.TabIndex = 27;
-            this.SaveAreaFile.Text = "Save area file";
-            this.SaveAreaFile.UseVisualStyleBackColor = true;
-            this.SaveAreaFile.Click += new System.EventHandler(this.SaveAreaFile_Click);
             // 
             // ShowHideSeaTilesAreaMapmode
             // 
@@ -1337,7 +1323,6 @@
             this.groupBox6.Controls.Add(this.label29);
             this.groupBox6.Controls.Add(this.AddNewRegionBox);
             this.groupBox6.Controls.Add(this.AddNewRegion);
-            this.groupBox6.Controls.Add(this.SaveRegionFile);
             this.groupBox6.Controls.Add(this.HideSeaTiles);
             this.groupBox6.Controls.Add(this.RegionNameChangeSave);
             this.groupBox6.Controls.Add(this.RegionNameChangeBox);
@@ -1384,16 +1369,6 @@
             this.AddNewRegion.Text = "Add";
             this.AddNewRegion.UseVisualStyleBackColor = true;
             this.AddNewRegion.Click += new System.EventHandler(this.AddNewRegion_Click);
-            // 
-            // SaveRegionFile
-            // 
-            this.SaveRegionFile.Location = new System.Drawing.Point(6, 104);
-            this.SaveRegionFile.Name = "SaveRegionFile";
-            this.SaveRegionFile.Size = new System.Drawing.Size(88, 24);
-            this.SaveRegionFile.TabIndex = 27;
-            this.SaveRegionFile.Text = "Save region file";
-            this.SaveRegionFile.UseVisualStyleBackColor = true;
-            this.SaveRegionFile.Click += new System.EventHandler(this.SaveRegionFile_Click);
             // 
             // HideSeaTiles
             // 
@@ -1453,7 +1428,6 @@
             this.groupBox3.Controls.Add(this.label31);
             this.groupBox3.Controls.Add(this.AddNewContinentBox);
             this.groupBox3.Controls.Add(this.AddNewContinent);
-            this.groupBox3.Controls.Add(this.SaveContinentFile);
             this.groupBox3.Controls.Add(this.HideSeaTiles2);
             this.groupBox3.Controls.Add(this.ContinentNameChangeSave);
             this.groupBox3.Controls.Add(this.ContinentNameChangeBox);
@@ -1500,16 +1474,6 @@
             this.AddNewContinent.Text = "Add";
             this.AddNewContinent.UseVisualStyleBackColor = true;
             this.AddNewContinent.Click += new System.EventHandler(this.AddNewContinent_Click);
-            // 
-            // SaveContinentFile
-            // 
-            this.SaveContinentFile.Location = new System.Drawing.Point(9, 102);
-            this.SaveContinentFile.Name = "SaveContinentFile";
-            this.SaveContinentFile.Size = new System.Drawing.Size(105, 24);
-            this.SaveContinentFile.TabIndex = 27;
-            this.SaveContinentFile.Text = "Save continent file";
-            this.SaveContinentFile.UseVisualStyleBackColor = true;
-            this.SaveContinentFile.Click += new System.EventHandler(this.SaveContinentFile_Click);
             // 
             // HideSeaTiles2
             // 
@@ -1984,6 +1948,16 @@
             this.groupBox23.TabStop = false;
             this.groupBox23.Text = "Names";
             // 
+            // SaveNamesToFiles
+            // 
+            this.SaveNamesToFiles.Location = new System.Drawing.Point(454, 12);
+            this.SaveNamesToFiles.Name = "SaveNamesToFiles";
+            this.SaveNamesToFiles.Size = new System.Drawing.Size(75, 23);
+            this.SaveNamesToFiles.TabIndex = 1;
+            this.SaveNamesToFiles.Text = "Save to files\r\n";
+            this.SaveNamesToFiles.UseVisualStyleBackColor = true;
+            this.SaveNamesToFiles.Click += new System.EventHandler(this.SaveNamesToFiles_Click);
+            // 
             // NamesTabs
             // 
             this.NamesTabs.Controls.Add(this.MonarchNamesTab);
@@ -2085,6 +2059,23 @@
             this.LeaderNamesTab.Text = "Leader";
             this.LeaderNamesTab.UseVisualStyleBackColor = true;
             // 
+            // label68
+            // 
+            this.label68.Location = new System.Drawing.Point(3, 17);
+            this.label68.Name = "label68";
+            this.label68.Size = new System.Drawing.Size(502, 16);
+            this.label68.TabIndex = 1;
+            this.label68.Text = "Add/Remove leader names, separate them with commas.\r\n";
+            // 
+            // LeaderNamesBox
+            // 
+            this.LeaderNamesBox.Location = new System.Drawing.Point(6, 36);
+            this.LeaderNamesBox.Multiline = true;
+            this.LeaderNamesBox.Name = "LeaderNamesBox";
+            this.LeaderNamesBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.LeaderNamesBox.Size = new System.Drawing.Size(502, 148);
+            this.LeaderNamesBox.TabIndex = 0;
+            // 
             // ShipNamesTab
             // 
             this.ShipNamesTab.Controls.Add(this.label71);
@@ -2095,6 +2086,23 @@
             this.ShipNamesTab.TabIndex = 2;
             this.ShipNamesTab.Text = "Ships";
             this.ShipNamesTab.UseVisualStyleBackColor = true;
+            // 
+            // label71
+            // 
+            this.label71.Location = new System.Drawing.Point(5, 12);
+            this.label71.Name = "label71";
+            this.label71.Size = new System.Drawing.Size(502, 16);
+            this.label71.TabIndex = 3;
+            this.label71.Text = "Add/Remove ship names, separate them with commas.\r\n";
+            // 
+            // ShipNamesBox
+            // 
+            this.ShipNamesBox.Location = new System.Drawing.Point(8, 31);
+            this.ShipNamesBox.Multiline = true;
+            this.ShipNamesBox.Name = "ShipNamesBox";
+            this.ShipNamesBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.ShipNamesBox.Size = new System.Drawing.Size(502, 148);
+            this.ShipNamesBox.TabIndex = 2;
             // 
             // ArmyNamesTab
             // 
@@ -2107,6 +2115,23 @@
             this.ArmyNamesTab.Text = "Army";
             this.ArmyNamesTab.UseVisualStyleBackColor = true;
             // 
+            // label72
+            // 
+            this.label72.Location = new System.Drawing.Point(5, 12);
+            this.label72.Name = "label72";
+            this.label72.Size = new System.Drawing.Size(502, 16);
+            this.label72.TabIndex = 5;
+            this.label72.Text = "Add/Remove army names, separate them with commas. You can use $PROVINCE$ here.\r\n";
+            // 
+            // ArmyNamesBox
+            // 
+            this.ArmyNamesBox.Location = new System.Drawing.Point(8, 31);
+            this.ArmyNamesBox.Multiline = true;
+            this.ArmyNamesBox.Name = "ArmyNamesBox";
+            this.ArmyNamesBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.ArmyNamesBox.Size = new System.Drawing.Size(502, 148);
+            this.ArmyNamesBox.TabIndex = 4;
+            // 
             // FleetNamesTab
             // 
             this.FleetNamesTab.Controls.Add(this.label73);
@@ -2117,6 +2142,23 @@
             this.FleetNamesTab.TabIndex = 4;
             this.FleetNamesTab.Text = "Fleet";
             this.FleetNamesTab.UseVisualStyleBackColor = true;
+            // 
+            // label73
+            // 
+            this.label73.Location = new System.Drawing.Point(5, 12);
+            this.label73.Name = "label73";
+            this.label73.Size = new System.Drawing.Size(502, 16);
+            this.label73.TabIndex = 7;
+            this.label73.Text = "Add/Remove fleet names, separate them with commas.\r\n";
+            // 
+            // FleetNamesBox
+            // 
+            this.FleetNamesBox.Location = new System.Drawing.Point(8, 31);
+            this.FleetNamesBox.Multiline = true;
+            this.FleetNamesBox.Name = "FleetNamesBox";
+            this.FleetNamesBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.FleetNamesBox.Size = new System.Drawing.Size(502, 148);
+            this.FleetNamesBox.TabIndex = 6;
             // 
             // groupBox22
             // 
@@ -2421,7 +2463,6 @@
             // 
             this.CountryNameBox.Location = new System.Drawing.Point(47, 46);
             this.CountryNameBox.Name = "CountryNameBox";
-            this.CountryNameBox.ReadOnly = true;
             this.CountryNameBox.Size = new System.Drawing.Size(192, 20);
             this.CountryNameBox.TabIndex = 17;
             // 
@@ -2509,8 +2550,8 @@
             // CountryTagBox
             // 
             this.CountryTagBox.Location = new System.Drawing.Point(45, 76);
+            this.CountryTagBox.MaxLength = 3;
             this.CountryTagBox.Name = "CountryTagBox";
-            this.CountryTagBox.ReadOnly = true;
             this.CountryTagBox.Size = new System.Drawing.Size(51, 20);
             this.CountryTagBox.TabIndex = 22;
             // 
@@ -2526,7 +2567,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(108, 79);
+            this.label10.Location = new System.Drawing.Point(202, 79);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(73, 13);
             this.label10.TabIndex = 23;
@@ -2534,7 +2575,7 @@
             // 
             // CountryProvinceCountBox
             // 
-            this.CountryProvinceCountBox.Location = new System.Drawing.Point(327, 76);
+            this.CountryProvinceCountBox.Location = new System.Drawing.Point(421, 76);
             this.CountryProvinceCountBox.Name = "CountryProvinceCountBox";
             this.CountryProvinceCountBox.ReadOnly = true;
             this.CountryProvinceCountBox.Size = new System.Drawing.Size(51, 20);
@@ -2542,7 +2583,7 @@
             // 
             // TotalDevelopmentBox
             // 
-            this.TotalDevelopmentBox.Location = new System.Drawing.Point(192, 76);
+            this.TotalDevelopmentBox.Location = new System.Drawing.Point(286, 76);
             this.TotalDevelopmentBox.Name = "TotalDevelopmentBox";
             this.TotalDevelopmentBox.ReadOnly = true;
             this.TotalDevelopmentBox.Size = new System.Drawing.Size(52, 20);
@@ -2551,7 +2592,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(260, 79);
+            this.label11.Location = new System.Drawing.Point(354, 79);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(57, 13);
             this.label11.TabIndex = 25;
@@ -2921,6 +2962,7 @@
             // 
             // AdditionalPage
             // 
+            this.AdditionalPage.Controls.Add(this.panel1);
             this.AdditionalPage.Controls.Add(this.DarkmodeButton);
             this.AdditionalPage.Controls.Add(this.StatisticsButton);
             this.AdditionalPage.Controls.Add(this.RandomIdeaBoxButton);
@@ -2931,6 +2973,31 @@
             this.AdditionalPage.TabIndex = 2;
             this.AdditionalPage.Text = "Additional Tools";
             this.AdditionalPage.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.ConsoleBox);
+            this.panel1.Controls.Add(this.ConsoleInputBox);
+            this.panel1.Location = new System.Drawing.Point(6, 122);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(543, 352);
+            this.panel1.TabIndex = 7;
+            // 
+            // ConsoleBox
+            // 
+            this.ConsoleBox.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.ConsoleBox.Location = new System.Drawing.Point(4, 3);
+            this.ConsoleBox.Name = "ConsoleBox";
+            this.ConsoleBox.Size = new System.Drawing.Size(536, 319);
+            this.ConsoleBox.TabIndex = 4;
+            this.ConsoleBox.Text = "";
+            // 
+            // ConsoleInputBox
+            // 
+            this.ConsoleInputBox.Location = new System.Drawing.Point(4, 326);
+            this.ConsoleInputBox.Name = "ConsoleInputBox";
+            this.ConsoleInputBox.Size = new System.Drawing.Size(536, 20);
+            this.ConsoleInputBox.TabIndex = 6;
             // 
             // DarkmodeButton
             // 
@@ -3861,7 +3928,7 @@
             // 
             // LoadAllFilesAgainButton
             // 
-            this.LoadAllFilesAgainButton.Location = new System.Drawing.Point(282, 769);
+            this.LoadAllFilesAgainButton.Location = new System.Drawing.Point(280, 776);
             this.LoadAllFilesAgainButton.Name = "LoadAllFilesAgainButton";
             this.LoadAllFilesAgainButton.Size = new System.Drawing.Size(269, 39);
             this.LoadAllFilesAgainButton.TabIndex = 4;
@@ -3871,7 +3938,7 @@
             // 
             // SaveAllFilesButton
             // 
-            this.SaveAllFilesButton.Location = new System.Drawing.Point(5, 769);
+            this.SaveAllFilesButton.Location = new System.Drawing.Point(3, 776);
             this.SaveAllFilesButton.Name = "SaveAllFilesButton";
             this.SaveAllFilesButton.Size = new System.Drawing.Size(271, 39);
             this.SaveAllFilesButton.TabIndex = 3;
@@ -3884,7 +3951,7 @@
             this.SaveFilesPanel.AutoScroll = true;
             this.SaveFilesPanel.Location = new System.Drawing.Point(3, 35);
             this.SaveFilesPanel.Name = "SaveFilesPanel";
-            this.SaveFilesPanel.Size = new System.Drawing.Size(546, 728);
+            this.SaveFilesPanel.Size = new System.Drawing.Size(546, 735);
             this.SaveFilesPanel.TabIndex = 2;
             // 
             // RefreshSavesButton
@@ -4087,83 +4154,14 @@
             this.TradeCompanyMapmode.Text = "Trade com. mapmode";
             this.TradeCompanyMapmode.UseVisualStyleBackColor = true;
             // 
-            // LeaderNamesBox
+            // testlabel
             // 
-            this.LeaderNamesBox.Location = new System.Drawing.Point(6, 36);
-            this.LeaderNamesBox.Multiline = true;
-            this.LeaderNamesBox.Name = "LeaderNamesBox";
-            this.LeaderNamesBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.LeaderNamesBox.Size = new System.Drawing.Size(502, 148);
-            this.LeaderNamesBox.TabIndex = 0;
-            // 
-            // label68
-            // 
-            this.label68.Location = new System.Drawing.Point(3, 17);
-            this.label68.Name = "label68";
-            this.label68.Size = new System.Drawing.Size(502, 16);
-            this.label68.TabIndex = 1;
-            this.label68.Text = "Add/Remove leader names, separate them with commas.\r\n";
-            // 
-            // label71
-            // 
-            this.label71.Location = new System.Drawing.Point(5, 12);
-            this.label71.Name = "label71";
-            this.label71.Size = new System.Drawing.Size(502, 16);
-            this.label71.TabIndex = 3;
-            this.label71.Text = "Add/Remove ship names, separate them with commas.\r\n";
-            // 
-            // ShipNamesBox
-            // 
-            this.ShipNamesBox.Location = new System.Drawing.Point(8, 31);
-            this.ShipNamesBox.Multiline = true;
-            this.ShipNamesBox.Name = "ShipNamesBox";
-            this.ShipNamesBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.ShipNamesBox.Size = new System.Drawing.Size(502, 148);
-            this.ShipNamesBox.TabIndex = 2;
-            // 
-            // label72
-            // 
-            this.label72.Location = new System.Drawing.Point(5, 12);
-            this.label72.Name = "label72";
-            this.label72.Size = new System.Drawing.Size(502, 16);
-            this.label72.TabIndex = 5;
-            this.label72.Text = "Add/Remove army names, separate them with commas. You can use $PROVINCE$ here.\r\n";
-            // 
-            // ArmyNamesBox
-            // 
-            this.ArmyNamesBox.Location = new System.Drawing.Point(8, 31);
-            this.ArmyNamesBox.Multiline = true;
-            this.ArmyNamesBox.Name = "ArmyNamesBox";
-            this.ArmyNamesBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.ArmyNamesBox.Size = new System.Drawing.Size(502, 148);
-            this.ArmyNamesBox.TabIndex = 4;
-            // 
-            // label73
-            // 
-            this.label73.Location = new System.Drawing.Point(5, 12);
-            this.label73.Name = "label73";
-            this.label73.Size = new System.Drawing.Size(502, 16);
-            this.label73.TabIndex = 7;
-            this.label73.Text = "Add/Remove fleet names, separate them with commas.\r\n";
-            // 
-            // FleetNamesBox
-            // 
-            this.FleetNamesBox.Location = new System.Drawing.Point(8, 31);
-            this.FleetNamesBox.Multiline = true;
-            this.FleetNamesBox.Name = "FleetNamesBox";
-            this.FleetNamesBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.FleetNamesBox.Size = new System.Drawing.Size(502, 148);
-            this.FleetNamesBox.TabIndex = 6;
-            // 
-            // SaveNamesToFiles
-            // 
-            this.SaveNamesToFiles.Location = new System.Drawing.Point(454, 12);
-            this.SaveNamesToFiles.Name = "SaveNamesToFiles";
-            this.SaveNamesToFiles.Size = new System.Drawing.Size(75, 23);
-            this.SaveNamesToFiles.TabIndex = 1;
-            this.SaveNamesToFiles.Text = "Save to files\r\n";
-            this.SaveNamesToFiles.UseVisualStyleBackColor = true;
-            this.SaveNamesToFiles.Click += new System.EventHandler(this.SaveNamesToFiles_Click);
+            this.testlabel.AutoSize = true;
+            this.testlabel.Location = new System.Drawing.Point(1278, 876);
+            this.testlabel.Name = "testlabel";
+            this.testlabel.Size = new System.Drawing.Size(41, 13);
+            this.testlabel.TabIndex = 23;
+            this.testlabel.Text = "label75";
             // 
             // ModEditor
             // 
@@ -4172,6 +4170,7 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.ClientSize = new System.Drawing.Size(1736, 905);
+            this.Controls.Add(this.testlabel);
             this.Controls.Add(this.TradeCompanyMapmode);
             this.Controls.Add(this.GovernmentMapmode);
             this.Controls.Add(this.DiscoveredByMapmode);
@@ -4199,7 +4198,7 @@
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.Name = "ModEditor";
-            this.Text = "EUIV - Mod Editor - 1.1.3";
+            this.Text = "EUIV - Mod Editor - 1.1.4";
             this.Tabs.ResumeLayout(false);
             this.ProvinceTab.ResumeLayout(false);
             this.ProvinceTabControl.ResumeLayout(false);
@@ -4219,6 +4218,7 @@
             this.groupBox11.ResumeLayout(false);
             this.groupBox11.PerformLayout();
             this.AreaRegionPage.ResumeLayout(false);
+            this.AreaRegionPage.PerformLayout();
             this.groupBox18.ResumeLayout(false);
             this.groupBox18.PerformLayout();
             this.groupBox17.ResumeLayout(false);
@@ -4266,6 +4266,8 @@
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.AdditionalPage.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.MacroSelecter.ResumeLayout(false);
             this.groupBox21.ResumeLayout(false);
             this.groupBox21.PerformLayout();
@@ -4298,6 +4300,7 @@
             this.ChangesTab.ResumeLayout(false);
             this.SavingTab.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -4354,13 +4357,11 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Button ShowHideSeaTilesAreaMapmode;
         private System.Windows.Forms.TextBox AreaNameChangeBox;
-        private System.Windows.Forms.Button SaveAreaFile;
         private System.Windows.Forms.Button AddNewArea;
         private System.Windows.Forms.TextBox AddNewAreaBox;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.TextBox AddNewRegionBox;
         private System.Windows.Forms.Button AddNewRegion;
-        private System.Windows.Forms.Button SaveRegionFile;
         private System.Windows.Forms.Button HideSeaTiles;
         private System.Windows.Forms.TextBox RegionNameChangeBox;
         public System.Windows.Forms.ComboBox RegionBox;
@@ -4435,7 +4436,6 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox AddNewContinentBox;
         private System.Windows.Forms.Button AddNewContinent;
-        private System.Windows.Forms.Button SaveContinentFile;
         private System.Windows.Forms.Button HideSeaTiles2;
         private System.Windows.Forms.TextBox ContinentNameChangeBox;
         public System.Windows.Forms.ComboBox ContinentBox;
@@ -4507,7 +4507,6 @@
         private System.Windows.Forms.Label label43;
         private System.Windows.Forms.Label label44;
         private System.Windows.Forms.Button AddNewSuperregion;
-        private System.Windows.Forms.Button SaveSuperregionFile;
         private System.Windows.Forms.Button HideSeaTiles3;
         private System.Windows.Forms.TextBox SuperregionNameChangeBox;
         public System.Windows.Forms.ComboBox SuperregionBox;
@@ -4538,7 +4537,6 @@
         private System.Windows.Forms.Label label48;
         private System.Windows.Forms.TextBox AddNewTradeCompanyBox;
         private System.Windows.Forms.Button AddNewTradeCompany;
-        private System.Windows.Forms.Button SaveTradeCompanyFile;
         private System.Windows.Forms.TextBox TradeCompanyNameChangeBox;
         public System.Windows.Forms.ComboBox TradeCompanyBox;
         private System.Windows.Forms.Label label49;
@@ -4652,6 +4650,12 @@
         private System.Windows.Forms.Label label73;
         private System.Windows.Forms.TextBox FleetNamesBox;
         private System.Windows.Forms.Button SaveNamesToFiles;
+        private System.Windows.Forms.Label label74;
+        private System.Windows.Forms.Label testlabel;
+        private System.Windows.Forms.RichTextBox ConsoleBox;
+        private System.Windows.Forms.TextBox ConsoleInputBox;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label75;
     }
 }
 

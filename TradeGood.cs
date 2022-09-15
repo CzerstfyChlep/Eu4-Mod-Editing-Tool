@@ -20,6 +20,8 @@ namespace Eu4ModEditor
         public int TotalProvinces = 0;
         public int TotalDev = 0;
 
+        public NodeFile NodeFile;
+
         public static TradeGood nothing = new TradeGood()
         {
             Name = "nothing",

@@ -7,7 +7,9 @@ namespace Eu4ModEditor
     public class Country
     {
         public string Tag = "";
+        public string OriginalTag = "";
         public string FullName = "";
+        public string OriginalFullName = "";
         public Color Color = Color.Black;
         public List<Province> Provinces = new List<Province>();
         public Province Capital;
@@ -63,19 +65,22 @@ namespace Eu4ModEditor
                 Variables["Religion"] = value;
             }
         }
-        public string HistoryFile;
-        public bool HistoryFileGame = false;
-        public string CommonFile;
-        public bool CommonFileGame = false;
+
+
+        public NodeFile HistoryFile;
+        public NodeFile CommonFile;
+        public NodeFile CountryTagsFile;
+
+        //public string HistoryFile;
+        //public bool HistoryFileGame = false;
+        //public string CommonFile;
+        //public bool CommonFileGame = false;
 
         public List<MonarchName> MonarchNames = new List<MonarchName>();
         public List<string> LeaderNames = new List<string>();
         public List<string> ShipNames = new List<string>();
         public List<string> ArmyNames = new List<string>();
         public List<string> FleetNames = new List<string>();
-
-
-        public string TagFile;
 
 
         public string GovernmentReform

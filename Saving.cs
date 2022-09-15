@@ -16,21 +16,19 @@ namespace Eu4ModEditor
             {
                 if (toSave.GetType() == typeof(Province))
                 {
-                    if (GlobalVariables.ReadOnly[8])
+                    if (GlobalVariables.ReadOnly[8] && !GlobalVariables.CreateNewFilesReadOnly)
                         return;
                     Province province = (Province)toSave;
-
-                    NodeFile nf = new NodeFile(province.HistoryFile);
+                    NodeFile nf = province.HistoryFile;
                     if (nf == null)
                         return;
-                    if (province.HistoryFileGame)
+                    if (nf.ReadOnly)
                     {
-                        province.HistoryFileGame = false;
                         if(!Directory.Exists(GlobalVariables.pathtomod + "history\\"))
                             Directory.CreateDirectory(GlobalVariables.pathtomod + "history\\");
                         if (!Directory.Exists(GlobalVariables.pathtomod + "history\\provinces\\"))
                             Directory.CreateDirectory(GlobalVariables.pathtomod + "history\\provinces\\");
-                        province.HistoryFile = GlobalVariables.pathtomod + "history\\provinces\\" + province.HistoryFile.Split('\\').Last();
+                        province.HistoryFile = new NodeFile(GlobalVariables.pathtomod + "history\\provinces\\" + province.HistoryFile.Path.Split('\\').Last());
                     }                                               
                     nf.MainNode.Variables.RemoveAll(x => x.Name == "add_core" || x.Name == "discovered_by" || GlobalVariables.Buildings.Any(y=>y.Name == x.Name) || x.Name == "add_claim");
                     nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "add_core" || x.Name == "discovered_by" || GlobalVariables.Buildings.Any(y => y.Name == x.Name) || x.Name == "add_claim");
@@ -152,24 +150,23 @@ namespace Eu4ModEditor
 
 
 
-                    nf.SaveFile(province.HistoryFile);
+                    nf.SaveFile(province.HistoryFile.Path);
                 }
 
-                if (toSave.GetType() == typeof(Country))
+                else if (toSave.GetType() == typeof(Country))
                 {
-                    if (GlobalVariables.ReadOnly[6])
+                    if (GlobalVariables.ReadOnly[11] && !GlobalVariables.CreateNewFilesReadOnly)
                         return;
                     Country country = (Country)toSave;
-                    NodeFile nf = new NodeFile(country.HistoryFile);
+                    NodeFile nf = country.HistoryFile;
 
-                    if (country.HistoryFileGame)
+                    if (nf.ReadOnly)
                     {
-                        country.HistoryFileGame = false;
                         if (!Directory.Exists(GlobalVariables.pathtomod + "history\\"))
                             Directory.CreateDirectory(GlobalVariables.pathtomod + "history\\");
                         if (!Directory.Exists(GlobalVariables.pathtomod + "history\\countries\\"))
                             Directory.CreateDirectory(GlobalVariables.pathtomod + "history\\countries\\");
-                        country.HistoryFile = GlobalVariables.pathtomod + "history\\countries\\" + country.HistoryFile.Split('\\').Last();
+                        country.HistoryFile = new NodeFile(GlobalVariables.pathtomod + "history\\countries\\" + country.HistoryFile.Path.Split('\\').Last());
                     }
 
                     if (country.Religion != null && country.Religion != Religion.NoReligion) 
@@ -273,18 +270,17 @@ namespace Eu4ModEditor
                         nf.MainNode.AddVariable(governmentrank);
                     }
 
-                    nf.SaveFile(country.HistoryFile);
+                    nf.SaveFile(country.HistoryFile.Path);
 
-                    NodeFile cnf = new NodeFile(country.CommonFile);
+                    NodeFile cnf = country.CommonFile;
 
-                    if (country.CommonFileGame)
+                    if (cnf.ReadOnly)
                     {
-                        country.CommonFileGame = false;
                         if (!Directory.Exists(GlobalVariables.pathtomod + "common\\"))
                             Directory.CreateDirectory(GlobalVariables.pathtomod + "common\\");
                         if (!Directory.Exists(GlobalVariables.pathtomod + "common\\countries\\"))
                             Directory.CreateDirectory(GlobalVariables.pathtomod + "common\\countries\\");
-                        country.CommonFile = GlobalVariables.pathtomod + "common\\countries\\" + country.CommonFile.Split('\\').Last();
+                        country.CommonFile = new NodeFile(GlobalVariables.pathtomod + "common\\countries\\" + country.CommonFile.Path.Split('\\').Last());
                     }
 
                     Variable graphicalculture = cnf.MainNode.Variables.Find(x => x.Name == "graphical_culture");
@@ -298,156 +294,464 @@ namespace Eu4ModEditor
                         nf.MainNode.AddVariable(graphicalculture);
                     }
 
-                    cnf.SaveFile(country.CommonFile);
+                    cnf.SaveFile(country.CommonFile.Path);
                 }
-            }
-        }
 
-        public static void SaveThingsToUpdate_OLD()
-        {
-            foreach (object obj in GlobalVariables.ToUpdate)
-            {
-                if (obj != null)
+                else if (toSave.GetType() == typeof(SpecialSavingObject))
                 {
-                    if (obj.GetType() == typeof(Province))
+                    SpecialSavingObject specialobject = (SpecialSavingObject)toSave;
+                    switch (specialobject.Type)
                     {
-                        if (GlobalVariables.ReadOnly[8])
-                            continue;
-                        Province province = (Province)obj;
-                        NodeFile nf = new NodeFile(province.HistoryFile);
-
-                        if (nf == null)
-                            continue;
-
-                        nf.MainNode.Variables.RemoveAll(x => x.Name == "add_core");
-                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "add_core");
-                        foreach (string tag in province.GetCores())
-                        {
-                            nf.MainNode.AddVariable("add_core", tag);
-                        }
-
-                        if (province.OwnerCountry != null)
-                        {
-                            nf.MainNode.ChangeVariable("owner", province.OwnerCountry.Tag, true);
-                        }
-                        else
-                        {
-                            nf.MainNode.Variables.RemoveAll(x => x.Name == "owner");
-                            nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "owner");
-                        }
-
-                        nf.MainNode.ChangeVariable("base_tax", province.Tax.ToString(), true);
-                        nf.MainNode.ChangeVariable("base_manpower", province.Manpower.ToString(), true);
-                        nf.MainNode.ChangeVariable("base_production", province.Production.ToString(), true);
-                        if (province.Culture != null)
-                        {
-                            nf.MainNode.ChangeVariable("culture", province.Culture.Name, true);
-                        }
-                        else
-                        {
-                            nf.MainNode.Variables.RemoveAll(x => x.Name == "culture");
-                            nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "culture");
-                        }
-                        nf.MainNode.ChangeVariable("trade_goods", province.TradeGood.Name, true);
-                        if (province.Religion != null)
-                            nf.MainNode.ChangeVariable("religion", province.Religion.Name, true);
-                        else
-                        {
-                            nf.MainNode.Variables.RemoveAll(x => x.Name == "religion");
-                            nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "religion");
-                        }
-                        if (province.HRE)
-                            nf.MainNode.ChangeVariable("hre", "yes", true);
-                        else
-                        {
-                            nf.MainNode.Variables.RemoveAll(x => x.Name == "hre");
-                            nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "hre");
-                        }
-                        if (province.Fort)
-                            nf.MainNode.ChangeVariable("fort_15th", "yes", true);
-                        else
-                        {
-                            nf.MainNode.Variables.RemoveAll(x => x.Name == "fort_15th");
-                            nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "fort_15th");
-                        }
-                        if (province.CenterOfTrade > 0)
-                            nf.MainNode.ChangeVariable("center_of_trade", province.CenterOfTrade + "", true);
-                        else
-                        {
-                            nf.MainNode.Variables.RemoveAll(x => x.Name == "center_of_trade");
-                            nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "center_of_trade");
-                        }
-
-                        Node n = nf.MainNode.Nodes.Find(x => x.Name == "latent_trade_goods");
-                        if (province.LatentTradeGood != null)
-                        {
-                            if (n != null)
+                        case SpecialSavingObject.SavingType.Area:
                             {
-                                n.PureValues.Clear();
-                                n.AddPureValue(province.LatentTradeGood.Name);
-                            }
-                            else
-                            {
-                                n = nf.MainNode.AddNode("latent_trade_goods");
-                                n.AddPureValue(province.LatentTradeGood.Name);
-                            }
-                        }
-                        else
-                        {
-                            if (n != null)
-                            {
-                                nf.MainNode.Nodes.Remove(n);
-                                nf.MainNode.ItemOrder.Remove(n);
-                            }
-                        }
+                                if (GlobalVariables.ReadOnly[(int)GlobalVariables.LoadFilesOrder.area] && !GlobalVariables.CreateNewFilesReadOnly)
+                                    return;
+                                if (GlobalVariables.ReadOnly[(int)GlobalVariables.LoadFilesOrder.area] && GlobalVariables.CreateNewFilesReadOnly && File.Exists(GlobalVariables.pathtomod + "map\\area.txt"))
+                                    return;
+                                if (!Directory.Exists(GlobalVariables.pathtomod + "map\\"))
+                                    Directory.CreateDirectory(GlobalVariables.pathtomod + "map\\");
 
-                       
-
-                        nf.SaveFile(province.HistoryFile);
-                    }
-
-                    if (obj.GetType() == typeof(Country))
-                    {
-                        if (GlobalVariables.ReadOnly[6])
-                            return;
-                        Country country = (Country)obj;
-                        NodeFile nf = new NodeFile(country.HistoryFile);
-                        if (country.Religion != null)
-                        {
-                            Variable religion = nf.MainNode.Variables.Find(x => x.Name == "religion");
-                            if (religion != null)
-                            {
-                                religion.Value = country.Religion.Name;
+                                NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\area.txt");
+                                foreach (Area a in GlobalVariables.Areas)
+                                {
+                                    Node n = nf.MainNode.Nodes.Find(x => x.Name == a.Name);
+                                    if (n != null)
+                                    {
+                                        n.PureValues.Clear();
+                                        foreach (Province p in a.Provinces)
+                                            n.AddPureValue(p.ID.ToString());
+                                    }
+                                    else
+                                    {
+                                        n = nf.MainNode.Nodes.Find(x => x.Name == a.OriginalName);
+                                        if (n != null)
+                                        {
+                                            n.Name = a.Name;
+                                            n.PureValues.Clear();
+                                            a.OriginalName = a.Name;
+                                            foreach (Province p in a.Provinces)
+                                                n.AddPureValue(p.ID.ToString());
+                                        }
+                                        else
+                                        {
+                                            n = new Node(a.Name);
+                                            a.OriginalName = a.Name;
+                                            foreach (Province p in a.Provinces)
+                                                n.AddPureValue(p.ID.ToString());
+                                            nf.MainNode.AddNode(n);
+                                        }
+                                    }
+                                }
+                                nf.MainNode.Nodes.Where(x => !GlobalVariables.Areas.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
+                                nf.SaveFile(GlobalVariables.pathtomod + "map\\area.txt");
                             }
-                            else
+                            break;
+                        case SpecialSavingObject.SavingType.Region:
                             {
-                                religion = new Variable("religion", country.Religion.Name);
-                                nf.MainNode.AddVariable(religion);
+                                if (GlobalVariables.ReadOnly[(int)GlobalVariables.LoadFilesOrder.region] && !GlobalVariables.CreateNewFilesReadOnly)
+                                    return;
+                                if (GlobalVariables.ReadOnly[(int)GlobalVariables.LoadFilesOrder.region] && GlobalVariables.CreateNewFilesReadOnly && File.Exists(GlobalVariables.pathtomod + "map\\region.txt"))
+                                    return;
+                                if (!Directory.Exists(GlobalVariables.pathtomod + "map\\"))
+                                    Directory.CreateDirectory(GlobalVariables.pathtomod + "map\\");
+
+                                NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\region.txt");
+                                foreach (Region r in GlobalVariables.Regions)
+                                {
+                                    Node pn = nf.MainNode.Nodes.Find(x => x.Name == r.Name);
+                                    if (pn != null)
+                                    {
+                                        Node n = pn.Nodes.Find(x => x.Name == "areas");
+                                        if (n == null)
+                                            n = pn.AddNode("areas");
+                                        n.PureValues.Clear();
+                                        foreach (Area a in r.Areas)
+                                            n.AddPureValue(a.Name);
+                                    }
+                                    else
+                                    {
+                                        pn = nf.MainNode.Nodes.Find(x => x.Name == r.OriginalName);
+                                        if (pn != null)
+                                        {                                           
+                                            pn.Name = r.Name;
+                                            Node n = pn.Nodes.Find(x => x.Name == "areas");
+                                            if (n == null)
+                                                n = pn.AddNode("areas");
+                                            n.PureValues.Clear();
+                                            r.OriginalName = r.Name;
+                                            foreach (Area a in r.Areas)
+                                                n.AddPureValue(a.Name);
+                                        }
+                                        else
+                                        {
+                                            pn = new Node(r.Name);
+                                            r.OriginalName = r.Name;
+                                            Node n = pn.AddNode("areas");
+                                            foreach (Area a in r.Areas)
+                                                n.AddPureValue(a.Name);
+                                            nf.MainNode.AddNode(n);
+                                        }
+                                    }
+                                }
+                                nf.MainNode.Nodes.Where(x => !GlobalVariables.Regions.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
+                                nf.SaveFile(GlobalVariables.pathtomod + "map\\region.txt");
                             }
-                        }
-                        if (country.Capital != null)
-                        {
-                            Variable capital = nf.MainNode.Variables.Find(x => x.Name == "capital");
-                            if (capital != null)
+                            break;
+                        case SpecialSavingObject.SavingType.Continent:
                             {
-                                capital.Value = country.CapitalID.ToString();
+                                if (GlobalVariables.ReadOnly[(int)GlobalVariables.LoadFilesOrder.continent] && !GlobalVariables.CreateNewFilesReadOnly)
+                                    return;
+                                if (GlobalVariables.ReadOnly[(int)GlobalVariables.LoadFilesOrder.continent] && GlobalVariables.CreateNewFilesReadOnly && File.Exists(GlobalVariables.pathtomod + "map\\continent.txt"))
+                                    return;
+                                if (!Directory.Exists(GlobalVariables.pathtomod + "map\\"))
+                                    Directory.CreateDirectory(GlobalVariables.pathtomod + "map\\");
+
+                                NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\continent.txt");
+                                foreach (Continent c in GlobalVariables.Continents)
+                                {
+                                    Node n = nf.MainNode.Nodes.Find(x => x.Name == c.Name);
+                                    if (n != null)
+                                    {
+                                        n.PureValues.Clear();
+                                        foreach (Province p in c.Provinces)
+                                            n.AddPureValue(p.ID.ToString());
+                                    }
+                                    else
+                                    {
+                                        n = nf.MainNode.Nodes.Find(x => x.Name == c.OriginalName);
+                                        if (n != null)
+                                        {
+                                            n.Name = c.Name;
+                                            n.PureValues.Clear();
+                                            c.OriginalName = c.Name;
+                                            foreach (Province p in c.Provinces)
+                                                n.AddPureValue(p.ID.ToString());
+                                        }
+                                        else
+                                        {
+                                            n = new Node(c.Name);
+                                            c.OriginalName = c.Name;
+                                            foreach (Province p in c.Provinces)
+                                                n.AddPureValue(p.ID.ToString());
+                                            nf.MainNode.AddNode(n);
+                                        }
+                                    }
+                                }
+                                nf.MainNode.Nodes.Where(x => !GlobalVariables.Continents.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
+                                nf.SaveFile(GlobalVariables.pathtomod + "map\\continent.txt");
                             }
-                            else
+                            break;
+                        case SpecialSavingObject.SavingType.Superregion:
                             {
-                                capital = new Variable("capital", country.CapitalID.ToString());
-                                nf.MainNode.AddVariable(capital);
+                                if (GlobalVariables.ReadOnly[(int)GlobalVariables.LoadFilesOrder.superregion] && !GlobalVariables.CreateNewFilesReadOnly)
+                                    return;
+                                if (GlobalVariables.ReadOnly[(int)GlobalVariables.LoadFilesOrder.superregion] && GlobalVariables.CreateNewFilesReadOnly && File.Exists(GlobalVariables.pathtomod + "map\\superregion.txt"))
+                                    return;
+                                if (!Directory.Exists(GlobalVariables.pathtomod + "map\\"))
+                                    Directory.CreateDirectory(GlobalVariables.pathtomod + "map\\");
+
+                                NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\superregion.txt");
+                                foreach (Superregion sr in GlobalVariables.Superregions)
+                                {
+                                    Node n = nf.MainNode.Nodes.Find(x => x.Name == sr.Name);
+                                    if (n != null)
+                                    {
+                                        n.PureValues.Clear();
+                                        foreach (Region a in sr.Regions)
+                                            n.AddPureValue(a.Name);
+                                    }
+                                    else
+                                    {
+                                        n = nf.MainNode.Nodes.Find(x => x.Name == sr.OriginalName);
+                                        if (n != null)
+                                        {
+                                            n.Name = sr.Name;
+                                            n.PureValues.Clear();
+                                            sr.OriginalName = sr.Name;
+                                            foreach (Region a in sr.Regions)
+                                                n.AddPureValue(a.Name);
+                                        }
+                                        else
+                                        {
+                                            n = new Node(sr.Name);
+                                            sr.OriginalName = sr.Name;
+                                            foreach (Region a in sr.Regions)
+                                                n.AddPureValue(a.Name);
+                                            nf.MainNode.AddNode(n);
+                                        }
+                                    }
+                                }
+                                nf.MainNode.Nodes.Where(x => !GlobalVariables.Superregions.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
+                                nf.SaveFile(GlobalVariables.pathtomod + "map\\superregion.txt");
                             }
-                        }
+                            break;
+                        case SpecialSavingObject.SavingType.TradeCompany:
+                            {
+                                if (GlobalVariables.ReadOnly[(int)GlobalVariables.LoadFilesOrder.tradecompanies] && !GlobalVariables.CreateNewFilesReadOnly)
+                                    return;
+                                foreach (TradeCompany tc in GlobalVariables.TradeCompanies)
+                                {
+                                    if (!tc.MadeChanges)
+                                        continue;
+                                    tc.MadeChanges = false;
+                                    NodeFile toSaveTo = DetermineSaveLocation(GlobalVariables.ModNodeFileTypes.TradeCompanies, tc.NodeFile);
 
-                        
+                                    if (toSaveTo == null)
+                                        continue;
+                                    tc.NodeFile = toSaveTo;
+                                    Node n = tc.NodeFile.MainNode.Nodes.Find(x => x.Name == tc.Name);
+                                    if (n == null)
+                                    {
+                                        n = new Node(tc.Name, toSaveTo.MainNode);
+                                        tc.NodeFile.MainNode.AddNode(n);
+                                        n.Parent = tc.NodeFile.MainNode;
 
-                        nf.SaveFile(country.HistoryFile);
-                    }
+                                        Node color = new Node("color", n)
+                                        {
+                                            PureValues = new List<PureValue>() { new PureValue(tc.Color.R.ToString()), new PureValue(tc.Color.G.ToString()), new PureValue(tc.Color.B.ToString()) }
+                                        };
+                                        n.AddNode(color);
+                                        Node provinces = new Node("provinces", n);
+                                        n.AddNode(provinces);
+                                        foreach (Province p in tc.Provinces)
+                                            provinces.AddPureValue(p.ID.ToString());
+                                        foreach (string name in tc.Names)
+                                        {
+                                            Node nm = new Node("names", n);
+                                            n.AddNode(nm);
+                                            nm.ChangeVariable("name", name, true);
+                                        }
 
+                                    }
+                                    else
+                                    {
+                                        n.Nodes.Find(x => x.Name == "color").PureValues = new List<PureValue>() { new PureValue(tc.Color.R.ToString()), new PureValue(tc.Color.G.ToString()), new PureValue(tc.Color.B.ToString()) };
+                                        Node pnode = n.Nodes.Find(x => x.Name == "provinces");
+                                        pnode.PureValues.Clear();
+                                        foreach (Province p in tc.Provinces)
+                                            pnode.AddPureValue(p.ID.ToString());
+                                        int N = 0;
+                                        List<Node> ToRemove = new List<Node>();
+                                        foreach (Node namenode in n.Nodes.FindAll(x => x.Name == "names"))
+                                        {
+                                            if (N >= tc.Names.Count)
+                                            {
+                                                ToRemove.Add(namenode);
+                                                continue;
+                                            }
+                                            namenode.ChangeVariable("name", tc.Names[N]);
+                                            N++;
+                                        }
+                                        if (N < tc.Names.Count)
+                                        {
+                                            for (; N < tc.Names.Count; N++)
+                                            {
+                                                Node nm = new Node("names", n);
+                                                n.AddNode(nm);
+                                                nm.ChangeVariable("name", tc.Names[N], true);
+                                            }
+                                        }
+                                        n.Nodes.RemoveAll(x => ToRemove.Contains(x));
+                                        n.ItemOrder.RemoveAll(x => ToRemove.Contains(x));
+                                    }
+                                    toSaveTo.SaveFile(toSaveTo.Path);
+                                }
+                            }
+                            break;
+                        case SpecialSavingObject.SavingType.TagFile:
+                            {
+                                if (GlobalVariables.ReadOnly[(int)GlobalVariables.LoadFilesOrder.countrytags] && !GlobalVariables.CreateNewFilesReadOnly)
+                                    return;
+                                List<Country> newSaves = new List<Country>();
+
+                                //search for the countries with changed tags
+                                foreach(Country c in GlobalVariables.Countries)
+                                {
+                                    if (c.FullName != c.OriginalFullName)
+                                        newSaves.Add(c);
+                                    if (c.Tag != c.OriginalTag)
+                                        newSaves.Add(c);
+                                }
+
+                                //if there are any tags which are using the gamefile
+
+
+                                foreach(Country c in newSaves)
+                                {
+                                    if (c.CountryTagsFile == null && GlobalVariables.ModCountryTagsFiles.Any())
+                                        c.CountryTagsFile = GlobalVariables.ModCountryTagsFiles[0];
+                                    else if(c.CountryTagsFile == null && GlobalVariables.GameCountryTagsFile != null)
+                                        c.CountryTagsFile = GlobalVariables.GameCountryTagsFile;
+                                    else if(c.CountryTagsFile == null)
+                                    {
+                                        c.CountryTagsFile = new NodeFile(GlobalVariables.pathtomod + "common\\country_tags\\00_modeditor_tags.txt");
+                                        c.CountryTagsFile.SaveFile();
+                                        GlobalVariables.ModCountryTagsFiles.Add(c.CountryTagsFile);
+                                    }
+
+                                }
+
+                                if(newSaves.Any(x=>x.CountryTagsFile.FileName == "00_countries.txt" && x.CountryTagsFile == GlobalVariables.GameCountryTagsFile))
+                                {
+                                    //create a mod replacement file
+                                    NodeFile modTagsReplacement = new NodeFile(GlobalVariables.GameCountryTagsFile.Path);
+                                    modTagsReplacement.Path = GlobalVariables.pathtomod + "common\\country_tags\\00_countries.txt";
+                                    modTagsReplacement.SaveFile();
+                                    GlobalVariables.ModCountryTagsFiles.Add(modTagsReplacement);
+                                    //and set it for all countries
+                                    foreach(Country c in GlobalVariables.Countries)
+                                    {
+                                        if (c.CountryTagsFile == GlobalVariables.GameCountryTagsFile)
+                                            c.CountryTagsFile = modTagsReplacement;
+                                    }
+                                    foreach (Country c in GlobalVariables.RemovedCountries)
+                                    {
+                                        if (c.CountryTagsFile == GlobalVariables.GameCountryTagsFile)
+                                            c.CountryTagsFile = modTagsReplacement;
+                                    }
+
+                                }
+                                //save everything
+                                foreach (Country c in newSaves)
+                                {
+                                    Variable v = c.CountryTagsFile.MainNode.Variables.Find(x => x.Name == c.OriginalTag);
+                                    if (v == null)
+                                        c.CountryTagsFile.MainNode.AddVariable(c.Tag, $"\"countries/{c.FullName}\"");
+                                    else {
+                                        v.Name = c.Tag;
+                                        v.Value = $"\"countries/{c.FullName}.txt\"";
+                                    }
+                                    c.OriginalTag = c.Tag;
+                                    c.OriginalFullName = c.FullName;
+                                }
+                                //remove deleted countries
+                                foreach (Country c in GlobalVariables.RemovedCountries)
+                                {
+                                    Variable v = c.CountryTagsFile.MainNode.Variables.Find(x => x.Name == c.OriginalTag);
+                                    if(v != null)
+                                        c.CountryTagsFile.MainNode.RemoveVariable(v);
+                                }                                
+
+                                foreach (NodeFile nf in GlobalVariables.ModCountryTagsFiles)
+                                {
+                                    nf.SaveFile();
+                                }
+                            }
+                            break;
+                    }                
                 }
             }
-            GlobalVariables.ToUpdate.Clear();
         }
+        public static List<NodeFile> GetModNodeFile(GlobalVariables.ModNodeFileTypes type)
+        {
+            switch ((int)type)
+            {
+                case 0:
+                    return GlobalVariables.ModTradeGoodsFiles;
+                case 1:
+                    return GlobalVariables.ModPricesFiles;
+                case 2:
+                    return GlobalVariables.ModCulturesFiles;
+                case 3:
+                    return GlobalVariables.ModReligionsFiles;
+                case 4:
+                    return GlobalVariables.ModTradeNodesFiles;
+                case 5:
+                    return GlobalVariables.ModTradeCompanyFiles;
+                case 6:
+                    return GlobalVariables.ModCountryTagsFiles;
+                case 7:
+                    return GlobalVariables.ModGovernmentsFiles;
+                default:
+                    return null;
+            }
+        }
+        public static string GetModNodeFileName(GlobalVariables.ModNodeFileTypes type)
+        {
+            switch ((int)type)
+            {
+                case 0:
+                    return "";
+                case 1:
+                    return "";
+                case 2:
+                    return "";
+                case 3:
+                    return "";
+                case 4:
+                    return "";
+                case 5:
+                    for (int a = 0; a < 99; a++)
+                    {
+                        if (File.Exists(GlobalVariables.pathtomod + $"\\common\\trade_companies\\{a.ToString("00")}_modeditor_trade_companies.txt"))
+                            continue;
+                        else
+                            return $"\\common\\trade_companies\\{a.ToString("00")}_modeditor_trade_companies.txt";
+                    }
+                    return "\\common\\trade_companies\\99_modeditor_trade_companies.txt";
+                case 6:
+                    for (int a = 0; a < 99; a++)
+                    {
+                        if (File.Exists(GlobalVariables.pathtomod + $"\\common\\country_tags\\{a.ToString("00")}_modeditor_countries.txt"))
+                            continue;
+                        else
+                            return $"\\common\\country_tags\\{a.ToString("00")}_modeditor_countries.txt";
+                    }
+                    return "\\common\\country_tags\\99_modeditor_countries.txt";
+                case 7:
+                    return "";
+                default:
+                    return "";
+            }
+        }
+        public static NodeFile DetermineSaveLocation(GlobalVariables.ModNodeFileTypes type, NodeFile Parent)
+        {
+            NodeFile toSaveTo = null;
+            if (Parent != null) //file found
+            {
+                //file is readonly but there is permission to create new files
+                if (Parent.ReadOnly && GlobalVariables.CreateNewFilesReadOnly)
+                {
+                    toSaveTo = GetModNodeFile(type).Find(x => x.CreatedByEditor);
+                    if (toSaveTo == null)
+                    {
+                        toSaveTo = new NodeFile(GlobalVariables.pathtomod + GetModNodeFileName(type));
+                        toSaveTo.CreatedByEditor = true;
+                        GetModNodeFile(type).Add(toSaveTo);
+                    }
+                }
+                //file is readonly but no permission to save over
+                else if (Parent.ReadOnly && !GlobalVariables.CreateNewFilesReadOnly)
+                    return null;
+                //file isn't readonly
+                else
+                    toSaveTo = Parent;
+
+            }
+            else //file wasn't found (new object)
+            {
+                //file will be saved to a new file
+                if (GlobalVariables.NewObjectsNewFiles)
+                {
+                    toSaveTo = GetModNodeFile(type).Find(x => x.CreatedByEditor);
+                    if (toSaveTo == null)
+                    {
+                        toSaveTo = new NodeFile(GlobalVariables.pathtomod + GetModNodeFileName(type));
+                        toSaveTo.CreatedByEditor = true;
+                        GetModNodeFile(type).Add(toSaveTo);
+                    }
+
+
+                }
+                //editor will look for some already exisitng file (if it fails it won't save)
+                else
+                {
+                    toSaveTo = GetModNodeFile(type).First(x => !x.ReadOnly);
+                }
+            }
+            return toSaveTo;
+        }
+
 
         public static void LoadObject(object toLoad)
         {
@@ -456,7 +760,7 @@ namespace Eu4ModEditor
                 if (toLoad.GetType() == typeof(Province))
                 {
                     Province province = (Province)toLoad;
-                    NodeFile nf = new NodeFile(province.HistoryFile);
+                    NodeFile nf = province.HistoryFile;
 
 
                     List<VariableChange> toremove = new List<VariableChange>();
@@ -600,7 +904,7 @@ namespace Eu4ModEditor
                     if (GlobalVariables.ReadOnly[6])
                         return;
                     Country country = (Country)toLoad;
-                    NodeFile nf = new NodeFile(country.HistoryFile);
+                    NodeFile nf = country.HistoryFile;
                     if (country.Religion != null)
                     {
                         Variable religion = nf.MainNode.Variables.Find(x => x.Name == "religion");
@@ -627,11 +931,17 @@ namespace Eu4ModEditor
                             nf.MainNode.AddVariable(capital);
                         }
                     }
-
-                    
-
-                    nf.SaveFile(country.HistoryFile);
                 }
+            }
+        }
+
+        public class SpecialSavingObject
+        {
+            public enum SavingType { Area, Region, Continent, Superregion, TradeCompany, TagFile }
+            public SavingType Type;
+            public SpecialSavingObject(SavingType sv)
+            {
+                Type = sv;
             }
         }
     }

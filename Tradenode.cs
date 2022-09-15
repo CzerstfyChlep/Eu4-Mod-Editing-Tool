@@ -17,8 +17,7 @@ namespace Eu4ModEditor
         public List<Tradenode> Incoming = new List<Tradenode>();
         public string Name;
         public bool Endnode;
-        public string File;
-        public bool GameFile = false;
+        public NodeFile NodeFile;
         public override string ToString()
         {
             return Name;

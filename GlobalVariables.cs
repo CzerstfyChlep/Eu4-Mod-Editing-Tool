@@ -54,6 +54,7 @@ namespace Eu4ModEditor
         public static List<object> ToUpdate = new List<object>();
         public static Task UpdateDevInfo = null;
         public static List<Country> Countries = new List<Country>();
+        public static List<Country> RemovedCountries = new List<Country>();
         public static Country SelectedCountry;
         public static int TotalUsableProvinces = 0;
         public static List<int> PressedKeys = new List<int>();
@@ -139,6 +140,16 @@ namespace Eu4ModEditor
         public static int MapDrawingHeight = 770;
 
         public static bool Exited = false;
+
+        public enum LoadFilesOrder { definition = 0, provincesBMP = 1, tradegoods = 2, prices = 3,
+        cultures = 4, religions = 5, region = 6, commonCountries = 7, historyProvinces = 8,
+        area = 9, mapdefault = 10, historyCountries = 11, tradenodes = 12,
+        continent = 13, countrytags = 14, technology = 15, governments = 16,
+        buildings  =17, superregion = 18, tradecompanies = 19, localisation = 20}
+
+        public static int StartYear = 1444;
+        public static int StartMonth = 11;
+        public static int StartDay = 11;
 
 
     }

@@ -46,6 +46,7 @@
             this.LoadingPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.ConfirmFileUsage = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.DarkmodeOption = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.AppSizeBox = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -53,7 +54,8 @@
             this.NewFilesForNewObjects = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.ReadOnlyNewFiles = new System.Windows.Forms.CheckBox();
-            this.DarkmodeOption = new System.Windows.Forms.Button();
+            this.StartDateBox = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -226,6 +228,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label6);
+            this.groupBox3.Controls.Add(this.StartDateBox);
             this.groupBox3.Controls.Add(this.DarkmodeOption);
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Controls.Add(this.AppSizeBox);
@@ -236,10 +240,21 @@
             this.groupBox3.Controls.Add(this.ReadOnlyNewFiles);
             this.groupBox3.Location = new System.Drawing.Point(796, 12);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(235, 294);
+            this.groupBox3.Size = new System.Drawing.Size(235, 348);
             this.groupBox3.TabIndex = 7;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Special options";
+            // 
+            // DarkmodeOption
+            // 
+            this.DarkmodeOption.Enabled = false;
+            this.DarkmodeOption.Location = new System.Drawing.Point(16, 319);
+            this.DarkmodeOption.Name = "DarkmodeOption";
+            this.DarkmodeOption.Size = new System.Drawing.Size(136, 23);
+            this.DarkmodeOption.TabIndex = 7;
+            this.DarkmodeOption.Text = "Toggle darkmode";
+            this.DarkmodeOption.UseVisualStyleBackColor = true;
+            this.DarkmodeOption.Click += new System.EventHandler(this.DarkmodeOption_Click);
             // 
             // label5
             // 
@@ -294,8 +309,8 @@
             this.NewFilesForNewObjects.Name = "NewFilesForNewObjects";
             this.NewFilesForNewObjects.Size = new System.Drawing.Size(208, 57);
             this.NewFilesForNewObjects.TabIndex = 2;
-            this.NewFilesForNewObjects.Text = "Create new files for new Objects (new Trade nodes, Areas etc.)\r\nIf unchecked it w" +
-    "ill look for first not ReadOnly file";
+            this.NewFilesForNewObjects.Text = "Create new files for new Objects (currently only new Trade nodes)\r\nIf unchecked i" +
+    "t will look for first not ReadOnly file";
             this.NewFilesForNewObjects.UseVisualStyleBackColor = true;
             // 
             // label3
@@ -310,7 +325,8 @@
             // ReadOnlyNewFiles
             // 
             this.ReadOnlyNewFiles.AutoSize = true;
-            this.ReadOnlyNewFiles.Enabled = false;
+            this.ReadOnlyNewFiles.Checked = true;
+            this.ReadOnlyNewFiles.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ReadOnlyNewFiles.Location = new System.Drawing.Point(16, 21);
             this.ReadOnlyNewFiles.Name = "ReadOnlyNewFiles";
             this.ReadOnlyNewFiles.Size = new System.Drawing.Size(208, 17);
@@ -318,16 +334,22 @@
             this.ReadOnlyNewFiles.Text = "Create new files when Read Only is on";
             this.ReadOnlyNewFiles.UseVisualStyleBackColor = true;
             // 
-            // DarkmodeOption
+            // StartDateBox
             // 
-            this.DarkmodeOption.Enabled = false;
-            this.DarkmodeOption.Location = new System.Drawing.Point(16, 252);
-            this.DarkmodeOption.Name = "DarkmodeOption";
-            this.DarkmodeOption.Size = new System.Drawing.Size(136, 23);
-            this.DarkmodeOption.TabIndex = 7;
-            this.DarkmodeOption.Text = "Toggle darkmode";
-            this.DarkmodeOption.UseVisualStyleBackColor = true;
-            this.DarkmodeOption.Click += new System.EventHandler(this.DarkmodeOption_Click);
+            this.StartDateBox.Location = new System.Drawing.Point(16, 266);
+            this.StartDateBox.Name = "StartDateBox";
+            this.StartDateBox.Size = new System.Drawing.Size(100, 20);
+            this.StartDateBox.TabIndex = 8;
+            this.StartDateBox.Text = "1444.11.11";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(13, 250);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(130, 13);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "Start date (YYYY.MM.DD)";
             // 
             // LoadingScreen
             // 
@@ -380,5 +402,7 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox AppSizeBox;
         private System.Windows.Forms.Button DarkmodeOption;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox StartDateBox;
     }
 }

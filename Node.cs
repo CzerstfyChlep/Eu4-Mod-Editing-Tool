@@ -197,7 +197,7 @@ namespace Eu4ModEditor
                 commentline = false;
                 pretxt = "";
             }
-            Console.ReadLine();
+            //Console.ReadLine();
             /*
         StreamReader Reader = new StreamReader(path);
         string read = "";
@@ -319,6 +319,10 @@ namespace Eu4ModEditor
         public void SaveFile(string path)
         {
             File.WriteAllText(path, Node.NodeToText(MainNode));
+        }
+        public void SaveFile()
+        {
+            File.WriteAllText(Path, Node.NodeToText(MainNode));
         }
     }
     public class CommentLine

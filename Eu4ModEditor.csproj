@@ -171,7 +171,6 @@
       <DependentUpon>StatisticsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Superregion.cs" />
-    <Compile Include="SyncLoad.cs" />
     <Compile Include="TradeCompany.cs" />
     <Compile Include="TradeGood.cs" />
     <Compile Include="Tradenode.cs" />
@@ -185,12 +184,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="LanguageWindow.resx">
       <DependentUpon>LanguageWindow.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LoadingProgress.resx">
       <DependentUpon>LoadingProgress.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="LoadingScreen.resx">
       <DependentUpon>LoadingScreen.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -204,6 +206,7 @@
     </Compile>
     <EmbeddedResource Include="RandomIdeaBox.resx">
       <DependentUpon>RandomIdeaBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="StatisticsForm.resx">
       <DependentUpon>StatisticsForm.cs</DependentUpon>

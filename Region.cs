@@ -21,6 +21,7 @@ namespace Eu4ModEditor
         public List<Area> Areas = new List<Area>();
         public Superregion Superregion;
         public string Name = "";
+        public string OriginalName = "";
         public Color Color;
         public override string ToString()
         {

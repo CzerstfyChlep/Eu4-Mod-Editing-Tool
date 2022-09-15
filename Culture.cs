@@ -20,6 +20,7 @@ namespace Eu4ModEditor
         public string PrimaryTag = "";
         public string Name = "";
         public Color Color;
+        public NodeFile NodeFile;
         public Culture()
         {
             Cultures.Add(this);
@@ -34,7 +35,7 @@ namespace Eu4ModEditor
 
         public static Culture NoCulture = new Culture(Color.White)
         {
-            Name = "NoCulture",
+            Name = "",
         };
 
         public static Color GenerateNiceColor()

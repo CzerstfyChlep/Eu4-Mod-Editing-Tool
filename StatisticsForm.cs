@@ -20,7 +20,7 @@ namespace Eu4ModEditor
             FilterTypeBox.SelectedIndex = 0;
             FilteredProvinces = new List<Province>(GlobalVariables.Provinces);
             Thread t = new Thread(UpdateEvery5Seconds);
-            t.Start();            
+            t.Start();
         }
 
 
@@ -58,6 +58,13 @@ namespace Eu4ModEditor
             int manpower = 0;
             int totalprov = 0;
 
+            List<Country> countries = new List<Country>();
+
+            List<Religion> religions = new List<Religion>();
+            List<int> provinces = new List<int>();
+            List<int> relavgdev = new List<int>();
+
+
             foreach(Province p in FilteredProvinces)
             {
                 if (!p.Wasteland && !p.Sea && !p.Lake)
@@ -66,8 +73,26 @@ namespace Eu4ModEditor
                     production += p.Production;
                     manpower += p.Manpower;
                     totalprov++;
+                    if (p.OwnerCountry != null)
+                        countries.Add(p.OwnerCountry);
+                }
+
+                if (p.Religion != Religion.NoReligion && p.Religion != null)
+                {
+                    if (religions.Contains(p.Religion))
+                    {
+                        provinces[religions.IndexOf(p.Religion)]++;
+                        relavgdev[religions.IndexOf(p.Religion)] += p.Tax + p.Manpower + p.Production;
+                    }
+                    else
+                    {
+                        religions.Add(p.Religion);
+                        provinces.Add(1);
+                        relavgdev.Add(p.Tax + p.Manpower + p.Production);
+                    }
                 }
             }
+            countries = countries.Distinct().ToList();
             int totaldev = tax + production + manpower;
             StatsProvTotalDev.Text = totaldev.ToString();
             StatsProvTotalTax.Text = tax.ToString();
@@ -80,7 +105,57 @@ namespace Eu4ModEditor
             StatsProvAvgManpower.Text = ((double)manpower / totalprov).ToString("f2");
 
             StatsProvTotalNum.Text = totalprov.ToString();
+
+            string toset = "";
+            foreach(Country c in countries)
+            {
+                toset += c.ToString() + Environment.NewLine;
+            }
+
+
+            if (ChangesMadeReligion) {
+                ChangesMadeReligion = false;
+                ReligionsView.Rows.Clear();
+                for (int a = 0; a < religions.Count; a++)
+                {
+                    ReligionsView.Rows.Add(religions[a].ReadableName, provinces[a], Math.Round((double)provinces[a] / totalprov, 2), Math.Round((double)relavgdev[a] / provinces[a], 2));
+                }
+            }
+
+            if (ChangesMadeCountry)
+            {
+                ChangesMadeCountry = false;
+                CountryView.Rows.Clear();
+                int totalDEV = 0;
+                int prov = 0;
+
+                countries.ForEach(x => { totalDEV += x.TotalDevelopment; prov += x.Provinces.Count; });
+                CountryView.Rows.Add("AVERAGE", Math.Round((double)prov/countries.Count, 2), Math.Round((double)totalDEV / countries.Count, 2), Math.Round((double)totalDEV / prov, 2));
+                for (int a = 0; a < countries.Count; a++)
+                {
+                    CountryView.Rows.Add(countries[a].ToString(), countries[a].Provinces.Count, countries[a].TotalDevelopment, Math.Round((double)countries[a].TotalDevelopment / countries[a].Provinces.Count, 2));
+                }
+
+            }
+
+            if (ChangesMadeProvinces)
+            {
+                ChangesMadeProvinces = false;
+                ProvinceView.Rows.Clear();
+
+                //ProvinceView.Rows.Add("", "Average", Math.Round((double)totaldev / totalprov, 2), Math.Round((double)totalDEV / prov, 2));
+                foreach(Province p in FilteredProvinces)
+                {
+                    ProvinceView.Rows.Add(p.ID, p.DefinitionName, p.Tax + p.Production + p.Manpower, p.Tax, p.Production, p.Manpower, p.Religion ?? Religion.NoReligion, p.OwnerCountry);
+                }
+
+            }
+
         }
+
+        bool ChangesMadeReligion = false;
+        bool ChangesMadeCountry = false;
+        bool ChangesMadeProvinces = false;
 
         private void FilterTypeBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -286,6 +361,7 @@ namespace Eu4ModEditor
 
         public void ApplyFilters()
         {
+            List<Province> oldFiltered = new List<Province>(FilteredProvinces);
             FilteredProvinces = new List<Province>(GlobalVariables.Provinces);
             if (CountriesFilterList.Any())
                 FilteredProvinces = FilteredProvinces.Where(x => CountriesFilterList.Contains(x.OwnerCountry)).ToList();
@@ -305,6 +381,13 @@ namespace Eu4ModEditor
                 FilteredProvinces = FilteredProvinces.Where(x => TradeGoodFilterList.Contains(x.TradeGood)).ToList();
             if (BuildingFilterList.Any())
                 FilteredProvinces = FilteredProvinces.Where(x => x.GetBuildings().Intersect(BuildingFilterList).Any()).ToList();
+
+            if (!Enumerable.SequenceEqual(oldFiltered, FilteredProvinces))
+            {
+                ChangesMadeReligion = true;
+                ChangesMadeCountry = true;
+                ChangesMadeProvinces = true;
+            }
             UpdateStats();
         }
 
@@ -370,5 +453,15 @@ namespace Eu4ModEditor
             BuildingsFilter.Text = "With buildings: All";
             ApplyFilters();
         }
+
+        private void StatisticsForm_Load(object sender, EventArgs e)
+        {
+            ChangesMadeReligion = true;
+            ChangesMadeCountry = true;
+            ChangesMadeProvinces = true;
+            UpdateStats();
+
+        }
+
     }
 }

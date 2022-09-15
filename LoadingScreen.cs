@@ -304,6 +304,20 @@ namespace Eu4ModEditor
                 }
                 GlobalVariables.AppSizeOption = AppSizeBox.SelectedIndex;
                 File.WriteAllText("modeditor_darkmode.txt", GlobalVariables.DarkMode.ToString());
+
+                try
+                {
+                    string[] datesplit = StartDateBox.Text.Split('.');
+                    GlobalVariables.StartYear = int.Parse(datesplit[0]);
+                    GlobalVariables.StartMonth = int.Parse(datesplit[1]);
+                    GlobalVariables.StartDay = int.Parse(datesplit[2]);
+                }
+                catch
+                {
+                    GlobalVariables.StartYear = 1444;
+                    GlobalVariables.StartMonth = 11;
+                    GlobalVariables.StartDay = 11;
+                }
                 this.Close();
             }
         }

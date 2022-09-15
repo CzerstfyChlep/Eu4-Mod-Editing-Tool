@@ -23,9 +23,10 @@ namespace Eu4ModEditor
             List<NodeFile> religionsfiles = new List<NodeFile>();
             List<NodeFile> governmentsfiles = new List<NodeFile>();
             Dictionary<string, string> NameToTag = new Dictionary<string, string>();
+            Dictionary<string, NodeFile> NameToFile = new Dictionary<string, NodeFile>();
             List<NodeFile> countrytagsfiles = new List<NodeFile>();
             List<NodeFile> buildingsfiles = new List<NodeFile>();
-            List<string> CountryCommonFiles = new List<string>();
+            List<NodeFile> CountryCommonFiles = new List<NodeFile>();
             NodeFile technology;
             NodeFile areas;
             NodeFile regions;
@@ -134,9 +135,9 @@ namespace Eu4ModEditor
             Task ldefinition = new Task(() => {
                 StreamReader Reader;
                 if (GlobalVariables.UseMod[0] > 0)
-                    Reader = File.OpenText(GlobalVariables.pathtomod + "map\\definition.csv");
+                    Reader = new StreamReader(GlobalVariables.pathtomod + "map\\definition.csv", Encoding.Default);
                 else
-                    Reader = File.OpenText(GlobalVariables.pathtogame + "map\\definition.csv");
+                    Reader = new StreamReader(GlobalVariables.pathtogame + "map\\definition.csv", Encoding.Default);
 
                 Reader.ReadLine();
                 while (!Reader.EndOfStream)
@@ -240,7 +241,8 @@ namespace Eu4ModEditor
                                 Culture c = new Culture
                                 {
                                     Name = innernode.Name,
-                                    Group = cg
+                                    Group = cg,
+                                    NodeFile = cultures
                                 };
                                 cg.Cultures.Add(c);
                                 Variable v = innernode.Variables.Find(x => x.Name == "primary");
@@ -305,7 +307,8 @@ namespace Eu4ModEditor
                                     {
                                         Name = innernode.Name,
                                         ReadableName = innernode.Name[0].ToString().ToUpper() + innernode.Name.Substring(1).Replace('_', ' '),
-                                        Group = rg
+                                        Group = rg,
+                                        NodeFile = religions
                                     };
                                     rg.Religions.Add(r);
                                     string[] colorstring = innernode.Nodes.Find(x => x.Name == "color").GetPureValuesAsArray();
@@ -362,6 +365,7 @@ namespace Eu4ModEditor
                         if (n.Name != "pre_dharma_mapping")
                         {
                             Government gv = new Government(n.Name);
+                            
                             gv.reforms.AddRange(n.Nodes.Find(x => x.Name == "reform_levels").Nodes[0].Nodes.Find(x => x.Name == "reforms").GetPureValuesAsArray());
                             Node colornode = n.Nodes.Find(x => x.Name == "color");
                             gv.Color = Color.FromArgb(int.Parse(colornode.PureValues[0].Name), int.Parse(colornode.PureValues[1].Name), int.Parse(colornode.PureValues[2].Name));
@@ -423,9 +427,13 @@ namespace Eu4ModEditor
                 {
                     foreach (Variable v in countrytags.MainNode.Variables)
                     {
+                        //TODO
+                        //tolerate both slashes!!!!!!!!
                         string n = v.Value.Replace("\"", "").Trim().Split('/')[1].Split('.')[0];
                         if (!NameToTag.Keys.Contains(n))
                             NameToTag.Add(n, v.Name.Trim());
+                        if (!NameToFile.Keys.Contains(n))
+                            NameToFile.Add(n, countrytags);
                     }
                 }
             });
@@ -444,7 +452,6 @@ namespace Eu4ModEditor
                             {
                                 NodeFile nf = new NodeFile(file);
                                 buildingsfiles.Add(nf);
-                                GameFiles.Add(false);
                             }
                         }
                     }
@@ -461,7 +468,6 @@ namespace Eu4ModEditor
                                 if (!buildingsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
                                 {
                                     buildingsfiles.Add(nf);
-                                    GameFiles.Add(true);
                                 }
 
                             }
@@ -478,9 +484,7 @@ namespace Eu4ModEditor
                             continue;
                         Building bl = new Building();
                         bl.Name = node.Name;
-                        bl.File = buildings.FileName;
-                        if (GameFiles[buildingsfiles.IndexOf(buildings)])
-                            bl.GameFile = true;
+                        bl.NodeFile = buildings;
                         GlobalVariables.Buildings.Add(bl);
                     }
                 }
@@ -510,7 +514,10 @@ namespace Eu4ModEditor
                             pr.Add(GlobalVariables.Provinces[int.Parse(vr.Name) - 1]);
                         }
                     }
-                    Area a = new Area(n.Name, pr);
+                    Area a = new Area(n.Name, pr)
+                    {
+                        OriginalName = n.Name
+                    };
                     foreach (Province pro in a.Provinces)
                         pro.Area = a;
                 }
@@ -531,6 +538,7 @@ namespace Eu4ModEditor
                         ctp.Add(GlobalVariables.Provinces[int.Parse(s.Name.Trim()) - 1]);
                     }
                     Continent c = new Continent(n.Name, ctp);
+                    c.OriginalName = n.Name;
                     foreach (Province pr in c.Provinces)
                         pr.Continent = c;
                 }
@@ -578,6 +586,7 @@ namespace Eu4ModEditor
                         continue;
                     Tradenode tn = new Tradenode();
                     tn.Name = node.Name;
+                        tn.NodeFile = tradenodes;
                     GlobalVariables.TradeNodes.Add(tn);
                 }
             }
@@ -590,9 +599,7 @@ namespace Eu4ModEditor
                 {
                     lastTradeNode = node.Name;
                     Tradenode tn = GlobalVariables.TradeNodes.Find(x => x.Name == node.Name);
-                    tn.File = tradenodes.FileName;
-                    if (tradenodes == GlobalVariables.GameTradeNodesFile)
-                        tn.GameFile = true;
+                    tn.NodeFile = tradenodes;
                     tn.Name = node.Name;
 
                         int location = 0;
@@ -775,7 +782,8 @@ namespace Eu4ModEditor
                         TradeGood tg = new TradeGood
                         {
                             Name = node.Name,
-                            ReadableName = node.Name[0].ToString().ToUpper() + node.Name.Substring(1).Replace('_', ' ')
+                            ReadableName = node.Name[0].ToString().ToUpper() + node.Name.Substring(1).Replace('_', ' '),
+                            NodeFile = tradegoods
                         };
                         string[] colorv = node.Nodes.Find(x => x.Name == "color").GetPureValuesAsArray();
                         if (colorv.Count() == 3)
@@ -903,7 +911,7 @@ namespace Eu4ModEditor
                             tc = new TradeCompany() { Name = node.Name };
                             GlobalVariables.TradeCompanies.Add(tc);
                         }
-                        tc.ParentFile = tradecompanies;
+                        tc.NodeFile = tradecompanies;
                         Node ColorNode = node.Nodes.Find(x => x.Name == "color");
                         if (ColorNode != null)
                             tc.Color = Color.FromArgb(int.Parse(ColorNode.PureValues[0].Name), int.Parse(ColorNode.PureValues[1].Name), int.Parse(ColorNode.PureValues[2].Name));
@@ -1113,10 +1121,121 @@ namespace Eu4ModEditor
                 progress.UpdateProgress(8, 1);
             else if (ltags.IsCompleted)
                 progress.UpdateProgress(8, 2);
+
+            Task lcomcountries = new Task(() => {
+                List<bool> GameFiles = new List<bool>();
+                if (GlobalVariables.UseMod[7] != 0)
+                {
+                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\countries\\"))
+                    {
+                        if (file.Contains('.'))
+                        {
+                            if (file.Split('.')[1] == "txt")
+                            {
+                                NodeFile nf = new NodeFile(file);
+                                CountryCommonFiles.Add(nf);
+                            }
+                        }
+                    }
+                }
+                if (GlobalVariables.UseMod[7] != 1)
+                {
+                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\countries\\"))
+                    {
+                        if (file.Contains('.'))
+                        {
+                            if (file.Split('.')[1] == "txt")
+                            {
+                                if (!CountryCommonFiles.Any(x => x.Path.Split('\\').Last().Replace(".txt", "") == file.Split('\\').Last().Replace(".txt", "")))
+                                {
+                                    NodeFile nf = new NodeFile(file, true);
+                                    CountryCommonFiles.Add(nf);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //bw.ReportProgress(84);
+
+                foreach (NodeFile file in CountryCommonFiles)
+                {
+                    string name = file.Path.Split('\\').Last().Split('.')[0];
+                    if (!NameToTag.ContainsKey(name))
+                        continue;
+                    Country c = new Country();
+                    GlobalVariables.Countries.Add(c);
+                    c.CountryTagsFile = NameToFile[name];
+                    c.CommonFile = file;
+                    NodeFile nodefile = file;
+
+                    //c.Tag = tag;
+                    //c.OriginalTag = tag;
+                    //c.FullName = name;
+                    //c.OriginalFullName = name;
+
+                    c.FullName = name;
+                    c.OriginalFullName = name;
+                    c.Tag = NameToTag[name];
+                    c.OriginalTag = c.Tag;
+
+                    string[] colort = nodefile.MainNode.Nodes.Find(x => x.Name == "color").GetPureValuesAsArray();
+                    try
+                    {
+                        c.Color = Color.FromArgb(int.Parse(colort[0]), int.Parse(colort[1]), int.Parse(colort[2]));
+                    }
+                    catch
+                    {
+                        c.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
+                        MessageBox.Show("Some error in " + file);
+                    }
+
+                    Variable gfxcul = nodefile.MainNode.Variables.Find(x => x.Name == "graphical_culture");
+                    if (gfxcul != null)
+                        c.GraphicalCulture = gfxcul.Value;
+
+                    Node monarchNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "monarch_names");
+                    if (monarchNamesNode != null)
+                        foreach (Variable monarchName in monarchNamesNode.Variables)
+                            if (!c.MonarchNames.Any(x => x.Name == monarchName.Name.Replace("\"", "").Trim()))
+                                c.MonarchNames.Add(new MonarchName(monarchName.Name.Replace("\"", "").Trim(), int.Parse(monarchName.Value)));
+                    Node leaderNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "leader_names");
+                    if (leaderNamesNode != null)
+                        foreach (PureValue leadername in leaderNamesNode.PureValues)
+                            if (!c.LeaderNames.Contains(leadername.Name.Replace("\"", "").Trim()))
+                                c.LeaderNames.Add(leadername.Name.Replace("\"", "").Trim());
+                    Node shipNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "ship_names");
+                    if (shipNamesNode != null)
+                        foreach (PureValue shipname in shipNamesNode.PureValues)
+                            if (!c.ShipNames.Contains(shipname.Name.Replace("\"", "").Trim()))
+                                c.ShipNames.Add(shipname.Name.Replace("\"", "").Trim());
+                    Node armyNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "army_names");
+                    if (armyNamesNode != null)
+                        foreach (PureValue armyname in armyNamesNode.PureValues)
+                            if (!c.ArmyNames.Contains(armyname.Name.Replace("\"", "").Trim()))
+                                c.ArmyNames.Add(armyname.Name.Replace("\"", "").Trim());
+                    Node fleetNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "fleet_names");
+                    if (fleetNamesNode != null)
+                        foreach (PureValue fleetname in fleetNamesNode.PureValues)
+                            if (!c.FleetNames.Contains(fleetname.Name.Replace("\"", "").Trim()))
+                                c.FleetNames.Add(fleetname.Name.Replace("\"", "").Trim());
+
+
+
+                }
+            });
+            lcomcountries.Start();
+            progress.UpdateProgress(10, 0);
+           
+            await lcomcountries;
+            if (lcomcountries.IsFaulted)
+                progress.UpdateProgress(10, 1);
+            else if (lcomcountries.IsCompleted)
+                progress.UpdateProgress(10, 2);
+
             Task lcountries = new Task(() =>
             {
-                List<string> CountryHistoryFiles = new List<string>();
-                List<bool> GameFiles = new List<bool>();
+                List<NodeFile> CountryHistoryFiles = new List<NodeFile>();
 
                 if (GlobalVariables.UseMod[11] != 0)
                 {
@@ -1126,8 +1245,8 @@ namespace Eu4ModEditor
                         {
                             if (file.Split('.')[1] == "txt")
                             {
-                                CountryHistoryFiles.Add(file);
-                                GameFiles.Add(false);
+                                NodeFile nf = new NodeFile(file);
+                                CountryHistoryFiles.Add(nf);
                             }
                         }
                     }
@@ -1140,18 +1259,18 @@ namespace Eu4ModEditor
                         {
                             if (file.Split('.')[1] == "txt")
                             {
-                                if (!CountryHistoryFiles.Any(x => x.Split('\\').Last().Replace(".txt", "") == file.Split('\\').Last().Replace(".txt", "")))
+                                if (!CountryHistoryFiles.Any(x => x.Path.Split('\\').Last().Replace(".txt", "") == file.Split('\\').Last().Replace(".txt", "")))
                                 {
-                                    CountryHistoryFiles.Add(file);
-                                    GameFiles.Add(true);
+                                    NodeFile nf = new NodeFile(file, true);
+                                    CountryHistoryFiles.Add(nf);
                                 }
                             }
                         }
                     }
                 }
-                foreach (string file in CountryHistoryFiles)
+                foreach (NodeFile file in CountryHistoryFiles)
                 {
-                    string fs = file.Split('\\').Last();
+                    string fs = file.Path.Split('\\').Last();
                     string tag = "";
                     string name = "";
                     try
@@ -1161,15 +1280,15 @@ namespace Eu4ModEditor
                     }
                     catch
                     {
-                        continue;
+                        tag = fs.Trim().ToUpper();
                     }
 
-                    Country c = new Country();
-                    c.HistoryFile = file;
-                    if (GameFiles[CountryHistoryFiles.IndexOf(file)])
-                        c.HistoryFileGame = true;
-                    GlobalVariables.Countries.Add(c);
-                    NodeFile nodefile = new NodeFile(file);
+                    Country c = GlobalVariables.Countries.Find(x => x.Tag == tag);
+                    if (c == null)                    
+                        continue;
+                    
+                    c.HistoryFile = file;                    
+                    NodeFile nodefile = file;
                     foreach (Variable v in nodefile.MainNode.Variables)
                     {
                         switch (v.Name)
@@ -1198,120 +1317,30 @@ namespace Eu4ModEditor
                                 break;
                         }
                     }
-                    c.Tag = tag;
-                    c.FullName = name;
+                    //c.Tag = tag;
+                    //c.OriginalTag = tag;
+                    //c.FullName = name;
+                    //c.OriginalFullName = name;
+                }
+
+
+                foreach(Country c in GlobalVariables.Countries)
+                {
+                    if(c != Country.NoCountry)
+                    {
+                        if(c.HistoryFile == null)
+                        {
+                            c.HistoryFile = new NodeFile(GlobalVariables.pathtomod + $"history\\countries\\{c.Tag} - {c.FullName}.txt");
+                            c.HistoryFile.SaveFile();
+                        }
+                    }
                 }
             });
             lcountries.Start();
             progress.UpdateProgress(9, 0);
 
-            await lcountries;
-            if (lcountries.IsFaulted)
-                progress.UpdateProgress(9, 1);
-            else if (lcountries.IsCompleted)
-                progress.UpdateProgress(9, 2);
-
-
-            Task lcomcountries = new Task(() => {
-                List<bool> GameFiles = new List<bool>();
-                if (GlobalVariables.UseMod[7] != 0)
-                {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\countries\\"))
-                    {
-                        if (file.Contains('.'))
-                        {
-                            if (file.Split('.')[1] == "txt")
-                            {
-                                CountryCommonFiles.Add(file);
-                                GameFiles.Add(false);
-                            }
-                        }
-                    }
-                }
-                if (GlobalVariables.UseMod[7] != 1)
-                {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\countries\\"))
-                    {
-                        if (file.Contains('.'))
-                        {
-                            if (file.Split('.')[1] == "txt")
-                            {
-                                if (!CountryCommonFiles.Any(x => x.Split('\\').Last().Replace(".txt", "") == file.Split('\\').Last().Replace(".txt", "")))
-                                {
-                                    CountryCommonFiles.Add(file);
-                                    GameFiles.Add(true);
-                                }
-                            }
-                        }
-                    }
-                }
-
-                //bw.ReportProgress(84);
-
-                foreach (string file in CountryCommonFiles)
-                {
-                    string name = file.Split('\\').Last().Split('.')[0];
-                    if (!NameToTag.ContainsKey(name))
-                        continue;
-                    Country c = GlobalVariables.Countries.Find(x => x.Tag == NameToTag[name]);
-                    if (c != null)
-                    {
-                        c.CommonFile = file;
-                        if (GameFiles.Count > CountryCommonFiles.IndexOf(file))
-                        {
-                            if (GameFiles[CountryCommonFiles.IndexOf(file)])
-                                c.CommonFileGame = true;
-                        }
-                        NodeFile nodefile = new NodeFile(file, false);
-                        string[] colort = nodefile.MainNode.Nodes.Find(x => x.Name == "color").GetPureValuesAsArray();                        
-                        try
-                        {
-                            c.Color = Color.FromArgb(int.Parse(colort[0]), int.Parse(colort[1]), int.Parse(colort[2]));
-                        }
-                        catch
-                        {
-                            c.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
-                            MessageBox.Show("Some error in " + file);
-                        }
-
-                        Variable gfxcul = nodefile.MainNode.Variables.Find(x => x.Name == "graphical_culture");
-                        if (gfxcul != null)
-                            c.GraphicalCulture = gfxcul.Value;
-
-                        Node monarchNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "monarch_names");
-                        if (monarchNamesNode != null)
-                            foreach (Variable monarchName in monarchNamesNode.Variables)
-                                if (!c.MonarchNames.Any(x=>x.Name == monarchName.Name.Replace("\"", "").Trim()))
-                                    c.MonarchNames.Add(new MonarchName(monarchName.Name.Replace("\"", "").Trim(), int.Parse(monarchName.Value)));
-                        Node leaderNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "leader_names");
-                        if (leaderNamesNode != null)
-                            foreach (PureValue leadername in leaderNamesNode.PureValues)
-                                if (!c.LeaderNames.Contains(leadername.Name.Replace("\"", "").Trim()))
-                                    c.LeaderNames.Add(leadername.Name.Replace("\"", "").Trim());
-                        Node shipNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "ship_names");
-                        if (shipNamesNode != null)
-                            foreach (PureValue shipname in shipNamesNode.PureValues)
-                                if (!c.ShipNames.Contains(shipname.Name.Replace("\"", "").Trim()))
-                                    c.ShipNames.Add(shipname.Name.Replace("\"", "").Trim());
-                        Node armyNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "army_names");
-                        if (armyNamesNode != null)
-                            foreach (PureValue armyname in armyNamesNode.PureValues)
-                                if (!c.ArmyNames.Contains(armyname.Name.Replace("\"", "").Trim()))
-                                    c.ArmyNames.Add(armyname.Name.Replace("\"", "").Trim());
-                        Node fleetNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "fleet_names");
-                        if (fleetNamesNode != null)
-                            foreach (PureValue fleetname in fleetNamesNode.PureValues)
-                                if (!c.FleetNames.Contains(fleetname.Name.Replace("\"", "").Trim()))
-                                    c.FleetNames.Add(fleetname.Name.Replace("\"", "").Trim());
-
-                    }
-                }
-            });
-            lcomcountries.Start();
-            progress.UpdateProgress(10, 0);
             Task lprovhistory = new Task(() => {
-                List<string> Files = new List<string>();
-                List<bool> GameFiles = new List<bool>();
+                List<NodeFile> Files = new List<NodeFile>();
                 if (GlobalVariables.UseMod[8] != 0)
                 {
                     foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "history\\provinces\\"))
@@ -1320,8 +1349,8 @@ namespace Eu4ModEditor
                         {
                             if (file.Split('.').Last() == "txt")
                             {
-                                Files.Add(file);
-                                GameFiles.Add(false);
+                                NodeFile nf = new NodeFile(file);
+                                Files.Add(nf);
                             }
                         }
                     }
@@ -1334,47 +1363,39 @@ namespace Eu4ModEditor
                         {
                             if (file.Split('.').Last() == "txt")
                             {
-                                if (!Files.Any(x => x.Split('\\').Last() == file.Split('\\').Last()))
+                                if (!Files.Any(x => x.Path.Split('\\').Last() == file.Split('\\').Last()))
                                 {
-                                    Files.Add(file);
-                                    GameFiles.Add(true);
+                                    NodeFile nf = new NodeFile(file, true);
+                                    Files.Add(nf);
                                 }
                             }
                         }
                     }
                 }
                 //bw.ReportProgress(88);
-                foreach (string file in Files)
+                foreach (NodeFile file in Files)
                 {
-                    bool b = int.TryParse(new String(file.Split('\\').Last().Where(x => char.IsDigit(x)).ToArray()), out int id);
+                    bool b = int.TryParse(new String(file.Path.Split('\\').Last().Where(x => char.IsDigit(x)).ToArray()), out int id);
                     if (b)
                     {
                         Province province = GlobalVariables.Provinces.Find(x => x.ID == id);
                         if (province != null)
                         {
                             province.HistoryFile = file;
-                            try
-                            {
-                                province.HistoryFileGame = GameFiles[Files.IndexOf(file)];
-                            }
-                            catch
-                            {
-                                //bw.ReportProgress(-1, "Discrepency between Game files and Mod files");
-                            }
-                            NodeFile nodefile = new NodeFile(file);
+                            NodeFile nodefile = file;
 
                             if (nodefile.MainNode.Variables.Any())
                                 GlobalVariables.TotalUsableProvinces++;
 
                             ReadProvinceValuesFromNode(province, nodefile.MainNode);
 
-                            foreach(Node dateNode in nodefile.MainNode.Nodes)
+                            foreach (Node dateNode in nodefile.MainNode.Nodes)
                             {
                                 if (dateNode.Name.Contains("."))
                                 {
                                     int year = int.Parse(dateNode.Name.Split('.')[0]);
                                     int month = int.Parse(dateNode.Name.Split('.')[1]);
-                                    if ((year < 1444) || (year == 1444 && month < 11) || (year == 1444 && month == 11 && int.Parse(dateNode.Name.Split('.')[2]) <= 11))
+                                    if ((year < GlobalVariables.StartYear) || (year == GlobalVariables.StartYear && month < GlobalVariables.StartMonth) || (year == GlobalVariables.StartYear && month == GlobalVariables.StartMonth && int.Parse(dateNode.Name.Split('.')[2]) <= GlobalVariables.StartDay))
                                     {
                                         ReadProvinceValuesFromNode(province, dateNode);
                                     }
@@ -1411,7 +1432,8 @@ namespace Eu4ModEditor
                         {
                             string s = GlobalVariables.pathtomod + "history\\provinces\\" + (GlobalVariables.Provinces.IndexOf(p) + 1) + ".txt";
                             //File.Create(s);
-                            p.HistoryFile = s;
+                            NodeFile nf = new NodeFile(s);
+                            p.HistoryFile = nf;
                         }
                     }
                 }
@@ -1419,11 +1441,14 @@ namespace Eu4ModEditor
             lprovhistory.Start();
             progress.UpdateProgress(11, 0);
 
-            await lcomcountries;
-            if (lcomcountries.IsFaulted)
-                progress.UpdateProgress(10, 1);
-            else if (lcomcountries.IsCompleted)
-                progress.UpdateProgress(10, 2);
+            await lcountries;
+            if (lcountries.IsFaulted)
+                progress.UpdateProgress(9, 1);
+            else if (lcountries.IsCompleted)
+                progress.UpdateProgress(9, 2);
+
+
+
             await lprovhistory;
             if (lprovhistory.IsFaulted)
                 progress.UpdateProgress(11, 1);
@@ -1457,6 +1482,7 @@ namespace Eu4ModEditor
                             }
                         }
                         Region r = new Region(n.Name, ar);
+                        r.OriginalName = n.Name;
                         foreach (Area are in r.Areas)
                             are.Region = r;
                     }
@@ -1488,6 +1514,7 @@ namespace Eu4ModEditor
                         }
                     }
                     Superregion sr = new Superregion(n.Name, reg);
+                    sr.OriginalName = n.Name;
                     foreach (Region re in sr.Regions)
                         re.Superregion = sr;
                 }
@@ -1531,29 +1558,89 @@ namespace Eu4ModEditor
             else if (llocalisation.IsCompleted)
                 progress.UpdateProgress(22, 2);
 
-            Task umap = new Task(() => {
+            List<Task> MapTasks = new List<Task>();
+            progress.UpdateProgress(18, 0);
+            Task umapdev = new Task(() => {
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Development);
+            });
+            umapdev.Start();
+            MapTasks.Add(umapdev);
+            Task umaptradegood = new Task(() => {
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.TradeGood);
+            });
+            umaptradegood.Start();
+            MapTasks.Add(umaptradegood);
+            Task umapreligion = new Task(() => {
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Religion);
+            });
+            umapreligion.Start();
+            MapTasks.Add(umapreligion);
+            Task umapculture = new Task(() => {
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Culture);
+            });
+            umapculture.Start();
+            MapTasks.Add(umapculture);
+            Task umappolitical = new Task(() => {
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Political);
+            });
+            umappolitical.Start();
+            MapTasks.Add(umappolitical);
+            Task umaparea = new Task(() => {
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
+            });
+            umaparea.Start();
+            MapTasks.Add(umaparea);
+            Task umapregion = new Task(() => {
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
+            });
+            umapregion.Start();
+            MapTasks.Add(umapregion);
+            Task umaptradenode = new Task(() => {
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.TradeNode);
+            });
+            umaptradenode.Start();
+            MapTasks.Add(umaptradenode);
+            Task umaphre = new Task(() => {
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.HRE);
+            });
+            umaphre.Start();
+            MapTasks.Add(umaphre);
+            Task umapfort = new Task(() => {
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Fort);
+            });
+            umapfort.Start();
+            MapTasks.Add(umapfort);
+            Task umapcontinent = new Task(() => {
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Continent);
+            });
+            umapcontinent.Start();
+            MapTasks.Add(umapcontinent);
+            Task umapsuperregion = new Task(() => {
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
+            });
+            umapsuperregion.Start();
+            MapTasks.Add(umapsuperregion);
+            Task umaptradecompany = new Task(() => {
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.TradeCompany);
+            });
+            umaptradecompany.Start();
+            MapTasks.Add(umaptradecompany);
+            Task umapgovernment = new Task(() => {
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Government);
+            });
+            umapgovernment.Start();
+            MapTasks.Add(umapgovernment);
+            Task umapmisc = new Task(() => {
                 foreach (Province p in GlobalVariables.Provinces)
                 {
                     p.BorderPixels = GraphicsMethods.CreateBorders(p);
                 }
-                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Development);
-                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.TradeGood);
-                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Religion);
-                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Culture);
-                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Political);
                 MapManagement.CreateClickMask();
-                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
-                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
-                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.TradeNode);
-                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.HRE);
-                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Fort);
-                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Continent);
-                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
-                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.TradeCompany);
-                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Government);
+
             });
-            umap.Start();
-            progress.UpdateProgress(18, 0);
+            umapmisc.Start();
+            MapTasks.Add(umapmisc);
+
             Task ucontrol = new Task(() => {
                 foreach (TradeGood tg in GlobalVariables.TradeGoods)
                 {
@@ -1585,11 +1672,10 @@ namespace Eu4ModEditor
             ucontrol.Start();
             progress.UpdateProgress(19, 0);
 
-            await umap;
-            if (umap.IsFaulted)
-                progress.UpdateProgress(18, 1);
-            else if (umap.IsCompleted)
-                progress.UpdateProgress(18, 2);
+
+
+            Task.WaitAll(MapTasks.ToArray());
+            progress.UpdateProgress(18, 2);
             await ucontrol;
             if (ucontrol.IsFaulted)
                 progress.UpdateProgress(19, 1);

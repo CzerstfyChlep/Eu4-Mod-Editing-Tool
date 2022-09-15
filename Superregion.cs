@@ -10,6 +10,7 @@ namespace Eu4ModEditor
     public class Superregion
     {
         public string Name = "";
+        public string OriginalName = "";
         public List<Region> Regions = new List<Region>();
         public Color Color;
         public Superregion(string name, List<Region> list)

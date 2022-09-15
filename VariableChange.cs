@@ -12,6 +12,7 @@ namespace Eu4ModEditor
         public string VariableName = "";
         public object PreviousValue;
         public object CurrentValue;
+        public NonVariableChange SpecialChange;
         public VariableChange(object obj, string name, object prev, object cur)
         {
             Object = obj;
@@ -19,5 +20,11 @@ namespace Eu4ModEditor
             PreviousValue = prev;
             CurrentValue = cur;
         }
+        public VariableChange(NonVariableChange sp)
+        {
+            SpecialChange = sp;
+        }
+
+        public enum NonVariableChange { Area }
     }
 }

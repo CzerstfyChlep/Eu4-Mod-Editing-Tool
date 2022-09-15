@@ -20,6 +20,7 @@ namespace Eu4ModEditor
         }
         public List<Province> Provinces = new List<Province>();
         public string Name = "";
+        public string OriginalName = "";
         public Color Color;
         public Region Region;
         public override string ToString()

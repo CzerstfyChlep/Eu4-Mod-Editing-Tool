@@ -13,8 +13,8 @@ namespace Eu4ModEditor
         public Color Color = new Color();
         public string Name = "";
         public List<string> Names = new List<string>();
-        public NodeFile ParentFile = null;
         public bool MadeChanges = false;
+        public NodeFile NodeFile;
         public TradeCompany()
         {
             Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);

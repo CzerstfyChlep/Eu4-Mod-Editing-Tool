@@ -13,6 +13,7 @@ namespace Eu4ModEditor
         public int Icon = 0;
         public string Name = "";
         public string ReadableName = "";
+        public NodeFile NodeFile;
         public ReligionGroup Group;
         public Religion()
         {

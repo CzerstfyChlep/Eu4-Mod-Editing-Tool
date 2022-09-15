@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace Eu4ModEditor
 {
@@ -331,8 +332,10 @@ namespace Eu4ModEditor
         public Point Center = new Point();
         public Color c;
 
-        public string HistoryFile;
-        public bool HistoryFileGame = false;
+        //public string HistoryFile;
+        //public bool HistoryFileGame = false;
+
+        public NodeFile HistoryFile;
 
         public TradeCompany TradeCompany
         {
@@ -356,9 +359,11 @@ namespace Eu4ModEditor
             }
             set
             {
-                if (GlobalVariables.FullyLoaded)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "Area", Variables["Area"], value));
+                //if (GlobalVariables.FullyLoaded)
+                //    GlobalVariables.Changes.Add(new VariableChange(this, "Area", Variables["Area"], value));
                 Variables["Area"] = value;
+                if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Area))
+                    GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Area));
             }
         }
 
@@ -370,9 +375,11 @@ namespace Eu4ModEditor
             }
             set
             {
-                if(GlobalVariables.FullyLoaded)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "Continent", Variables["Continent"], value));
+                //if(GlobalVariables.FullyLoaded)
+                //    GlobalVariables.Changes.Add(new VariableChange(this, "Continent", Variables["Continent"], value));
                 Variables["Continent"] = value;
+                if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Continent))
+                    GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Continent));
             }
         }
 
