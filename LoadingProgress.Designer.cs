@@ -56,6 +56,7 @@
             this.TradeCompaniesProgress = new System.Windows.Forms.Label();
             this.LocalisationProgress = new System.Windows.Forms.Label();
             this.BordersProgress = new System.Windows.Forms.Label();
+            this.ClimateProgress = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -301,18 +302,18 @@
             // 
             // ErrorList
             // 
-            this.ErrorList.Location = new System.Drawing.Point(16, 369);
+            this.ErrorList.Location = new System.Drawing.Point(16, 400);
             this.ErrorList.Multiline = true;
             this.ErrorList.Name = "ErrorList";
             this.ErrorList.ReadOnly = true;
             this.ErrorList.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.ErrorList.Size = new System.Drawing.Size(414, 145);
+            this.ErrorList.Size = new System.Drawing.Size(414, 131);
             this.ErrorList.TabIndex = 22;
             // 
             // ContinueButton
             // 
             this.ContinueButton.Enabled = false;
-            this.ContinueButton.Location = new System.Drawing.Point(355, 520);
+            this.ContinueButton.Location = new System.Drawing.Point(355, 537);
             this.ContinueButton.Name = "ContinueButton";
             this.ContinueButton.Size = new System.Drawing.Size(75, 23);
             this.ContinueButton.TabIndex = 23;
@@ -353,12 +354,24 @@
             this.BordersProgress.TabIndex = 26;
             this.BordersProgress.Text = "Creating borders";
             // 
+            // ClimateProgress
+            // 
+            this.ClimateProgress.AutoSize = true;
+            this.ClimateProgress.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.ClimateProgress.ForeColor = System.Drawing.Color.Gray;
+            this.ClimateProgress.Location = new System.Drawing.Point(13, 373);
+            this.ClimateProgress.Name = "ClimateProgress";
+            this.ClimateProgress.Size = new System.Drawing.Size(103, 16);
+            this.ClimateProgress.TabIndex = 27;
+            this.ClimateProgress.Text = "Loading climate";
+            // 
             // LoadingProgress
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(450, 549);
+            this.ClientSize = new System.Drawing.Size(450, 572);
             this.ControlBox = false;
+            this.Controls.Add(this.ClimateProgress);
             this.Controls.Add(this.BordersProgress);
             this.Controls.Add(this.LocalisationProgress);
             this.Controls.Add(this.TradeCompaniesProgress);
@@ -424,5 +437,6 @@
         private System.Windows.Forms.Label TradeCompaniesProgress;
         private System.Windows.Forms.Label LocalisationProgress;
         private System.Windows.Forms.Label BordersProgress;
+        private System.Windows.Forms.Label ClimateProgress;
     }
 }

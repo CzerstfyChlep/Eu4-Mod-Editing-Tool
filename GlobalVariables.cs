@@ -12,6 +12,8 @@ namespace Eu4ModEditor
 {
     public static class GlobalVariables
     {
+        public static bool __DEBUG = false;
+
         public static List<Province> Provinces = new List<Province>();
         public static Dictionary<string, Province> ColorToProvince = new Dictionary<string, Province>();
         public static MapManagement.UpdateMapOptions mapmode = MapManagement.UpdateMapOptions.Provinces;
@@ -32,6 +34,10 @@ namespace Eu4ModEditor
         public static LockBitmap BaseWhiteProvincesBitmap;
         public static LockBitmap TradeCompanyLocked;
         public static LockBitmap GovernmentLocked;
+        public static LockBitmap LocalisationLocked;
+        public static LockBitmap ClimateLocked;
+        public static LockBitmap WinterLocked;
+        public static LockBitmap TerrainLocked;
         public static List<Task<Dictionary<int, List<Point>>>> MapLines = new List<Task<Dictionary<int, List<Point>>>>();
         public static List<TradeGood> TradeGoods = new List<TradeGood>();
         public static List<TradeGood> LatentTradeGoods = new List<TradeGood>();
@@ -73,8 +79,8 @@ namespace Eu4ModEditor
         public static List<CountryModifier> CountryScopeModifiers = new List<CountryModifier>() { };
         public static List<string> CountryModifiers = new List<string>() { };
 
-        public static int[] UseMod = new int[21];
-        public static bool[] ReadOnly = new bool[21];
+        public static int[] UseMod = new int[22];
+        public static bool[] ReadOnly = new bool[22];
         public static bool LoadedProperly = false;
         public static bool FullyLoaded = false;
 
@@ -145,12 +151,14 @@ namespace Eu4ModEditor
         cultures = 4, religions = 5, region = 6, commonCountries = 7, historyProvinces = 8,
         area = 9, mapdefault = 10, historyCountries = 11, tradenodes = 12,
         continent = 13, countrytags = 14, technology = 15, governments = 16,
-        buildings  =17, superregion = 18, tradecompanies = 19, localisation = 20}
+        buildings = 17, superregion = 18, tradecompanies = 19, localisation = 20,
+        climate = 21}
 
-        public static int StartYear = 1444;
-        public static int StartMonth = 11;
-        public static int StartDay = 11;
 
+        public static DateTime StartDate = new DateTime(1444, 11, 11);
+        public static DateTime CurrentDate = new DateTime(1444, 11, 11);
+
+        
 
     }
 }

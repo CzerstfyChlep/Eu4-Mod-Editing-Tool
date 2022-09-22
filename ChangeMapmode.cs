@@ -59,6 +59,18 @@ namespace Eu4ModEditor
                 case "GovernmentMapmode":
                     GlobalVariables.mapmode = MapManagement.UpdateMapOptions.Government;
                     break;
+                case "ProvinceLocalisationMapmode":
+                    GlobalVariables.mapmode = MapManagement.UpdateMapOptions.Localisation;
+                    break;
+                case "WinterMapmode":
+                    GlobalVariables.mapmode = MapManagement.UpdateMapOptions.Winter;
+                    break;
+                case "ClimateMapmode":
+                    GlobalVariables.mapmode = MapManagement.UpdateMapOptions.Climate;
+                    break;
+                case "TerrainMapmode":
+                    GlobalVariables.mapmode = MapManagement.UpdateMapOptions.Terrain;
+                    break;
             }
             ModEditor.UpdateMap();
         }

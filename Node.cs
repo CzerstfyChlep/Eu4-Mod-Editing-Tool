@@ -197,123 +197,6 @@ namespace Eu4ModEditor
                 commentline = false;
                 pretxt = "";
             }
-            //Console.ReadLine();
-            /*
-        StreamReader Reader = new StreamReader(path);
-        string read = "";
-        string name = "";
-        string value = "";
-        bool comment = false;
-        bool commentLine = false;
-        NodeItem lastObj = null;
-        string commentText = "";
-        while (!Reader.EndOfStream)
-        {
-            char character = (char)Reader.Read();
-
-            if (character == '=' && !comment)
-            {
-                name = read.Trim();
-                read = "";
-            }
-            else if (character == '{' && !comment)
-            {
-                Node newNode = new Node(name, CurrentNode);
-                CurrentNode.Nodes.Add(newNode);
-                CurrentNode = newNode;
-                lastObj = null;
-                name = "";
-                value = "";
-                read = "";
-
-            }
-            else if (character == '}' && !comment)
-            {
-                if (!read.Contains('=') && name == "" && value == "")
-                {
-                    foreach (string v in read.Replace("\t", " ").Split(' '))
-                    {
-                        if (v != "" && v != " " && !string.IsNullOrWhiteSpace(v))
-                        {
-                            CurrentNode.PureValues.Add(v.Trim());
-                        }
-                    }
-                }
-                lastObj = CurrentNode;
-                CurrentNode.Parent.ItemOrder.Add(CurrentNode);
-                CurrentNode = CurrentNode.Parent;
-                name = "";
-                value = "";
-                read = "";
-            }
-            else if (character == '\n')
-            {
-                if (commentLine)
-                {
-                    CurrentNode.Comments.Add(new CommentLine(commentText, lastObj));
-                }
-                else
-                {
-                    if (name != "")
-                    {
-                        Variable v = new Variable(name, read.Trim());
-                        v.Comment = commentText;
-                        CurrentNode.Variables.Add(v);
-                        CurrentNode.ItemOrder.Add(v);
-                        lastObj = v;
-                    }
-                    else
-                    {
-                        foreach (string v in read.Replace("\t", " ").Split(' '))
-                        {
-                            if (v != "" && v != " " && !string.IsNullOrWhiteSpace(v))
-                            {
-                                CurrentNode.PureValues.Add(v.Trim());
-                            }
-                        }
-                    }
-                }
-                name = "";
-                value = "";
-                read = "";
-
-                comment = false;
-                commentLine = false;
-                commentText = "";
-            }
-            else if (character == '#')
-            {
-                comment = true;
-                if (read.Trim() == "" || name.Trim() == "")
-                {
-                    commentLine = true;
-                }
-            }
-            else if (comment)
-            {
-                commentText += character;
-            }
-            else
-            {
-                read += character;
-            }
-        }
-        if (name != "")
-        {
-            if (name.Contains(" "))
-            {
-                foreach (string v in name.Split(' '))
-                {
-                    CurrentNode.Variables.Add(new Variable(v, ""));
-                }
-            }
-            else
-            {
-                CurrentNode.Variables.Add(new Variable(name, read.Trim()));
-            }
-        }
-        Reader.Close();
-        */
 
         }
         public void SaveFile(string path)
@@ -342,9 +225,8 @@ namespace Eu4ModEditor
         }
     }
 
-    public class PureValue
+    public class PureValue : NodeItem
     {
-        public string Name = "";
         public bool SeparateLine = false;
         public override string ToString()
         {
@@ -386,7 +268,7 @@ namespace Eu4ModEditor
                     text += "#" + cl.Text + "\n";
             }
 
-            if (n.PureValues.Any())
+            /*if (n.PureValues.Any())
             {
                 int count = 0;
                 bool lastwassep = false;
@@ -424,11 +306,20 @@ namespace Eu4ModEditor
                 }
                 text += "\n";
             }
+            */
 
+            int count = 0;
+            bool lastwassep = false;
+            bool lastwaspure = false;
             foreach (NodeItem ni in n.ItemOrder)
             {
                 if (ni is Variable)
                 {
+                    if (lastwaspure && !lastwassep)
+                        text += "\n";
+                    lastwaspure = false;
+                    count = 0;
+                    lastwassep = true;
                     Variable v = (Variable)ni;
                     text += v.Name + " = " + v.Value;
                     if (v.Comment != "")
@@ -442,6 +333,11 @@ namespace Eu4ModEditor
                 }
                 else if (ni is Node)
                 {
+                    if (lastwaspure && !lastwassep)
+                        text += "\n";
+                    lastwaspure = false;
+                    count = 0;
+                    lastwassep = true;
                     Node inner = (Node)ni;
                     text += inner.Name + " = {";
                     if (inner.FirstBracketComment != "")
@@ -474,6 +370,40 @@ namespace Eu4ModEditor
                         if (cl.Below == inner)
                             text += "#" + cl.Text + "\n";
                     }
+                }
+                else if(ni is PureValue)
+                {
+                    PureValue s = (PureValue)ni;
+                    if (s.SeparateLine)
+                    {
+                        if (!lastwassep)
+                            text += "\n";
+                        text += s.Name + "\n";
+                        lastwassep = true;
+                        count = 0;
+                    }
+                    else
+                    {
+                        count++;
+                        if (count == 10)
+                        {
+                            count = 0;
+                            text += s + "\n";
+                        }
+                        else
+                        {
+                            text += s + " ";
+                        }
+                        lastwassep = false;
+                    }
+                    foreach (CommentLine cl in n.Comments.FindAll(x => x.BelowPureValue == s))
+                    {
+                        if (!lastwassep)
+                            text += "\n";
+                        text += "#" + cl.Text + "\n";
+                        lastwassep = true;
+                    }
+                    lastwaspure = true;
                 }
             }
 
@@ -515,10 +445,16 @@ namespace Eu4ModEditor
             ItemOrder.Add(node);
             node.Parent = this;
         }
-        public PureValue AddPureValue(string name, bool sep = false)
+        public PureValue AddPureValue(string name, bool sep = false, bool checkexists = false)
         {
+            if(checkexists)
+            {
+                if (PureValues.Any(x => x.Name == name))
+                    return null;
+            }
             PureValue pv = new PureValue(name, sep);
             PureValues.Add(pv);
+            ItemOrder.Add(pv);
             return pv;
         }
         public string[] GetPureValuesAsArray()
@@ -546,6 +482,23 @@ namespace Eu4ModEditor
             Variables.Remove(v);
             ItemOrder.Remove(v);
         }
+
+        public void RemovePureValue(string v)
+        {
+            PureValue va = PureValues.Find(x => x.Name == v);
+            if(va != null)
+            {
+                PureValues.Remove(va);
+                ItemOrder.Remove(va);
+            }
+        }
+
+        public void RemoveAllPureValues()
+        {
+            PureValues.Clear();
+            ItemOrder.RemoveAll(x => x is PureValue);
+        }
+
         public void RemoveNode(Node n)
         {
             Nodes.Remove(n);

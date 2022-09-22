@@ -9,7 +9,8 @@ namespace Eu4ModEditor
 {
     public static class MapManagement
     {
-        public enum UpdateMapOptions { Provinces, Development, TradeGood, Culture, Religion, Political, Area, Region, TradeNode, HRE, Fort, Continent, Superregion, DiscoveredBy, TradeCompany, Government };
+        public enum UpdateMapOptions { Provinces, Development, TradeGood, Culture, Religion, Political, Area, Region, TradeNode,
+            HRE, Fort, Continent, Superregion, DiscoveredBy, TradeCompany, Government, Localisation, Climate, Winter, Terrain };
 
         public static void UpdateMap(List<Province> provinces, UpdateMapOptions options)
         {
@@ -573,7 +574,185 @@ namespace Eu4ModEditor
                     }
                     GlobalVariables.DiscoveredByBitmap.UnlockBits();
                     break;
+                case UpdateMapOptions.Localisation:
+                    GlobalVariables.LocalisationLocked.LockBits();
 
+                    foreach (Province p in provinces)
+                    {
+                        Color c = Color.White;
+                        int pt = 0;
+                        if (GlobalVariables.ModLocalisationEntries.Keys.Contains("PROV" + p.ID) || GlobalVariables.LocalisationEntries.Keys.Contains("PROV" + p.ID))
+                            pt = 1;
+                        if (GlobalVariables.ModLocalisationEntries.Keys.Contains("PROV_ADJ" + p.ID) || GlobalVariables.LocalisationEntries.Keys.Contains("PROV_ADJ" + p.ID))
+                            pt += 2;
+
+                        if (pt == 1)
+                            c = Color.LightGreen;
+                        else if (pt == 2)
+                            c = Color.LightBlue;
+                        else if (pt == 3)
+                            c = Color.Green;
+
+                        Color borderc = Color.Black;
+                        if (p.Lake || p.Sea)
+                        {
+                            c = Color.Black;
+                        }
+                        foreach (Point pon in p.Pixels)
+                        {
+                            GlobalVariables.LocalisationLocked.SetPixel(pon.X, pon.Y, c);
+                        }
+                        foreach (Point borderpnt in p.BorderPixels)
+                        {
+                            GlobalVariables.LocalisationLocked.SetPixel(borderpnt.X, borderpnt.Y, Color.Black);
+                        }
+
+                    }
+                    GlobalVariables.LocalisationLocked.UnlockBits();
+                    break;
+                case UpdateMapOptions.Climate:
+                    GlobalVariables.ClimateLocked.LockBits();
+                    foreach (Province p in provinces)
+                    {
+                        Color c = Color.White;
+                        Color stripec = Color.Black;
+                        bool stripes = false;
+                        switch (p.Climate)
+                        {
+                            case 0:
+                                c = Color.FromArgb(102, 127, 68);
+                                break;
+                            case 1:
+                                c = Color.FromArgb(102, 178, 48);
+                                break;
+                            case 2:
+                                c = Color.FromArgb(216, 214, 66);
+                                break;
+                            case 3:
+                                c = Color.White;
+                                break;
+                        }
+
+                        if (p.Impassable == 1)
+                            stripes = true;
+
+                        Color borderc = Color.Black;
+                        if (p.Lake || p.Sea)
+                        {
+                            c = Color.FromArgb(68, 107,163);
+                            //borderc = Color.Black;
+                        }
+                        foreach (Point pon in p.Pixels)
+                        {
+                            if (!stripes)
+                            {
+                                GlobalVariables.ClimateLocked.SetPixel(pon.X, pon.Y, c);
+                            }
+                            else
+                            {
+                                if ((pon.X + (int)Math.Floor(pon.Y / 2f)) % 8 == 2 || (pon.X + (int)Math.Floor(pon.Y / 2f)) % 8 == 3)
+                                {
+                                    GlobalVariables.ClimateLocked.SetPixel(pon.X, pon.Y, stripec);
+                                }
+                                else
+                                {
+                                    GlobalVariables.ClimateLocked.SetPixel(pon.X, pon.Y, c);
+                                }
+                            }
+                        }
+                        foreach (Point borderpnt in p.BorderPixels)
+                        {
+                            GlobalVariables.ClimateLocked.SetPixel(borderpnt.X, borderpnt.Y, Color.Black);
+                        }
+                    }
+                    GlobalVariables.ClimateLocked.UnlockBits();
+                    break;
+                case UpdateMapOptions.Winter:
+                    GlobalVariables.WinterLocked.LockBits();
+                    foreach (Province p in provinces)
+                    {
+                        Color c = Color.FromArgb(30,30,30);
+                        Color stripec = Color.Pink;
+                        bool stripes = false;
+
+                        if (p.Winter > 0)
+                        {
+                            switch (p.Winter)
+                            {
+                                case 1:
+                                    c = Color.FromArgb(85, 85, 85);
+                                    break;
+                                case 2:
+                                    c = Color.FromArgb(170, 170, 170);
+                                    break;
+                                case 3:
+                                    c = Color.White;
+                                    break;
+                            }
+                            if(p.Monsoon > 0)
+                            {
+                                stripes = true;
+                                switch (p.Monsoon)
+                                {
+                                    case 1:
+                                        stripec = Color.FromArgb(0, 0, 85);
+                                        break;
+                                    case 2:
+                                        stripec = Color.FromArgb(0, 0, 170);
+                                        break;
+                                    case 3:
+                                        stripec = Color.FromArgb(0, 0, 255);
+                                        break;
+                                }
+                            }
+                        }
+                        else if (p.Monsoon > 0)
+                        {
+                            switch (p.Monsoon)
+                            {
+                                case 1:
+                                    c = Color.FromArgb(0, 0, 85);
+                                    break;
+                                case 2:
+                                    c = Color.FromArgb(0, 0, 170);
+                                    break;
+                                case 3:
+                                    c = Color.FromArgb(0, 0, 255);
+                                    break;
+                            }
+                        }
+
+                        Color borderc = Color.Black;
+                        if (p.Lake || p.Sea)
+                        {
+                            c = Color.FromArgb(68, 107, 163);
+                            //borderc = Color.Black;
+                        }
+                        foreach (Point pon in p.Pixels)
+                        {
+                            if (!stripes)
+                            {
+                                GlobalVariables.WinterLocked.SetPixel(pon.X, pon.Y, c);
+                            }
+                            else
+                            {
+                                if ((pon.X + (int)Math.Floor(pon.Y / 2f)) % 8 == 2 || (pon.X + (int)Math.Floor(pon.Y / 2f)) % 8 == 3)
+                                {
+                                    GlobalVariables.WinterLocked.SetPixel(pon.X, pon.Y, stripec);
+                                }
+                                else
+                                {
+                                    GlobalVariables.WinterLocked.SetPixel(pon.X, pon.Y, c);
+                                }
+                            }
+                        }
+                        foreach (Point borderpnt in p.BorderPixels)
+                        {
+                            GlobalVariables.WinterLocked.SetPixel(borderpnt.X, borderpnt.Y, Color.Black);
+                        }
+                    }
+                    GlobalVariables.WinterLocked.UnlockBits();
+                    break;
             }
         }
 

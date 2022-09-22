@@ -130,7 +130,7 @@ namespace Eu4ModEditor
                     {
                         if (n != null)
                         {
-                            n.PureValues.Clear();
+                            n.RemoveAllPureValues();
                             n.AddPureValue(province.LatentTradeGood.Name);
                         }
                         else
@@ -317,7 +317,7 @@ namespace Eu4ModEditor
                                     Node n = nf.MainNode.Nodes.Find(x => x.Name == a.Name);
                                     if (n != null)
                                     {
-                                        n.PureValues.Clear();
+                                        n.RemoveAllPureValues();
                                         foreach (Province p in a.Provinces)
                                             n.AddPureValue(p.ID.ToString());
                                     }
@@ -327,7 +327,7 @@ namespace Eu4ModEditor
                                         if (n != null)
                                         {
                                             n.Name = a.Name;
-                                            n.PureValues.Clear();
+                                            n.RemoveAllPureValues();
                                             a.OriginalName = a.Name;
                                             foreach (Province p in a.Provinces)
                                                 n.AddPureValue(p.ID.ToString());
@@ -364,7 +364,7 @@ namespace Eu4ModEditor
                                         Node n = pn.Nodes.Find(x => x.Name == "areas");
                                         if (n == null)
                                             n = pn.AddNode("areas");
-                                        n.PureValues.Clear();
+                                        n.RemoveAllPureValues();
                                         foreach (Area a in r.Areas)
                                             n.AddPureValue(a.Name);
                                     }
@@ -377,7 +377,7 @@ namespace Eu4ModEditor
                                             Node n = pn.Nodes.Find(x => x.Name == "areas");
                                             if (n == null)
                                                 n = pn.AddNode("areas");
-                                            n.PureValues.Clear();
+                                            n.RemoveAllPureValues();
                                             r.OriginalName = r.Name;
                                             foreach (Area a in r.Areas)
                                                 n.AddPureValue(a.Name);
@@ -412,7 +412,7 @@ namespace Eu4ModEditor
                                     Node n = nf.MainNode.Nodes.Find(x => x.Name == c.Name);
                                     if (n != null)
                                     {
-                                        n.PureValues.Clear();
+                                        n.RemoveAllPureValues();
                                         foreach (Province p in c.Provinces)
                                             n.AddPureValue(p.ID.ToString());
                                     }
@@ -422,7 +422,7 @@ namespace Eu4ModEditor
                                         if (n != null)
                                         {
                                             n.Name = c.Name;
-                                            n.PureValues.Clear();
+                                            n.RemoveAllPureValues();
                                             c.OriginalName = c.Name;
                                             foreach (Province p in c.Provinces)
                                                 n.AddPureValue(p.ID.ToString());
@@ -456,7 +456,7 @@ namespace Eu4ModEditor
                                     Node n = nf.MainNode.Nodes.Find(x => x.Name == sr.Name);
                                     if (n != null)
                                     {
-                                        n.PureValues.Clear();
+                                        n.RemoveAllPureValues();
                                         foreach (Region a in sr.Regions)
                                             n.AddPureValue(a.Name);
                                     }
@@ -466,7 +466,7 @@ namespace Eu4ModEditor
                                         if (n != null)
                                         {
                                             n.Name = sr.Name;
-                                            n.PureValues.Clear();
+                                            n.RemoveAllPureValues();
                                             sr.OriginalName = sr.Name;
                                             foreach (Region a in sr.Regions)
                                                 n.AddPureValue(a.Name);
@@ -525,9 +525,17 @@ namespace Eu4ModEditor
                                     }
                                     else
                                     {
-                                        n.Nodes.Find(x => x.Name == "color").PureValues = new List<PureValue>() { new PureValue(tc.Color.R.ToString()), new PureValue(tc.Color.G.ToString()), new PureValue(tc.Color.B.ToString()) };
+                                        Node colornode = n.Nodes.Find(x => x.Name == "color");
+                                        if (colornode == null)
+                                            colornode = n.AddNode("color");
+                                        colornode.RemoveAllPureValues();
+                                        colornode.AddPureValue(tc.Color.R.ToString());
+                                        colornode.AddPureValue(tc.Color.G.ToString());
+                                        colornode.AddPureValue(tc.Color.B.ToString());                                                                                     
                                         Node pnode = n.Nodes.Find(x => x.Name == "provinces");
-                                        pnode.PureValues.Clear();
+                                        if (pnode == null)
+                                            pnode = n.AddNode("provinces");
+                                        pnode.RemoveAllPureValues();
                                         foreach (Province p in tc.Provinces)
                                             pnode.AddPureValue(p.ID.ToString());
                                         int N = 0;
@@ -636,6 +644,132 @@ namespace Eu4ModEditor
                                 {
                                     nf.SaveFile();
                                 }
+                            }
+                            break;
+                        case SpecialSavingObject.SavingType.Climate:
+                            {
+                                if (GlobalVariables.ReadOnly[(int)GlobalVariables.LoadFilesOrder.climate] && !GlobalVariables.CreateNewFilesReadOnly)
+                                    return;
+                                if (GlobalVariables.ReadOnly[(int)GlobalVariables.LoadFilesOrder.climate] && GlobalVariables.CreateNewFilesReadOnly && File.Exists(GlobalVariables.pathtomod + "map\\climate.txt"))
+                                    return;
+                                if (!Directory.Exists(GlobalVariables.pathtomod + "map\\"))
+                                    Directory.CreateDirectory(GlobalVariables.pathtomod + "map\\");
+
+                                NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\climate.txt");
+
+
+                                Node tropical = nf.MainNode.Nodes.Find(x => x.Name == "tropical");
+                                if (tropical == null)
+                                    tropical = nf.MainNode.AddNode("tropical");
+                                Node arid = nf.MainNode.Nodes.Find(x => x.Name == "arid");
+                                if (arid == null)
+                                    arid = nf.MainNode.AddNode("arid");
+                                Node arctic = nf.MainNode.Nodes.Find(x => x.Name == "arctic");
+                                if (arctic == null)
+                                    arctic = nf.MainNode.AddNode("arctic");
+                                Node mild_winter = nf.MainNode.Nodes.Find(x => x.Name == "mild_winter");
+                                if (mild_winter == null)
+                                    mild_winter = nf.MainNode.AddNode("mild_winter");
+                                Node normal_winter = nf.MainNode.Nodes.Find(x => x.Name == "normal_winter");
+                                if (normal_winter == null)
+                                    normal_winter = nf.MainNode.AddNode("normal_winter");
+                                Node severe_winter = nf.MainNode.Nodes.Find(x => x.Name == "severe_winter");
+                                if (severe_winter == null)
+                                    severe_winter = nf.MainNode.AddNode("severe_winter");
+                                Node impassable = nf.MainNode.Nodes.Find(x => x.Name == "impassable");
+                                if (impassable == null)
+                                    impassable = nf.MainNode.AddNode("impassable");
+                                Node mild_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "mild_monsoon");
+                                if (mild_monsoon == null)
+                                    mild_monsoon = nf.MainNode.AddNode("mild_monsoon");
+                                Node normal_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "normal_monsoon");
+                                if (normal_monsoon == null)
+                                    normal_monsoon = nf.MainNode.AddNode("normal_monsoon");
+                                Node severe_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "severe_monsoon");
+                                if (severe_monsoon == null)
+                                    severe_monsoon = nf.MainNode.AddNode("severe_monsoon");
+                                foreach (Province p in GlobalVariables.Provinces)
+                                {
+                                    switch (p.Winter)
+                                    {
+                                        case 0:
+                                            mild_winter.RemovePureValue(p.ID.ToString());
+                                            normal_winter.RemovePureValue(p.ID.ToString());
+                                            severe_winter.RemovePureValue(p.ID.ToString());
+                                            break;
+                                        case 1:
+                                            mild_winter.AddPureValue(p.ID.ToString(), checkexists: true);
+                                            normal_winter.RemovePureValue(p.ID.ToString());
+                                            severe_winter.RemovePureValue(p.ID.ToString());
+                                            break;
+                                        case 2:
+                                            mild_winter.RemovePureValue(p.ID.ToString());
+                                            normal_winter.AddPureValue(p.ID.ToString(), checkexists: true);
+                                            severe_winter.RemovePureValue(p.ID.ToString());
+                                            break;
+                                        case 3:
+                                            mild_winter.RemovePureValue(p.ID.ToString());
+                                            normal_winter.RemovePureValue(p.ID.ToString());
+                                            severe_winter.AddPureValue(p.ID.ToString(), checkexists: true);
+                                            break;
+                                    }
+                                    switch (p.Monsoon)
+                                    {
+                                        case 0:
+                                            mild_monsoon.RemovePureValue(p.ID.ToString());
+                                            normal_monsoon.RemovePureValue(p.ID.ToString());
+                                            severe_monsoon.RemovePureValue(p.ID.ToString());
+                                            break;
+                                        case 1:
+                                            mild_monsoon.AddPureValue(p.ID.ToString(), checkexists: true);
+                                            normal_monsoon.RemovePureValue(p.ID.ToString());
+                                            severe_monsoon.RemovePureValue(p.ID.ToString());
+                                            break;
+                                        case 2:
+                                            mild_monsoon.RemovePureValue(p.ID.ToString());
+                                            normal_monsoon.AddPureValue(p.ID.ToString(), checkexists: true);
+                                            severe_monsoon.RemovePureValue(p.ID.ToString());
+                                            break;
+                                        case 3:
+                                            mild_monsoon.RemovePureValue(p.ID.ToString());
+                                            normal_monsoon.RemovePureValue(p.ID.ToString());
+                                            severe_monsoon.AddPureValue(p.ID.ToString(), checkexists: true);
+                                            break;
+                                    }
+                                    switch (p.Climate)
+                                    {
+                                        case 0:
+                                            tropical.RemovePureValue(p.ID.ToString());
+                                            arid.RemovePureValue(p.ID.ToString());
+                                            arctic.RemovePureValue(p.ID.ToString());
+                                            break;
+                                        case 1:
+                                            tropical.AddPureValue(p.ID.ToString(), checkexists: true);
+                                            arid.RemovePureValue(p.ID.ToString());
+                                            arctic.RemovePureValue(p.ID.ToString());
+                                            break;
+                                        case 2:
+                                            tropical.RemovePureValue(p.ID.ToString());
+                                            arid.AddPureValue(p.ID.ToString(), checkexists: true);
+                                            arctic.RemovePureValue(p.ID.ToString());
+                                            break;
+                                        case 3:
+                                            tropical.RemovePureValue(p.ID.ToString());
+                                            arid.RemovePureValue(p.ID.ToString());
+                                            arctic.AddPureValue(p.ID.ToString(), checkexists: true);
+                                            break;
+                                    }
+                                    switch (p.Climate)
+                                    {
+                                        case 0:
+                                            impassable.RemovePureValue(p.ID.ToString());
+                                            break;
+                                        case 1:
+                                            impassable.AddPureValue(p.ID.ToString(), checkexists: true);
+                                            break;
+                                    }
+                                }
+                                nf.SaveFile(GlobalVariables.pathtomod + "map\\climate.txt");
                             }
                             break;
                     }                
@@ -937,7 +1071,7 @@ namespace Eu4ModEditor
 
         public class SpecialSavingObject
         {
-            public enum SavingType { Area, Region, Continent, Superregion, TradeCompany, TagFile }
+            public enum SavingType { Area, Region, Continent, Superregion, TradeCompany, TagFile, Climate, Terrain }
             public SavingType Type;
             public SpecialSavingObject(SavingType sv)
             {

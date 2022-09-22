@@ -46,6 +46,8 @@
             this.LoadingPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.ConfirmFileUsage = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.StartDateBox = new System.Windows.Forms.TextBox();
             this.DarkmodeOption = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.AppSizeBox = new System.Windows.Forms.ComboBox();
@@ -54,8 +56,6 @@
             this.NewFilesForNewObjects = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.ReadOnlyNewFiles = new System.Windows.Forms.CheckBox();
-            this.StartDateBox = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -245,6 +245,23 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Special options";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(13, 250);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(130, 13);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "Start date (YYYY.MM.DD)";
+            // 
+            // StartDateBox
+            // 
+            this.StartDateBox.Location = new System.Drawing.Point(16, 266);
+            this.StartDateBox.Name = "StartDateBox";
+            this.StartDateBox.Size = new System.Drawing.Size(100, 20);
+            this.StartDateBox.TabIndex = 8;
+            this.StartDateBox.Text = "1444.11.11";
+            // 
             // DarkmodeOption
             // 
             this.DarkmodeOption.Enabled = false;
@@ -270,8 +287,8 @@
             this.AppSizeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.AppSizeBox.FormattingEnabled = true;
             this.AppSizeBox.Items.AddRange(new object[] {
-            "1752 x 944",
-            "1290 x 944"});
+            "1752 x 970",
+            "1290 x 970"});
             this.AppSizeBox.Location = new System.Drawing.Point(16, 216);
             this.AppSizeBox.Name = "AppSizeBox";
             this.AppSizeBox.Size = new System.Drawing.Size(136, 21);
@@ -334,23 +351,6 @@
             this.ReadOnlyNewFiles.Text = "Create new files when Read Only is on";
             this.ReadOnlyNewFiles.UseVisualStyleBackColor = true;
             // 
-            // StartDateBox
-            // 
-            this.StartDateBox.Location = new System.Drawing.Point(16, 266);
-            this.StartDateBox.Name = "StartDateBox";
-            this.StartDateBox.Size = new System.Drawing.Size(100, 20);
-            this.StartDateBox.TabIndex = 8;
-            this.StartDateBox.Text = "1444.11.11";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(13, 250);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(130, 13);
-            this.label6.TabIndex = 9;
-            this.label6.Text = "Start date (YYYY.MM.DD)";
-            // 
             // LoadingScreen
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -364,7 +364,7 @@
             this.MaximizeBox = false;
             this.Name = "LoadingScreen";
             this.Tag = "game";
-            this.Text = "Loading screen - 1.1.7";
+            this.Text = "Loading screen - 1.1.8";
             this.Load += new System.EventHandler(this.LoadingScreen_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

@@ -29,17 +29,14 @@ namespace Eu4ModEditor
             List<NodeFile> CountryCommonFiles = new List<NodeFile>();
             NodeFile technology;
             NodeFile areas;
+            NodeFile climate;
             NodeFile regions;
             NodeFile continents;
             List<NodeFile> tradenodesfiles = new List<NodeFile>();
             List<NodeFile> tradecompanyfiles = new List<NodeFile>();
             NodeFile Superregions;
 
-
             GlobalVariables.Countries.Add(Country.NoCountry);
-
-
-
 
             Task llocalisation = new Task(() => {
 
@@ -133,360 +130,440 @@ namespace Eu4ModEditor
             progress.UpdateProgress(22, 0);
 
             Task ldefinition = new Task(() => {
-                StreamReader Reader;
-                if (GlobalVariables.UseMod[0] > 0)
-                    Reader = new StreamReader(GlobalVariables.pathtomod + "map\\definition.csv", Encoding.Default);
-                else
-                    Reader = new StreamReader(GlobalVariables.pathtogame + "map\\definition.csv", Encoding.Default);
-
-                Reader.ReadLine();
-                while (!Reader.EndOfStream)
+                try
                 {
-                    string data = Reader.ReadLine();
-                    string[] values = data.Split(';');
-                    Province p = new Province(int.Parse(values[0]), int.Parse(values[1]), int.Parse(values[2]), int.Parse(values[3]), values[4]);
-                    GlobalVariables.CubeArray[int.Parse(values[1]), int.Parse(values[2]), int.Parse(values[3])] = p;
-                    GlobalVariables.Provinces.Add(p);
+                    StreamReader Reader;
+                    if (GlobalVariables.UseMod[0] > 0)
+                        Reader = new StreamReader(GlobalVariables.pathtomod + "map\\definition.csv", Encoding.Default);
+                    else
+                        Reader = new StreamReader(GlobalVariables.pathtogame + "map\\definition.csv", Encoding.Default);
+
+                    while (!Reader.EndOfStream)
+                    {
+                        string data = Reader.ReadLine();
+                        if (data.Contains("province;red;"))
+                            continue;
+                        string[] values = data.Split(';');
+                        Province p = new Province(int.Parse(values[0]), int.Parse(values[1]), int.Parse(values[2]), int.Parse(values[3]), values[4]);
+                        GlobalVariables.CubeArray[int.Parse(values[1]), int.Parse(values[2]), int.Parse(values[3])] = p;
+                        GlobalVariables.Provinces.Add(p);
+                    }
+                }
+                catch
+                {
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with definition.csv! Program will exit after continuing!");
+                    throw new Exception();
                 }
             });
             ldefinition.Start();
 
             progress.UpdateProgress(0, 0);
             Task ltradegoods = new Task(() => {
-                
-                if (GlobalVariables.UseMod[2] != 0)
+
+                try
                 {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\tradegoods\\"))
+                    if (GlobalVariables.UseMod[2] != 0)
                     {
-                        if (file.Contains('.'))
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\tradegoods\\"))
                         {
-                            if (file.Split('.')[1] == "txt")
+                            if (file.Contains('.'))
                             {
-                                NodeFile nf = new NodeFile(file);
-                                tradegoodsfiles.Add(nf);
-                                GlobalVariables.ModTradeGoodsFiles.Add(nf);
+                                if (file.Split('.')[1] == "txt")
+                                {
+                                    NodeFile nf = new NodeFile(file);
+                                    tradegoodsfiles.Add(nf);
+                                    GlobalVariables.ModTradeGoodsFiles.Add(nf);
+                                }
+                            }
+                        }
+                    }
+
+                    if (GlobalVariables.UseMod[2] != 1)
+                    {
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\tradegoods\\"))
+                        {
+                            if (file.Contains('.'))
+                            {
+                                if (file.Split('.')[1] == "txt")
+                                {
+                                    NodeFile nf = new NodeFile(file, true);
+                                    if (!tradegoodsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                        tradegoodsfiles.Add(nf);
+                                    GlobalVariables.GameTradeGoodsFile = nf;
+                                }
                             }
                         }
                     }
                 }
-
-                if (GlobalVariables.UseMod[2] != 1)
+                catch
                 {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\tradegoods\\"))
-                    {
-                        if (file.Contains('.'))
-                        {
-                            if (file.Split('.')[1] == "txt")
-                            {
-                                NodeFile nf = new NodeFile(file, true);
-                                if (!tradegoodsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                                    tradegoodsfiles.Add(nf);
-                                GlobalVariables.GameTradeGoodsFile = nf;
-                            }
-                        }
-                    }
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with trade good files! Program will exit after continuing!");
+                    throw new Exception();
                 }
             });
             ltradegoods.Start();
             progress.UpdateProgress(1, 0);
             Task lcultures = new Task(() => {
-                List<string> done = new List<string>();
-                if (GlobalVariables.UseMod[4] != 0)
+                try
                 {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\cultures\\"))
+                    List<string> done = new List<string>();
+                    if (GlobalVariables.UseMod[4] != 0)
                     {
-                        if (file.Contains('.'))
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\cultures\\"))
                         {
-                            if (file.Split('.')[1] == "txt")
+                            if (file.Contains('.'))
                             {
-                                NodeFile nf = new NodeFile(file);
-                                culturesfiles.Add(nf);
-                                GlobalVariables.ModCulturesFiles.Add(nf);
-                            }
-                        }
-                    }
-                }
-                if (GlobalVariables.UseMod[4] != 1)
-                {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\cultures\\"))
-                    {
-                        if (file.Contains('.'))
-                        {
-                            if (file.Split('.')[1] == "txt")
-                            {
-                                NodeFile nf = new NodeFile(file, true);
-                                if (!culturesfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                                    culturesfiles.Add(nf);
-                                GlobalVariables.GameCulturesFile = nf;
-                            }
-                        }
-                    }
-                }
-                done = new List<string>();
-                foreach (NodeFile cultures in culturesfiles)
-                {
-                    foreach (Node node in cultures.MainNode.Nodes)
-                    {
-                        if (done.Contains(node.Name))
-                            continue;
-                        done.Add(node.Name);
-                        CultureGroup cg = new CultureGroup
-                        {
-                            Name = node.Name
-                        };
-                        foreach (Node innernode in node.Nodes)
-                        {
-                            if (innernode.Name != "dynasty_names" && innernode.Name != "female_names" && innernode.Name != "male_names" && innernode.Name != "graphical_culture")
-                            {
-                                Culture c = new Culture
+                                if (file.Split('.')[1] == "txt")
                                 {
-                                    Name = innernode.Name,
-                                    Group = cg,
-                                    NodeFile = cultures
-                                };
-                                cg.Cultures.Add(c);
-                                Variable v = innernode.Variables.Find(x => x.Name == "primary");
-                                if (v != null)
-                                    c.PrimaryTag = v.Value;
+                                    NodeFile nf = new NodeFile(file);
+                                    culturesfiles.Add(nf);
+                                    GlobalVariables.ModCulturesFiles.Add(nf);
+                                }
                             }
                         }
                     }
+                    if (GlobalVariables.UseMod[4] != 1)
+                    {
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\cultures\\"))
+                        {
+                            if (file.Contains('.'))
+                            {
+                                if (file.Split('.')[1] == "txt")
+                                {
+                                    NodeFile nf = new NodeFile(file, true);
+                                    if (!culturesfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                        culturesfiles.Add(nf);
+                                    GlobalVariables.GameCulturesFile = nf;
+                                }
+                            }
+                        }
+                    }
+                    done = new List<string>();
+                    foreach (NodeFile cultures in culturesfiles)
+                    {
+                        foreach (Node node in cultures.MainNode.Nodes)
+                        {
+                            if (done.Contains(node.Name))
+                                continue;
+                            done.Add(node.Name);
+                            CultureGroup cg = new CultureGroup
+                            {
+                                Name = node.Name
+                            };
+                            foreach (Node innernode in node.Nodes)
+                            {
+                                if (innernode.Name != "dynasty_names" && innernode.Name != "female_names" && innernode.Name != "male_names" && innernode.Name != "graphical_culture")
+                                {
+                                    Culture c = new Culture
+                                    {
+                                        Name = innernode.Name,
+                                        Group = cg,
+                                        NodeFile = cultures
+                                    };
+                                    cg.Cultures.Add(c);
+                                    Variable v = innernode.Variables.Find(x => x.Name == "primary");
+                                    if (v != null)
+                                        c.PrimaryTag = v.Value;
+                                }
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with cultures! Program will exit after continuing!");
+                    throw new Exception();
                 }
 
             });
             lcultures.Start();
             progress.UpdateProgress(4, 0);
             Task lreligions = new Task(() => {
-                if (GlobalVariables.UseMod[5] != 0)
+                try
                 {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\religions\\"))
+                    if (GlobalVariables.UseMod[5] != 0)
                     {
-                        if (file.Contains('.'))
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\religions\\"))
                         {
-                            if (file.Split('.')[1] == "txt")
+                            if (file.Contains('.'))
                             {
-                                NodeFile nf = new NodeFile(file);
-                                religionsfiles.Add(nf);
-                                GlobalVariables.ModReligionsFiles.Add(nf);
-                            }
-                        }
-                    }
-                }
-                if (GlobalVariables.UseMod[5] != 1)
-                {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\religions\\"))
-                    {
-                        if (file.Contains('.'))
-                        {
-                            if (file.Split('.')[1] == "txt")
-                            {
-                                NodeFile nf = new NodeFile(file, true);
-                                if (!religionsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                if (file.Split('.')[1] == "txt")
+                                {
+                                    NodeFile nf = new NodeFile(file);
                                     religionsfiles.Add(nf);
-                                GlobalVariables.GameReligionsFile = nf;
+                                    GlobalVariables.ModReligionsFiles.Add(nf);
+                                }
+                            }
+                        }
+                    }
+                    if (GlobalVariables.UseMod[5] != 1)
+                    {
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\religions\\"))
+                        {
+                            if (file.Contains('.'))
+                            {
+                                if (file.Split('.')[1] == "txt")
+                                {
+                                    NodeFile nf = new NodeFile(file, true);
+                                    if (!religionsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                        religionsfiles.Add(nf);
+                                    GlobalVariables.GameReligionsFile = nf;
+                                }
+                            }
+                        }
+                    }
+                    string[] religionforbidden = new string[] { };
+                    foreach (NodeFile religions in religionsfiles)
+                    {
+                        foreach (Node node in religions.MainNode.Nodes)
+                        {
+                            ReligionGroup rg = new ReligionGroup
+                            {
+                                Name = node.Name
+                            };
+                            foreach (Node innernode in node.Nodes)
+                            {
+                                if (innernode.Name != "flag_emblem_index_range" && innernode.Name != "religious_schools")
+                                {
+                                    try
+                                    {
+                                        Religion r = new Religion
+                                        {
+                                            Name = innernode.Name,
+                                            ReadableName = innernode.Name[0].ToString().ToUpper() + innernode.Name.Substring(1).Replace('_', ' '),
+                                            Group = rg,
+                                            NodeFile = religions
+                                        };
+                                        rg.Religions.Add(r);
+                                        string[] colorstring = innernode.Nodes.Find(x => x.Name == "color").GetPureValuesAsArray();
+                                        r.Color = Color.FromArgb(int.Parse(colorstring[0]), int.Parse(colorstring[1]), int.Parse(colorstring[2]));
+                                        r.Icon = int.Parse(innernode.Variables.Find(x => x.Name == "icon").Value);
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                }
                             }
                         }
                     }
                 }
-                string[] religionforbidden = new string[] { };
-                foreach (NodeFile religions in religionsfiles)
+                catch
                 {
-                    foreach (Node node in religions.MainNode.Nodes)
-                    {
-                        ReligionGroup rg = new ReligionGroup
-                        {
-                            Name = node.Name
-                        };
-                        foreach (Node innernode in node.Nodes)
-                        {
-                            if (innernode.Name != "flag_emblem_index_range" && innernode.Name != "religious_schools")
-                            {
-                                try
-                                {
-                                    Religion r = new Religion
-                                    {
-                                        Name = innernode.Name,
-                                        ReadableName = innernode.Name[0].ToString().ToUpper() + innernode.Name.Substring(1).Replace('_', ' '),
-                                        Group = rg,
-                                        NodeFile = religions
-                                    };
-                                    rg.Religions.Add(r);
-                                    string[] colorstring = innernode.Nodes.Find(x => x.Name == "color").GetPureValuesAsArray();
-                                    r.Color = Color.FromArgb(int.Parse(colorstring[0]), int.Parse(colorstring[1]), int.Parse(colorstring[2]));
-                                    r.Icon = int.Parse(innernode.Variables.Find(x => x.Name == "icon").Value);
-                                }
-                                catch
-                                {
-
-                                }
-                            }
-                        }
-                    }
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with religions! Program will exit after continuing!");
+                    throw new Exception();
                 }
             });
             lreligions.Start();
             progress.UpdateProgress(5, 0);
             Task lgovernments = new Task(() => {
-                if (GlobalVariables.UseMod[16] != 0)
+                try
                 {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\governments\\"))
+                    if (GlobalVariables.UseMod[16] != 0)
                     {
-                        if (file.Contains('.'))
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\governments\\"))
                         {
-                            if (file.Split('.')[1] == "txt")
+                            if (file.Contains('.'))
                             {
-                                NodeFile nf = new NodeFile(file);
-                                governmentsfiles.Add(nf);
-                                GlobalVariables.ModGovernmentsFiles.Add(nf);
-                            }
-                        }
-                    }
-                }
-                if (GlobalVariables.UseMod[16] != 1)
-                {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\governments\\"))
-                    {
-                        if (file.Contains('.'))
-                        {
-                            if (file.Split('.')[1] == "txt")
-                            {
-                                NodeFile nf = new NodeFile(file, true);
-                                if (!governmentsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                if (file.Split('.')[1] == "txt")
+                                {
+                                    NodeFile nf = new NodeFile(file);
                                     governmentsfiles.Add(nf);
-                                GlobalVariables.GameGovernmentsFile = nf;
+                                    GlobalVariables.ModGovernmentsFiles.Add(nf);
+                                }
+                            }
+                        }
+                    }
+                    if (GlobalVariables.UseMod[16] != 1)
+                    {
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\governments\\"))
+                        {
+                            if (file.Contains('.'))
+                            {
+                                if (file.Split('.')[1] == "txt")
+                                {
+                                    NodeFile nf = new NodeFile(file, true);
+                                    if (!governmentsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                        governmentsfiles.Add(nf);
+                                    GlobalVariables.GameGovernmentsFile = nf;
+                                }
+                            }
+                        }
+                    }
+                    foreach (NodeFile government in governmentsfiles)
+                    {
+                        foreach (Node n in government.MainNode.Nodes)
+                        {
+                            if (n.Name != "pre_dharma_mapping")
+                            {
+                                Government gv = new Government(n.Name);
+
+                                gv.reforms.AddRange(n.Nodes.Find(x => x.Name == "reform_levels").Nodes[0].Nodes.Find(x => x.Name == "reforms").GetPureValuesAsArray());
+                                Node colornode = n.Nodes.Find(x => x.Name == "color");
+                                gv.Color = Color.FromArgb(int.Parse(colornode.PureValues[0].Name), int.Parse(colornode.PureValues[1].Name), int.Parse(colornode.PureValues[2].Name));
+                                GlobalVariables.Governments.Add(gv);
                             }
                         }
                     }
                 }
-                foreach (NodeFile government in governmentsfiles)
+                catch
                 {
-                    foreach (Node n in government.MainNode.Nodes)
-                    {
-                        if (n.Name != "pre_dharma_mapping")
-                        {
-                            Government gv = new Government(n.Name);
-                            
-                            gv.reforms.AddRange(n.Nodes.Find(x => x.Name == "reform_levels").Nodes[0].Nodes.Find(x => x.Name == "reforms").GetPureValuesAsArray());
-                            Node colornode = n.Nodes.Find(x => x.Name == "color");
-                            gv.Color = Color.FromArgb(int.Parse(colornode.PureValues[0].Name), int.Parse(colornode.PureValues[1].Name), int.Parse(colornode.PureValues[2].Name));
-                            GlobalVariables.Governments.Add(gv);
-                        }
-                    }
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with governments! Program will exit after continuing!");
+                    throw new Exception();
                 }
 
             });
             lgovernments.Start();
             progress.UpdateProgress(6, 0);
             Task ltechnology = new Task(() => {
-                
-                if (GlobalVariables.UseMod[15] > 0)
-                    technology = new NodeFile(GlobalVariables.pathtomod + "common\\technology.txt");
-                else
-                    technology = new NodeFile(GlobalVariables.pathtogame + "common\\technology.txt");
-                foreach (Node node in technology.MainNode.Nodes.Find(x => x.Name == "groups").Nodes)
+                try
                 {
-                    GlobalVariables.TechGroups.Add(node.Name);
+                    if (GlobalVariables.UseMod[15] > 0)
+                        technology = new NodeFile(GlobalVariables.pathtomod + "common\\technology.txt");
+                    else
+                        technology = new NodeFile(GlobalVariables.pathtogame + "common\\technology.txt");
+                    foreach (Node node in technology.MainNode.Nodes.Find(x => x.Name == "groups").Nodes)
+                    {
+                        GlobalVariables.TechGroups.Add(node.Name);
+                    }
+                }
+                catch
+                {
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with techgroups! Program will exit after continuing!");
+                    throw new Exception();
                 }
             });
             ltechnology.Start();
             progress.UpdateProgress(7, 0);
             Task ltags = new Task(() => {
-                if (GlobalVariables.UseMod[14] != 0)
+                try
                 {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\country_tags\\"))
+                    if (GlobalVariables.UseMod[14] != 0)
                     {
-                        if (file.Contains('.'))
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\country_tags\\"))
                         {
-                            if (file.Split('.')[1] == "txt")
+                            if (file.Contains('.'))
                             {
-                                NodeFile nf = new NodeFile(file);
-                                countrytagsfiles.Add(nf);
-                                GlobalVariables.ModCountryTagsFiles.Add(nf);
-                            }
-                        }
-                    }
-                }
-                if (GlobalVariables.UseMod[14] != 1)
-                {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\country_tags\\"))
-                    {
-                        if (file.Contains('.'))
-                        {
-                            if (file.Split('.')[1] == "txt")
-                            {
-                                NodeFile nf = new NodeFile(file, true);
-                                if (!countrytagsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                if (file.Split('.')[1] == "txt")
+                                {
+                                    NodeFile nf = new NodeFile(file);
                                     countrytagsfiles.Add(nf);
-                                GlobalVariables.GameCountryTagsFile = nf;
+                                    GlobalVariables.ModCountryTagsFiles.Add(nf);
+                                }
                             }
                         }
                     }
-                }
-
-                foreach (NodeFile countrytags in countrytagsfiles)
-                {
-                    foreach (Variable v in countrytags.MainNode.Variables)
+                    if (GlobalVariables.UseMod[14] != 1)
                     {
-                        //TODO
-                        //tolerate both slashes!!!!!!!!
-                        string n = v.Value.Replace("\"", "").Trim().Split('/')[1].Split('.')[0];
-                        if (!NameToTag.Keys.Contains(n))
-                            NameToTag.Add(n, v.Name.Trim());
-                        if (!NameToFile.Keys.Contains(n))
-                            NameToFile.Add(n, countrytags);
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\country_tags\\"))
+                        {
+                            if (file.Contains('.'))
+                            {
+                                if (file.Split('.')[1] == "txt")
+                                {
+                                    NodeFile nf = new NodeFile(file, true);
+                                    if (!countrytagsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                        countrytagsfiles.Add(nf);
+                                    GlobalVariables.GameCountryTagsFile = nf;
+                                }
+                            }
+                        }
                     }
+
+                    foreach (NodeFile countrytags in countrytagsfiles)
+                    {
+                        foreach (Variable v in countrytags.MainNode.Variables)
+                        {
+                            //TODO
+                            //tolerate both slashes!!!!!!!!
+                            string n = v.Value.Replace("\"", "").Trim().Split('/')[1].Split('.')[0];
+                            if (!NameToTag.Keys.Contains(n))
+                                NameToTag.Add(n, v.Name.Trim());
+                            if (!NameToFile.Keys.Contains(n))
+                                NameToFile.Add(n, countrytags);
+                        }
+                    }
+                }
+                catch
+                {
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with tag files! Program will exit after continuing!");
+                    throw new Exception();
                 }
             });
             ltags.Start();
             progress.UpdateProgress(8, 0);
             Task lbuildings = new Task(() =>
             {
-                List<bool> GameFiles = new List<bool>();
-                if (GlobalVariables.UseMod[17] != 0)
+                try
                 {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\buildings\\"))
+                    List<bool> GameFiles = new List<bool>();
+                    if (GlobalVariables.UseMod[17] != 0)
                     {
-                        if (file.Contains('.'))
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\buildings\\"))
                         {
-                            if (file.Split('.')[1] == "txt")
+                            if (file.Contains('.'))
                             {
-                                NodeFile nf = new NodeFile(file);
-                                buildingsfiles.Add(nf);
-                            }
-                        }
-                    }
-                }
-                if (GlobalVariables.UseMod[17] != 1)
-                {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\buildings\\"))
-                    {
-                        if (file.Contains('.'))
-                        {
-                            if (file.Split('.')[1] == "txt")
-                            {
-                                NodeFile nf = new NodeFile(file, true);
-                                if (!buildingsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                if (file.Split('.')[1] == "txt")
                                 {
+                                    NodeFile nf = new NodeFile(file);
                                     buildingsfiles.Add(nf);
                                 }
-
                             }
                         }
                     }
-                }
-
-
-                foreach (NodeFile buildings in buildingsfiles)
-                {
-                    foreach (Node node in buildings.MainNode.Nodes)
+                    if (GlobalVariables.UseMod[17] != 1)
                     {
-                        if (GlobalVariables.Buildings.Any(x => x.Name == node.Name))
-                            continue;
-                        Building bl = new Building();
-                        bl.Name = node.Name;
-                        bl.NodeFile = buildings;
-                        GlobalVariables.Buildings.Add(bl);
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\buildings\\"))
+                        {
+                            if (file.Contains('.'))
+                            {
+                                if (file.Split('.')[1] == "txt")
+                                {
+                                    NodeFile nf = new NodeFile(file, true);
+                                    if (!buildingsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                    {
+                                        buildingsfiles.Add(nf);
+                                    }
+
+                                }
+                            }
+                        }
                     }
+
+
+                    foreach (NodeFile buildings in buildingsfiles)
+                    {
+                        foreach (Node node in buildings.MainNode.Nodes)
+                        {
+                            if (GlobalVariables.Buildings.Any(x => x.Name == node.Name))
+                                continue;
+                            Building bl = new Building();
+                            bl.Name = node.Name;
+                            bl.NodeFile = buildings;
+                            GlobalVariables.Buildings.Add(bl);
+                        }
+                    }
+                }
+                catch
+                {
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with buildings! Program will exit after continuing!");
+                    throw new Exception();
                 }
             });
             lbuildings.Start();
@@ -499,232 +576,267 @@ namespace Eu4ModEditor
                 progress.UpdateProgress(0, 2);
 
             Task larea = new Task(() => {
-                if (GlobalVariables.UseMod[9] > 0)
-                    areas = new NodeFile(GlobalVariables.pathtomod + "map\\area.txt");
-                else
-                    areas = new NodeFile(GlobalVariables.pathtogame + "map\\area.txt");
-                //bw.ReportProgress(92);
-                foreach (Node n in areas.MainNode.Nodes)
+                try
                 {
-                    List<Province> pr = new List<Province>();
-                    foreach (PureValue vr in n.PureValues)
+                    if (GlobalVariables.UseMod[9] > 0)
+                        areas = new NodeFile(GlobalVariables.pathtomod + "map\\area.txt");
+                    else
+                        areas = new NodeFile(GlobalVariables.pathtogame + "map\\area.txt");
+                    //bw.ReportProgress(92);
+                    foreach (Node n in areas.MainNode.Nodes)
                     {
-                        if (vr.Name != "")
+                        List<Province> pr = new List<Province>();
+                        foreach (PureValue vr in n.PureValues)
                         {
-                            pr.Add(GlobalVariables.Provinces[int.Parse(vr.Name) - 1]);
+                            if (vr.Name != "")
+                            {
+                                pr.Add(GlobalVariables.Provinces.Find(x=>x.ID == int.Parse(vr.Name)));
+                            }
                         }
+                        Area a = new Area(n.Name, pr)
+                        {
+                            OriginalName = n.Name
+                        };
+                        foreach (Province pro in a.Provinces)
+                            pro.Area = a;
                     }
-                    Area a = new Area(n.Name, pr)
-                    {
-                        OriginalName = n.Name
-                    };
-                    foreach (Province pro in a.Provinces)
-                        pro.Area = a;
+                }
+                catch
+                {
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with areas! Program will exit after continuing!");
+                    throw new Exception();
                 }
             });
             larea.Start();
             progress.UpdateProgress(12, 0);
             Task lcontinent = new Task(() => {
-                if (GlobalVariables.UseMod[13] > 0)
-                    continents = new NodeFile(GlobalVariables.pathtomod + "map\\continent.txt");
-                else
-                    continents = new NodeFile(GlobalVariables.pathtogame + "map\\continent.txt");
-                //bw.ReportProgress(100);
-                foreach (Node n in continents.MainNode.Nodes)
+                try
                 {
-                    List<Province> ctp = new List<Province>();
-                    foreach (PureValue s in n.PureValues)
+                    if (GlobalVariables.UseMod[13] > 0)
+                        continents = new NodeFile(GlobalVariables.pathtomod + "map\\continent.txt");
+                    else
+                        continents = new NodeFile(GlobalVariables.pathtogame + "map\\continent.txt");
+                    //bw.ReportProgress(100);
+                    foreach (Node n in continents.MainNode.Nodes)
                     {
-                        ctp.Add(GlobalVariables.Provinces[int.Parse(s.Name.Trim()) - 1]);
+                        List<Province> ctp = new List<Province>();
+                        foreach (PureValue s in n.PureValues)
+                        {
+                        if (!GlobalVariables.Provinces.Any(x=>x.ID == int.Parse(s.Name.Trim())))
+                            progress.ReportError($"In: continents.txt -> Province {s.Name.Trim()} isn't in the definition.csv!");
+                        else
+                            ctp.Add(GlobalVariables.Provinces.Find(x => x.ID == int.Parse(s.Name.Trim())));
+                        }
+                        Continent c = new Continent(n.Name, ctp);
+                        c.OriginalName = n.Name;
+                        foreach (Province pr in c.Provinces)
+                            pr.Continent = c;
                     }
-                    Continent c = new Continent(n.Name, ctp);
-                    c.OriginalName = n.Name;
-                    foreach (Province pr in c.Provinces)
-                        pr.Continent = c;
+                }
+                catch
+                {
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with continents! Program will exit after continuing!");
+                    throw new Exception();
                 }
             });
             lcontinent.Start();
             progress.UpdateProgress(14, 0);
             Task ltradenodes = new Task(() => {
-            if (GlobalVariables.UseMod[12] != 0)
-            {
-                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\tradenodes\\"))
+                try
                 {
-                    if (file.Contains('.'))
+                    if (GlobalVariables.UseMod[12] != 0)
                     {
-                        if (file.Split('.')[1] == "txt")
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\tradenodes\\"))
                         {
-                            NodeFile nf = new NodeFile(file);
-                            tradenodesfiles.Add(nf);
-                            GlobalVariables.ModTradeNodesFiles.Add(nf);
+                            if (file.Contains('.'))
+                            {
+                                if (file.Split('.')[1] == "txt")
+                                {
+                                    NodeFile nf = new NodeFile(file);
+                                    tradenodesfiles.Add(nf);
+                                    GlobalVariables.ModTradeNodesFiles.Add(nf);
+                                }
+                            }
                         }
                     }
-                }
-            }
-            if (GlobalVariables.UseMod[12] != 1)
-            {
-                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\tradenodes\\"))
-                {
-                    if (file.Contains('.'))
+                    if (GlobalVariables.UseMod[12] != 1)
                     {
-                        if (file.Split('.')[1] == "txt")
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\tradenodes\\"))
                         {
-                            NodeFile nf = new NodeFile(file, true);
-                            if (!tradenodesfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                                tradenodesfiles.Add(nf);
-                            GlobalVariables.GameTradeNodesFile = nf;
+                            if (file.Contains('.'))
+                            {
+                                if (file.Split('.')[1] == "txt")
+                                {
+                                    NodeFile nf = new NodeFile(file, true);
+                                    if (!tradenodesfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                        tradenodesfiles.Add(nf);
+                                    GlobalVariables.GameTradeNodesFile = nf;
+                                }
+                            }
                         }
                     }
-                }
-            }
-            //bw.ReportProgress(105);
-            foreach (NodeFile tradenodes in tradenodesfiles)
-            {
-                foreach (Node node in tradenodes.MainNode.Nodes)
-                {
-                    if (GlobalVariables.TradeNodes.Any(x => x.Name == node.Name))
-                        continue;
-                    Tradenode tn = new Tradenode();
-                    tn.Name = node.Name;
-                        tn.NodeFile = tradenodes;
-                    GlobalVariables.TradeNodes.Add(tn);
-                }
-            }
-            string lastTradeNode = "";
-            string lastMember = "";
-
-            foreach (NodeFile tradenodes in tradenodesfiles)
-            {
-                foreach (Node node in tradenodes.MainNode.Nodes)
-                {
-                    lastTradeNode = node.Name;
-                    Tradenode tn = GlobalVariables.TradeNodes.Find(x => x.Name == node.Name);
-                    tn.NodeFile = tradenodes;
-                    tn.Name = node.Name;
-
-                        int location = 0;
-                        if (!int.TryParse(node.Variables.Find(x => x.Name == "location").Value, out location))
+                    //bw.ReportProgress(105);
+                    foreach (NodeFile tradenodes in tradenodesfiles)
+                    {
+                        foreach (Node node in tradenodes.MainNode.Nodes)
                         {
-                            progress.ReportError($"Trade nodes: '{node.Name}' node has incorrect location: '{location}', using first valid node province member.");
-                            location = -1;
+                            if (GlobalVariables.TradeNodes.Any(x => x.Name == node.Name))
+                                continue;
+                            Tradenode tn = new Tradenode();
+                            tn.Name = node.Name;
+                            tn.NodeFile = tradenodes;
+                            GlobalVariables.TradeNodes.Add(tn);
                         }
-                        else if (GlobalVariables.Provinces.Count() <= location)
+                    }
+                    string lastTradeNode = "";
+                    string lastMember = "";
+
+                    foreach (NodeFile tradenodes in tradenodesfiles)
+                    {
+                        foreach (Node node in tradenodes.MainNode.Nodes)
                         {
-                            progress.ReportError($"Trade nodes: Location of '{node.Name}' node is outside of province ID limit '{location}', using first valid node province member.");
-                            location = -1;
-                        }
-                        if(location == -1)
-                        {
+                            lastTradeNode = node.Name;
+                            Tradenode tn = GlobalVariables.TradeNodes.Find(x => x.Name == node.Name);
+                            tn.NodeFile = tradenodes;
+                            tn.Name = node.Name;
+
+                            int location = 0;
+                            if (!int.TryParse(node.Variables.Find(x => x.Name == "location").Value, out location))
+                            {
+                                progress.ReportError($"Trade nodes: '{node.Name}' node has incorrect location: '{location}', using first valid node province member.");
+                                location = -1;
+                            }
+                            else if (GlobalVariables.Provinces.Count() <= location)
+                            {
+                                progress.ReportError($"Trade nodes: Location of '{node.Name}' node is outside of province ID limit '{location}', using first valid node province member.");
+                                location = -1;
+                            }
+                            if (location == -1)
+                            {
+                                foreach (PureValue value in node.Nodes.Find(x => x.Name == "members").PureValues)
+                                {
+                                    if (!int.TryParse(value.Name, out location))
+                                        continue;
+                                    else if (GlobalVariables.Provinces.Count() <= location)
+                                    {
+                                        location = -1;
+                                        continue;
+                                    }
+                                    else
+                                        break;
+                                }
+                            }
+                            if (location == -1)
+                            {
+                                progress.ReportError($"Trade nodes: Couldn't find a suitable location for '{node.Name}' node!");
+                            }
+                            else
+                            {
+                                tn.Location = GlobalVariables.Provinces.Find(x => x.ID == location);
+                            }
+                            Node ColorNode = node.Nodes.Find(x => x.Name == "color");
+                            if (ColorNode != null)
+                                tn.Color = Color.FromArgb(int.Parse(ColorNode.PureValues[0].Name), int.Parse(ColorNode.PureValues[1].Name), int.Parse(ColorNode.PureValues[2].Name));
+                            else
+                                tn.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
+
+                            Variable v = node.Variables.Find(x => x.Name == "inland");
+                            if (v == null)
+                                tn.Inland = false;
+                            else
+                            {
+                                if (v.Value == "yes")
+                                    tn.Inland = true;
+                                else
+                                    tn.Inland = false;
+                            }
+                            v = node.Variables.Find(x => x.Name == "end");
+                            if (v == null)
+                                tn.Endnode = false;
+                            else
+                            {
+                                if (v.Value == "yes")
+                                    tn.Endnode = true;
+                                else
+                                    tn.Endnode = false;
+                            }
+
+                            foreach (Node outgoing in node.Nodes.FindAll(x => x.Name == "outgoing"))
+                            {
+                                Destination dn = new Destination() { TradeNode = GlobalVariables.TradeNodes.Find(x => x.Name == outgoing.Variables.Find(y => y.Name == "name").Value.Replace("\"", "")) };
+                                dn.Path.AddRange(outgoing.Nodes.Find(x => x.Name == "path").GetPureValuesAsArray());
+                                if (outgoing.Nodes.Find(x => x.Name == "control") != null)
+                                    dn.Control.AddRange(outgoing.Nodes.Find(x => x.Name == "control").GetPureValuesAsArray());
+                                tn.Destination.Add(dn);
+                                dn.TradeNode.Incoming.Add(tn);
+                            }
                             foreach (PureValue value in node.Nodes.Find(x => x.Name == "members").PureValues)
                             {
-                                if (!int.TryParse(value.Name, out location))
-                                    continue;
-                                else if (GlobalVariables.Provinces.Count() <= location)
+                                if (int.Parse(value.Name) <= GlobalVariables.Provinces.Count())
                                 {
-                                    location = -1;
-                                    continue;
+                                    tn.Provinces.Add(GlobalVariables.Provinces.Find(x=>x.ID == int.Parse(value.Name)));
+                                    GlobalVariables.Provinces.Find(x=>x.ID == int.Parse(value.Name)).TradeNode = tn;
                                 }
-                                else
-                                    break;
-                            }
-                        }
-                        if (location == -1)
-                        {
-                            progress.ReportError($"Trade nodes: Couldn't find a suitable location for '{node.Name}' node!");
-                        }
-                        else
-                        {
-                            location -= 1;
-                            tn.Location = GlobalVariables.Provinces[location];
-                        }
-                        Node ColorNode = node.Nodes.Find(x => x.Name == "color");
-                        if (ColorNode != null)
-                            tn.Color = Color.FromArgb(int.Parse(ColorNode.PureValues[0].Name), int.Parse(ColorNode.PureValues[1].Name), int.Parse(ColorNode.PureValues[2].Name));
-                        else
-                            tn.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
-
-                        Variable v = node.Variables.Find(x => x.Name == "inland");
-                        if (v == null)
-                            tn.Inland = false;
-                        else
-                        {
-                            if (v.Value == "yes")
-                                tn.Inland = true;
-                            else
-                                tn.Inland = false;
-                        }
-                        v = node.Variables.Find(x => x.Name == "end");
-                        if (v == null)
-                            tn.Endnode = false;
-                        else
-                        {
-                            if (v.Value == "yes")
-                                tn.Endnode = true;
-                            else
-                                tn.Endnode = false;
-                        }
-
-                        foreach (Node outgoing in node.Nodes.FindAll(x => x.Name == "outgoing"))
-                        {
-                            Destination dn = new Destination() { TradeNode = GlobalVariables.TradeNodes.Find(x => x.Name == outgoing.Variables.Find(y => y.Name == "name").Value.Replace("\"", "")) };
-                            dn.Path.AddRange(outgoing.Nodes.Find(x => x.Name == "path").GetPureValuesAsArray());
-                            if (outgoing.Nodes.Find(x => x.Name == "control") != null)
-                                dn.Control.AddRange(outgoing.Nodes.Find(x => x.Name == "control").GetPureValuesAsArray());
-                            tn.Destination.Add(dn);
-                            dn.TradeNode.Incoming.Add(tn);
-                        }
-                        foreach (PureValue value in node.Nodes.Find(x => x.Name == "members").PureValues)
-                        {
-                            if (int.Parse(value.Name) <= GlobalVariables.Provinces.Count())
-                            {
-                                tn.Provinces.Add(GlobalVariables.Provinces[int.Parse(value.Name) - 1]);
-                                GlobalVariables.Provinces[int.Parse(value.Name) - 1].TradeNode = tn;
                             }
                         }
                     }
+                }
+                catch
+                {
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with tradenodes! Program will exit after continuing!");
+                    throw new Exception();
                 }
             });
             ltradenodes.Start();
             progress.UpdateProgress(15, 0);
             Task ldefaultmap = new Task(() => {
-                NodeFile defaultmap;
-                //lp.UpdateProgressLabel("Loading map variables...", 95);
-                if (GlobalVariables.UseMod[10] > 0)
-                    defaultmap = new NodeFile(GlobalVariables.pathtomod + "map\\default.map");
-                else
-                    defaultmap = new NodeFile(GlobalVariables.pathtogame + "map\\default.map");
-
-                GlobalVariables.MapWidth = int.Parse(defaultmap.MainNode.Variables.Find(x => x.Name == "width").Value);
-                GlobalVariables.MapHeight = int.Parse(defaultmap.MainNode.Variables.Find(x => x.Name == "height").Value);
-
-                foreach (string sea in defaultmap.MainNode.Nodes.Find(x => x.Name == "sea_starts").GetPureValuesAsArray())
+                try
                 {
-                    if (int.TryParse(sea, out int id))
+                    NodeFile defaultmap;
+                    if (GlobalVariables.UseMod[10] > 0)
+                        defaultmap = new NodeFile(GlobalVariables.pathtomod + "map\\default.map");
+                    else
+                        defaultmap = new NodeFile(GlobalVariables.pathtogame + "map\\default.map");
+
+                    GlobalVariables.MapWidth = int.Parse(defaultmap.MainNode.Variables.Find(x => x.Name == "width").Value);
+                    GlobalVariables.MapHeight = int.Parse(defaultmap.MainNode.Variables.Find(x => x.Name == "height").Value);
+
+                    foreach (string sea in defaultmap.MainNode.Nodes.Find(x => x.Name == "sea_starts").GetPureValuesAsArray())
                     {
-                        try
+                        if (int.TryParse(sea, out int id))
                         {
-                            GlobalVariables.Provinces[id - 1].Sea = true;
+                            Province f = GlobalVariables.Provinces.Find(x => x.ID == id);
+                            if (f == null)
+                                progress.ReportError($"In default.map -> sea_starts -> Province with ID {id} is not in definition.csv!");
+                            else
+                                f.Sea = true;                            
                         }
-                        catch
+                    }
+
+                    foreach (string lake in defaultmap.MainNode.Nodes.Find(x => x.Name == "lakes").GetPureValuesAsArray())
+                    {
+                        if (int.TryParse(lake, out int id))
                         {
-                            MessageBox.Show("Sea Id: " + id);
+                            Province f = GlobalVariables.Provinces.Find(x => x.ID == id);
+                            if (f == null)
+                                progress.ReportError($"In default.map -> lakes -> Province with ID {id} is not in definition.csv!");
+                            else
+                                f.Lake = true;
                         }
                     }
                 }
-
-                foreach (string lake in defaultmap.MainNode.Nodes.Find(x => x.Name == "lakes").GetPureValuesAsArray())
+                catch
                 {
-                    if (int.TryParse(lake, out int id))
-                    {
-                        try
-                        {
-                            GlobalVariables.Provinces[id - 1].Lake = true;
-                        }
-                        catch
-                        {
-                            MessageBox.Show("Lake Id: " + id);
-                        }
-                    }
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with default.map! Program will exit after continuing!");
+                    throw new Exception();
                 }
             });
             ldefaultmap.Start();
@@ -732,203 +844,244 @@ namespace Eu4ModEditor
 
             Task lmap = new Task(() =>
             {
-                Bitmap copiedBitmap = new Bitmap(GlobalVariables.ProvincesMapBitmap);
-                LockBitmap bitmap = new LockBitmap(copiedBitmap);
-                bitmap.LockBits();
-
-                int heightInterval = bitmap.Height / 10;
-                int heightValue = 0;
-                int va = 10;
-
-                for (int y = 1; y < bitmap.Height; y++)
+                try
                 {
-                    for (int x = 1; x < bitmap.Width; x += 5)
+                    Bitmap copiedBitmap = new Bitmap(GlobalVariables.ProvincesMapBitmap);
+                    LockBitmap bitmap = new LockBitmap(copiedBitmap);
+                    bitmap.LockBits();
+
+                    int heightInterval = bitmap.Height / 10;
+                    int heightValue = 0;
+                    int va = 10;
+
+                    for (int y = 1; y < bitmap.Height; y++)
                     {
-                        Color c = bitmap.GetPixel(x, y);
-                        if (c != Color.FromArgb(1, 255, 255, 255))
+                        for (int x = 1; x < bitmap.Width; x += 5)
                         {
-                            //Province p = GlobalVariables.Provinces.Find(pr => pr.c == c);
-                            Province p = GlobalVariables.CubeArray[c.R, c.G, c.B];
-                            if (p != null)
+                            Color c = bitmap.GetPixel(x, y);
+                            if (c != Color.FromArgb(1, 255, 255, 255))
                             {
-                                p.Pixel = new Point(x, y);
-                                GraphicsMethods.FloodFill(ref bitmap, new Point(x, y), c, Color.FromArgb(1, 255, 255, 255), ref p.Pixels);
+                                //Province p = GlobalVariables.Provinces.Find(pr => pr.c == c);
+                                Province p = GlobalVariables.CubeArray[c.R, c.G, c.B];
+                                if (p != null)
+                                {
+                                    p.Pixel = new Point(x, y);
+                                    GraphicsMethods.FloodFill(ref bitmap, new Point(x, y), c, Color.FromArgb(1, 255, 255, 255), ref p.Pixels);
+                                }
                             }
                         }
+                        heightValue++;
+                        if (heightInterval == heightValue)
+                        {
+                            heightValue = 0;
+                            va += 1;
+                            //bw.ReportProgress(va);
+                        }
                     }
-                    heightValue++;
-                    if (heightInterval == heightValue)
-                    {
-                        heightValue = 0;
-                        va += 1;
-                        //bw.ReportProgress(va);
-                    }
-                }
 
-                bitmap.UnlockBits();
+                    bitmap.UnlockBits();
+                }
+                catch
+                {
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with the map! Program will exit after continuing!");
+                    throw new Exception();
+                }
             });
             lmap.Start();
             progress.UpdateProgress(2, 0);
 
             Task tradegoodsAll = ltradegoods.ContinueWith(new Action<Task>(ac => {
-                GlobalVariables.TradeGoods.Add(TradeGood.nothing);
-                foreach (NodeFile tradegoods in tradegoodsfiles)
+                try
                 {
-                    foreach (Node node in tradegoods.MainNode.Nodes)
+                    GlobalVariables.TradeGoods.Add(TradeGood.nothing);
+                    foreach (NodeFile tradegoods in tradegoodsfiles)
                     {
-                        if (GlobalVariables.TradeGoods.Any(x => x.Name == node.Name))
-                            continue;
+                        foreach (Node node in tradegoods.MainNode.Nodes)
+                        {
+                            if (GlobalVariables.TradeGoods.Any(x => x.Name == node.Name))
+                                continue;
 
-                        TradeGood tg = new TradeGood
-                        {
-                            Name = node.Name,
-                            ReadableName = node.Name[0].ToString().ToUpper() + node.Name.Substring(1).Replace('_', ' '),
-                            NodeFile = tradegoods
-                        };
-                        string[] colorv = node.Nodes.Find(x => x.Name == "color").GetPureValuesAsArray();
-                        if (colorv.Count() == 3)
-                        {
-                            double r = double.Parse(colorv[0], CultureInfo.InvariantCulture);
-                            if (r > 0 && r <= 1)
-                                r *= 255;
-                            double g = double.Parse(colorv[1], CultureInfo.InvariantCulture);
-                            if (g > 0 && g <= 1)
-                                g *= 255;
-                            double b = double.Parse(colorv[2], CultureInfo.InvariantCulture);
-                            if (b > 0 && b <= 1)
-                                b *= 255;
-                            tg.Color = Color.FromArgb((int)r, (int)g, (int)b);
+                            TradeGood tg = new TradeGood
+                            {
+                                Name = node.Name,
+                                ReadableName = node.Name[0].ToString().ToUpper() + node.Name.Substring(1).Replace('_', ' '),
+                                NodeFile = tradegoods
+                            };
+                            string[] colorv = node.Nodes.Find(x => x.Name == "color").GetPureValuesAsArray();
+                            if (colorv.Count() == 3)
+                            {
+                                double r = double.Parse(colorv[0], CultureInfo.InvariantCulture);
+                                if (r > 0 && r <= 1)
+                                    r *= 255;
+                                double g = double.Parse(colorv[1], CultureInfo.InvariantCulture);
+                                if (g > 0 && g <= 1)
+                                    g *= 255;
+                                double b = double.Parse(colorv[2], CultureInfo.InvariantCulture);
+                                if (b > 0 && b <= 1)
+                                    b *= 255;
+                                tg.Color = Color.FromArgb((int)r, (int)g, (int)b);
+                            }
+                            else
+                            {
+                                tg.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
+                            }
+
+                            GlobalVariables.TradeGoods.Add(tg);
+
+                            Variable latent = node.Variables.Find(x => x.Name == "is_latent");
+                            if (latent != null)
+                                if (latent.Value == "yes")
+                                    GlobalVariables.LatentTradeGoods.Add(tg);
                         }
-                        else
-                        {
-                            tg.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
-                        }
 
-                        GlobalVariables.TradeGoods.Add(tg);
-
-                        Variable latent = node.Variables.Find(x => x.Name == "is_latent");
-                        if (latent != null)
-                            if (latent.Value == "yes")
-                                GlobalVariables.LatentTradeGoods.Add(tg);
                     }
-
+                }
+                catch
+                {
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with tradegoods! Program will exit after continuing!");
+                    throw new Exception();
                 }
             }))
             .ContinueWith(new Action<Task>(ac => {
-                List<string> done = new List<string>();
-                if (GlobalVariables.UseMod[3] != 0)
+                try
                 {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\prices\\"))
+                    List<string> done = new List<string>();
+                    if (GlobalVariables.UseMod[3] != 0)
                     {
-                        if (file.Contains('.'))
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\prices\\"))
                         {
-                            if (file.Split('.')[1] == "txt")
+                            if (file.Contains('.'))
                             {
-                                NodeFile nf = new NodeFile(file);
-                                tradegoodspricesfiles.Add(nf);
-                                GlobalVariables.ModPricesFiles.Add(nf);
-                            }
-                        }
-                    }
-                }
-                if (GlobalVariables.UseMod[3] != 1)
-                {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\prices\\"))
-                    {
-                        if (file.Contains('.'))
-                        {
-                            if (file.Split('.')[1] == "txt")
-                            {
-                                NodeFile nf = new NodeFile(file, true);
-                                if (!tradegoodspricesfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                if (file.Split('.')[1] == "txt")
+                                {
+                                    NodeFile nf = new NodeFile(file);
                                     tradegoodspricesfiles.Add(nf);
-                                GlobalVariables.GamePricesFile = nf;
+                                    GlobalVariables.ModPricesFiles.Add(nf);
+                                }
+                            }
+                        }
+                    }
+                    if (GlobalVariables.UseMod[3] != 1)
+                    {
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\prices\\"))
+                        {
+                            if (file.Contains('.'))
+                            {
+                                if (file.Split('.')[1] == "txt")
+                                {
+                                    NodeFile nf = new NodeFile(file, true);
+                                    if (!tradegoodspricesfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                        tradegoodspricesfiles.Add(nf);
+                                    GlobalVariables.GamePricesFile = nf;
+                                }
+                            }
+                        }
+                    }
+                    foreach (NodeFile tradegoodsprices in tradegoodspricesfiles)
+                    {
+                        foreach (Node node in tradegoodsprices.MainNode.Nodes)
+                        {
+                            if (done.Contains(node.Name))
+                                continue;
+                            done.Add(node.Name);
+                            TradeGood tg = GlobalVariables.TradeGoods.Find(x => x.Name == node.Name);
+                            if (tg != null)
+                            {
+                                tg.Price = double.Parse(node.Variables.Find(x => x.Name == "base_price").Value, CultureInfo.InvariantCulture);
+                                if (node.Variables.Find(x => x.Name == "goldtype") != null)
+                                {
+                                    if (node.Variables.Find(x => x.Name == "goldtype").Value.Trim() == "yes")
+                                        tg.GoldLike = true;
+                                }
                             }
                         }
                     }
                 }
-                foreach (NodeFile tradegoodsprices in tradegoodspricesfiles)
+                catch
                 {
-                    foreach (Node node in tradegoodsprices.MainNode.Nodes)
-                    {
-                        if (done.Contains(node.Name))
-                            continue;
-                        done.Add(node.Name);
-                        TradeGood tg = GlobalVariables.TradeGoods.Find(x => x.Name == node.Name);
-                        if (tg != null)
-                        {
-                            tg.Price = double.Parse(node.Variables.Find(x => x.Name == "base_price").Value, CultureInfo.InvariantCulture);
-                            if (node.Variables.Find(x => x.Name == "goldtype") != null)
-                            {
-                                if (node.Variables.Find(x => x.Name == "goldtype").Value.Trim() == "yes")
-                                    tg.GoldLike = true;
-                            }
-                        }
-                    }
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with tradegoods! Program will exit after continuing!");
+                    throw new Exception();
                 }
             }));
 
             Task ltradecomapnies = new Task(() =>
             {
-                if (GlobalVariables.UseMod[19] != 0)
+                try
                 {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\trade_companies\\"))
+                    if (GlobalVariables.UseMod[19] != 0)
                     {
-                        if (file.Contains('.'))
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\trade_companies\\"))
                         {
-                            if (file.Split('.')[1] == "txt")
+                            if (file.Contains('.'))
                             {
-                                NodeFile nf = new NodeFile(file);
-                                tradecompanyfiles.Add(nf);
-                                GlobalVariables.ModTradeCompanyFiles.Add(nf);
-                            }
-                        }
-                    }
-                }
-                if (GlobalVariables.UseMod[19] != 1)
-                {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\trade_companies\\"))
-                    {
-                        if (file.Contains('.'))
-                        {
-                            if (file.Split('.')[1] == "txt")
-                            {
-                                NodeFile nf = new NodeFile(file, true);
-                                if (!tradecompanyfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                if (file.Split('.')[1] == "txt")
+                                {
+                                    NodeFile nf = new NodeFile(file);
                                     tradecompanyfiles.Add(nf);
-                                GlobalVariables.GameTradeCompanyFile = nf;
+                                    GlobalVariables.ModTradeCompanyFiles.Add(nf);
+                                }
+                            }
+                        }
+                    }
+                    if (GlobalVariables.UseMod[19] != 1)
+                    {
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\trade_companies\\"))
+                        {
+                            if (file.Contains('.'))
+                            {
+                                if (file.Split('.')[1] == "txt")
+                                {
+                                    NodeFile nf = new NodeFile(file, true);
+                                    if (!tradecompanyfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                        tradecompanyfiles.Add(nf);
+                                    GlobalVariables.GameTradeCompanyFile = nf;
+                                }
+                            }
+                        }
+                    }
+                    foreach (NodeFile tradecompanies in tradecompanyfiles)
+                    {
+                        foreach (Node node in tradecompanies.MainNode.Nodes)
+                        {
+                            TradeCompany tc = GlobalVariables.TradeCompanies.Find(x => x.Name == node.Name);
+                            if (tc == null)
+                            {
+                                tc = new TradeCompany() { Name = node.Name };
+                                GlobalVariables.TradeCompanies.Add(tc);
+                            }
+                            tc.NodeFile = tradecompanies;
+                            Node ColorNode = node.Nodes.Find(x => x.Name == "color");
+                            if (ColorNode != null)
+                                tc.Color = Color.FromArgb(int.Parse(ColorNode.PureValues[0].Name), int.Parse(ColorNode.PureValues[1].Name), int.Parse(ColorNode.PureValues[2].Name));
+                            else
+                                tc.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
+                            foreach (PureValue value in node.Nodes.Find(x => x.Name == "provinces").PureValues)
+                            {
+                                if (int.Parse(value.Name) <= GlobalVariables.Provinces.Count())
+                                {
+                                    tc.Provinces.Add(GlobalVariables.Provinces.Find(x=> x.ID == int.Parse(value.Name)));
+                                    GlobalVariables.Provinces.Find(x=>x.ID == int.Parse(value.Name)).TradeCompany = tc;
+                                }
+                            }
+                            foreach (Node TCnames in node.Nodes.FindAll(x => x.Name == "names"))
+                            {
+                                tc.Names.Add(TCnames.Variables.Find(x => x.Name == "name").Value);
                             }
                         }
                     }
                 }
-                foreach (NodeFile tradecompanies in tradecompanyfiles)
+                catch
                 {
-                    foreach (Node node in tradecompanies.MainNode.Nodes)
-                    {
-                        TradeCompany tc = GlobalVariables.TradeCompanies.Find(x => x.Name == node.Name);
-                        if (tc == null)
-                        {
-                            tc = new TradeCompany() { Name = node.Name };
-                            GlobalVariables.TradeCompanies.Add(tc);
-                        }
-                        tc.NodeFile = tradecompanies;
-                        Node ColorNode = node.Nodes.Find(x => x.Name == "color");
-                        if (ColorNode != null)
-                            tc.Color = Color.FromArgb(int.Parse(ColorNode.PureValues[0].Name), int.Parse(ColorNode.PureValues[1].Name), int.Parse(ColorNode.PureValues[2].Name));
-                        else
-                            tc.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);                                           
-                        foreach (PureValue value in node.Nodes.Find(x => x.Name == "provinces").PureValues)
-                        {
-                            if (int.Parse(value.Name) <= GlobalVariables.Provinces.Count())
-                            {
-                                tc.Provinces.Add(GlobalVariables.Provinces[int.Parse(value.Name) - 1]);
-                                GlobalVariables.Provinces[int.Parse(value.Name) - 1].TradeCompany = tc;
-                            }
-                        }
-                        foreach(Node TCnames in node.Nodes.FindAll(x=>x.Name == "names")){
-                            tc.Names.Add(TCnames.Variables.Find(x => x.Name == "name").Value);
-                        }
-                    }
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with trade companies! Program will exit after continuing!");
+                    throw new Exception();
                 }
             });
             ltradecomapnies.Start();
@@ -941,26 +1094,143 @@ namespace Eu4ModEditor
                 progress.UpdateProgress(2, 2);
 
             Task provincecentre = new Task(() => {
-                foreach (Province p in GlobalVariables.Provinces)
+                try
                 {
-                    if (p.Pixels.Any())
+                    foreach (Province p in GlobalVariables.Provinces)
                     {
-                        int X = 0;
-                        int Y = 0;
-                        int N = 0;
-                        for (int A = 0; A < p.Pixels.Count(); A += 4)
+                        if (p.Pixels.Any())
                         {
-                            N++;
-                            X += p.Pixels[A].X;
-                            Y += p.Pixels[A].Y;
+                            int X = 0;
+                            int Y = 0;
+                            int N = 0;
+                            for (int A = 0; A < p.Pixels.Count(); A += 4)
+                            {
+                                N++;
+                                X += p.Pixels[A].X;
+                                Y += p.Pixels[A].Y;
+                            }
+                            p.Center = new Point(X / N, Y / N);
                         }
-                        p.Center = new Point(X / N, Y / N);
                     }
+                }
+                catch
+                {
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with province centres! Program will exit after continuing!");
+                    throw new Exception();
                 }
             });
             provincecentre.Start();
             progress.UpdateProgress(3, 0);
 
+            Task lclimate = new Task(() => {
+                try
+                {
+                    if (GlobalVariables.UseMod[21] > 0)
+                        climate = new NodeFile(GlobalVariables.pathtomod + "map\\climate.txt");
+                    else
+                        climate = new NodeFile(GlobalVariables.pathtogame + "map\\climate.txt");
+
+                    Node tropical = climate.MainNode.Nodes.Find(x => x.Name == "tropical");
+                    if (tropical != null)
+                    {
+                        foreach (PureValue pv in tropical.PureValues)
+                        {
+                            GlobalVariables.Provinces.Find(x=>x.ID == int.Parse(pv.Name)).Climate = 1;
+                        }
+                    }
+                    Node arid = climate.MainNode.Nodes.Find(x => x.Name == "arid");
+                    if (arid != null)
+                    {
+                        foreach (PureValue pv in arid.PureValues)
+                        {
+                            GlobalVariables.Provinces.Find(x=>x.ID == int.Parse(pv.Name)).Climate = 2;
+                        }
+                    }
+                    Node arctic = climate.MainNode.Nodes.Find(x => x.Name == "arctic");
+                    if (arctic != null)
+                    {
+                        foreach (PureValue pv in arctic.PureValues)
+                        {
+                            GlobalVariables.Provinces.Find(x=>x.ID == int.Parse(pv.Name)).Climate = 3;
+                        }
+                    }
+
+
+                    Node mild_winter = climate.MainNode.Nodes.Find(x => x.Name == "mild_winter");
+                    if (mild_winter != null)
+                    {
+                        foreach (PureValue pv in mild_winter.PureValues)
+                        {
+                            GlobalVariables.Provinces.Find(x=>x.ID == int.Parse(pv.Name)).Winter = 1;
+                        }
+                    }
+                    Node normal_winter = climate.MainNode.Nodes.Find(x => x.Name == "normal_winter");
+                    if (normal_winter != null)
+                    {
+                        foreach (PureValue pv in normal_winter.PureValues)
+                        {
+                            GlobalVariables.Provinces.Find(x=>x.ID == int.Parse(pv.Name)).Winter = 2;
+                        }
+                    }
+                    Node severe_winter = climate.MainNode.Nodes.Find(x => x.Name == "severe_winter");
+                    if (severe_winter != null)
+                    {
+                        foreach (PureValue pv in severe_winter.PureValues)
+                        {
+                            GlobalVariables.Provinces.Find(x=>x.ID == int.Parse(pv.Name)).Winter = 3;
+                        }
+                    }
+
+
+
+                    Node impassable = climate.MainNode.Nodes.Find(x => x.Name == "impassable");
+                    if (impassable != null)
+                    {
+                        foreach (PureValue pv in impassable.PureValues)
+                        {
+                            GlobalVariables.Provinces.Find(x=>x.ID == int.Parse(pv.Name)).Impassable = 1;
+                        }
+                    }
+
+
+
+                    Node mild_monsoon = climate.MainNode.Nodes.Find(x => x.Name == "mild_monsoon");
+                    if (mild_monsoon != null)
+                    {
+                        foreach (PureValue pv in mild_monsoon.PureValues)
+                        {
+                            GlobalVariables.Provinces.Find(x=>x.ID== int.Parse(pv.Name)).Monsoon = 1;
+                        }
+                    }
+                    Node normal_monsoon = climate.MainNode.Nodes.Find(x => x.Name == "normal_monsoon");
+                    if (normal_monsoon != null)
+                    {
+                        foreach (PureValue pv in normal_monsoon.PureValues)
+                        {
+                            GlobalVariables.Provinces.Find(x => x.ID == int.Parse(pv.Name)).Monsoon = 2;
+                        }
+                    }
+                    Node severe_monsoon = climate.MainNode.Nodes.Find(x => x.Name == "severe_monsoon");
+                    if (severe_monsoon != null)
+                    {
+                        foreach (PureValue pv in severe_monsoon.PureValues)
+                        {
+                            GlobalVariables.Provinces.Find(x => x.ID == int.Parse(pv.Name)).Monsoon = 3;
+                        }
+                    }
+                }
+                catch
+                {
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with climate! Program will exit after continuing!");
+                    throw new Exception();
+                }
+            });
+            lclimate.Start();
+            progress.UpdateProgress(24, 0);
 
             await provincecentre;
             if (provincecentre.IsFaulted)
@@ -1123,105 +1393,115 @@ namespace Eu4ModEditor
                 progress.UpdateProgress(8, 2);
 
             Task lcomcountries = new Task(() => {
-                List<bool> GameFiles = new List<bool>();
-                if (GlobalVariables.UseMod[7] != 0)
+                try
                 {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\countries\\"))
+                    List<bool> GameFiles = new List<bool>();
+                    if (GlobalVariables.UseMod[7] != 0)
                     {
-                        if (file.Contains('.'))
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\countries\\"))
                         {
-                            if (file.Split('.')[1] == "txt")
+                            if (file.Contains('.'))
                             {
-                                NodeFile nf = new NodeFile(file);
-                                CountryCommonFiles.Add(nf);
-                            }
-                        }
-                    }
-                }
-                if (GlobalVariables.UseMod[7] != 1)
-                {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\countries\\"))
-                    {
-                        if (file.Contains('.'))
-                        {
-                            if (file.Split('.')[1] == "txt")
-                            {
-                                if (!CountryCommonFiles.Any(x => x.Path.Split('\\').Last().Replace(".txt", "") == file.Split('\\').Last().Replace(".txt", "")))
+                                if (file.Split('.')[1] == "txt")
                                 {
-                                    NodeFile nf = new NodeFile(file, true);
+                                    NodeFile nf = new NodeFile(file);
                                     CountryCommonFiles.Add(nf);
                                 }
                             }
                         }
                     }
+                    if (GlobalVariables.UseMod[7] != 1)
+                    {
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\countries\\"))
+                        {
+                            if (file.Contains('.'))
+                            {
+                                if (file.Split('.')[1] == "txt")
+                                {
+                                    if (!CountryCommonFiles.Any(x => x.Path.Split('\\').Last().Replace(".txt", "") == file.Split('\\').Last().Replace(".txt", "")))
+                                    {
+                                        NodeFile nf = new NodeFile(file, true);
+                                        CountryCommonFiles.Add(nf);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    //bw.ReportProgress(84);
+
+                    foreach (NodeFile file in CountryCommonFiles)
+                    {
+                        string name = file.Path.Split('\\').Last().Split('.')[0];
+                        if (!NameToTag.ContainsKey(name))
+                            continue;
+                        Country c = new Country();
+                        GlobalVariables.Countries.Add(c);
+                        c.CountryTagsFile = NameToFile[name];
+                        c.CommonFile = file;
+                        NodeFile nodefile = file;
+
+                        //c.Tag = tag;
+                        //c.OriginalTag = tag;
+                        //c.FullName = name;
+                        //c.OriginalFullName = name;
+
+                        c.FullName = name;
+                        c.OriginalFullName = name;
+                        c.Tag = NameToTag[name];
+                        c.OriginalTag = c.Tag;
+
+                        string[] colort = nodefile.MainNode.Nodes.Find(x => x.Name == "color").GetPureValuesAsArray();
+                        try
+                        {
+                            c.Color = Color.FromArgb(int.Parse(colort[0]), int.Parse(colort[1]), int.Parse(colort[2]));
+                        }
+                        catch
+                        {
+                            c.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
+                            MessageBox.Show("Some error in " + file);
+                        }
+
+                        Variable gfxcul = nodefile.MainNode.Variables.Find(x => x.Name == "graphical_culture");
+                        if (gfxcul != null)
+                            c.GraphicalCulture = gfxcul.Value;
+
+                        Node monarchNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "monarch_names");
+                        if (monarchNamesNode != null)
+                            foreach (Variable monarchName in monarchNamesNode.Variables)
+                                if (!c.MonarchNames.Any(x => x.Name == monarchName.Name.Replace("\"", "").Trim()))
+                                    c.MonarchNames.Add(new MonarchName(monarchName.Name.Replace("\"", "").Trim(), int.Parse(monarchName.Value)));
+                        Node leaderNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "leader_names");
+                        if (leaderNamesNode != null)
+                            foreach (PureValue leadername in leaderNamesNode.PureValues)
+                                if (!c.LeaderNames.Contains(leadername.Name.Replace("\"", "").Trim()))
+                                    c.LeaderNames.Add(leadername.Name.Replace("\"", "").Trim());
+                        Node shipNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "ship_names");
+                        if (shipNamesNode != null)
+                            foreach (PureValue shipname in shipNamesNode.PureValues)
+                                if (!c.ShipNames.Contains(shipname.Name.Replace("\"", "").Trim()))
+                                    c.ShipNames.Add(shipname.Name.Replace("\"", "").Trim());
+                        Node armyNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "army_names");
+                        if (armyNamesNode != null)
+                            foreach (PureValue armyname in armyNamesNode.PureValues)
+                                if (!c.ArmyNames.Contains(armyname.Name.Replace("\"", "").Trim()))
+                                    c.ArmyNames.Add(armyname.Name.Replace("\"", "").Trim());
+                        Node fleetNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "fleet_names");
+                        if (fleetNamesNode != null)
+                            foreach (PureValue fleetname in fleetNamesNode.PureValues)
+                                if (!c.FleetNames.Contains(fleetname.Name.Replace("\"", "").Trim()))
+                                    c.FleetNames.Add(fleetname.Name.Replace("\"", "").Trim());
+
+
+
+                    }
                 }
-
-                //bw.ReportProgress(84);
-
-                foreach (NodeFile file in CountryCommonFiles)
+                catch
                 {
-                    string name = file.Path.Split('\\').Last().Split('.')[0];
-                    if (!NameToTag.ContainsKey(name))
-                        continue;
-                    Country c = new Country();
-                    GlobalVariables.Countries.Add(c);
-                    c.CountryTagsFile = NameToFile[name];
-                    c.CommonFile = file;
-                    NodeFile nodefile = file;
-
-                    //c.Tag = tag;
-                    //c.OriginalTag = tag;
-                    //c.FullName = name;
-                    //c.OriginalFullName = name;
-
-                    c.FullName = name;
-                    c.OriginalFullName = name;
-                    c.Tag = NameToTag[name];
-                    c.OriginalTag = c.Tag;
-
-                    string[] colort = nodefile.MainNode.Nodes.Find(x => x.Name == "color").GetPureValuesAsArray();
-                    try
-                    {
-                        c.Color = Color.FromArgb(int.Parse(colort[0]), int.Parse(colort[1]), int.Parse(colort[2]));
-                    }
-                    catch
-                    {
-                        c.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
-                        MessageBox.Show("Some error in " + file);
-                    }
-
-                    Variable gfxcul = nodefile.MainNode.Variables.Find(x => x.Name == "graphical_culture");
-                    if (gfxcul != null)
-                        c.GraphicalCulture = gfxcul.Value;
-
-                    Node monarchNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "monarch_names");
-                    if (monarchNamesNode != null)
-                        foreach (Variable monarchName in monarchNamesNode.Variables)
-                            if (!c.MonarchNames.Any(x => x.Name == monarchName.Name.Replace("\"", "").Trim()))
-                                c.MonarchNames.Add(new MonarchName(monarchName.Name.Replace("\"", "").Trim(), int.Parse(monarchName.Value)));
-                    Node leaderNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "leader_names");
-                    if (leaderNamesNode != null)
-                        foreach (PureValue leadername in leaderNamesNode.PureValues)
-                            if (!c.LeaderNames.Contains(leadername.Name.Replace("\"", "").Trim()))
-                                c.LeaderNames.Add(leadername.Name.Replace("\"", "").Trim());
-                    Node shipNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "ship_names");
-                    if (shipNamesNode != null)
-                        foreach (PureValue shipname in shipNamesNode.PureValues)
-                            if (!c.ShipNames.Contains(shipname.Name.Replace("\"", "").Trim()))
-                                c.ShipNames.Add(shipname.Name.Replace("\"", "").Trim());
-                    Node armyNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "army_names");
-                    if (armyNamesNode != null)
-                        foreach (PureValue armyname in armyNamesNode.PureValues)
-                            if (!c.ArmyNames.Contains(armyname.Name.Replace("\"", "").Trim()))
-                                c.ArmyNames.Add(armyname.Name.Replace("\"", "").Trim());
-                    Node fleetNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name == "fleet_names");
-                    if (fleetNamesNode != null)
-                        foreach (PureValue fleetname in fleetNamesNode.PureValues)
-                            if (!c.FleetNames.Contains(fleetname.Name.Replace("\"", "").Trim()))
-                                c.FleetNames.Add(fleetname.Name.Replace("\"", "").Trim());
-
-
-
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with common countries! Program will exit after continuing!");
+                    throw new Exception();
                 }
             });
             lcomcountries.Start();
@@ -1235,207 +1515,230 @@ namespace Eu4ModEditor
 
             Task lcountries = new Task(() =>
             {
-                List<NodeFile> CountryHistoryFiles = new List<NodeFile>();
+                try
+                {
+                    List<NodeFile> CountryHistoryFiles = new List<NodeFile>();
 
-                if (GlobalVariables.UseMod[11] != 0)
-                {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "history\\countries\\"))
+                    if (GlobalVariables.UseMod[11] != 0)
                     {
-                        if (file.Contains('.'))
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "history\\countries\\"))
                         {
-                            if (file.Split('.')[1] == "txt")
+                            if (file.Contains('.'))
                             {
-                                NodeFile nf = new NodeFile(file);
-                                CountryHistoryFiles.Add(nf);
-                            }
-                        }
-                    }
-                }
-                if (GlobalVariables.UseMod[11] != 1)
-                {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "history\\countries\\"))
-                    {
-                        if (file.Contains('.'))
-                        {
-                            if (file.Split('.')[1] == "txt")
-                            {
-                                if (!CountryHistoryFiles.Any(x => x.Path.Split('\\').Last().Replace(".txt", "") == file.Split('\\').Last().Replace(".txt", "")))
+                                if (file.Split('.')[1] == "txt")
                                 {
-                                    NodeFile nf = new NodeFile(file, true);
+                                    NodeFile nf = new NodeFile(file);
                                     CountryHistoryFiles.Add(nf);
                                 }
                             }
                         }
                     }
-                }
-                foreach (NodeFile file in CountryHistoryFiles)
-                {
-                    string fs = file.Path.Split('\\').Last();
-                    string tag = "";
-                    string name = "";
-                    try
+                    if (GlobalVariables.UseMod[11] != 1)
                     {
-                        tag = fs.Split('-')[0].Trim().ToUpper();
-                        name = fs.Split('-')[1].Trim().Split('.')[0];
-                    }
-                    catch
-                    {
-                        tag = fs.Trim().ToUpper();
-                    }
-
-                    Country c = GlobalVariables.Countries.Find(x => x.Tag == tag);
-                    if (c == null)                    
-                        continue;
-                    
-                    c.HistoryFile = file;                    
-                    NodeFile nodefile = file;
-                    foreach (Variable v in nodefile.MainNode.Variables)
-                    {
-                        switch (v.Name)
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "history\\countries\\"))
                         {
-                            case "government":
-                                c.Government = GlobalVariables.Governments.Find(x => x.Type == v.Value);
-                                break;
-                            case "add_government_reform":
-                                c.GovernmentReform = v.Value;
-                                break;
-                            case "technology_group":
-                                c.TechnologyGroup = v.Value;
-                                break;
-                            case "capital":
-                                c.CapitalID = int.Parse(v.Value);
-                                c.Capital = GlobalVariables.Provinces.Find(x => x.ID == c.CapitalID);
-                                break;
-                            case "religion":
-                                c.Religion = Religion.Religions.Find(x => x.Name == v.Value);
-                                break;
-                            case "primary_culture":
-                                c.PrimaryCulture = Culture.Cultures.Find(x => x.Name == v.Value);
-                                break;
-                            case "government_rank ":
-                                c.GovernmentRank = int.Parse(v.Value);
-                                break;
+                            if (file.Contains('.'))
+                            {
+                                if (file.Split('.')[1] == "txt")
+                                {
+                                    if (!CountryHistoryFiles.Any(x => x.Path.Split('\\').Last().Replace(".txt", "") == file.Split('\\').Last().Replace(".txt", "")))
+                                    {
+                                        NodeFile nf = new NodeFile(file, true);
+                                        CountryHistoryFiles.Add(nf);
+                                    }
+                                }
+                            }
                         }
                     }
-                    //c.Tag = tag;
-                    //c.OriginalTag = tag;
-                    //c.FullName = name;
-                    //c.OriginalFullName = name;
-                }
-
-
-                foreach(Country c in GlobalVariables.Countries)
-                {
-                    if(c != Country.NoCountry)
+                    foreach (NodeFile file in CountryHistoryFiles)
                     {
-                        if(c.HistoryFile == null)
+                        string fs = file.Path.Split('\\').Last();
+                        string tag = "";
+                        string name = "";
+                        try
                         {
-                            c.HistoryFile = new NodeFile(GlobalVariables.pathtomod + $"history\\countries\\{c.Tag} - {c.FullName}.txt");
-                            c.HistoryFile.SaveFile();
+                            tag = fs.Split('-')[0].Trim().ToUpper();
+                            name = fs.Split('-')[1].Trim().Split('.')[0];
+                        }
+                        catch
+                        {
+                            tag = fs.Trim().ToUpper();
+                        }
+
+                        Country c = GlobalVariables.Countries.Find(x => x.Tag == tag);
+                        if (c == null)
+                            continue;
+
+                        c.HistoryFile = file;
+                        NodeFile nodefile = file;
+                        foreach (Variable v in nodefile.MainNode.Variables)
+                        {
+                            switch (v.Name)
+                            {
+                                case "government":
+                                    c.Government = GlobalVariables.Governments.Find(x => x.Type == v.Value);
+                                    break;
+                                case "add_government_reform":
+                                    c.GovernmentReform = v.Value;
+                                    break;
+                                case "technology_group":
+                                    c.TechnologyGroup = v.Value;
+                                    break;
+                                case "capital":
+                                    c.CapitalID = int.Parse(v.Value);
+                                    c.Capital = GlobalVariables.Provinces.Find(x => x.ID == c.CapitalID);
+                                    break;
+                                case "religion":
+                                    c.Religion = Religion.Religions.Find(x => x.Name == v.Value);
+                                    break;
+                                case "primary_culture":
+                                    c.PrimaryCulture = Culture.Cultures.Find(x => x.Name == v.Value);
+                                    break;
+                                case "government_rank ":
+                                    c.GovernmentRank = int.Parse(v.Value);
+                                    break;
+                            }
+                        }
+
+                        //c.Tag = tag;
+                        //c.OriginalTag = tag;
+                        //c.FullName = name;
+                        //c.OriginalFullName = name;
+                    }
+
+
+                    foreach (Country c in GlobalVariables.Countries)
+                    {
+                        if (c != Country.NoCountry)
+                        {
+                            if (c.HistoryFile == null)
+                            {
+                                c.HistoryFile = new NodeFile(GlobalVariables.pathtomod + $"history\\countries\\{c.Tag} - {c.FullName}.txt");
+                                c.HistoryFile.SaveFile();
+                            }
                         }
                     }
+                }
+                catch
+                {
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with history countries! Program will exit after continuing!");
+                    throw new Exception();
                 }
             });
             lcountries.Start();
             progress.UpdateProgress(9, 0);
 
             Task lprovhistory = new Task(() => {
-                List<NodeFile> Files = new List<NodeFile>();
-                if (GlobalVariables.UseMod[8] != 0)
+                try
                 {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "history\\provinces\\"))
+                    List<NodeFile> Files = new List<NodeFile>();
+                    if (GlobalVariables.UseMod[8] != 0)
                     {
-                        if (file.Contains('.'))
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "history\\provinces\\"))
                         {
-                            if (file.Split('.').Last() == "txt")
+                            if (file.Contains('.'))
                             {
-                                NodeFile nf = new NodeFile(file);
-                                Files.Add(nf);
-                            }
-                        }
-                    }
-                }
-                if (GlobalVariables.UseMod[8] != 1)
-                {
-                    foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "history\\provinces\\"))
-                    {
-                        if (file.Contains('.'))
-                        {
-                            if (file.Split('.').Last() == "txt")
-                            {
-                                if (!Files.Any(x => x.Path.Split('\\').Last() == file.Split('\\').Last()))
+                                if (file.Split('.').Last() == "txt")
                                 {
-                                    NodeFile nf = new NodeFile(file, true);
+                                    NodeFile nf = new NodeFile(file);
                                     Files.Add(nf);
                                 }
                             }
                         }
                     }
-                }
-                //bw.ReportProgress(88);
-                foreach (NodeFile file in Files)
-                {
-                    bool b = int.TryParse(new String(file.Path.Split('\\').Last().Where(x => char.IsDigit(x)).ToArray()), out int id);
-                    if (b)
+                    if (GlobalVariables.UseMod[8] != 1)
                     {
-                        Province province = GlobalVariables.Provinces.Find(x => x.ID == id);
-                        if (province != null)
+                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "history\\provinces\\"))
                         {
-                            province.HistoryFile = file;
-                            NodeFile nodefile = file;
-
-                            if (nodefile.MainNode.Variables.Any())
-                                GlobalVariables.TotalUsableProvinces++;
-
-                            ReadProvinceValuesFromNode(province, nodefile.MainNode);
-
-                            foreach (Node dateNode in nodefile.MainNode.Nodes)
+                            if (file.Contains('.'))
                             {
-                                if (dateNode.Name.Contains("."))
+                                if (file.Split('.').Last() == "txt")
                                 {
-                                    int year = int.Parse(dateNode.Name.Split('.')[0]);
-                                    int month = int.Parse(dateNode.Name.Split('.')[1]);
-                                    if ((year < GlobalVariables.StartYear) || (year == GlobalVariables.StartYear && month < GlobalVariables.StartMonth) || (year == GlobalVariables.StartYear && month == GlobalVariables.StartMonth && int.Parse(dateNode.Name.Split('.')[2]) <= GlobalVariables.StartDay))
+                                    if (!Files.Any(x => x.Path.Split('\\').Last() == file.Split('\\').Last()))
                                     {
-                                        ReadProvinceValuesFromNode(province, dateNode);
-                                    }
-                                }
-                            }
-
-                            if (province.TradeGood != null)
-                            {
-                                province.TradeGood.TotalDev += province.Tax + province.Production + province.Manpower;
-                            }
-
-                            Node n = nodefile.MainNode.Nodes.Find(x => x.Name == "latent_trade_goods");
-                            if (n != null)
-                            {
-                                if (n.PureValues.Any())
-                                {
-                                    province.LatentTradeGood = GlobalVariables.TradeGoods.Find(x => x.Name == n.PureValues[0].Name.Trim());
-                                    if (province.LatentTradeGood != null)
-                                    {
-                                        province.LatentTradeGood.TotalProvinces++;
-                                        province.TradeGood.TotalDev += province.Tax + province.Production + province.Manpower;
+                                        NodeFile nf = new NodeFile(file, true);
+                                        Files.Add(nf);
                                     }
                                 }
                             }
                         }
                     }
-                }
-
-                if (GlobalVariables.pathtomod != "")
-                {
-                    foreach (Province p in GlobalVariables.Provinces)
+                    //bw.ReportProgress(88);
+                    foreach (NodeFile file in Files)
                     {
-                        if (p.HistoryFile == null)
+                        bool b = int.TryParse(new String(file.Path.Split('\\').Last().Where(x => char.IsDigit(x)).ToArray()), out int id);
+                        if (b)
                         {
-                            string s = GlobalVariables.pathtomod + "history\\provinces\\" + (GlobalVariables.Provinces.IndexOf(p) + 1) + ".txt";
-                            //File.Create(s);
-                            NodeFile nf = new NodeFile(s);
-                            p.HistoryFile = nf;
+                            Province province = GlobalVariables.Provinces.Find(x => x.ID == id);
+                            if (province != null)
+                            {
+                                province.HistoryFile = file;
+                                NodeFile nodefile = file;
+
+                                if (nodefile.MainNode.Variables.Any())
+                                    GlobalVariables.TotalUsableProvinces++;
+
+                                ReadProvinceValuesFromNode(province, nodefile.MainNode);
+
+                                foreach (Node dateNode in nodefile.MainNode.Nodes)
+                                {
+                                    if (dateNode.Name.Contains("."))
+                                    {
+                                        DateTime date = new DateTime(int.Parse(dateNode.Name.Split('.')[0]), int.Parse(dateNode.Name.Split('.')[1]), int.Parse(dateNode.Name.Split('.')[2]));
+                                        //int year = ;
+                                        //int month = ;
+                                        //if ((year < GlobalVariables.StartYear) || (year == GlobalVariables.StartYear && month < GlobalVariables.StartMonth) || (year == GlobalVariables.StartYear && month == GlobalVariables.StartMonth && int.Parse(dateNode.Name.Split('.')[2]) <= GlobalVariables.StartDay))
+                                        if (DateTime.Compare(date, GlobalVariables.StartDate) <= 0)
+                                        {
+                                            ReadProvinceValuesFromNode(province, dateNode);
+                                        }
+                                    }
+                                }
+
+                                if (province.TradeGood != null)
+                                {
+                                    province.TradeGood.TotalDev += province.Tax + province.Production + province.Manpower;
+                                }
+
+                                Node n = nodefile.MainNode.Nodes.Find(x => x.Name == "latent_trade_goods");
+                                if (n != null)
+                                {
+                                    if (n.PureValues.Any())
+                                    {
+                                        province.LatentTradeGood = GlobalVariables.TradeGoods.Find(x => x.Name == n.PureValues[0].Name.Trim());
+                                        if (province.LatentTradeGood != null)
+                                        {
+                                            province.LatentTradeGood.TotalProvinces++;
+                                            province.TradeGood.TotalDev += province.Tax + province.Production + province.Manpower;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
+
+                    if (GlobalVariables.pathtomod != "")
+                    {
+                        foreach (Province p in GlobalVariables.Provinces)
+                        {
+                            if (p.HistoryFile == null)
+                            {
+                                string s = GlobalVariables.pathtomod + "history\\provinces\\" + (GlobalVariables.Provinces.IndexOf(p) + 1) + ".txt";
+                                //File.Create(s);
+                                NodeFile nf = new NodeFile(s);
+                                p.HistoryFile = nf;
+                            }
+                        }
+                    }
+                }
+                catch
+                {
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with province history! Program will exit after continuing!");
+                    throw new Exception();
                 }
             });
             lprovhistory.Start();
@@ -1461,31 +1764,41 @@ namespace Eu4ModEditor
                 progress.UpdateProgress(12, 2);
 
             Task lregion = new Task(() => {
-                if (GlobalVariables.UseMod[6] > 0)
-                    regions = new NodeFile(GlobalVariables.pathtomod + "map\\region.txt");
-                else
-                    regions = new NodeFile(GlobalVariables.pathtogame + "map\\region.txt");
-                //bw.ReportProgress(96);
-                foreach (Node n in regions.MainNode.Nodes)
+                try
                 {
-                    List<Area> ar = new List<Area>();
-                    Node nd = n.Nodes.Find(x => x.Name == "areas");
-                    if (nd != null)
+                    if (GlobalVariables.UseMod[6] > 0)
+                        regions = new NodeFile(GlobalVariables.pathtomod + "map\\region.txt");
+                    else
+                        regions = new NodeFile(GlobalVariables.pathtogame + "map\\region.txt");
+                    //bw.ReportProgress(96);
+                    foreach (Node n in regions.MainNode.Nodes)
                     {
-                        foreach (PureValue vr in nd.PureValues)
+                        List<Area> ar = new List<Area>();
+                        Node nd = n.Nodes.Find(x => x.Name == "areas");
+                        if (nd != null)
                         {
-                            if (vr.Name != "")
+                            foreach (PureValue vr in nd.PureValues)
                             {
-                                Area are = GlobalVariables.Areas.Find(x => x.Name == vr.Name);
-                                if (are != null)
-                                    ar.Add(are);
+                                if (vr.Name != "")
+                                {
+                                    Area are = GlobalVariables.Areas.Find(x => x.Name == vr.Name);
+                                    if (are != null)
+                                        ar.Add(are);
+                                }
                             }
+                            Region r = new Region(n.Name, ar);
+                            r.OriginalName = n.Name;
+                            foreach (Area are in r.Areas)
+                                are.Region = r;
                         }
-                        Region r = new Region(n.Name, ar);
-                        r.OriginalName = n.Name;
-                        foreach (Area are in r.Areas)
-                            are.Region = r;
                     }
+                }
+                catch
+                {
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with regions! Program will exit after continuing!");
+                    throw new Exception();
                 }
             });
             lregion.Start();
@@ -1497,26 +1810,36 @@ namespace Eu4ModEditor
             else if (lregion.IsCompleted)
                 progress.UpdateProgress(13, 2);
             Task lsuperregion = new Task(() => {
-                if (GlobalVariables.UseMod[18] > 0)
-                    Superregions = new NodeFile(GlobalVariables.pathtomod + "map\\superregion.txt");
-                else
-                    Superregions = new NodeFile(GlobalVariables.pathtogame + "map\\superregion.txt");
-                //bw.ReportProgress(107);
-                foreach (Node n in Superregions.MainNode.Nodes)
+                try
                 {
-                    List<Region> reg = new List<Region>();
-                    foreach (PureValue s in n.PureValues)
+                    if (GlobalVariables.UseMod[18] > 0)
+                        Superregions = new NodeFile(GlobalVariables.pathtomod + "map\\superregion.txt");
+                    else
+                        Superregions = new NodeFile(GlobalVariables.pathtogame + "map\\superregion.txt");
+                    //bw.ReportProgress(107);
+                    foreach (Node n in Superregions.MainNode.Nodes)
                     {
-                        Region r = GlobalVariables.Regions.Find(x => x.Name == s.Name);
-                        if (r != null)
+                        List<Region> reg = new List<Region>();
+                        foreach (PureValue s in n.PureValues)
                         {
-                            reg.Add(r);
+                            Region r = GlobalVariables.Regions.Find(x => x.Name == s.Name);
+                            if (r != null)
+                            {
+                                reg.Add(r);
+                            }
                         }
+                        Superregion sr = new Superregion(n.Name, reg);
+                        sr.OriginalName = n.Name;
+                        foreach (Region re in sr.Regions)
+                            re.Superregion = sr;
                     }
-                    Superregion sr = new Superregion(n.Name, reg);
-                    sr.OriginalName = n.Name;
-                    foreach (Region re in sr.Regions)
-                        re.Superregion = sr;
+                }
+                catch
+                {
+                    if (GlobalVariables.__DEBUG)
+                        throw;
+                    progress.ReportError("Issue with superregions! Program will exit after continuing!");
+                    throw new Exception();
                 }
             });
             lsuperregion.Start();
@@ -1550,7 +1873,12 @@ namespace Eu4ModEditor
             else if (ltradecomapnies.IsCompleted)
                 progress.UpdateProgress(21, 2);
 
-           
+            await lclimate;
+            if (lclimate.IsFaulted)
+                progress.UpdateProgress(24, 1);
+            else if (lclimate.IsCompleted)
+                progress.UpdateProgress(24, 2);
+
 
             await llocalisation;
             if (llocalisation.IsFaulted)
@@ -1642,6 +1970,33 @@ namespace Eu4ModEditor
             });
             umapgovernment.Start();
             MapTasks.Add(umapgovernment);
+
+            Task umaplocalisation = new Task(() => {
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Localisation);
+            });
+            umaplocalisation.Start();
+            MapTasks.Add(umaplocalisation);
+
+
+            Task umapwinter = new Task(() => {
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Winter);
+            });
+            umapwinter.Start();
+            MapTasks.Add(umapwinter);
+
+            Task umapclimate = new Task(() => {
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Climate);
+            });
+            umapclimate.Start();
+            MapTasks.Add(umapclimate);
+
+            Task umapterrain = new Task(() => {
+                MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Terrain);
+            });
+            umapterrain.Start();
+            MapTasks.Add(umapterrain);
+
+
 
             Task ucontrol = new Task(() => {
                 foreach (TradeGood tg in GlobalVariables.TradeGoods)

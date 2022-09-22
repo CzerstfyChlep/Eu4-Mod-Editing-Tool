@@ -97,7 +97,7 @@ namespace Eu4ModEditor
             /*10*/"map\\default.map", /*11*/"history\\countries\\", /*12*/"common\\tradenodes\\",
             /*13*/"map\\continent.txt", /*14*/"common\\country_tags\\", /*15*/"common\\technology.txt",
             /*16*/"common\\governments\\", /*17*/"common\\buildings\\", /*18*/"map\\superregion.txt",
-            /*19*/"common\\trade_companies\\", /*20*/"localisation\\"
+            /*19*/"common\\trade_companies\\", /*20*/"localisation\\", /*21*/"map\\climate.txt"
         };
 
         public void RadioButtonChange(object sender, EventArgs e)
@@ -308,15 +308,11 @@ namespace Eu4ModEditor
                 try
                 {
                     string[] datesplit = StartDateBox.Text.Split('.');
-                    GlobalVariables.StartYear = int.Parse(datesplit[0]);
-                    GlobalVariables.StartMonth = int.Parse(datesplit[1]);
-                    GlobalVariables.StartDay = int.Parse(datesplit[2]);
+                    GlobalVariables.StartDate = new DateTime(int.Parse(datesplit[0]), int.Parse(datesplit[1]), int.Parse(datesplit[2]));
                 }
                 catch
                 {
-                    GlobalVariables.StartYear = 1444;
-                    GlobalVariables.StartMonth = 11;
-                    GlobalVariables.StartDay = 11;
+                    GlobalVariables.StartDate = new DateTime(1444, 11, 11);
                 }
                 this.Close();
             }

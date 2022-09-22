@@ -62,6 +62,12 @@ namespace Eu4ModEditor
             GlobalVariables.DiscoveredByBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
             GlobalVariables.TradeCompanyLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
             GlobalVariables.GovernmentLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
+            GlobalVariables.LocalisationLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
+
+            GlobalVariables.ClimateLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
+            GlobalVariables.WinterLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
+            GlobalVariables.TerrainLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
+
 
             ProvincesMapmodeButton.Click += ChangeMapmode.ChangeMapmodeVoid;
             DevelopmentMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
@@ -79,6 +85,10 @@ namespace Eu4ModEditor
             DiscoveredByMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
             TradeCompanyMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
             GovernmentMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
+            ProvinceLocalisationMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
+            ClimateMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
+            WinterMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
+            TerrainMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
 
             LoadFilesClass.LoadFiles();
 
@@ -86,9 +96,7 @@ namespace Eu4ModEditor
 
             KeyDown += InputManagement.HandleButton;
 
-            KeyUp += InputManagement.HandleKeyUp;
-
-           
+            KeyUp += InputManagement.HandleKeyUp;          
 
             RightButton.MouseClick += InputManagement.HandleMoveButton;
             LeftButton.MouseClick += InputManagement.HandleMoveButton;
@@ -117,6 +125,10 @@ namespace Eu4ModEditor
             CountryPrimaryCultureBox.KeyDown += InputManagement.IgnoreKeyPress;
             DiscoveredByBox.KeyDown += InputManagement.IgnoreKeyPress;
             BuildingsBox.KeyDown += InputManagement.IgnoreKeyPress;
+            WinterBox.KeyDown += InputManagement.IgnoreKeyPress;
+            MonsoonBox.KeyDown += InputManagement.IgnoreKeyPress;
+            ClimateBox.KeyDown += InputManagement.IgnoreKeyPress;
+            ImpassableBox.KeyDown += InputManagement.IgnoreKeyPress;
 
             MonarchNameBox.LostFocus += FocusLost;
             CountryNameLocalisationBox.LostFocus += FocusLost;
@@ -150,7 +162,7 @@ namespace Eu4ModEditor
             ContinentNameChangeBox, AddNewContinentBox, SuperregionNameChangeBox, AddNewSuperregionBox,
             TradeCompanyNameChangeBox, AddNewTradeCompanyBox, ProvinceNameLocalisationBox, ProvinceAdjectiveLocalisationBox,
             CountryNameLocalisationBox, CountryAdjLocalisationBox, MonarchNameBox, MonarchNameChancesTextBox, LeaderNamesBox,
-            ShipNamesBox, ArmyNamesBox, FleetNamesBox, CountryTagBox, CountryNameBox });
+            ShipNamesBox, ArmyNamesBox, FleetNamesBox, CountryTagBox, CountryNameBox, ConsoleInputBox });
             foreach (TradeGood tg in GlobalVariables.TradeGoods)
             {
                 CreateTradeGoodsInfoBox(tg);
@@ -243,7 +255,6 @@ namespace Eu4ModEditor
                 RightButton.Location = new Point(665, RightButton.Location.Y);
             }
 
-
             //GIVE FOCUS
 
             MonarchNamePanel.MouseEnter += GainFocus;
@@ -252,20 +263,8 @@ namespace Eu4ModEditor
 
             Tabs.Selected += TabChanged;
             NamesTabs.Selected += TabChanged;
-
-
-            //
-            //
-            //          TO DO TO DO TO DO
-            //
-            //
-            //
-            //    !!!!!MAKE ALL UPDATES CHECK FOR SELECTED TAB!!!!!
-            //
-
-
+            ProvinceTabControl.Selected += TabChanged;
         }
-
 
         public void TabChanged(object sender, EventArgs e)
         {
@@ -373,6 +372,18 @@ namespace Eu4ModEditor
                 case MapManagement.UpdateMapOptions.Government:
                     graphics.DrawImage(GlobalVariables.GovernmentLocked.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
                     break;
+                case MapManagement.UpdateMapOptions.Localisation:
+                    graphics.DrawImage(GlobalVariables.LocalisationLocked.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
+                    break;
+                case MapManagement.UpdateMapOptions.Winter:
+                    graphics.DrawImage(GlobalVariables.WinterLocked.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
+                    break;
+                case MapManagement.UpdateMapOptions.Climate:
+                    graphics.DrawImage(GlobalVariables.ClimateLocked.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
+                    break;
+                case MapManagement.UpdateMapOptions.Terrain:
+                    graphics.DrawImage(GlobalVariables.TerrainLocked.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
+                    break;
             }
 
             //TODO
@@ -476,6 +487,12 @@ namespace Eu4ModEditor
                 if (ProvinceTradeNodeBox.SelectedIndex != 0)
                     ChangeValueInternally(ProvinceTradeNodeBox, 0);
             }
+
+            ChangeValueInternally(WinterBox, GlobalVariables.ClickedProvinces[0].Winter);
+            ChangeValueInternally(MonsoonBox, GlobalVariables.ClickedProvinces[0].Monsoon);
+            ChangeValueInternally(ClimateBox, GlobalVariables.ClickedProvinces[0].Climate);
+            ChangeValueInternally(ImpassableBox, GlobalVariables.ClickedProvinces[0].Impassable);
+
         }
         public void UpdateAreaAndRegionPage()
         {
@@ -839,6 +856,10 @@ namespace Eu4ModEditor
                         case Saving.SpecialSavingObject.SavingType.TagFile:
                             name = "Tag files";
                             path = GlobalVariables.pathtomod + "common\\country_tags\\";
+                            break;
+                        case Saving.SpecialSavingObject.SavingType.Climate:
+                            name = "Climate file";
+                            path = GlobalVariables.pathtomod + "map\\climate.txt";
                             break;
                     }
                 }
@@ -1467,9 +1488,9 @@ namespace Eu4ModEditor
                 history.MainNode.AddVariable("technology_group", GlobalVariables.TechGroups[0]);
                 common.MainNode.AddVariable("graphical_culture", "westerngfx");
                 Node color = new Node("color");
-                color.PureValues.Add(new PureValue(countryForm.CountryColor.R+""));
-                color.PureValues.Add(new PureValue(countryForm.CountryColor.G + ""));
-                color.PureValues.Add(new PureValue(countryForm.CountryColor.B + ""));
+                color.AddPureValue(countryForm.CountryColor.R+"");
+                color.AddPureValue(countryForm.CountryColor.G+"");
+                color.AddPureValue(countryForm.CountryColor.B+"");
                 common.MainNode.AddNode(color);                              
                 if (!GlobalVariables.ModCountryTagsFiles.Any())
                 {
@@ -1627,7 +1648,7 @@ namespace Eu4ModEditor
                     Node purevaluesnode = n.Nodes.Find(x => x.Name == "areas");
                     if (purevaluesnode != null)
                     {
-                        purevaluesnode.PureValues.Clear();
+                        purevaluesnode.RemoveAllPureValues();
                         foreach (Area a in r.Areas)
                             purevaluesnode.AddPureValue(a.Name);
                     }
@@ -1785,7 +1806,7 @@ namespace Eu4ModEditor
                         TradeNodeProvinceLocationBox.Text = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location.ID + "";
                     return;
                 }
-                GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location = GlobalVariables.Provinces[n - 1];
+                GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location = GlobalVariables.Provinces.Find(x=>x.ID == n);
                 MapManagement.UpdateMap(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeNode);
                 if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
                     UpdateMap();
@@ -1803,7 +1824,7 @@ namespace Eu4ModEditor
                     TradeNodeProvinceLocationBox.Text = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location.ID + "";
                 return;
             }
-            GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location = GlobalVariables.Provinces[n - 1];
+            GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location = GlobalVariables.Provinces.Find(x=>x.ID == n);
             MapManagement.UpdateMap(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeNode);
             if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
                 UpdateMap();
@@ -1873,7 +1894,10 @@ namespace Eu4ModEditor
                     if (!tn.Destination.Any())
                         n.AddVariable("end", "yes");                      
                     Node cl = new Node("color");
-                    cl.PureValues = new List<PureValue>() { new PureValue(tn.Color.R + ""), new PureValue(tn.Color.G + ""), new PureValue(tn.Color.B + "") };
+                    cl.AddPureValue(tn.Color.R + "");
+                    cl.AddPureValue(tn.Color.G + "");
+                    cl.AddPureValue(tn.Color.B + "");
+                    
                     n.AddNode(cl);
                     foreach (Destination ds in tn.Destination)
                     {
@@ -1934,7 +1958,7 @@ namespace Eu4ModEditor
                 Node n = nf.MainNode.Nodes.Find(x => x.Name == c.Name);
                 if (n != null)
                 {
-                    n.PureValues.Clear();
+                    n.RemoveAllPureValues();
                     foreach (Province p in c.Provinces)
                         n.AddPureValue(p.ID.ToString());
                 }
@@ -2181,6 +2205,9 @@ namespace Eu4ModEditor
             }
             else
                 GlobalVariables.ModLocalisationEntries["PROV" + GlobalVariables.ClickedProvinces[0].ID] = ProvinceNameLocalisationBox.Text;
+            MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Localisation);
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Localisation)
+                UpdateMap();
         }
         private void SaveProvinceAdj_Click(object sender, EventArgs e)
         {
@@ -2195,6 +2222,9 @@ namespace Eu4ModEditor
             }
             else
                 GlobalVariables.ModLocalisationEntries["PROV_ADJ" + GlobalVariables.ClickedProvinces[0].ID] = ProvinceAdjectiveLocalisationBox.Text;
+            MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Localisation);
+            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Localisation)
+                UpdateMap();
         }
         private void SaveLocalisationButton_Click(object sender, EventArgs e)
         {
@@ -2259,7 +2289,7 @@ namespace Eu4ModEditor
 
                 if (n != null)
                 {
-                    n.PureValues.Clear();
+                    n.RemoveAllPureValues();
                     foreach (Region r in sr.Regions)
                         n.AddPureValue(r.Name);
                 }
@@ -2689,7 +2719,6 @@ namespace Eu4ModEditor
             UpdateTotalSelectedLabel();
             UpdateMap();
         }
-
         #endregion
 
         #region Important forms stuff
@@ -3100,6 +3129,70 @@ namespace Eu4ModEditor
                 GlobalVariables.SelectedCountry.GraphicalCulture = (string)GraphicalCultureBox.SelectedItem;
             }
         }
+        private void WinterBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (GlobalVariables.InternalChanges)
+                return;
+            if (GlobalVariables.ClickedProvinces.Any())
+            {
+                foreach (Province p in GlobalVariables.ClickedProvinces)
+                {
+                    p.Winter = WinterBox.SelectedIndex;
+                }
+                MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Winter);
+                if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Winter)
+                    UpdateMap();
+            }
+        }
+        private void MonsoonBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (GlobalVariables.InternalChanges)
+                return;
+            if (GlobalVariables.ClickedProvinces.Any())
+            {
+                foreach (Province p in GlobalVariables.ClickedProvinces)
+                {
+                    p.Monsoon = MonsoonBox.SelectedIndex;
+                }
+                MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Winter);
+                if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Winter)
+                    UpdateMap();
+            }
+        }
+        private void ClimateBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (GlobalVariables.InternalChanges)
+                return;
+            if (GlobalVariables.ClickedProvinces.Any())
+            {
+                foreach (Province p in GlobalVariables.ClickedProvinces)
+                {
+                    p.Climate = ClimateBox.SelectedIndex;
+                }
+                MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Climate);
+                if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Climate)
+                    UpdateMap();
+            }
+        }
+        private void ImpassableBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (GlobalVariables.InternalChanges)
+                return;
+            if (GlobalVariables.ClickedProvinces.Any())
+            {
+                foreach (Province p in GlobalVariables.ClickedProvinces)
+                {
+                    p.Impassable = ImpassableBox.SelectedIndex;
+                }
+                MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Climate);
+                if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Climate)
+                    UpdateMap();
+            }
+        }
+
+        
+
+
         #endregion
 
         #region Macros
@@ -4195,6 +4288,9 @@ namespace Eu4ModEditor
                             }
                             else
                                 GlobalVariables.ModLocalisationEntries["PROV" + GlobalVariables.ClickedProvinces[0].ID] = ProvinceNameLocalisationBox.Text;
+                            MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Localisation);
+                            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Localisation)
+                                UpdateMap();
                         }
                         break;
                     case "ProvinceAdjectiveLocalisationBox":
@@ -4210,6 +4306,9 @@ namespace Eu4ModEditor
                             }
                             else
                                 GlobalVariables.ModLocalisationEntries["PROV_ADJ" + GlobalVariables.ClickedProvinces[0].ID] = ProvinceAdjectiveLocalisationBox.Text;
+                            MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Localisation);
+                            if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Localisation)
+                                UpdateMap();
                         }
                         break;
                     case "AreaNameChangeBox":
@@ -4257,7 +4356,7 @@ namespace Eu4ModEditor
                                     TradeNodeProvinceLocationBox.Text = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location.ID + "";
                                 return;
                             }
-                            GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location = GlobalVariables.Provinces[n - 1];
+                            GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Location = GlobalVariables.Provinces.Find(x=>x.ID == n);
                             MapManagement.UpdateMap(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeNode);
                             if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
                                 UpdateMap();
@@ -4535,49 +4634,49 @@ namespace Eu4ModEditor
                     Node leadernames = n.MainNode.Nodes.Find(x => x.Name == "leader_names");
                     if (leadernames == null)
                         leadernames = n.MainNode.AddNode("leader_names");
-                    leadernames.PureValues.Clear();
+                    leadernames.RemoveAllPureValues();
                     foreach (string ln in c.LeaderNames)
                     {
                         if (ln.Contains(" "))
-                            leadernames.PureValues.Add(new PureValue($"\"{ln}\""));
+                            leadernames.AddPureValue($"\"{ln}\"");
                         else
-                            leadernames.PureValues.Add(new PureValue(ln));
+                            leadernames.AddPureValue(ln);
                     }
 
                     Node shipnames = n.MainNode.Nodes.Find(x => x.Name == "ship_names");
                     if (shipnames == null)
                         shipnames = n.MainNode.AddNode("ship_names");
-                    shipnames.PureValues.Clear();
+                    shipnames.RemoveAllPureValues();
                     foreach (string sn in c.ShipNames)
                     {
                         if (sn.Contains(" "))
-                            shipnames.PureValues.Add(new PureValue($"\"{sn}\""));
+                            shipnames.AddPureValue($"\"{sn}\"");
                         else
-                            shipnames.PureValues.Add(new PureValue(sn));
+                            shipnames.AddPureValue(sn);
                     }
 
                     Node fleetnames = n.MainNode.Nodes.Find(x => x.Name == "fleet_names");
                     if (fleetnames == null)
                         fleetnames = n.MainNode.AddNode("fleet_names");
-                    fleetnames.PureValues.Clear();
+                    fleetnames.RemoveAllPureValues();
                     foreach (string fn in c.FleetNames)
                     {
                         if (fn.Contains(" "))
-                            fleetnames.PureValues.Add(new PureValue($"\"{fn}\""));
+                            fleetnames.AddPureValue($"\"{fn}\"");
                         else
-                            fleetnames.PureValues.Add(new PureValue(fn));
+                            fleetnames.AddPureValue(fn);
                     }
 
                     Node armynames = n.MainNode.Nodes.Find(x => x.Name == "army_names");
                     if (armynames == null)
                         armynames = n.MainNode.AddNode("army_names");
-                    armynames.PureValues.Clear();
+                    armynames.RemoveAllPureValues();
                     foreach (string an in c.ArmyNames)
                     {
                         if (an.Contains(" "))
-                            armynames.PureValues.Add(new PureValue($"\"{an}\""));
+                            armynames.AddPureValue($"\"{an}\"");
                         else
-                            armynames.PureValues.Add(new PureValue(an));
+                            armynames.AddPureValue(an);
                     }
                     n.SaveFile(c.CommonFile.Path);
                 }               
@@ -4720,5 +4819,246 @@ namespace Eu4ModEditor
                     GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.TradeCompany));
             }
         }
+
+        public void DisplayOnConsole(string text)
+        {
+            ConsoleBox.AppendText(Environment.NewLine + text);
+        }
+
+        public void SendToConsole(string message)
+        {
+            DisplayOnConsole(message);
+            switch(message)
+            {
+                case "help":
+                    DisplayOnConsole("savein <type> <filename>");
+                    DisplayOnConsole("\tTypes: area region superregion continent climate");
+                    DisplayOnConsole("\tThe file will be saved in a 'ModEditor' directory in the location of the tool with a specified name (.txt will be added automatically)");
+                    break;
+                default:
+                    string[] arguments = message.Split(' ');
+                    switch (arguments[0])
+                    {
+                        case "savein":
+                            if (arguments.Count() != 3)
+                                DisplayOnConsole("Not enough arguments!");
+                            else
+                            {
+                                switch (arguments[1])
+                                {
+                                    case "area":
+                                        {
+                                            if (!Directory.Exists("ModEditor\\"))
+                                                Directory.CreateDirectory("ModEditor\\");
+                                            NodeFile nf = new NodeFile
+                                            {
+                                                Path = $"ModEditor\\{arguments[2]}.txt"
+                                            };
+                                            foreach (Area a in GlobalVariables.Areas)
+                                            {
+                                                Node n = new Node(a.Name);
+                                                foreach (Province p in a.Provinces)
+                                                    n.AddPureValue(p.ID.ToString());
+                                                nf.MainNode.AddNode(n);
+                                            }                                           
+                                            nf.SaveFile($"ModEditor\\{arguments[2]}.txt");
+                                        }
+                                        break;
+                                    case "region":
+                                        {
+                                            if (!Directory.Exists("ModEditor\\"))
+                                                Directory.CreateDirectory("ModEditor\\");
+                                            NodeFile nf = new NodeFile
+                                            {
+                                                Path = $"ModEditor\\{arguments[2]}.txt"
+                                            };
+                                            foreach (Region r in GlobalVariables.Regions)
+                                            {
+                                                Node n = new Node(r.Name);
+                                                Node areas = new Node("areas");
+                                                foreach (Area a in r.Areas)
+                                                    areas.AddPureValue(a.Name);
+                                                n.AddNode(areas);
+                                                nf.MainNode.AddNode(n);
+                                            }
+                                            nf.SaveFile($"ModEditor\\{arguments[2]}.txt");
+                                        }
+                                        break;
+                                    case "superregion":
+                                        {
+                                            if (!Directory.Exists("ModEditor\\"))
+                                                Directory.CreateDirectory("ModEditor\\");
+                                            NodeFile nf = new NodeFile
+                                            {
+                                                Path = $"ModEditor\\{arguments[2]}.txt"
+                                            };
+                                            foreach (Superregion sr in GlobalVariables.Superregions)
+                                            {
+                                                Node n = new Node(sr.Name);
+                                                foreach (Region r in sr.Regions)
+                                                    n.AddPureValue(r.Name);
+                                                nf.MainNode.AddNode(n);
+                                            }
+                                            nf.SaveFile($"ModEditor\\{arguments[2]}.txt");
+                                        }
+                                        break;
+                                    case "continent":
+                                        {
+                                            if (!Directory.Exists("ModEditor\\"))
+                                                Directory.CreateDirectory("ModEditor\\");
+                                            NodeFile nf = new NodeFile
+                                            {
+                                                Path = $"ModEditor\\{arguments[2]}.txt"
+                                            };
+                                            foreach (Continent c in GlobalVariables.Continents)
+                                            {
+                                                Node n = new Node(c.Name);
+                                                foreach (Province p in c.Provinces)
+                                                    n.AddPureValue(p.ID.ToString());
+                                                nf.MainNode.AddNode(n);
+                                            }
+                                            nf.SaveFile($"ModEditor\\{arguments[2]}.txt");
+                                        }
+                                        break;
+                                    case "climate":
+                                        {
+                                            if (!Directory.Exists("ModEditor\\"))
+                                                Directory.CreateDirectory("ModEditor\\");
+                                            NodeFile nf = new NodeFile
+                                            {
+                                                Path = $"ModEditor\\{arguments[2]}.txt"
+                                            };
+                                            Node tropical = nf.MainNode.Nodes.Find(x => x.Name == "tropical");
+                                            if (tropical == null)
+                                                tropical = nf.MainNode.AddNode("tropical");
+                                            Node arid = nf.MainNode.Nodes.Find(x => x.Name == "arid");
+                                            if (arid == null)
+                                                arid = nf.MainNode.AddNode("arid");
+                                            Node arctic = nf.MainNode.Nodes.Find(x => x.Name == "arctic");
+                                            if (arctic == null)
+                                                arctic = nf.MainNode.AddNode("arctic");
+                                            Node mild_winter = nf.MainNode.Nodes.Find(x => x.Name == "mild_winter");
+                                            if (mild_winter == null)
+                                                mild_winter = nf.MainNode.AddNode("mild_winter");
+                                            Node normal_winter = nf.MainNode.Nodes.Find(x => x.Name == "normal_winter");
+                                            if (normal_winter == null)
+                                                normal_winter = nf.MainNode.AddNode("normal_winter");
+                                            Node severe_winter = nf.MainNode.Nodes.Find(x => x.Name == "severe_winter");
+                                            if (severe_winter == null)
+                                                severe_winter = nf.MainNode.AddNode("severe_winter");
+                                            Node impassable = nf.MainNode.Nodes.Find(x => x.Name == "impassable");
+                                            if (impassable == null)
+                                                impassable = nf.MainNode.AddNode("impassable");
+                                            Node mild_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "mild_monsoon");
+                                            if (mild_monsoon == null)
+                                                mild_monsoon = nf.MainNode.AddNode("mild_monsoon");
+                                            Node normal_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "normal_monsoon");
+                                            if (normal_monsoon == null)
+                                                normal_monsoon = nf.MainNode.AddNode("normal_monsoon");
+                                            Node severe_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "severe_monsoon");
+                                            if (severe_monsoon == null)
+                                                severe_monsoon = nf.MainNode.AddNode("severe_monsoon");
+                                            foreach (Province p in GlobalVariables.Provinces)
+                                            {
+                                                switch (p.Winter)
+                                                {
+                                                    case 0:
+                                                        mild_winter.RemovePureValue(p.ID.ToString());
+                                                        normal_winter.RemovePureValue(p.ID.ToString());
+                                                        severe_winter.RemovePureValue(p.ID.ToString());
+                                                        break;
+                                                    case 1:
+                                                        mild_winter.AddPureValue(p.ID.ToString(), checkexists: true);
+                                                        normal_winter.RemovePureValue(p.ID.ToString());
+                                                        severe_winter.RemovePureValue(p.ID.ToString());
+                                                        break;
+                                                    case 2:
+                                                        mild_winter.RemovePureValue(p.ID.ToString());
+                                                        normal_winter.AddPureValue(p.ID.ToString(), checkexists: true);
+                                                        severe_winter.RemovePureValue(p.ID.ToString());
+                                                        break;
+                                                    case 3:
+                                                        mild_winter.RemovePureValue(p.ID.ToString());
+                                                        normal_winter.RemovePureValue(p.ID.ToString());
+                                                        severe_winter.AddPureValue(p.ID.ToString(), checkexists: true);
+                                                        break;
+                                                }
+                                                switch (p.Monsoon)
+                                                {
+                                                    case 0:
+                                                        mild_monsoon.RemovePureValue(p.ID.ToString());
+                                                        normal_monsoon.RemovePureValue(p.ID.ToString());
+                                                        severe_monsoon.RemovePureValue(p.ID.ToString());
+                                                        break;
+                                                    case 1:
+                                                        mild_monsoon.AddPureValue(p.ID.ToString(), checkexists: true);
+                                                        normal_monsoon.RemovePureValue(p.ID.ToString());
+                                                        severe_monsoon.RemovePureValue(p.ID.ToString());
+                                                        break;
+                                                    case 2:
+                                                        mild_monsoon.RemovePureValue(p.ID.ToString());
+                                                        normal_monsoon.AddPureValue(p.ID.ToString(), checkexists: true);
+                                                        severe_monsoon.RemovePureValue(p.ID.ToString());
+                                                        break;
+                                                    case 3:
+                                                        mild_monsoon.RemovePureValue(p.ID.ToString());
+                                                        normal_monsoon.RemovePureValue(p.ID.ToString());
+                                                        severe_monsoon.AddPureValue(p.ID.ToString(), checkexists: true);
+                                                        break;
+                                                }
+                                                switch (p.Climate)
+                                                {
+                                                    case 0:
+                                                        tropical.RemovePureValue(p.ID.ToString());
+                                                        arid.RemovePureValue(p.ID.ToString());
+                                                        arctic.RemovePureValue(p.ID.ToString());
+                                                        break;
+                                                    case 1:
+                                                        tropical.AddPureValue(p.ID.ToString(), checkexists: true);
+                                                        arid.RemovePureValue(p.ID.ToString());
+                                                        arctic.RemovePureValue(p.ID.ToString());
+                                                        break;
+                                                    case 2:
+                                                        tropical.RemovePureValue(p.ID.ToString());
+                                                        arid.AddPureValue(p.ID.ToString(), checkexists: true);
+                                                        arctic.RemovePureValue(p.ID.ToString());
+                                                        break;
+                                                    case 3:
+                                                        tropical.RemovePureValue(p.ID.ToString());
+                                                        arid.RemovePureValue(p.ID.ToString());
+                                                        arctic.AddPureValue(p.ID.ToString(), checkexists: true);
+                                                        break;
+                                                }
+                                                switch (p.Climate)
+                                                {
+                                                    case 0:
+                                                        impassable.RemovePureValue(p.ID.ToString());
+                                                        break;
+                                                    case 1:
+                                                        impassable.AddPureValue(p.ID.ToString(), checkexists: true);
+                                                        break;
+                                                }
+                                            }
+                                            nf.SaveFile($"ModEditor\\{arguments[2]}.txt");
+                                        }
+                                        break;
+                                }
+                            }
+                            break;
+                    }
+                    break;
+            }
+        }
+
+        private void SendConsoleButton_Click(object sender, EventArgs e)
+        {
+            if (ConsoleInputBox.Text != "")
+            {
+                SendToConsole(ConsoleInputBox.Text);
+                ConsoleInputBox.Text = "";
+            }
+        }
+
+
     }
 }

@@ -225,6 +225,9 @@ namespace Eu4ModEditor
                 case 23:
                     l = BordersProgress;
                     break;
+                case 24:
+                    l = ClimateProgress;
+                    break;
             }
             if (status == 0)
                 l.ForeColor = Color.DarkGoldenrod;
@@ -239,7 +242,7 @@ namespace Eu4ModEditor
                 amount++;
             }
             
-            if(amount == 24)
+            if(amount == 25)
             {
                 ContinueButton.Enabled = true;
             }

@@ -1,9 +1,41 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System;
 
 namespace Eu4ModEditor
 {
+
+    public class ProvinceDateEntry
+    {
+        public enum EntryType { CoresAdd, CoresRemove, ClaimsAdd, ClaimsRemove, Owner, Controller,
+            Tax, Production, Manpower, Capital, CenterOfTrade, HRE, BuildingAdd, BuildingRemove,
+            TradeGood, LatentTradeGood, Religion, Culture, DiscoveredByAdd, DiscoveredByRemove, Revolt
+        }
+
+        public class Entry
+        {
+            public EntryType Type;
+            public object Value = null;
+            public Entry(EntryType type, object value)
+            {
+                Type = type;
+                Value = value;
+            }
+        }
+
+        public List<Entry> Entries = new List<Entry>();
+
+        public DateTime Date;
+
+        public ProvinceDateEntry(DateTime date)
+        {
+            Date = date;
+        }
+    }
+
+
+
     public class Province
     {
         public int ID = 1;
@@ -19,8 +51,27 @@ namespace Eu4ModEditor
         private List<string> Cores
         {
             get
-            {
-                return Variables["Cores"] as List<string>;
+            {             
+                List<string> toreturn = Variables["Cores"] as List<string>;
+                foreach (ProvinceDateEntry pde in DateEntries)
+                {
+                    if(DateTime.Compare(pde.Date, GlobalVariables.StartDate) <= 0)
+                    {
+                        foreach(ProvinceDateEntry.Entry entry in pde.Entries)
+                        {
+                            if(entry.Type == ProvinceDateEntry.EntryType.CoresAdd)
+                            {
+                                toreturn.Add(entry.Value as string);
+                            }
+                            else if (entry.Type == ProvinceDateEntry.EntryType.CoresRemove)
+                            {
+                                toreturn.Remove(entry.Value as string);
+                            }
+                        }
+                    }
+                }
+                return toreturn;             
+                //return Variables["Cores"] as List<string>;
             }
             set
             {
@@ -37,18 +88,55 @@ namespace Eu4ModEditor
         {
             if (!Cores.Contains(TAG))
             {
-                Cores.Add(TAG);
-                if (!noChange)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "Core", null, TAG));
+                /*if (DateTime.Compare(GlobalVariables.CurrentDate, GlobalVariables.StartDate) == 0)
+                {*/
+                    Cores.Add(TAG);
+                    if (!noChange)
+                        GlobalVariables.Changes.Add(new VariableChange(this, "Core", null, TAG));
+                /*}
+                else
+                {
+                    ProvinceDateEntry pde = DateEntries.Find(x => DateTime.Compare(x.Date, GlobalVariables.CurrentDate) == 0);
+                    if (pde == null)
+                    {
+                        pde = new ProvinceDateEntry(GlobalVariables.CurrentDate);
+                        AddDateEntry(pde);
+                    }
+                    ProvinceDateEntry.Entry entry = pde.Entries.Find(x => x.Type == ProvinceDateEntry.EntryType.CoresAdd && (string)x.Value == TAG);
+                    if (entry == null)
+                    {
+                        entry = new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.CoresAdd, TAG);
+                        pde.Entries.Add(entry);
+                    }
+                }*/
             }
         }
         public void RemoveCore(string TAG, bool noChange = false)
         {
             if (Cores.Contains(TAG))
             {
-                Cores.Remove(TAG);
-                if(!noChange)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "Core", TAG, null));
+                /*if (DateTime.Compare(GlobalVariables.CurrentDate, GlobalVariables.StartDate) == 0)
+                { */
+                    Cores.Remove(TAG);
+                    if (!noChange)
+                        GlobalVariables.Changes.Add(new VariableChange(this, "Core", TAG, null));
+                /*}
+                else
+                {
+                    ProvinceDateEntry pde = DateEntries.Find(x => DateTime.Compare(x.Date, GlobalVariables.CurrentDate) == 0);
+                    if (pde == null)
+                    {
+                        pde = new ProvinceDateEntry(GlobalVariables.CurrentDate);
+                        AddDateEntry(pde);
+                    }
+                    ProvinceDateEntry.Entry entry = pde.Entries.Find(x => x.Type == ProvinceDateEntry.EntryType.CoresAdd && (string)x.Value == TAG);
+                    if (entry == null)
+                    {
+                        entry = new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.CoresAdd, TAG);
+                        pde.Entries.Add(entry);
+                    }
+                }
+                */
             }
         }
 
@@ -87,7 +175,16 @@ namespace Eu4ModEditor
                     GlobalVariables.Changes.Add(new VariableChange(this, "Claims", TAG, null));
             }
         }
-    
+
+        public List<ProvinceDateEntry> DateEntries = new List<ProvinceDateEntry>();
+
+        public void AddDateEntry(ProvinceDateEntry entry)
+        {
+            DateEntries.Add(entry);
+            DateEntries = DateEntries.OrderByDescending(x => x.Date).ToList();
+        }
+
+
         public Country OwnerCountry
         {
             get
@@ -385,6 +482,78 @@ namespace Eu4ModEditor
             }
         }
 
+        public int Climate
+        {
+            get
+            {
+                return (int)Variables["Climate"];
+            }
+            set
+            {
+                Variables["Climate"] = value;
+                if (GlobalVariables.FullyLoaded)
+                    if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Climate))
+                        GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Climate));
+            }
+        }
+        public int Winter
+        {
+            get
+            {
+                return (int)Variables["Winter"];
+            }
+            set
+            {
+                Variables["Winter"] = value;
+                if (GlobalVariables.FullyLoaded)
+                    if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Climate))
+                        GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Climate));
+            }
+        }
+        public int Monsoon
+        {
+            get
+            {
+                return (int)Variables["Monsoon"];
+            }
+            set
+            {
+                Variables["Monsoon"] = value;
+                if (GlobalVariables.FullyLoaded)
+                    if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Climate))
+                        GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Climate));
+            }
+        }
+        public int Impassable
+        {
+            get
+            {
+                return (int)Variables["Impassable"];
+            }
+            set
+            {
+                Variables["Impassable"] = value;
+                if (GlobalVariables.FullyLoaded)
+                    if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Climate))
+                        GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Climate));
+            }
+        }
+
+        public int Terrain
+        {
+            get
+            {
+                return (int)Variables["Terrain"];
+            }
+            set
+            {
+                Variables["Terrain"] = value;
+                if (GlobalVariables.FullyLoaded)
+                    if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Terrain))
+                        GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Terrain));
+            }
+        }
+
         private List<string> DiscoveredBy
         {
             get
@@ -451,6 +620,11 @@ namespace Eu4ModEditor
             Variables.Add("City", false);
             Variables.Add("Buildings", new List<Building>());
             Variables.Add("TradeCompany", null);
+            Variables.Add("Winter", 0);
+            Variables.Add("Climate", 0);
+            Variables.Add("Terrain", null);
+            Variables.Add("Impassable", 0);
+            Variables.Add("Monsoon", 0);
         }
     }
 }
