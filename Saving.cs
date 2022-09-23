@@ -29,6 +29,11 @@ namespace Eu4ModEditor
                         if (!Directory.Exists(GlobalVariables.pathtomod + "history\\provinces\\"))
                             Directory.CreateDirectory(GlobalVariables.pathtomod + "history\\provinces\\");
                         province.HistoryFile = new NodeFile(GlobalVariables.pathtomod + "history\\provinces\\" + province.HistoryFile.Path.Split('\\').Last());
+                        if (province.HistoryFile.LastStatus.HasError)
+                        {
+                            GlobalVariables.MainForm.ShowMessageBox($"File '{province.HistoryFile.Path}' has an error in line {province.HistoryFile.LastStatus.LineError}");
+                            return;
+                        }
                     }                                               
                     nf.MainNode.Variables.RemoveAll(x => x.Name == "add_core" || x.Name == "discovered_by" || GlobalVariables.Buildings.Any(y=>y.Name == x.Name) || x.Name == "add_claim");
                     nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "add_core" || x.Name == "discovered_by" || GlobalVariables.Buildings.Any(y => y.Name == x.Name) || x.Name == "add_claim");
@@ -57,8 +62,8 @@ namespace Eu4ModEditor
                     }
                     else
                     {
-                        nf.MainNode.Variables.RemoveAll(x => x.Name == "owner");
-                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "owner");
+                        nf.MainNode.Variables.RemoveAll(x => x.Name == "owner" && x.Value != "---");
+                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "owner" && x is Variable && (x as Variable).Value != "---");
                     }
 
                     if(province.Tax > 0)
@@ -99,8 +104,8 @@ namespace Eu4ModEditor
                         nf.MainNode.ChangeVariable("controller", province.OwnerCountry.Tag, true);
                     else
                     {
-                        nf.MainNode.Variables.RemoveAll(x => x.Name == "controller");
-                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "controller");
+                        nf.MainNode.Variables.RemoveAll(x => x.Name == "controller" && x.Value != "---");
+                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "controller" && x is Variable && (x as Variable).Value != "---");
                     }
                     if (province.Fort)
                         nf.MainNode.ChangeVariable("fort_15th", "yes", true);
@@ -167,6 +172,12 @@ namespace Eu4ModEditor
                         if (!Directory.Exists(GlobalVariables.pathtomod + "history\\countries\\"))
                             Directory.CreateDirectory(GlobalVariables.pathtomod + "history\\countries\\");
                         country.HistoryFile = new NodeFile(GlobalVariables.pathtomod + "history\\countries\\" + country.HistoryFile.Path.Split('\\').Last());
+
+                        if (country.HistoryFile.LastStatus.HasError)
+                        {
+                            GlobalVariables.MainForm.ShowMessageBox($"File '{country.HistoryFile.Path}' has an error in line {country.HistoryFile.LastStatus.LineError}");
+                            return;
+                        }
                     }
 
                     if (country.Religion != null && country.Religion != Religion.NoReligion) 
@@ -281,7 +292,10 @@ namespace Eu4ModEditor
                         if (!Directory.Exists(GlobalVariables.pathtomod + "common\\countries\\"))
                             Directory.CreateDirectory(GlobalVariables.pathtomod + "common\\countries\\");
                         country.CommonFile = new NodeFile(GlobalVariables.pathtomod + "common\\countries\\" + country.CommonFile.Path.Split('\\').Last());
+                        if (country.CommonFile.LastStatus.HasError)
+                            GlobalVariables.MainForm.ShowMessageBox($"File '{country.CommonFile.Path}' has an error in line {country.CommonFile.LastStatus.LineError}");
                     }
+      
 
                     Variable graphicalculture = cnf.MainNode.Variables.Find(x => x.Name == "graphical_culture");
                     if (graphicalculture != null)
@@ -312,6 +326,13 @@ namespace Eu4ModEditor
                                     Directory.CreateDirectory(GlobalVariables.pathtomod + "map\\");
 
                                 NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\area.txt");
+
+                                if (nf.LastStatus.HasError)
+                                {
+                                    GlobalVariables.MainForm.ShowMessageBox($"File '{nf.Path}' has an error in line {nf.LastStatus.LineError}. Nothing will be saved!");
+                                    return;
+                                }
+
                                 foreach (Area a in GlobalVariables.Areas)
                                 {
                                     Node n = nf.MainNode.Nodes.Find(x => x.Name == a.Name);
@@ -356,6 +377,11 @@ namespace Eu4ModEditor
                                     Directory.CreateDirectory(GlobalVariables.pathtomod + "map\\");
 
                                 NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\region.txt");
+                                if (nf.LastStatus.HasError)
+                                {
+                                    GlobalVariables.MainForm.ShowMessageBox($"File '{nf.Path}' has an error in line {nf.LastStatus.LineError}. Nothing will be saved!");
+                                    return;
+                                }
                                 foreach (Region r in GlobalVariables.Regions)
                                 {
                                     Node pn = nf.MainNode.Nodes.Find(x => x.Name == r.Name);
@@ -407,6 +433,11 @@ namespace Eu4ModEditor
                                     Directory.CreateDirectory(GlobalVariables.pathtomod + "map\\");
 
                                 NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\continent.txt");
+                                if (nf.LastStatus.HasError)
+                                {
+                                    GlobalVariables.MainForm.ShowMessageBox($"File '{nf.Path}' has an error in line {nf.LastStatus.LineError}. Nothing will be saved!");
+                                    return;
+                                }
                                 foreach (Continent c in GlobalVariables.Continents)
                                 {
                                     Node n = nf.MainNode.Nodes.Find(x => x.Name == c.Name);
@@ -451,6 +482,11 @@ namespace Eu4ModEditor
                                     Directory.CreateDirectory(GlobalVariables.pathtomod + "map\\");
 
                                 NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\superregion.txt");
+                                if (nf.LastStatus.HasError)
+                                {
+                                    GlobalVariables.MainForm.ShowMessageBox($"File '{nf.Path}' has an error in line {nf.LastStatus.LineError}. Nothing will be saved!");
+                                    return;
+                                }
                                 foreach (Superregion sr in GlobalVariables.Superregions)
                                 {
                                     Node n = nf.MainNode.Nodes.Find(x => x.Name == sr.Name);
@@ -593,6 +629,12 @@ namespace Eu4ModEditor
                                     else if(c.CountryTagsFile == null)
                                     {
                                         c.CountryTagsFile = new NodeFile(GlobalVariables.pathtomod + "common\\country_tags\\00_modeditor_tags.txt");
+                                        if (c.CountryTagsFile.LastStatus.HasError)
+                                        {
+                                            GlobalVariables.MainForm.ShowMessageBox($"File '{c.CountryTagsFile.Path}' has an error in line {c.CountryTagsFile.LastStatus.LineError}. Nothing will be saved!");
+                                            return;
+                                        }
+
                                         c.CountryTagsFile.SaveFile();
                                         GlobalVariables.ModCountryTagsFiles.Add(c.CountryTagsFile);
                                     }
@@ -656,7 +698,11 @@ namespace Eu4ModEditor
                                     Directory.CreateDirectory(GlobalVariables.pathtomod + "map\\");
 
                                 NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\climate.txt");
-
+                                if (nf.LastStatus.HasError)
+                                {
+                                    GlobalVariables.MainForm.ShowMessageBox($"File '{nf.Path}' has an error in line {nf.LastStatus.LineError}. Nothing will be saved!");
+                                    return;
+                                }
 
                                 Node tropical = nf.MainNode.Nodes.Find(x => x.Name == "tropical");
                                 if (tropical == null)

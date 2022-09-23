@@ -15,7 +15,8 @@ namespace Eu4ModEditor
         public LoadingScreen()
         {
             InitializeComponent();
-            if(File.Exists("directories.txt"))
+            Text = "Loading screen - " + GlobalVariables.Version;
+            if (File.Exists("directories.txt"))
             {
                 string txt = File.ReadAllText("directories.txt");
                 string[] sp = txt.Split('\n');

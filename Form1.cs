@@ -32,6 +32,7 @@ namespace Eu4ModEditor
             if (!GlobalVariables.LoadedProperly)
                 Environment.Exit(0);
             InitializeComponent();
+            this.Text = "EUIV - Mod Editor - " + GlobalVariables.Version;
             form = this;
             graphics = this.CreateGraphics();
             //GlobalVariables.pathtomod = File.ReadAllText("path.txt");
@@ -621,7 +622,8 @@ namespace Eu4ModEditor
             ChangeValueInternally(HRECheckbox, GlobalVariables.ClickedProvinces[0].HRE);
             ChangeValueInternally(FortCheckbox, GlobalVariables.ClickedProvinces[0].Fort);
             ChangeValueInternally(CenterOfTradeNumeric, GlobalVariables.ClickedProvinces[0].CenterOfTrade);         
-            ChangeValueInternally(CountryBox, GlobalVariables.ClickedProvinces[0].OwnerCountry);
+
+            // CountryBox.SelectedItem = GlobalVariables.ClickedProvinces[0].OwnerCountry;
 
             if (ProvinceTabControl.SelectedTab == MainPage)
                 UpdateMainProvincePage();
@@ -1477,6 +1479,18 @@ namespace Eu4ModEditor
             countryForm.ShowDialog();
             if (!countryForm.Canceled)
             {
+
+                if (!GlobalVariables.ModCountryTagsFiles.Any())
+                {
+                    NodeFile tagfile = new NodeFile(GlobalVariables.pathtomod + "common\\country_tags\\00_modeditor_countries.txt");
+                    if (tagfile.LastStatus.HasError)
+                    {
+                        MessageBox.Show($"File '{tagfile.Path}' has an error in line {tagfile.LastStatus.LineError}");
+                        return;
+                    }
+                    GlobalVariables.ModCountryTagsFiles.Add(tagfile);
+                }
+
                 Country c = new Country();
                 NodeFile history = new NodeFile(GlobalVariables.pathtomod + "history\\countries\\" + countryForm.Tag + " - " + countryForm.Name + ".txt");
                 c.HistoryFile = history;
@@ -1492,11 +1506,7 @@ namespace Eu4ModEditor
                 color.AddPureValue(countryForm.CountryColor.G+"");
                 color.AddPureValue(countryForm.CountryColor.B+"");
                 common.MainNode.AddNode(color);                              
-                if (!GlobalVariables.ModCountryTagsFiles.Any())
-                {
-                    NodeFile tagfile = new NodeFile(GlobalVariables.pathtomod + "common\\country_tags\\00_modeditor_countries.txt");
-                    GlobalVariables.ModCountryTagsFiles.Add(tagfile);
-                }
+                
                 GlobalVariables.ModCountryTagsFiles[0].MainNode.AddVariable(countryForm.Tag, $"\"countries/{countryForm.Name}.txt\"");
                 GlobalVariables.ModCountryTagsFiles[0].SaveFile(GlobalVariables.ModCountryTagsFiles[0].Path);
                 c.Color = countryForm.CountryColor;
@@ -1630,53 +1640,7 @@ namespace Eu4ModEditor
                 AddNewRegionBox.Text = "";
             }
         }
-        private void SaveRegionFile_Click(object sender, EventArgs e)
-        {
-
-            //TODO 
-            //Save on Read Only
-            if (GlobalVariables.ReadOnly[11])
-                return;
-            NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\region.txt");
-            List<Node> newNodes = new List<Node>();
-            foreach (Region r in GlobalVariables.Regions)
-            {
-                Node n = nf.MainNode.Nodes.Find(x => x.Name == r.Name);
-
-                if (n != null)
-                {
-                    Node purevaluesnode = n.Nodes.Find(x => x.Name == "areas");
-                    if (purevaluesnode != null)
-                    {
-                        purevaluesnode.RemoveAllPureValues();
-                        foreach (Area a in r.Areas)
-                            purevaluesnode.AddPureValue(a.Name);
-                    }
-                    else
-                    {
-                        purevaluesnode = new Node("areas", n);
-                        n.AddNode(purevaluesnode);
-                        foreach (Area a in r.Areas)
-                            purevaluesnode.AddPureValue(a.Name);
-                    }
-                }
-                else
-                {
-                    n = new Node(r.Name);
-                    Node purevaluesnode = new Node("areas", n);
-                    n.AddNode(purevaluesnode);
-                    foreach (Area a in r.Areas)
-                        purevaluesnode.AddPureValue(a.Name);
-                }
-                newNodes.Add(n);
-            }
-            nf.MainNode.Nodes.Clear();
-            foreach(Node n in newNodes)
-            {
-                nf.MainNode.AddNode(n);
-            }
-            nf.SaveFile(GlobalVariables.pathtomod + "map\\region.txt");
-        }
+        
         private void OpenWordCreator_Click(object sender, EventArgs e)
         {
             //TODO
@@ -1946,36 +1910,6 @@ namespace Eu4ModEditor
         private void ContinentNameChangeSave_Click(object sender, EventArgs e)
         {
             ContinentNameChange();
-        }
-        private void SaveContinentFile_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.ReadOnly[13])
-                return;
-            NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\continent.txt");
-            List<Node> newNodes = new List<Node>();
-            foreach (Continent c in GlobalVariables.Continents)
-            {
-                Node n = nf.MainNode.Nodes.Find(x => x.Name == c.Name);
-                if (n != null)
-                {
-                    n.RemoveAllPureValues();
-                    foreach (Province p in c.Provinces)
-                        n.AddPureValue(p.ID.ToString());
-                }
-                else
-                {
-                    n = new Node(c.Name);
-                    foreach (Province p in c.Provinces)
-                        n.AddPureValue(p.ID.ToString());
-                }
-                newNodes.Add(n);
-            }
-            nf.MainNode.Nodes.Clear();
-            foreach(Node n in newNodes)
-            {
-                nf.MainNode.AddNode(n);
-            }
-            nf.SaveFile(GlobalVariables.pathtomod + "map\\continent.txt");
         }
         private void AddNewContinent_Click(object sender, EventArgs e)
         {
@@ -2255,7 +2189,7 @@ namespace Eu4ModEditor
             }
             if (!Directory.Exists(GlobalVariables.pathtomod + "localisation"))
                 Directory.CreateDirectory(GlobalVariables.pathtomod + "localisation");
-            File.WriteAllText(GlobalVariables.pathtomod + filename, tosave);
+            File.WriteAllText(GlobalVariables.pathtomod + filename, tosave, Encoding.Default);
         }
         private void SuperregionNameChangeSave_Click(object sender, EventArgs e)
         {
@@ -2277,35 +2211,7 @@ namespace Eu4ModEditor
                     GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Superregion));
             }
         }
-        private void SaveSuperregionFile_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.ReadOnly[18])
-                return;
-            NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\superregion.txt");
-            List<Node> newNodes = new List<Node>();
-            foreach (Superregion sr in GlobalVariables.Superregions)
-            {
-                Node n = nf.MainNode.Nodes.Find(x => x.Name == sr.Name);
-
-                if (n != null)
-                {
-                    n.RemoveAllPureValues();
-                    foreach (Region r in sr.Regions)
-                        n.AddPureValue(r.Name);
-                }
-                else
-                {
-                    n = new Node(sr.Name);
-                    foreach (Region r in sr.Regions)
-                        n.AddPureValue(r.Name);
-                }
-                newNodes.Add(n);
-            }
-            nf.MainNode.Nodes.Clear();
-            foreach (Node n in newNodes)
-                nf.MainNode.AddNode(n);
-            nf.SaveFile(GlobalVariables.pathtomod + "map\\superregion.txt");
-        }
+       
         private void TradeComapnyNameChangeSave_Click(object sender, EventArgs e)
         {
             TradeCompanyNameChange();
@@ -2531,7 +2437,7 @@ namespace Eu4ModEditor
             }
             if (!Directory.Exists(GlobalVariables.pathtomod + "localisation"))
                 Directory.CreateDirectory(GlobalVariables.pathtomod + "localisation");
-            File.WriteAllText(GlobalVariables.pathtomod + filename, tosave);
+            File.WriteAllText(GlobalVariables.pathtomod + filename, tosave, Encoding.Default);
         }
         private void SaveCountryName_Click(object sender, EventArgs e)
         {
@@ -2643,6 +2549,9 @@ namespace Eu4ModEditor
                         UpdateProvincePanel();
                     }
                 }
+                if (GlobalVariables.ClickedProvinces.Any())
+                    if (GlobalVariables.ClickedProvinces[0].OwnerCountry != null && GlobalVariables.ClickedProvinces[0].OwnerCountry != Country.NoCountry)
+                        CountryBox.SelectedItem = GlobalVariables.ClickedProvinces[0].OwnerCountry;
                 MapManagement.UpdateClickedMap(UpdateMapList, Color.LightYellow);
                 UpdateTotalSelectedLabel();
                 UpdateMap();
@@ -2696,6 +2605,7 @@ namespace Eu4ModEditor
                     onlyone = true;
                 }
 
+               
                 UpdateMapList = new List<Province>();
                 foreach (Province pr in toadd)
                 {
@@ -2707,6 +2617,11 @@ namespace Eu4ModEditor
                         UpdateMapList.Add(pr);
                     }
                 }
+
+                if (GlobalVariables.ClickedProvinces.Any())
+                    if (GlobalVariables.ClickedProvinces[0].OwnerCountry != null && GlobalVariables.ClickedProvinces[0].OwnerCountry != Country.NoCountry)
+                        CountryBox.SelectedItem = GlobalVariables.ClickedProvinces[0].OwnerCountry;
+
             }
             if (Tabs.SelectedTab == ProvinceTab)
             {
@@ -2844,7 +2759,6 @@ namespace Eu4ModEditor
         }
         private void CountryBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-
             Country c = (Country)CountryBox.SelectedItem;
             if (c != null)
             {

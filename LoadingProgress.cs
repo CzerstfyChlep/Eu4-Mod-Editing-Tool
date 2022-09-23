@@ -253,6 +253,11 @@ namespace Eu4ModEditor
             ErrorList.AppendText(Environment.NewLine + $"{message}");
         }
 
+        public void MakeContinueAvailable()
+        {
+            ContinueButton.Enabled = true;
+        }
+
         private void ContinueButton_Click(object sender, EventArgs e)
         {
             this.Close();

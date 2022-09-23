@@ -13,6 +13,7 @@ namespace Eu4ModEditor
     public static class GlobalVariables
     {
         public static bool __DEBUG = false;
+        public static string Version = "1.1.9";
 
         public static List<Province> Provinces = new List<Province>();
         public static Dictionary<string, Province> ColorToProvince = new Dictionary<string, Province>();
@@ -115,7 +116,7 @@ namespace Eu4ModEditor
 
         public enum ModNodeFileTypes { TradeGoods = 0, Prices = 1, Cultures, Religions, TradeNodes, TradeCompanies, CountryTags, Governments };
 
-        public static Form MainForm;
+        public static ModEditor MainForm;
 
         public static string SelectedDiscoveredByTechGroup = "";
 
