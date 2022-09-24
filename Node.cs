@@ -433,7 +433,7 @@ namespace Eu4ModEditor
         }
         public bool ChangeVariable(string name, string value, bool forceadd = false)
         {
-            Variable v = Variables.Find(x => x.Name == name);
+            Variable v = Variables.Find(x => x.Name.ToLower() == name.ToLower());
             if (v != null)
             {
                 v.Value = value;

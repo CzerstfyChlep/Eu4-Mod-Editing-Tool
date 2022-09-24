@@ -1080,9 +1080,9 @@ namespace Eu4ModEditor
                         ChangeValueInternally(CountryReligionBox, 0);
 
                     if (GlobalVariables.SelectedCountry.PrimaryCulture != Culture.NoCulture)
-                        ChangeValueInternally(CountryReligionBox, GlobalVariables.SelectedCountry.PrimaryCulture);
+                        ChangeValueInternally(CountryPrimaryCultureBox, GlobalVariables.SelectedCountry.PrimaryCulture);
                     else
-                        ChangeValueInternally(CountryReligionBox, Culture.NoCulture);
+                        ChangeValueInternally(CountryPrimaryCultureBox, Culture.NoCulture);
 
                     if (GlobalVariables.SelectedCountry.Capital != null)
                         ChangeValueInternally(CountryCapitalIDBox, GlobalVariables.SelectedCountry.Capital.ID.ToString());
@@ -1512,6 +1512,7 @@ namespace Eu4ModEditor
                 c.Color = countryForm.CountryColor;
                 c.FullName = countryForm.Name;
                 c.Government = GlobalVariables.Governments[0];
+                c.GovernmentReform = c.Government.reforms[0];
                 c.Tag = countryForm.Tag;
                 c.TechnologyGroup = "western";
                 GlobalVariables.Countries.Add(c);
@@ -1729,7 +1730,7 @@ namespace Eu4ModEditor
             if (TradeNodeBox.SelectedIndex == 0)
                 return;
             Tradenode tn = GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1];
-            Tradenode tr = GlobalVariables.TradeNodes.Find(x => x.Name == AddTradeNodeDestinationBox.SelectedItem.ToString());
+            Tradenode tr = GlobalVariables.TradeNodes.Find(x => x.Name.ToLower() == AddTradeNodeDestinationBox.SelectedItem.ToString().ToLower());
             AddTradeDestination(tn, tr);
         }
         private void ChangeTradeNodeRandomColorButton_Click(object sender, EventArgs e)
@@ -2376,7 +2377,7 @@ namespace Eu4ModEditor
         {
             if (BuildingsBox.SelectedIndex != -1)
             {
-                Building bl = GlobalVariables.Buildings.Find(x => x.Name == BuildingsBox.SelectedItem.ToString());
+                Building bl = GlobalVariables.Buildings.Find(x => x.Name.ToLower() == BuildingsBox.SelectedItem.ToString().ToLower());
                 if (bl != null)
                     ChangeProvinceInfo(ChangeProvinceMode.Building, bl);
                 UpdateBuildings();
@@ -4748,11 +4749,58 @@ namespace Eu4ModEditor
                     DisplayOnConsole("savein <type> <filename>");
                     DisplayOnConsole("\tTypes: area region superregion continent climate");
                     DisplayOnConsole("\tThe file will be saved in a 'ModEditor' directory in the location of the tool with a specified name (.txt will be added automatically)");
+                    DisplayOnConsole("");
+                    DisplayOnConsole("savehistory <type> <object> <filename>");
+                    DisplayOnConsole("\tTypes: province country");
+                    DisplayOnConsole("\tObject: ID or TAG");
+                    DisplayOnConsole("\tThe file will be saved in a 'ModEditor' directory in the location of the tool with a specified name (.txt will be added automatically)");
+                    DisplayOnConsole("");
                     break;
                 default:
                     string[] arguments = message.Split(' ');
                     switch (arguments[0])
                     {
+
+                        case "savehistory":
+                            if (arguments.Count() != 4)
+                                DisplayOnConsole("Not enough arguments!");
+                            switch (arguments[1])
+                            {
+                                case "province":
+                                    {
+                                        if (!Directory.Exists("ModEditor\\"))
+                                            Directory.CreateDirectory("ModEditor\\");
+                                        NodeFile nf = new NodeFile
+                                        {
+                                            Path = $"ModEditor\\{arguments[3]}.txt"
+                                        };
+                                        Province p = GlobalVariables.Provinces.Find(x => x.ID.ToString() == arguments[2]);
+                                        if (p == null)
+                                            SendToConsole("Province not found!");
+                                        else
+                                            Saving.WriteToNodeFile(nf, p);
+                                        nf.SaveFile($"ModEditor\\{arguments[3]}.txt");
+                                    }
+                                    break;
+                                case "country":
+                                    {
+                                        if (!Directory.Exists("ModEditor\\"))
+                                            Directory.CreateDirectory("ModEditor\\");
+                                        NodeFile nf = new NodeFile
+                                        {
+                                            Path = $"ModEditor\\{arguments[3]}.txt"
+                                        };
+                                        Country c = GlobalVariables.Countries.Find(x => x.Tag.ToLower() == arguments[2].ToLower());
+                                        if (c == null)
+                                            SendToConsole("Country not found!");
+                                        else
+                                            Saving.WriteToNodeFile(nf, c);
+                                        nf.SaveFile($"ModEditor\\{arguments[3]}.txt");
+                                    }
+                                    break;
+                            }
+                            break;
+
                         case "savein":
                             if (arguments.Count() != 3)
                                 DisplayOnConsole("Not enough arguments!");
@@ -4768,13 +4816,7 @@ namespace Eu4ModEditor
                                             {
                                                 Path = $"ModEditor\\{arguments[2]}.txt"
                                             };
-                                            foreach (Area a in GlobalVariables.Areas)
-                                            {
-                                                Node n = new Node(a.Name);
-                                                foreach (Province p in a.Provinces)
-                                                    n.AddPureValue(p.ID.ToString());
-                                                nf.MainNode.AddNode(n);
-                                            }                                           
+                                            Saving.WriteToNodeFile(nf, new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Area));                                     
                                             nf.SaveFile($"ModEditor\\{arguments[2]}.txt");
                                         }
                                         break;
@@ -4786,15 +4828,7 @@ namespace Eu4ModEditor
                                             {
                                                 Path = $"ModEditor\\{arguments[2]}.txt"
                                             };
-                                            foreach (Region r in GlobalVariables.Regions)
-                                            {
-                                                Node n = new Node(r.Name);
-                                                Node areas = new Node("areas");
-                                                foreach (Area a in r.Areas)
-                                                    areas.AddPureValue(a.Name);
-                                                n.AddNode(areas);
-                                                nf.MainNode.AddNode(n);
-                                            }
+                                            Saving.WriteToNodeFile(nf, new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Region));
                                             nf.SaveFile($"ModEditor\\{arguments[2]}.txt");
                                         }
                                         break;
@@ -4806,13 +4840,7 @@ namespace Eu4ModEditor
                                             {
                                                 Path = $"ModEditor\\{arguments[2]}.txt"
                                             };
-                                            foreach (Superregion sr in GlobalVariables.Superregions)
-                                            {
-                                                Node n = new Node(sr.Name);
-                                                foreach (Region r in sr.Regions)
-                                                    n.AddPureValue(r.Name);
-                                                nf.MainNode.AddNode(n);
-                                            }
+                                            Saving.WriteToNodeFile(nf, new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Superregion));
                                             nf.SaveFile($"ModEditor\\{arguments[2]}.txt");
                                         }
                                         break;
@@ -4824,13 +4852,7 @@ namespace Eu4ModEditor
                                             {
                                                 Path = $"ModEditor\\{arguments[2]}.txt"
                                             };
-                                            foreach (Continent c in GlobalVariables.Continents)
-                                            {
-                                                Node n = new Node(c.Name);
-                                                foreach (Province p in c.Provinces)
-                                                    n.AddPureValue(p.ID.ToString());
-                                                nf.MainNode.AddNode(n);
-                                            }
+                                            Saving.WriteToNodeFile(nf, new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Continent));
                                             nf.SaveFile($"ModEditor\\{arguments[2]}.txt");
                                         }
                                         break;
@@ -4842,117 +4864,7 @@ namespace Eu4ModEditor
                                             {
                                                 Path = $"ModEditor\\{arguments[2]}.txt"
                                             };
-                                            Node tropical = nf.MainNode.Nodes.Find(x => x.Name == "tropical");
-                                            if (tropical == null)
-                                                tropical = nf.MainNode.AddNode("tropical");
-                                            Node arid = nf.MainNode.Nodes.Find(x => x.Name == "arid");
-                                            if (arid == null)
-                                                arid = nf.MainNode.AddNode("arid");
-                                            Node arctic = nf.MainNode.Nodes.Find(x => x.Name == "arctic");
-                                            if (arctic == null)
-                                                arctic = nf.MainNode.AddNode("arctic");
-                                            Node mild_winter = nf.MainNode.Nodes.Find(x => x.Name == "mild_winter");
-                                            if (mild_winter == null)
-                                                mild_winter = nf.MainNode.AddNode("mild_winter");
-                                            Node normal_winter = nf.MainNode.Nodes.Find(x => x.Name == "normal_winter");
-                                            if (normal_winter == null)
-                                                normal_winter = nf.MainNode.AddNode("normal_winter");
-                                            Node severe_winter = nf.MainNode.Nodes.Find(x => x.Name == "severe_winter");
-                                            if (severe_winter == null)
-                                                severe_winter = nf.MainNode.AddNode("severe_winter");
-                                            Node impassable = nf.MainNode.Nodes.Find(x => x.Name == "impassable");
-                                            if (impassable == null)
-                                                impassable = nf.MainNode.AddNode("impassable");
-                                            Node mild_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "mild_monsoon");
-                                            if (mild_monsoon == null)
-                                                mild_monsoon = nf.MainNode.AddNode("mild_monsoon");
-                                            Node normal_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "normal_monsoon");
-                                            if (normal_monsoon == null)
-                                                normal_monsoon = nf.MainNode.AddNode("normal_monsoon");
-                                            Node severe_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "severe_monsoon");
-                                            if (severe_monsoon == null)
-                                                severe_monsoon = nf.MainNode.AddNode("severe_monsoon");
-                                            foreach (Province p in GlobalVariables.Provinces)
-                                            {
-                                                switch (p.Winter)
-                                                {
-                                                    case 0:
-                                                        mild_winter.RemovePureValue(p.ID.ToString());
-                                                        normal_winter.RemovePureValue(p.ID.ToString());
-                                                        severe_winter.RemovePureValue(p.ID.ToString());
-                                                        break;
-                                                    case 1:
-                                                        mild_winter.AddPureValue(p.ID.ToString(), checkexists: true);
-                                                        normal_winter.RemovePureValue(p.ID.ToString());
-                                                        severe_winter.RemovePureValue(p.ID.ToString());
-                                                        break;
-                                                    case 2:
-                                                        mild_winter.RemovePureValue(p.ID.ToString());
-                                                        normal_winter.AddPureValue(p.ID.ToString(), checkexists: true);
-                                                        severe_winter.RemovePureValue(p.ID.ToString());
-                                                        break;
-                                                    case 3:
-                                                        mild_winter.RemovePureValue(p.ID.ToString());
-                                                        normal_winter.RemovePureValue(p.ID.ToString());
-                                                        severe_winter.AddPureValue(p.ID.ToString(), checkexists: true);
-                                                        break;
-                                                }
-                                                switch (p.Monsoon)
-                                                {
-                                                    case 0:
-                                                        mild_monsoon.RemovePureValue(p.ID.ToString());
-                                                        normal_monsoon.RemovePureValue(p.ID.ToString());
-                                                        severe_monsoon.RemovePureValue(p.ID.ToString());
-                                                        break;
-                                                    case 1:
-                                                        mild_monsoon.AddPureValue(p.ID.ToString(), checkexists: true);
-                                                        normal_monsoon.RemovePureValue(p.ID.ToString());
-                                                        severe_monsoon.RemovePureValue(p.ID.ToString());
-                                                        break;
-                                                    case 2:
-                                                        mild_monsoon.RemovePureValue(p.ID.ToString());
-                                                        normal_monsoon.AddPureValue(p.ID.ToString(), checkexists: true);
-                                                        severe_monsoon.RemovePureValue(p.ID.ToString());
-                                                        break;
-                                                    case 3:
-                                                        mild_monsoon.RemovePureValue(p.ID.ToString());
-                                                        normal_monsoon.RemovePureValue(p.ID.ToString());
-                                                        severe_monsoon.AddPureValue(p.ID.ToString(), checkexists: true);
-                                                        break;
-                                                }
-                                                switch (p.Climate)
-                                                {
-                                                    case 0:
-                                                        tropical.RemovePureValue(p.ID.ToString());
-                                                        arid.RemovePureValue(p.ID.ToString());
-                                                        arctic.RemovePureValue(p.ID.ToString());
-                                                        break;
-                                                    case 1:
-                                                        tropical.AddPureValue(p.ID.ToString(), checkexists: true);
-                                                        arid.RemovePureValue(p.ID.ToString());
-                                                        arctic.RemovePureValue(p.ID.ToString());
-                                                        break;
-                                                    case 2:
-                                                        tropical.RemovePureValue(p.ID.ToString());
-                                                        arid.AddPureValue(p.ID.ToString(), checkexists: true);
-                                                        arctic.RemovePureValue(p.ID.ToString());
-                                                        break;
-                                                    case 3:
-                                                        tropical.RemovePureValue(p.ID.ToString());
-                                                        arid.RemovePureValue(p.ID.ToString());
-                                                        arctic.AddPureValue(p.ID.ToString(), checkexists: true);
-                                                        break;
-                                                }
-                                                switch (p.Climate)
-                                                {
-                                                    case 0:
-                                                        impassable.RemovePureValue(p.ID.ToString());
-                                                        break;
-                                                    case 1:
-                                                        impassable.AddPureValue(p.ID.ToString(), checkexists: true);
-                                                        break;
-                                                }
-                                            }
+                                            Saving.WriteToNodeFile(nf, new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Climate));
                                             nf.SaveFile($"ModEditor\\{arguments[2]}.txt");
                                         }
                                         break;

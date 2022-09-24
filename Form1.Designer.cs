@@ -33,6 +33,15 @@
             this.ProvinceTab = new System.Windows.Forms.TabPage();
             this.ProvinceTabControl = new System.Windows.Forms.TabControl();
             this.MainPage = new System.Windows.Forms.TabPage();
+            this.groupBox24 = new System.Windows.Forms.GroupBox();
+            this.ImpassableBox = new System.Windows.Forms.ComboBox();
+            this.ClimateBox = new System.Windows.Forms.ComboBox();
+            this.MonsoonBox = new System.Windows.Forms.ComboBox();
+            this.WinterBox = new System.Windows.Forms.ComboBox();
+            this.label79 = new System.Windows.Forms.Label();
+            this.label78 = new System.Windows.Forms.Label();
+            this.label77 = new System.Windows.Forms.Label();
+            this.label76 = new System.Windows.Forms.Label();
             this.groupBox16 = new System.Windows.Forms.GroupBox();
             this.label42 = new System.Windows.Forms.Label();
             this.AddBuildingButton = new System.Windows.Forms.Button();
@@ -383,19 +392,11 @@
             this.WinterMapmode = new System.Windows.Forms.Button();
             this.ClimateMapmode = new System.Windows.Forms.Button();
             this.TerrainMapmode = new System.Windows.Forms.Button();
-            this.groupBox24 = new System.Windows.Forms.GroupBox();
-            this.label76 = new System.Windows.Forms.Label();
-            this.label77 = new System.Windows.Forms.Label();
-            this.label78 = new System.Windows.Forms.Label();
-            this.WinterBox = new System.Windows.Forms.ComboBox();
-            this.label79 = new System.Windows.Forms.Label();
-            this.MonsoonBox = new System.Windows.Forms.ComboBox();
-            this.ClimateBox = new System.Windows.Forms.ComboBox();
-            this.ImpassableBox = new System.Windows.Forms.ComboBox();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.ProvinceTabControl.SuspendLayout();
             this.MainPage.SuspendLayout();
+            this.groupBox24.SuspendLayout();
             this.groupBox16.SuspendLayout();
             this.groupBox15.SuspendLayout();
             this.groupBox12.SuspendLayout();
@@ -453,7 +454,6 @@
             this.groupBox19.SuspendLayout();
             this.ChangesTab.SuspendLayout();
             this.SavingTab.SuspendLayout();
-            this.groupBox24.SuspendLayout();
             this.SuspendLayout();
             // 
             // Tabs
@@ -516,6 +516,137 @@
             this.MainPage.TabIndex = 0;
             this.MainPage.Text = "Main";
             this.MainPage.UseVisualStyleBackColor = true;
+            // 
+            // groupBox24
+            // 
+            this.groupBox24.Controls.Add(this.ImpassableBox);
+            this.groupBox24.Controls.Add(this.ClimateBox);
+            this.groupBox24.Controls.Add(this.MonsoonBox);
+            this.groupBox24.Controls.Add(this.WinterBox);
+            this.groupBox24.Controls.Add(this.label79);
+            this.groupBox24.Controls.Add(this.label78);
+            this.groupBox24.Controls.Add(this.label77);
+            this.groupBox24.Controls.Add(this.label76);
+            this.groupBox24.Location = new System.Drawing.Point(274, 325);
+            this.groupBox24.Name = "groupBox24";
+            this.groupBox24.Size = new System.Drawing.Size(260, 142);
+            this.groupBox24.TabIndex = 45;
+            this.groupBox24.TabStop = false;
+            this.groupBox24.Text = "Terrain and Climate";
+            // 
+            // ImpassableBox
+            // 
+            this.ImpassableBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.ImpassableBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.ImpassableBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ImpassableBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.ImpassableBox.FormattingEnabled = true;
+            this.ImpassableBox.Items.AddRange(new object[] {
+            "No",
+            "Yes"});
+            this.ImpassableBox.Location = new System.Drawing.Point(102, 109);
+            this.ImpassableBox.Name = "ImpassableBox";
+            this.ImpassableBox.Size = new System.Drawing.Size(150, 24);
+            this.ImpassableBox.TabIndex = 29;
+            this.ImpassableBox.TabStop = false;
+            this.ImpassableBox.SelectedIndexChanged += new System.EventHandler(this.ImpassableBox_SelectedIndexChanged);
+            // 
+            // ClimateBox
+            // 
+            this.ClimateBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.ClimateBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.ClimateBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ClimateBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.ClimateBox.FormattingEnabled = true;
+            this.ClimateBox.Items.AddRange(new object[] {
+            "Temperate",
+            "Tropical",
+            "Arid",
+            "Arctic"});
+            this.ClimateBox.Location = new System.Drawing.Point(102, 79);
+            this.ClimateBox.Name = "ClimateBox";
+            this.ClimateBox.Size = new System.Drawing.Size(150, 24);
+            this.ClimateBox.TabIndex = 28;
+            this.ClimateBox.TabStop = false;
+            this.ClimateBox.SelectedIndexChanged += new System.EventHandler(this.ClimateBox_SelectedIndexChanged);
+            // 
+            // MonsoonBox
+            // 
+            this.MonsoonBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.MonsoonBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.MonsoonBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.MonsoonBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.MonsoonBox.FormattingEnabled = true;
+            this.MonsoonBox.Items.AddRange(new object[] {
+            "No Monsoon",
+            "Mild Monsoon",
+            "Normal Monsoon",
+            "Severe Monsoon"});
+            this.MonsoonBox.Location = new System.Drawing.Point(102, 47);
+            this.MonsoonBox.Name = "MonsoonBox";
+            this.MonsoonBox.Size = new System.Drawing.Size(150, 24);
+            this.MonsoonBox.TabIndex = 27;
+            this.MonsoonBox.TabStop = false;
+            this.MonsoonBox.SelectedIndexChanged += new System.EventHandler(this.MonsoonBox_SelectedIndexChanged);
+            // 
+            // WinterBox
+            // 
+            this.WinterBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.WinterBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.WinterBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.WinterBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.WinterBox.FormattingEnabled = true;
+            this.WinterBox.Items.AddRange(new object[] {
+            "No Winter",
+            "Mild Winter",
+            "Normal Winter",
+            "Severe Winter"});
+            this.WinterBox.Location = new System.Drawing.Point(102, 17);
+            this.WinterBox.Name = "WinterBox";
+            this.WinterBox.Size = new System.Drawing.Size(150, 24);
+            this.WinterBox.TabIndex = 25;
+            this.WinterBox.TabStop = false;
+            this.WinterBox.SelectedIndexChanged += new System.EventHandler(this.WinterBox_SelectedIndexChanged);
+            // 
+            // label79
+            // 
+            this.label79.AutoSize = true;
+            this.label79.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label79.Location = new System.Drawing.Point(13, 115);
+            this.label79.Name = "label79";
+            this.label79.Size = new System.Drawing.Size(82, 16);
+            this.label79.TabIndex = 26;
+            this.label79.Text = "Impassable:";
+            // 
+            // label78
+            // 
+            this.label78.AutoSize = true;
+            this.label78.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label78.Location = new System.Drawing.Point(13, 82);
+            this.label78.Name = "label78";
+            this.label78.Size = new System.Drawing.Size(56, 16);
+            this.label78.TabIndex = 25;
+            this.label78.Text = "Climate:";
+            // 
+            // label77
+            // 
+            this.label77.AutoSize = true;
+            this.label77.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label77.Location = new System.Drawing.Point(13, 50);
+            this.label77.Name = "label77";
+            this.label77.Size = new System.Drawing.Size(67, 16);
+            this.label77.TabIndex = 24;
+            this.label77.Text = "Monsoon:";
+            // 
+            // label76
+            // 
+            this.label76.AutoSize = true;
+            this.label76.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.label76.Location = new System.Drawing.Point(11, 20);
+            this.label76.Name = "label76";
+            this.label76.Size = new System.Drawing.Size(49, 16);
+            this.label76.TabIndex = 23;
+            this.label76.Text = "Winter:";
             // 
             // groupBox16
             // 
@@ -2273,7 +2404,7 @@
             this.groupBox14.Controls.Add(this.label38);
             this.groupBox14.Location = new System.Drawing.Point(6, 268);
             this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(275, 100);
+            this.groupBox14.Size = new System.Drawing.Size(399, 100);
             this.groupBox14.TabIndex = 42;
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "Government";
@@ -2319,7 +2450,8 @@
             this.GovernmentReformBox.FormattingEnabled = true;
             this.GovernmentReformBox.Location = new System.Drawing.Point(105, 43);
             this.GovernmentReformBox.Name = "GovernmentReformBox";
-            this.GovernmentReformBox.Size = new System.Drawing.Size(154, 24);
+            this.GovernmentReformBox.Size = new System.Drawing.Size(288, 24);
+            this.GovernmentReformBox.Sorted = true;
             this.GovernmentReformBox.TabIndex = 40;
             this.GovernmentReformBox.TabStop = false;
             this.GovernmentReformBox.SelectedIndexChanged += new System.EventHandler(this.GovernmentReformBox_SelectedIndexChanged);
@@ -2341,7 +2473,7 @@
             this.GovernmentTypeBox.FormattingEnabled = true;
             this.GovernmentTypeBox.Location = new System.Drawing.Point(105, 11);
             this.GovernmentTypeBox.Name = "GovernmentTypeBox";
-            this.GovernmentTypeBox.Size = new System.Drawing.Size(154, 24);
+            this.GovernmentTypeBox.Size = new System.Drawing.Size(288, 24);
             this.GovernmentTypeBox.TabIndex = 38;
             this.GovernmentTypeBox.TabStop = false;
             this.GovernmentTypeBox.SelectedIndexChanged += new System.EventHandler(this.GovernmentTypeBox_SelectedIndexChanged);
@@ -4219,137 +4351,6 @@
             this.TerrainMapmode.Text = "Terrain mapmode";
             this.TerrainMapmode.UseVisualStyleBackColor = true;
             // 
-            // groupBox24
-            // 
-            this.groupBox24.Controls.Add(this.ImpassableBox);
-            this.groupBox24.Controls.Add(this.ClimateBox);
-            this.groupBox24.Controls.Add(this.MonsoonBox);
-            this.groupBox24.Controls.Add(this.WinterBox);
-            this.groupBox24.Controls.Add(this.label79);
-            this.groupBox24.Controls.Add(this.label78);
-            this.groupBox24.Controls.Add(this.label77);
-            this.groupBox24.Controls.Add(this.label76);
-            this.groupBox24.Location = new System.Drawing.Point(274, 325);
-            this.groupBox24.Name = "groupBox24";
-            this.groupBox24.Size = new System.Drawing.Size(260, 142);
-            this.groupBox24.TabIndex = 45;
-            this.groupBox24.TabStop = false;
-            this.groupBox24.Text = "Terrain and Climate";
-            // 
-            // label76
-            // 
-            this.label76.AutoSize = true;
-            this.label76.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label76.Location = new System.Drawing.Point(11, 20);
-            this.label76.Name = "label76";
-            this.label76.Size = new System.Drawing.Size(49, 16);
-            this.label76.TabIndex = 23;
-            this.label76.Text = "Winter:";
-            // 
-            // label77
-            // 
-            this.label77.AutoSize = true;
-            this.label77.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label77.Location = new System.Drawing.Point(13, 50);
-            this.label77.Name = "label77";
-            this.label77.Size = new System.Drawing.Size(67, 16);
-            this.label77.TabIndex = 24;
-            this.label77.Text = "Monsoon:";
-            // 
-            // label78
-            // 
-            this.label78.AutoSize = true;
-            this.label78.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label78.Location = new System.Drawing.Point(13, 82);
-            this.label78.Name = "label78";
-            this.label78.Size = new System.Drawing.Size(56, 16);
-            this.label78.TabIndex = 25;
-            this.label78.Text = "Climate:";
-            // 
-            // WinterBox
-            // 
-            this.WinterBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.WinterBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.WinterBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.WinterBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.WinterBox.FormattingEnabled = true;
-            this.WinterBox.Items.AddRange(new object[] {
-            "No Winter",
-            "Mild Winter",
-            "Normal Winter",
-            "Severe Winter"});
-            this.WinterBox.Location = new System.Drawing.Point(102, 17);
-            this.WinterBox.Name = "WinterBox";
-            this.WinterBox.Size = new System.Drawing.Size(150, 24);
-            this.WinterBox.TabIndex = 25;
-            this.WinterBox.TabStop = false;
-            this.WinterBox.SelectedIndexChanged += new System.EventHandler(this.WinterBox_SelectedIndexChanged);
-            // 
-            // label79
-            // 
-            this.label79.AutoSize = true;
-            this.label79.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label79.Location = new System.Drawing.Point(13, 115);
-            this.label79.Name = "label79";
-            this.label79.Size = new System.Drawing.Size(82, 16);
-            this.label79.TabIndex = 26;
-            this.label79.Text = "Impassable:";
-            // 
-            // MonsoonBox
-            // 
-            this.MonsoonBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.MonsoonBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.MonsoonBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.MonsoonBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.MonsoonBox.FormattingEnabled = true;
-            this.MonsoonBox.Items.AddRange(new object[] {
-            "No Monsoon",
-            "Mild Monsoon",
-            "Normal Monsoon",
-            "Severe Monsoon"});
-            this.MonsoonBox.Location = new System.Drawing.Point(102, 47);
-            this.MonsoonBox.Name = "MonsoonBox";
-            this.MonsoonBox.Size = new System.Drawing.Size(150, 24);
-            this.MonsoonBox.TabIndex = 27;
-            this.MonsoonBox.TabStop = false;
-            this.MonsoonBox.SelectedIndexChanged += new System.EventHandler(this.MonsoonBox_SelectedIndexChanged);
-            // 
-            // ClimateBox
-            // 
-            this.ClimateBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.ClimateBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.ClimateBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ClimateBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.ClimateBox.FormattingEnabled = true;
-            this.ClimateBox.Items.AddRange(new object[] {
-            "Temperate",
-            "Tropical",
-            "Arid",
-            "Arctic"});
-            this.ClimateBox.Location = new System.Drawing.Point(102, 79);
-            this.ClimateBox.Name = "ClimateBox";
-            this.ClimateBox.Size = new System.Drawing.Size(150, 24);
-            this.ClimateBox.TabIndex = 28;
-            this.ClimateBox.TabStop = false;
-            this.ClimateBox.SelectedIndexChanged += new System.EventHandler(this.ClimateBox_SelectedIndexChanged);
-            // 
-            // ImpassableBox
-            // 
-            this.ImpassableBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.ImpassableBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.ImpassableBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ImpassableBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.ImpassableBox.FormattingEnabled = true;
-            this.ImpassableBox.Items.AddRange(new object[] {
-            "No",
-            "Yes"});
-            this.ImpassableBox.Location = new System.Drawing.Point(102, 109);
-            this.ImpassableBox.Name = "ImpassableBox";
-            this.ImpassableBox.Size = new System.Drawing.Size(150, 24);
-            this.ImpassableBox.TabIndex = 29;
-            this.ImpassableBox.TabStop = false;
-            this.ImpassableBox.SelectedIndexChanged += new System.EventHandler(this.ImpassableBox_SelectedIndexChanged);
-            // 
             // ModEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4392,6 +4393,8 @@
             this.ProvinceTab.ResumeLayout(false);
             this.ProvinceTabControl.ResumeLayout(false);
             this.MainPage.ResumeLayout(false);
+            this.groupBox24.ResumeLayout(false);
+            this.groupBox24.PerformLayout();
             this.groupBox16.ResumeLayout(false);
             this.groupBox16.PerformLayout();
             this.groupBox15.ResumeLayout(false);
@@ -4488,8 +4491,6 @@
             this.groupBox19.ResumeLayout(false);
             this.ChangesTab.ResumeLayout(false);
             this.SavingTab.ResumeLayout(false);
-            this.groupBox24.ResumeLayout(false);
-            this.groupBox24.PerformLayout();
             this.ResumeLayout(false);
 
         }

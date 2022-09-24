@@ -9,162 +9,152 @@ namespace Eu4ModEditor
 {
     public static class Saving
     {
-        
-        public static void SaveObject(object toSave)
+        //DOESN'T SUPPORT ALL OBJECTS TO SAVE TYPES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        public static void WriteToNodeFile(NodeFile nf, object objectToSave, int option = 0)
         {
-            if(toSave != null)
+            if(objectToSave is Province)
             {
-                if (toSave.GetType() == typeof(Province))
+                Province province = (Province)objectToSave;
+                if (nf == null)
+                    return;
+                if (nf.ReadOnly)
                 {
-                    if (GlobalVariables.ReadOnly[8] && !GlobalVariables.CreateNewFilesReadOnly)
+                    if (!Directory.Exists(GlobalVariables.pathtomod + "history\\"))
+                        Directory.CreateDirectory(GlobalVariables.pathtomod + "history\\");
+                    if (!Directory.Exists(GlobalVariables.pathtomod + "history\\provinces\\"))
+                        Directory.CreateDirectory(GlobalVariables.pathtomod + "history\\provinces\\");
+                    province.HistoryFile = new NodeFile(GlobalVariables.pathtomod + "history\\provinces\\" + province.HistoryFile.Path.Split('\\').Last());
+                    if (province.HistoryFile.LastStatus.HasError)
+                    {
+                        GlobalVariables.MainForm.ShowMessageBox($"File '{province.HistoryFile.Path}' has an error in line {province.HistoryFile.LastStatus.LineError}");
                         return;
-                    Province province = (Province)toSave;
-                    NodeFile nf = province.HistoryFile;
-                    if (nf == null)
-                        return;
-                    if (nf.ReadOnly)
-                    {
-                        if(!Directory.Exists(GlobalVariables.pathtomod + "history\\"))
-                            Directory.CreateDirectory(GlobalVariables.pathtomod + "history\\");
-                        if (!Directory.Exists(GlobalVariables.pathtomod + "history\\provinces\\"))
-                            Directory.CreateDirectory(GlobalVariables.pathtomod + "history\\provinces\\");
-                        province.HistoryFile = new NodeFile(GlobalVariables.pathtomod + "history\\provinces\\" + province.HistoryFile.Path.Split('\\').Last());
-                        if (province.HistoryFile.LastStatus.HasError)
-                        {
-                            GlobalVariables.MainForm.ShowMessageBox($"File '{province.HistoryFile.Path}' has an error in line {province.HistoryFile.LastStatus.LineError}");
-                            return;
-                        }
-                    }                                               
-                    nf.MainNode.Variables.RemoveAll(x => x.Name == "add_core" || x.Name == "discovered_by" || GlobalVariables.Buildings.Any(y=>y.Name == x.Name) || x.Name == "add_claim");
-                    nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "add_core" || x.Name == "discovered_by" || GlobalVariables.Buildings.Any(y => y.Name == x.Name) || x.Name == "add_claim");
-                    foreach (string tag in province.GetCores())
-                    {
-                        nf.MainNode.AddVariable(new Variable("add_core", tag));
                     }
-
-                    foreach (string tag in province.GetClaims())
-                    {
-                        nf.MainNode.AddVariable(new Variable("add_claim", tag));
-                    }
-
-                    foreach (string techgroup in province.GetDiscoveredBy())
-                    {
-                        nf.MainNode.AddVariable(new Variable("discovered_by", techgroup));
-                    }
-                    foreach(Building bl in province.GetBuildings())
-                    {
-                        nf.MainNode.AddVariable(new Variable(bl.Name, "yes"));
-                    }
-
-                    if (province.OwnerCountry != Country.NoCountry && province.OwnerCountry != null)
-                    {
-                        nf.MainNode.ChangeVariable("owner", province.OwnerCountry.Tag, true);
-                    }
-                    else
-                    {
-                        nf.MainNode.Variables.RemoveAll(x => x.Name == "owner" && x.Value != "---");
-                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "owner" && x is Variable && (x as Variable).Value != "---");
-                    }
-
-                    if(province.Tax > 0)
-                        nf.MainNode.ChangeVariable("base_tax", province.Tax.ToString(), true);
-                    if (province.Manpower > 0)
-                        nf.MainNode.ChangeVariable("base_manpower", province.Manpower.ToString(), true);
-                    if (province.Production > 0)
-                        nf.MainNode.ChangeVariable("base_production", province.Production.ToString(), true);
-                    if (province.Culture != Culture.NoCulture && province.Culture != null)
-                    {
-                        nf.MainNode.ChangeVariable("culture", province.Culture.Name, true);
-                    }
-                    else
-                    {
-                        nf.MainNode.Variables.RemoveAll(x => x.Name == "culture");
-                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "culture");
-                    }
-                    if(province.TradeGood != null && province.TradeGood != TradeGood.nothing)
-                        nf.MainNode.ChangeVariable("trade_goods", province.TradeGood.Name, true);
-                    if (province.Religion != null && province.Religion != Religion.NoReligion)
-                        nf.MainNode.ChangeVariable("religion", province.Religion.Name, true);
-                    else
-                    {
-                        nf.MainNode.Variables.RemoveAll(x => x.Name == "religion");
-                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "religion");
-                    }
-                    if (province.HRE)
-                        nf.MainNode.ChangeVariable("hre", "yes", true);
-                    else
-                    {
-                        nf.MainNode.Variables.RemoveAll(x => x.Name == "hre");
-                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "hre");
-                    }
-
-                    if (province.Controller != Country.NoCountry && province.Controller != null)
-                        nf.MainNode.ChangeVariable("controller", province.Controller.Tag, true);
-                    else if (province.OwnerCountry != Country.NoCountry && province.OwnerCountry != null)
-                        nf.MainNode.ChangeVariable("controller", province.OwnerCountry.Tag, true);
-                    else
-                    {
-                        nf.MainNode.Variables.RemoveAll(x => x.Name == "controller" && x.Value != "---");
-                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "controller" && x is Variable && (x as Variable).Value != "---");
-                    }
-                    if (province.Fort)
-                        nf.MainNode.ChangeVariable("fort_15th", "yes", true);
-                    else
-                    {
-                        nf.MainNode.Variables.RemoveAll(x => x.Name == "fort_15th");
-                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "fort_15th");
-                    }
-                    if (province.CenterOfTrade > 0)
-                        nf.MainNode.ChangeVariable("center_of_trade", province.CenterOfTrade + "", true);
-                    else
-                    {
-                        nf.MainNode.Variables.RemoveAll(x => x.Name == "center_of_trade");
-                        nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "center_of_trade");
-                    }
-
-                    if (!province.Sea && !province.Lake && !province.Wasteland)
-                    {
-                        if (province.City)
-                            nf.MainNode.ChangeVariable("is_city", "yes", true);
-                        else
-                            nf.MainNode.ChangeVariable("is_city", "no", true);
-                    }
-
-                    Node n = nf.MainNode.Nodes.Find(x => x.Name == "latent_trade_goods");
-                    if (province.LatentTradeGood != null)
-                    {
-                        if (n != null)
-                        {
-                            n.RemoveAllPureValues();
-                            n.AddPureValue(province.LatentTradeGood.Name);
-                        }
-                        else
-                        {
-                            n = nf.MainNode.AddNode("latent_trade_goods");
-                            n.AddPureValue(province.LatentTradeGood.Name);
-                        }
-                    }
-                    else
-                    {
-                        if (n != null)
-                        {
-                            nf.MainNode.Nodes.Remove(n);
-                            nf.MainNode.ItemOrder.Remove(n);
-                        }
-                    }
-
-
-
-                    nf.SaveFile(province.HistoryFile.Path);
+                }
+                nf.MainNode.Variables.RemoveAll(x => x.Name == "add_core" || x.Name == "discovered_by" || GlobalVariables.Buildings.Any(y => y.Name == x.Name) || x.Name == "add_claim");
+                nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "add_core" || x.Name == "discovered_by" || GlobalVariables.Buildings.Any(y => y.Name == x.Name) || x.Name == "add_claim");
+                foreach (string tag in province.GetCores())
+                {
+                    nf.MainNode.AddVariable(new Variable("add_core", tag));
                 }
 
-                else if (toSave.GetType() == typeof(Country))
+                foreach (string tag in province.GetClaims())
                 {
-                    if (GlobalVariables.ReadOnly[11] && !GlobalVariables.CreateNewFilesReadOnly)
-                        return;
-                    Country country = (Country)toSave;
-                    NodeFile nf = country.HistoryFile;
+                    nf.MainNode.AddVariable(new Variable("add_claim", tag));
+                }
 
+                foreach (string techgroup in province.GetDiscoveredBy())
+                {
+                    nf.MainNode.AddVariable(new Variable("discovered_by", techgroup));
+                }
+                foreach (Building bl in province.GetBuildings())
+                {
+                    nf.MainNode.AddVariable(new Variable(bl.Name, "yes"));
+                }
+
+                if (province.OwnerCountry != Country.NoCountry && province.OwnerCountry != null)
+                {
+                    nf.MainNode.ChangeVariable("owner", province.OwnerCountry.Tag, true);
+                }
+                else
+                {
+                    nf.MainNode.Variables.RemoveAll(x => x.Name == "owner" && x.Value != "---");
+                    nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "owner" && x is Variable && (x as Variable).Value != "---");
+                }
+
+                if (province.Tax > 0)
+                    nf.MainNode.ChangeVariable("base_tax", province.Tax.ToString(), true);
+                if (province.Manpower > 0)
+                    nf.MainNode.ChangeVariable("base_manpower", province.Manpower.ToString(), true);
+                if (province.Production > 0)
+                    nf.MainNode.ChangeVariable("base_production", province.Production.ToString(), true);
+                if (province.Culture != Culture.NoCulture && province.Culture != null)
+                {
+                    nf.MainNode.ChangeVariable("culture", province.Culture.Name, true);
+                }
+                else
+                {
+                    nf.MainNode.Variables.RemoveAll(x => x.Name == "culture");
+                    nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "culture");
+                }
+                if (province.TradeGood != null && province.TradeGood != TradeGood.nothing)
+                    nf.MainNode.ChangeVariable("trade_goods", province.TradeGood.Name, true);
+                if (province.Religion != null && province.Religion != Religion.NoReligion)
+                    nf.MainNode.ChangeVariable("religion", province.Religion.Name, true);
+                else
+                {
+                    nf.MainNode.Variables.RemoveAll(x => x.Name == "religion");
+                    nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "religion");
+                }
+                if (province.HRE)
+                    nf.MainNode.ChangeVariable("hre", "yes", true);
+                else
+                {
+                    nf.MainNode.Variables.RemoveAll(x => x.Name == "hre");
+                    nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "hre");
+                }
+
+                if (province.Controller != Country.NoCountry && province.Controller != null)
+                    nf.MainNode.ChangeVariable("controller", province.Controller.Tag, true);
+                else if (province.OwnerCountry != Country.NoCountry && province.OwnerCountry != null)
+                    nf.MainNode.ChangeVariable("controller", province.OwnerCountry.Tag, true);
+                else
+                {
+                    nf.MainNode.Variables.RemoveAll(x => x.Name == "controller" && x.Value != "---");
+                    nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "controller" && x is Variable && (x as Variable).Value != "---");
+                }
+                if (province.Fort)
+                    nf.MainNode.ChangeVariable("fort_15th", "yes", true);
+                else
+                {
+                    nf.MainNode.Variables.RemoveAll(x => x.Name == "fort_15th");
+                    nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "fort_15th");
+                }
+                if (province.CenterOfTrade > 0)
+                    nf.MainNode.ChangeVariable("center_of_trade", province.CenterOfTrade + "", true);
+                else
+                {
+                    nf.MainNode.Variables.RemoveAll(x => x.Name == "center_of_trade");
+                    nf.MainNode.ItemOrder.RemoveAll(x => x.Name == "center_of_trade");
+                }
+
+                if (!province.Sea && !province.Lake && !province.Wasteland)
+                {
+                    if (province.City)
+                        nf.MainNode.ChangeVariable("is_city", "yes", true);
+                    else
+                        nf.MainNode.ChangeVariable("is_city", "no", true);
+                }
+
+                Node n = nf.MainNode.Nodes.Find(x => x.Name == "latent_trade_goods");
+                if (province.LatentTradeGood != null)
+                {
+                    if (n != null)
+                    {
+                        n.RemoveAllPureValues();
+                        n.AddPureValue(province.LatentTradeGood.Name);
+                    }
+                    else
+                    {
+                        n = nf.MainNode.AddNode("latent_trade_goods");
+                        n.AddPureValue(province.LatentTradeGood.Name);
+                    }
+                }
+                else
+                {
+                    if (n != null)
+                    {
+                        nf.MainNode.Nodes.Remove(n);
+                        nf.MainNode.ItemOrder.Remove(n);
+                    }
+                }
+            }
+
+            else if (objectToSave is Country)
+            {
+                Country country = (Country)objectToSave;
+                if (option == 0)
+                {
+                    
                     if (nf.ReadOnly)
                     {
                         if (!Directory.Exists(GlobalVariables.pathtomod + "history\\"))
@@ -180,7 +170,7 @@ namespace Eu4ModEditor
                         }
                     }
 
-                    if (country.Religion != null && country.Religion != Religion.NoReligion) 
+                    if (country.Religion != null && country.Religion != Religion.NoReligion)
                     {
                         Variable religion = nf.MainNode.Variables.Find(x => x.Name == "religion");
                         if (religion != null)
@@ -254,7 +244,7 @@ namespace Eu4ModEditor
                         else
                         {
                             government = new Variable("government", country.Government.Type);
-                            nf.MainNode.AddVariable(government);                              
+                            nf.MainNode.AddVariable(government);
                         }
                         List<string> startingreforms = new List<string>();
                         GlobalVariables.Governments.ForEach(x => startingreforms.AddRange(x.reforms));
@@ -266,7 +256,7 @@ namespace Eu4ModEditor
                         else
                         {
                             reform = new Variable("add_government_reform", country.GovernmentReform);
-                            nf.MainNode.AddVariable(reform);                                
+                            nf.MainNode.AddVariable(reform);
                         }
                     }
 
@@ -281,11 +271,10 @@ namespace Eu4ModEditor
                         nf.MainNode.AddVariable(governmentrank);
                     }
 
-                    nf.SaveFile(country.HistoryFile.Path);
-
-                    NodeFile cnf = country.CommonFile;
-
-                    if (cnf.ReadOnly)
+                }
+                else if(option == 1)
+                {
+                    if (nf.ReadOnly)
                     {
                         if (!Directory.Exists(GlobalVariables.pathtomod + "common\\"))
                             Directory.CreateDirectory(GlobalVariables.pathtomod + "common\\");
@@ -295,9 +284,9 @@ namespace Eu4ModEditor
                         if (country.CommonFile.LastStatus.HasError)
                             GlobalVariables.MainForm.ShowMessageBox($"File '{country.CommonFile.Path}' has an error in line {country.CommonFile.LastStatus.LineError}");
                     }
-      
 
-                    Variable graphicalculture = cnf.MainNode.Variables.Find(x => x.Name == "graphical_culture");
+
+                    Variable graphicalculture = nf.MainNode.Variables.Find(x => x.Name == "graphical_culture");
                     if (graphicalculture != null)
                     {
                         graphicalculture.Value = country.GraphicalCulture;
@@ -307,8 +296,293 @@ namespace Eu4ModEditor
                         graphicalculture = new Variable("graphical_culture", country.GraphicalCulture);
                         nf.MainNode.AddVariable(graphicalculture);
                     }
+                }
+            }
 
-                    cnf.SaveFile(country.CommonFile.Path);
+            else if(objectToSave is SpecialSavingObject)
+            {
+                switch((objectToSave as SpecialSavingObject).Type)
+                {
+                    case SpecialSavingObject.SavingType.Area:
+                        foreach (Area a in GlobalVariables.Areas)
+                        {
+                            Node n = nf.MainNode.Nodes.Find(x => x.Name == a.Name);
+                            if (n != null)
+                            {
+                                n.RemoveAllPureValues();
+                                foreach (Province p in a.Provinces)
+                                    n.AddPureValue(p.ID.ToString());
+                            }
+                            else
+                            {
+                                n = nf.MainNode.Nodes.Find(x => x.Name == a.OriginalName);
+                                if (n != null)
+                                {
+                                    n.Name = a.Name;
+                                    n.RemoveAllPureValues();
+                                    a.OriginalName = a.Name;
+                                    foreach (Province p in a.Provinces)
+                                        n.AddPureValue(p.ID.ToString());
+                                }
+                                else
+                                {
+                                    n = new Node(a.Name);
+                                    a.OriginalName = a.Name;
+                                    foreach (Province p in a.Provinces)
+                                        n.AddPureValue(p.ID.ToString());
+                                    nf.MainNode.AddNode(n);
+                                }
+                            }
+                        }
+                        nf.MainNode.Nodes.Where(x => !GlobalVariables.Areas.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
+                        break;
+                    case SpecialSavingObject.SavingType.Region:
+                        foreach (Region r in GlobalVariables.Regions)
+                        {
+                            Node pn = nf.MainNode.Nodes.Find(x => x.Name == r.Name);
+                            if (pn != null)
+                            {
+                                Node n = pn.Nodes.Find(x => x.Name == "areas");
+                                if (n == null)
+                                    n = pn.AddNode("areas");
+                                n.RemoveAllPureValues();
+                                foreach (Area a in r.Areas)
+                                    n.AddPureValue(a.Name);
+                            }
+                            else
+                            {
+                                pn = nf.MainNode.Nodes.Find(x => x.Name == r.OriginalName);
+                                if (pn != null)
+                                {
+                                    pn.Name = r.Name;
+                                    Node n = pn.Nodes.Find(x => x.Name == "areas");
+                                    if (n == null)
+                                        n = pn.AddNode("areas");
+                                    n.RemoveAllPureValues();
+                                    r.OriginalName = r.Name;
+                                    foreach (Area a in r.Areas)
+                                        n.AddPureValue(a.Name);
+                                }
+                                else
+                                {
+                                    pn = new Node(r.Name);
+                                    r.OriginalName = r.Name;
+                                    Node n = pn.AddNode("areas");
+                                    foreach (Area a in r.Areas)
+                                        n.AddPureValue(a.Name);
+                                    nf.MainNode.AddNode(pn);
+                                }
+                            }
+                        }
+                        nf.MainNode.Nodes.Where(x => !GlobalVariables.Regions.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
+                        break;
+                    case SpecialSavingObject.SavingType.Continent:
+                        foreach (Continent c in GlobalVariables.Continents)
+                        {
+                            Node n = nf.MainNode.Nodes.Find(x => x.Name == c.Name);
+                            if (n != null)
+                            {
+                                n.RemoveAllPureValues();
+                                foreach (Province p in c.Provinces)
+                                    n.AddPureValue(p.ID.ToString());
+                            }
+                            else
+                            {
+                                n = nf.MainNode.Nodes.Find(x => x.Name == c.OriginalName);
+                                if (n != null)
+                                {
+                                    n.Name = c.Name;
+                                    n.RemoveAllPureValues();
+                                    c.OriginalName = c.Name;
+                                    foreach (Province p in c.Provinces)
+                                        n.AddPureValue(p.ID.ToString());
+                                }
+                                else
+                                {
+                                    n = new Node(c.Name);
+                                    c.OriginalName = c.Name;
+                                    foreach (Province p in c.Provinces)
+                                        n.AddPureValue(p.ID.ToString());
+                                    nf.MainNode.AddNode(n);
+                                }
+                            }
+                        }
+                        nf.MainNode.Nodes.Where(x => !GlobalVariables.Continents.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
+                        break;
+                    case SpecialSavingObject.SavingType.Superregion:
+                        foreach (Superregion sr in GlobalVariables.Superregions)
+                        {
+                            Node n = nf.MainNode.Nodes.Find(x => x.Name == sr.Name);
+                            if (n != null)
+                            {
+                                n.RemoveAllPureValues();
+                                foreach (Region a in sr.Regions)
+                                    n.AddPureValue(a.Name);
+                            }
+                            else
+                            {
+                                n = nf.MainNode.Nodes.Find(x => x.Name == sr.OriginalName);
+                                if (n != null)
+                                {
+                                    n.Name = sr.Name;
+                                    n.RemoveAllPureValues();
+                                    sr.OriginalName = sr.Name;
+                                    foreach (Region a in sr.Regions)
+                                        n.AddPureValue(a.Name);
+                                }
+                                else
+                                {
+                                    n = new Node(sr.Name);
+                                    sr.OriginalName = sr.Name;
+                                    foreach (Region a in sr.Regions)
+                                        n.AddPureValue(a.Name);
+                                    nf.MainNode.AddNode(n);
+                                }
+                            }
+                        }
+                        nf.MainNode.Nodes.Where(x => !GlobalVariables.Superregions.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
+                        break;
+                    case SpecialSavingObject.SavingType.Climate:
+                        {
+                            Node tropical = nf.MainNode.Nodes.Find(x => x.Name == "tropical");
+                            if (tropical == null)
+                                tropical = nf.MainNode.AddNode("tropical");
+                            Node arid = nf.MainNode.Nodes.Find(x => x.Name == "arid");
+                            if (arid == null)
+                                arid = nf.MainNode.AddNode("arid");
+                            Node arctic = nf.MainNode.Nodes.Find(x => x.Name == "arctic");
+                            if (arctic == null)
+                                arctic = nf.MainNode.AddNode("arctic");
+                            Node mild_winter = nf.MainNode.Nodes.Find(x => x.Name == "mild_winter");
+                            if (mild_winter == null)
+                                mild_winter = nf.MainNode.AddNode("mild_winter");
+                            Node normal_winter = nf.MainNode.Nodes.Find(x => x.Name == "normal_winter");
+                            if (normal_winter == null)
+                                normal_winter = nf.MainNode.AddNode("normal_winter");
+                            Node severe_winter = nf.MainNode.Nodes.Find(x => x.Name == "severe_winter");
+                            if (severe_winter == null)
+                                severe_winter = nf.MainNode.AddNode("severe_winter");
+                            Node impassable = nf.MainNode.Nodes.Find(x => x.Name == "impassable");
+                            if (impassable == null)
+                                impassable = nf.MainNode.AddNode("impassable");
+                            Node mild_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "mild_monsoon");
+                            if (mild_monsoon == null)
+                                mild_monsoon = nf.MainNode.AddNode("mild_monsoon");
+                            Node normal_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "normal_monsoon");
+                            if (normal_monsoon == null)
+                                normal_monsoon = nf.MainNode.AddNode("normal_monsoon");
+                            Node severe_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "severe_monsoon");
+                            if (severe_monsoon == null)
+                                severe_monsoon = nf.MainNode.AddNode("severe_monsoon");
+                            foreach (Province p in GlobalVariables.Provinces)
+                            {
+                                switch (p.Winter)
+                                {
+                                    case 0:
+                                        mild_winter.RemovePureValue(p.ID.ToString());
+                                        normal_winter.RemovePureValue(p.ID.ToString());
+                                        severe_winter.RemovePureValue(p.ID.ToString());
+                                        break;
+                                    case 1:
+                                        mild_winter.AddPureValue(p.ID.ToString(), checkexists: true);
+                                        normal_winter.RemovePureValue(p.ID.ToString());
+                                        severe_winter.RemovePureValue(p.ID.ToString());
+                                        break;
+                                    case 2:
+                                        mild_winter.RemovePureValue(p.ID.ToString());
+                                        normal_winter.AddPureValue(p.ID.ToString(), checkexists: true);
+                                        severe_winter.RemovePureValue(p.ID.ToString());
+                                        break;
+                                    case 3:
+                                        mild_winter.RemovePureValue(p.ID.ToString());
+                                        normal_winter.RemovePureValue(p.ID.ToString());
+                                        severe_winter.AddPureValue(p.ID.ToString(), checkexists: true);
+                                        break;
+                                }
+                                switch (p.Monsoon)
+                                {
+                                    case 0:
+                                        mild_monsoon.RemovePureValue(p.ID.ToString());
+                                        normal_monsoon.RemovePureValue(p.ID.ToString());
+                                        severe_monsoon.RemovePureValue(p.ID.ToString());
+                                        break;
+                                    case 1:
+                                        mild_monsoon.AddPureValue(p.ID.ToString(), checkexists: true);
+                                        normal_monsoon.RemovePureValue(p.ID.ToString());
+                                        severe_monsoon.RemovePureValue(p.ID.ToString());
+                                        break;
+                                    case 2:
+                                        mild_monsoon.RemovePureValue(p.ID.ToString());
+                                        normal_monsoon.AddPureValue(p.ID.ToString(), checkexists: true);
+                                        severe_monsoon.RemovePureValue(p.ID.ToString());
+                                        break;
+                                    case 3:
+                                        mild_monsoon.RemovePureValue(p.ID.ToString());
+                                        normal_monsoon.RemovePureValue(p.ID.ToString());
+                                        severe_monsoon.AddPureValue(p.ID.ToString(), checkexists: true);
+                                        break;
+                                }
+                                switch (p.Climate)
+                                {
+                                    case 0:
+                                        tropical.RemovePureValue(p.ID.ToString());
+                                        arid.RemovePureValue(p.ID.ToString());
+                                        arctic.RemovePureValue(p.ID.ToString());
+                                        break;
+                                    case 1:
+                                        tropical.AddPureValue(p.ID.ToString(), checkexists: true);
+                                        arid.RemovePureValue(p.ID.ToString());
+                                        arctic.RemovePureValue(p.ID.ToString());
+                                        break;
+                                    case 2:
+                                        tropical.RemovePureValue(p.ID.ToString());
+                                        arid.AddPureValue(p.ID.ToString(), checkexists: true);
+                                        arctic.RemovePureValue(p.ID.ToString());
+                                        break;
+                                    case 3:
+                                        tropical.RemovePureValue(p.ID.ToString());
+                                        arid.RemovePureValue(p.ID.ToString());
+                                        arctic.AddPureValue(p.ID.ToString(), checkexists: true);
+                                        break;
+                                }
+                                switch (p.Impassable)
+                                {
+                                    case 0:
+                                        impassable.RemovePureValue(p.ID.ToString());
+                                        break;
+                                    case 1:
+                                        impassable.AddPureValue(p.ID.ToString(), checkexists: true);
+                                        break;
+                                }
+                            }
+                        }
+                        break;
+                }
+            }
+
+        }
+
+        public static void SaveObject(object toSave)
+        {
+            if(toSave != null)
+            {
+                if (toSave.GetType() == typeof(Province))
+                {
+                    if (GlobalVariables.ReadOnly[8] && !GlobalVariables.CreateNewFilesReadOnly)
+                        return;
+                    WriteToNodeFile(((Province)toSave).HistoryFile, toSave);
+                    ((Province)toSave).HistoryFile.SaveFile(((Province)toSave).HistoryFile.Path);
+                }
+
+                else if (toSave.GetType() == typeof(Country))
+                {
+                    if (GlobalVariables.ReadOnly[11] && !GlobalVariables.CreateNewFilesReadOnly)
+                        return;
+                    Country country = (Country)toSave;
+                    WriteToNodeFile(country.HistoryFile, country, 0);
+                    WriteToNodeFile(country.CommonFile, country, 1);
+                    country.HistoryFile.SaveFile(country.HistoryFile.Path);
+                    country.CommonFile.SaveFile(country.CommonFile.Path);
                 }
 
                 else if (toSave.GetType() == typeof(SpecialSavingObject))
@@ -332,38 +606,7 @@ namespace Eu4ModEditor
                                     GlobalVariables.MainForm.ShowMessageBox($"File '{nf.Path}' has an error in line {nf.LastStatus.LineError}. Nothing will be saved!");
                                     return;
                                 }
-
-                                foreach (Area a in GlobalVariables.Areas)
-                                {
-                                    Node n = nf.MainNode.Nodes.Find(x => x.Name == a.Name);
-                                    if (n != null)
-                                    {
-                                        n.RemoveAllPureValues();
-                                        foreach (Province p in a.Provinces)
-                                            n.AddPureValue(p.ID.ToString());
-                                    }
-                                    else
-                                    {
-                                        n = nf.MainNode.Nodes.Find(x => x.Name == a.OriginalName);
-                                        if (n != null)
-                                        {
-                                            n.Name = a.Name;
-                                            n.RemoveAllPureValues();
-                                            a.OriginalName = a.Name;
-                                            foreach (Province p in a.Provinces)
-                                                n.AddPureValue(p.ID.ToString());
-                                        }
-                                        else
-                                        {
-                                            n = new Node(a.Name);
-                                            a.OriginalName = a.Name;
-                                            foreach (Province p in a.Provinces)
-                                                n.AddPureValue(p.ID.ToString());
-                                            nf.MainNode.AddNode(n);
-                                        }
-                                    }
-                                }
-                                nf.MainNode.Nodes.Where(x => !GlobalVariables.Areas.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
+                                WriteToNodeFile(nf, toSave);
                                 nf.SaveFile(GlobalVariables.pathtomod + "map\\area.txt");
                             }
                             break;
@@ -382,44 +625,7 @@ namespace Eu4ModEditor
                                     GlobalVariables.MainForm.ShowMessageBox($"File '{nf.Path}' has an error in line {nf.LastStatus.LineError}. Nothing will be saved!");
                                     return;
                                 }
-                                foreach (Region r in GlobalVariables.Regions)
-                                {
-                                    Node pn = nf.MainNode.Nodes.Find(x => x.Name == r.Name);
-                                    if (pn != null)
-                                    {
-                                        Node n = pn.Nodes.Find(x => x.Name == "areas");
-                                        if (n == null)
-                                            n = pn.AddNode("areas");
-                                        n.RemoveAllPureValues();
-                                        foreach (Area a in r.Areas)
-                                            n.AddPureValue(a.Name);
-                                    }
-                                    else
-                                    {
-                                        pn = nf.MainNode.Nodes.Find(x => x.Name == r.OriginalName);
-                                        if (pn != null)
-                                        {                                           
-                                            pn.Name = r.Name;
-                                            Node n = pn.Nodes.Find(x => x.Name == "areas");
-                                            if (n == null)
-                                                n = pn.AddNode("areas");
-                                            n.RemoveAllPureValues();
-                                            r.OriginalName = r.Name;
-                                            foreach (Area a in r.Areas)
-                                                n.AddPureValue(a.Name);
-                                        }
-                                        else
-                                        {
-                                            pn = new Node(r.Name);
-                                            r.OriginalName = r.Name;
-                                            Node n = pn.AddNode("areas");
-                                            foreach (Area a in r.Areas)
-                                                n.AddPureValue(a.Name);
-                                            nf.MainNode.AddNode(pn);
-                                        }
-                                    }
-                                }
-                                nf.MainNode.Nodes.Where(x => !GlobalVariables.Regions.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
+                                WriteToNodeFile(nf, toSave);
                                 nf.SaveFile(GlobalVariables.pathtomod + "map\\region.txt");
                             }
                             break;
@@ -438,37 +644,7 @@ namespace Eu4ModEditor
                                     GlobalVariables.MainForm.ShowMessageBox($"File '{nf.Path}' has an error in line {nf.LastStatus.LineError}. Nothing will be saved!");
                                     return;
                                 }
-                                foreach (Continent c in GlobalVariables.Continents)
-                                {
-                                    Node n = nf.MainNode.Nodes.Find(x => x.Name == c.Name);
-                                    if (n != null)
-                                    {
-                                        n.RemoveAllPureValues();
-                                        foreach (Province p in c.Provinces)
-                                            n.AddPureValue(p.ID.ToString());
-                                    }
-                                    else
-                                    {
-                                        n = nf.MainNode.Nodes.Find(x => x.Name == c.OriginalName);
-                                        if (n != null)
-                                        {
-                                            n.Name = c.Name;
-                                            n.RemoveAllPureValues();
-                                            c.OriginalName = c.Name;
-                                            foreach (Province p in c.Provinces)
-                                                n.AddPureValue(p.ID.ToString());
-                                        }
-                                        else
-                                        {
-                                            n = new Node(c.Name);
-                                            c.OriginalName = c.Name;
-                                            foreach (Province p in c.Provinces)
-                                                n.AddPureValue(p.ID.ToString());
-                                            nf.MainNode.AddNode(n);
-                                        }
-                                    }
-                                }
-                                nf.MainNode.Nodes.Where(x => !GlobalVariables.Continents.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
+                                WriteToNodeFile(nf, toSave);
                                 nf.SaveFile(GlobalVariables.pathtomod + "map\\continent.txt");
                             }
                             break;
@@ -487,37 +663,7 @@ namespace Eu4ModEditor
                                     GlobalVariables.MainForm.ShowMessageBox($"File '{nf.Path}' has an error in line {nf.LastStatus.LineError}. Nothing will be saved!");
                                     return;
                                 }
-                                foreach (Superregion sr in GlobalVariables.Superregions)
-                                {
-                                    Node n = nf.MainNode.Nodes.Find(x => x.Name == sr.Name);
-                                    if (n != null)
-                                    {
-                                        n.RemoveAllPureValues();
-                                        foreach (Region a in sr.Regions)
-                                            n.AddPureValue(a.Name);
-                                    }
-                                    else
-                                    {
-                                        n = nf.MainNode.Nodes.Find(x => x.Name == sr.OriginalName);
-                                        if (n != null)
-                                        {
-                                            n.Name = sr.Name;
-                                            n.RemoveAllPureValues();
-                                            sr.OriginalName = sr.Name;
-                                            foreach (Region a in sr.Regions)
-                                                n.AddPureValue(a.Name);
-                                        }
-                                        else
-                                        {
-                                            n = new Node(sr.Name);
-                                            sr.OriginalName = sr.Name;
-                                            foreach (Region a in sr.Regions)
-                                                n.AddPureValue(a.Name);
-                                            nf.MainNode.AddNode(n);
-                                        }
-                                    }
-                                }
-                                nf.MainNode.Nodes.Where(x => !GlobalVariables.Superregions.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
+                                WriteToNodeFile(nf, toSave);
                                 nf.SaveFile(GlobalVariables.pathtomod + "map\\superregion.txt");
                             }
                             break;
@@ -703,118 +849,7 @@ namespace Eu4ModEditor
                                     GlobalVariables.MainForm.ShowMessageBox($"File '{nf.Path}' has an error in line {nf.LastStatus.LineError}. Nothing will be saved!");
                                     return;
                                 }
-
-                                Node tropical = nf.MainNode.Nodes.Find(x => x.Name == "tropical");
-                                if (tropical == null)
-                                    tropical = nf.MainNode.AddNode("tropical");
-                                Node arid = nf.MainNode.Nodes.Find(x => x.Name == "arid");
-                                if (arid == null)
-                                    arid = nf.MainNode.AddNode("arid");
-                                Node arctic = nf.MainNode.Nodes.Find(x => x.Name == "arctic");
-                                if (arctic == null)
-                                    arctic = nf.MainNode.AddNode("arctic");
-                                Node mild_winter = nf.MainNode.Nodes.Find(x => x.Name == "mild_winter");
-                                if (mild_winter == null)
-                                    mild_winter = nf.MainNode.AddNode("mild_winter");
-                                Node normal_winter = nf.MainNode.Nodes.Find(x => x.Name == "normal_winter");
-                                if (normal_winter == null)
-                                    normal_winter = nf.MainNode.AddNode("normal_winter");
-                                Node severe_winter = nf.MainNode.Nodes.Find(x => x.Name == "severe_winter");
-                                if (severe_winter == null)
-                                    severe_winter = nf.MainNode.AddNode("severe_winter");
-                                Node impassable = nf.MainNode.Nodes.Find(x => x.Name == "impassable");
-                                if (impassable == null)
-                                    impassable = nf.MainNode.AddNode("impassable");
-                                Node mild_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "mild_monsoon");
-                                if (mild_monsoon == null)
-                                    mild_monsoon = nf.MainNode.AddNode("mild_monsoon");
-                                Node normal_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "normal_monsoon");
-                                if (normal_monsoon == null)
-                                    normal_monsoon = nf.MainNode.AddNode("normal_monsoon");
-                                Node severe_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "severe_monsoon");
-                                if (severe_monsoon == null)
-                                    severe_monsoon = nf.MainNode.AddNode("severe_monsoon");
-                                foreach (Province p in GlobalVariables.Provinces)
-                                {
-                                    switch (p.Winter)
-                                    {
-                                        case 0:
-                                            mild_winter.RemovePureValue(p.ID.ToString());
-                                            normal_winter.RemovePureValue(p.ID.ToString());
-                                            severe_winter.RemovePureValue(p.ID.ToString());
-                                            break;
-                                        case 1:
-                                            mild_winter.AddPureValue(p.ID.ToString(), checkexists: true);
-                                            normal_winter.RemovePureValue(p.ID.ToString());
-                                            severe_winter.RemovePureValue(p.ID.ToString());
-                                            break;
-                                        case 2:
-                                            mild_winter.RemovePureValue(p.ID.ToString());
-                                            normal_winter.AddPureValue(p.ID.ToString(), checkexists: true);
-                                            severe_winter.RemovePureValue(p.ID.ToString());
-                                            break;
-                                        case 3:
-                                            mild_winter.RemovePureValue(p.ID.ToString());
-                                            normal_winter.RemovePureValue(p.ID.ToString());
-                                            severe_winter.AddPureValue(p.ID.ToString(), checkexists: true);
-                                            break;
-                                    }
-                                    switch (p.Monsoon)
-                                    {
-                                        case 0:
-                                            mild_monsoon.RemovePureValue(p.ID.ToString());
-                                            normal_monsoon.RemovePureValue(p.ID.ToString());
-                                            severe_monsoon.RemovePureValue(p.ID.ToString());
-                                            break;
-                                        case 1:
-                                            mild_monsoon.AddPureValue(p.ID.ToString(), checkexists: true);
-                                            normal_monsoon.RemovePureValue(p.ID.ToString());
-                                            severe_monsoon.RemovePureValue(p.ID.ToString());
-                                            break;
-                                        case 2:
-                                            mild_monsoon.RemovePureValue(p.ID.ToString());
-                                            normal_monsoon.AddPureValue(p.ID.ToString(), checkexists: true);
-                                            severe_monsoon.RemovePureValue(p.ID.ToString());
-                                            break;
-                                        case 3:
-                                            mild_monsoon.RemovePureValue(p.ID.ToString());
-                                            normal_monsoon.RemovePureValue(p.ID.ToString());
-                                            severe_monsoon.AddPureValue(p.ID.ToString(), checkexists: true);
-                                            break;
-                                    }
-                                    switch (p.Climate)
-                                    {
-                                        case 0:
-                                            tropical.RemovePureValue(p.ID.ToString());
-                                            arid.RemovePureValue(p.ID.ToString());
-                                            arctic.RemovePureValue(p.ID.ToString());
-                                            break;
-                                        case 1:
-                                            tropical.AddPureValue(p.ID.ToString(), checkexists: true);
-                                            arid.RemovePureValue(p.ID.ToString());
-                                            arctic.RemovePureValue(p.ID.ToString());
-                                            break;
-                                        case 2:
-                                            tropical.RemovePureValue(p.ID.ToString());
-                                            arid.AddPureValue(p.ID.ToString(), checkexists: true);
-                                            arctic.RemovePureValue(p.ID.ToString());
-                                            break;
-                                        case 3:
-                                            tropical.RemovePureValue(p.ID.ToString());
-                                            arid.RemovePureValue(p.ID.ToString());
-                                            arctic.AddPureValue(p.ID.ToString(), checkexists: true);
-                                            break;
-                                    }
-                                    switch (p.Climate)
-                                    {
-                                        case 0:
-                                            impassable.RemovePureValue(p.ID.ToString());
-                                            break;
-                                        case 1:
-                                            impassable.AddPureValue(p.ID.ToString(), checkexists: true);
-                                            break;
-                                    }
-                                }
+                                WriteToNodeFile(nf, toSave);                      
                                 nf.SaveFile(GlobalVariables.pathtomod + "map\\climate.txt");
                             }
                             break;
