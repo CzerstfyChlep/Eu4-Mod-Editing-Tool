@@ -5,12 +5,21 @@ namespace Eu4ModEditor
 {
     public class Continent
     {
+        /// <summary>
+        /// Adds to GlobalVariables.Continents and generates a random colour
+        /// </summary>
+        /// <param name="name"></param>
         public Continent(string name)
         {
             Name = name;
             GlobalVariables.Continents.Add(this);
             Color = Color.FromArgb(GlobalVariables.GlobalRandom.Next(10, 245), GlobalVariables.GlobalRandom.Next(10, 245), GlobalVariables.GlobalRandom.Next(10, 245));
         }
+        /// <summary>
+        /// Adds to GlobalVariables.Continents and generates a random colour but DOESN'T set provinces' continent
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="provinces"></param>
         public Continent(string name, List<Province> provinces)
         {
             Name = name;

@@ -36,8 +36,14 @@ namespace Eu4ModEditor
         }
         public NodeFile(string file, bool readonl = false, bool dontread = false)
         {
-            if(!dontread)
+            if (!dontread)
+            {
                 LastStatus = ReadFile(file);
+            }
+            else
+            {
+                MainNode = new Node("__MainNode");
+            }
             ReadOnly = readonl;
             Path = file;
         }

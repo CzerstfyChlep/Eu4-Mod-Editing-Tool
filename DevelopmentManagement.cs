@@ -8,6 +8,9 @@ namespace Eu4ModEditor
 {
     public class DevelopmentManagement
     {
+        /// <summary>
+        /// Removes one development of each type if it is higher than 1.
+        /// </summary>
         public static void RemoveAll()
         {
             //TODO
@@ -22,6 +25,9 @@ namespace Eu4ModEditor
                     ModEditor.form.ProvinceManpowerNumeric.DownButton();
             }
         }
+        /// <summary>
+        /// Sets development to 1-6
+        /// </summary>
         public static void RandomHighDev()
         {
             //TODO
@@ -74,6 +80,9 @@ namespace Eu4ModEditor
                     ModEditor.form.ProvinceManpowerNumeric.Value = 6;
             }
         }
+        /// <summary>
+        /// Sets development to 1-4
+        /// </summary>
         public static void RandomMedDev()
         {
             //TODO
@@ -113,6 +122,9 @@ namespace Eu4ModEditor
                     ModEditor.form.ProvinceManpowerNumeric.Value = 4;
             }
         }
+        /// <summary>
+        /// Sets development to 1-3
+        /// </summary>
         public static void RandomLowDev()
         {
             //TODO
@@ -146,6 +158,9 @@ namespace Eu4ModEditor
                     ModEditor.form.ProvinceManpowerNumeric.Value = 3;
             }
         }
+        /// <summary>
+        /// Adds one development of each type
+        /// </summary>
         public static void DevIncreaseAll()
         {
             //TODO
@@ -157,6 +172,9 @@ namespace Eu4ModEditor
                 ModEditor.form.ProvinceManpowerNumeric.UpButton();
             }
         }
+        /// <summary>
+        /// Sets all development to 0. Updates tradegooddev
+        /// </summary>
         public static void ClearDev()
         {
             //TODO

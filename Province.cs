@@ -8,6 +8,9 @@ namespace Eu4ModEditor
 
     public class ProvinceDateEntry
     {
+        /// <summary>
+        /// All entry types that can be used in dates.
+        /// </summary>
         public enum EntryType { CoresAdd, CoresRemove, ClaimsAdd, ClaimsRemove, Owner, Controller,
             Tax, Production, Manpower, Capital, CenterOfTrade, HRE, BuildingAdd, BuildingRemove,
             TradeGood, LatentTradeGood, Religion, Culture, DiscoveredByAdd, DiscoveredByRemove, Revolt

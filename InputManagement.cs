@@ -22,6 +22,8 @@ namespace Eu4ModEditor
 
         public static void __HandleMoveButton(string name)
         {
+            //TODO
+            //Make this smaller for smaller windows
             if (name == "RightButton")
                 GlobalVariables.CameraPosition.X += 220;
             else if (name == "LeftButton" && GlobalVariables.CameraPosition.X > 0)
@@ -45,10 +47,7 @@ namespace Eu4ModEditor
         public static void HandleMoveButton(object sender, EventArgs e)
         {
             Button senderbutton = (Button)sender;
-            __HandleMoveButton(senderbutton.Name);
-            //1090 770
-           
-            
+            __HandleMoveButton(senderbutton.Name);                    
         }
 
         public static void HandleKeyUp(object sender, KeyEventArgs e)
@@ -76,11 +75,8 @@ namespace Eu4ModEditor
                             __HandleMoveButton("DownButton");
                             break;
                         case Keys.Q:
-                            //DevelopmentManagement.ClearDev();
                             break;
-                    }
-             
-                
+                    }                           
             }
             else if(!ModEditor.boxes.Any(x => x.DroppedDown) && ModEditor.textboxes.Any(x => x.Focused))
             {

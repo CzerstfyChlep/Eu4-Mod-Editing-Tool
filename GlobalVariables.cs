@@ -12,8 +12,8 @@ namespace Eu4ModEditor
 {
     public static class GlobalVariables
     {
-        public static bool __DEBUG = false;
-        public static string Version = "1.1.10";
+        public static bool __DEBUG = true;
+        public static string Version = "1.1.12";
 
         public static List<Province> Provinces = new List<Province>();
         public static Dictionary<string, Province> ColorToProvince = new Dictionary<string, Province>();
@@ -43,7 +43,6 @@ namespace Eu4ModEditor
         public static List<TradeGood> TradeGoods = new List<TradeGood>();
         public static List<TradeGood> LatentTradeGoods = new List<TradeGood>();
         public static Random GlobalRandom = new Random();
-        //public static Province ClickedProvince;
         public static string pathtomod = "";
         public static string pathtogame = "";
         public static Point CameraPosition = new Point(0, 0);

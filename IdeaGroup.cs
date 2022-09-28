@@ -3,6 +3,8 @@
 
 namespace Eu4ModEditor
 {
+    //TODO
+    //Implenent that
     public class IdeaGroup
     {
         public List<string> allowedTags = new List<string>();

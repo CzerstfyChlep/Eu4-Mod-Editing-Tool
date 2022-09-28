@@ -3,6 +3,9 @@
 
 namespace Eu4ModEditor
 {
+    /// <summary>
+    /// Not fully implemented yet.
+    /// </summary>
     public class CountryModifier
     {
         public string Name = "";

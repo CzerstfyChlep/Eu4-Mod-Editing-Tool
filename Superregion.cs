@@ -11,6 +11,11 @@ namespace Eu4ModEditor
     {
         public string Name = "";
         public string OriginalName = "";
+
+        //TODO 
+        //Implement that fully
+        public bool RestrictCharter = false;
+
         public List<Region> Regions = new List<Region>();
         public Color Color;
         public Superregion(string name, List<Region> list)

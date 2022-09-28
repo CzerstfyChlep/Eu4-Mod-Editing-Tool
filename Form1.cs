@@ -4122,6 +4122,15 @@ namespace Eu4ModEditor
 
         #endregion
 
+        #region OnExitCrash
+        
+        public void ExitingFunction()
+        {
+
+        }
+
+        #endregion
+
         #region Focus lost
         private void FocusLost (object sender, EventArgs e)
         {

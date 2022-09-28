@@ -6,13 +6,39 @@ namespace Eu4ModEditor
 {
     public class Country
     {
+        /// <summary>
+        /// The tag currently in editor
+        /// </summary>
         public string Tag = "";
+        /// <summary>
+        /// The tag last saved in country's files
+        /// </summary>
         public string OriginalTag = "";
+        /// <summary>
+        /// The name currently in editor
+        /// </summary>
         public string FullName = "";
+        /// <summary>
+        /// The name last saved in country's files
+        /// </summary>
         public string OriginalFullName = "";
+
+        /// <summary>
+        /// Colour of a country set in common/countries
+        /// </summary>
         public Color Color = Color.Black;
+        /// <summary>
+        /// All provinces belonging to a country
+        /// </summary>
         public List<Province> Provinces = new List<Province>();
+        /// <summary>
+        /// Capital province of a country
+        /// </summary>
         public Province Capital;
+
+        /// <summary>
+        /// Government of a country. Uses internal variables.
+        /// </summary>
         public Government Government
         {
             get
@@ -26,6 +52,42 @@ namespace Eu4ModEditor
                 Variables["Government"] = value;
             }
         }
+        /// <summary>
+        /// First government reform of a country. Uses internal variables.
+        /// </summary>
+        public string GovernmentReform
+        {
+            get
+            {
+                return Variables["GovernmentReform"] as string;
+            }
+            set
+            {
+                if (GlobalVariables.FullyLoaded)
+                    GlobalVariables.Changes.Add(new VariableChange(this, "GovernmentReform", Variables["GovernmentReform"], value));
+                Variables["GovernmentReform"] = value;
+            }
+        }
+        /// <summary>
+        /// Government rank of a country. Uses internal variables.
+        /// </summary>
+        public int GovernmentRank
+        {
+            get
+            {
+                return (int)Variables["GovernmentRank"];
+            }
+            set
+            {
+                if (GlobalVariables.FullyLoaded)
+                    GlobalVariables.Changes.Add(new VariableChange(this, "GovernmentRank", Variables["GovernmentRank"], value));
+                Variables["GovernmentRank"] = value;
+            }
+        }
+
+        /// <summary>
+        /// Primary culture of a country. Uses internal variables.
+        /// </summary>
         public Culture PrimaryCulture
         {
             get
@@ -39,6 +101,9 @@ namespace Eu4ModEditor
                 Variables["PrimaryCulture"] = value;
             }
         }
+        /// <summary>
+        /// Technology group of a country. Uses internal variables.
+        /// </summary>
         public string TechnologyGroup
         {
             get
@@ -52,6 +117,9 @@ namespace Eu4ModEditor
                 Variables["TechnologyGroup"] = value;
             }
         }
+        /// <summary>
+        /// Religion of a country. Uses internal variables.
+        /// </summary>
         public Religion Religion
         {
             get
@@ -66,36 +134,43 @@ namespace Eu4ModEditor
             }
         }
 
-
+        /// <summary>
+        /// History file currently used to read from and save to.
+        /// </summary>
         public NodeFile HistoryFile;
+        /// <summary>
+        /// Common file currently used to read from and save to.
+        /// </summary>
         public NodeFile CommonFile;
+        /// <summary>
+        /// Tags file that has this country's tag in it.
+        /// </summary>
         public NodeFile CountryTagsFile;
 
-        //public string HistoryFile;
-        //public bool HistoryFileGame = false;
-        //public string CommonFile;
-        //public bool CommonFileGame = false;
-
+        /// <summary>
+        /// List of monarch names with chances and regal numbers.
+        /// </summary>
         public List<MonarchName> MonarchNames = new List<MonarchName>();
+        /// <summary>
+        /// Simple list of leader names.
+        /// </summary>
         public List<string> LeaderNames = new List<string>();
+        /// <summary>
+        /// Simple list of ship names.
+        /// </summary>
         public List<string> ShipNames = new List<string>();
+        /// <summary>
+        /// Simple list of army names.
+        /// </summary>
         public List<string> ArmyNames = new List<string>();
+        /// <summary>
+        /// Simple list of fleet names.
+        /// </summary>
         public List<string> FleetNames = new List<string>();
 
-
-        public string GovernmentReform
-        {
-            get
-            {
-                return Variables["GovernmentReform"] as string;
-            }
-            set
-            {
-                if (GlobalVariables.FullyLoaded)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "GovernmentReform", Variables["GovernmentReform"], value));
-                Variables["GovernmentReform"] = value;
-            }
-        }
+        /// <summary>
+        /// OBSOLETE!!!
+        /// </summary>
         public int CapitalID
         {
             get
@@ -109,19 +184,11 @@ namespace Eu4ModEditor
                 Variables["CapitalID"] = value;
             }
         }
-        public int GovernmentRank
-        {
-            get
-            {
-                return (int)Variables["GovernmentRank"];
-            }
-            set
-            {
-                if (GlobalVariables.FullyLoaded)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "GovernmentRank", Variables["GovernmentRank"], value));
-                Variables["GovernmentRank"] = value;
-            }
-        }
+
+
+        /// <summary>
+        /// Graphical culture of country. Uses internal variables. Currently only static set.
+        /// </summary>
         public string GraphicalCulture
         {
             get
@@ -135,12 +202,26 @@ namespace Eu4ModEditor
                 Variables["GraphicalCulture"] = value;
             }
         }
+
+        //TODO
+        //Either remove or fully implement NoCountry
+        /// <summary>
+        /// A replacement of null. Currently not fully implemented
+        /// </summary>
         public static Country NoCountry = new Country();
+
+        /// <summary>
+        /// Returns the name of a country
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return FullName;
         }
 
+        /// <summary>
+        /// Internal variables.
+        /// </summary>
         public Dictionary<string, object> Variables = new Dictionary<string, object>();
 
         public Country()
@@ -155,6 +236,10 @@ namespace Eu4ModEditor
             Variables.Add("GraphicalCulture", "westerngfx");
         }
 
+
+        /// <summary>
+        /// Returns total development of all provinces in it (dynamic).
+        /// </summary>
         public int TotalDevelopment
         {
             get
