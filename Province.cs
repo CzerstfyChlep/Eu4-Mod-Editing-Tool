@@ -429,11 +429,17 @@ namespace Eu4ModEditor
         public Point Pixel = new Point();
         public List<Point> Pixels = new List<Point>();
         public List<Point> BorderPixels = new List<Point>();
+        public Rectangle ContainingRectangle;
         public Point Center = new Point();
         public Color c;
 
-        //public string HistoryFile;
-        //public bool HistoryFileGame = false;
+        public Color MainColor;
+        public Color MainStripes;
+        public Color VerticalStripes;
+
+        public Color OldMainColor;
+        public Color OldMainStripes;
+        public Color OldVerticalStripes;
 
         public NodeFile HistoryFile;
 
@@ -459,12 +465,13 @@ namespace Eu4ModEditor
             }
             set
             {
-                //if (GlobalVariables.FullyLoaded)
-                //    GlobalVariables.Changes.Add(new VariableChange(this, "Area", Variables["Area"], value));
-                Variables["Area"] = value;
                 if (GlobalVariables.FullyLoaded)
-                    if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Area))
-                        GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Area));
+                    GlobalVariables.Changes.Add(new VariableChange(this, "Area", Variables["Area"], value));
+                if (Variables["Area"] != null)
+                    (Variables["Area"] as Area).Provinces.Remove(this);
+                Variables["Area"] = value;
+                if (value != null)
+                    value.Provinces.Add(this);
             }
         }
 
@@ -476,12 +483,13 @@ namespace Eu4ModEditor
             }
             set
             {
-                //if(GlobalVariables.FullyLoaded)
-                //    GlobalVariables.Changes.Add(new VariableChange(this, "Continent", Variables["Continent"], value));
+                if (GlobalVariables.FullyLoaded)
+                    GlobalVariables.Changes.Add(new VariableChange(this, "Continent", Variables["Continent"], value));
+                if (Variables["Continent"] != null)
+                    (Variables["Continent"] as Continent).Provinces.Remove(this);
                 Variables["Continent"] = value;
-                if(GlobalVariables.FullyLoaded)
-                    if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Continent))
-                        GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Continent));
+                if (value != null)
+                    value.Provinces.Add(this);
             }
         }
 
@@ -493,10 +501,10 @@ namespace Eu4ModEditor
             }
             set
             {
-                Variables["Climate"] = value;
                 if (GlobalVariables.FullyLoaded)
                     if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Climate))
                         GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Climate));
+                Variables["Climate"] = value;
             }
         }
         public int Winter

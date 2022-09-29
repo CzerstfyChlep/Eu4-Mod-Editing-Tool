@@ -10,6 +10,13 @@ namespace Eu4ModEditor
     public static class Saving
     {
         //DOESN'T SUPPORT ALL OBJECTS TO SAVE TYPES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            /// <summary>
+            /// Accepts only Province, Country, Area, Region, Superregion, Continent and Climate
+            /// </summary>
+            /// <param name="nf"></param>
+            /// <param name="objectToSave"></param>
+            /// <param name="option"></param>
         public static void WriteToNodeFile(NodeFile nf, object objectToSave, int option = 0)
         {
             if(objectToSave is Province)
@@ -527,7 +534,7 @@ namespace Eu4ModEditor
             {
                 if (toSave.GetType() == typeof(Province))
                 {
-                    if (GlobalVariables.ReadOnly[8] && !GlobalVariables.CreateNewFilesReadOnly)
+                    if (GlobalVariables.ReadOnly[(int)GlobalVariables.LoadFilesOrder.historyProvinces] && !GlobalVariables.CreateNewFilesReadOnly)
                         return;
                     Province province = (Province)toSave;
                     if (province.HistoryFile.ReadOnly)
@@ -549,37 +556,46 @@ namespace Eu4ModEditor
 
                 else if (toSave.GetType() == typeof(Country))
                 {
-                    if (GlobalVariables.ReadOnly[11] && !GlobalVariables.CreateNewFilesReadOnly)
-                        return;
+                    bool countryComPriv = true;
+                    bool countryHisPriv = true;
+                    if (GlobalVariables.ReadOnly[(int)GlobalVariables.LoadFilesOrder.historyCountries] && !GlobalVariables.CreateNewFilesReadOnly)
+                        countryHisPriv = false;
+                    if (GlobalVariables.ReadOnly[(int)GlobalVariables.LoadFilesOrder.commonCountries] && !GlobalVariables.CreateNewFilesReadOnly)
+                        countryComPriv = false;
                     Country country = (Country)toSave;
-                    if (country.HistoryFile.ReadOnly)
+                    if (countryHisPriv)
                     {
-                        if (!Directory.Exists(GlobalVariables.pathtomod + "history\\"))
-                            Directory.CreateDirectory(GlobalVariables.pathtomod + "history\\");
-                        if (!Directory.Exists(GlobalVariables.pathtomod + "history\\countries\\"))
-                            Directory.CreateDirectory(GlobalVariables.pathtomod + "history\\countries\\");
-                        country.HistoryFile = new NodeFile(GlobalVariables.pathtomod + "history\\countries\\" + country.HistoryFile.Path.Split('\\').Last());
-                        if (country.HistoryFile.LastStatus.HasError)
+                        if (country.HistoryFile.ReadOnly)
                         {
-                            GlobalVariables.MainForm.ShowMessageBox($"File '{country.HistoryFile.Path}' has an error in line {country.HistoryFile.LastStatus.LineError}");
-                            return;
+                            if (!Directory.Exists(GlobalVariables.pathtomod + "history\\"))
+                                Directory.CreateDirectory(GlobalVariables.pathtomod + "history\\");
+                            if (!Directory.Exists(GlobalVariables.pathtomod + "history\\countries\\"))
+                                Directory.CreateDirectory(GlobalVariables.pathtomod + "history\\countries\\");
+                            country.HistoryFile = new NodeFile(GlobalVariables.pathtomod + "history\\countries\\" + country.HistoryFile.Path.Split('\\').Last());
+                            if (country.HistoryFile.LastStatus.HasError)
+                            {
+                                GlobalVariables.MainForm.ShowMessageBox($"File '{country.HistoryFile.Path}' has an error in line {country.HistoryFile.LastStatus.LineError}");
+                                return;
+                            }
                         }
+                        WriteToNodeFile(country.HistoryFile, country, 0);
+                        country.HistoryFile.SaveFile(country.HistoryFile.Path);
                     }
-                    if (country.CommonFile.ReadOnly)
+                    if (countryComPriv)
                     {
-                        if (!Directory.Exists(GlobalVariables.pathtomod + "common\\"))
-                            Directory.CreateDirectory(GlobalVariables.pathtomod + "common\\");
-                        if (!Directory.Exists(GlobalVariables.pathtomod + "common\\countries\\"))
-                            Directory.CreateDirectory(GlobalVariables.pathtomod + "common\\countries\\");
-                        country.CommonFile = new NodeFile(GlobalVariables.pathtomod + "common\\countries\\" + country.CommonFile.Path.Split('\\').Last());
-                        if (country.CommonFile.LastStatus.HasError)
-                            GlobalVariables.MainForm.ShowMessageBox($"File '{country.CommonFile.Path}' has an error in line {country.CommonFile.LastStatus.LineError}");
+                        if (country.CommonFile.ReadOnly)
+                        {
+                            if (!Directory.Exists(GlobalVariables.pathtomod + "common\\"))
+                                Directory.CreateDirectory(GlobalVariables.pathtomod + "common\\");
+                            if (!Directory.Exists(GlobalVariables.pathtomod + "common\\countries\\"))
+                                Directory.CreateDirectory(GlobalVariables.pathtomod + "common\\countries\\");
+                            country.CommonFile = new NodeFile(GlobalVariables.pathtomod + "common\\countries\\" + country.CommonFile.Path.Split('\\').Last());
+                            if (country.CommonFile.LastStatus.HasError)
+                                GlobalVariables.MainForm.ShowMessageBox($"File '{country.CommonFile.Path}' has an error in line {country.CommonFile.LastStatus.LineError}");
+                        }
+                        WriteToNodeFile(country.CommonFile, country, 1);
+                        country.CommonFile.SaveFile(country.CommonFile.Path);
                     }
-
-                    WriteToNodeFile(country.HistoryFile, country, 0);
-                    WriteToNodeFile(country.CommonFile, country, 1);
-                    country.HistoryFile.SaveFile(country.HistoryFile.Path);
-                    country.CommonFile.SaveFile(country.CommonFile.Path);
                 }
 
                 else if (toSave.GetType() == typeof(SpecialSavingObject))
@@ -848,6 +864,60 @@ namespace Eu4ModEditor
                                 }
                                 WriteToNodeFile(nf, toSave);                      
                                 nf.SaveFile(GlobalVariables.pathtomod + "map\\climate.txt");
+                            }
+                            break;
+                        case SpecialSavingObject.SavingType.TradeNode:
+                            {
+                                if (GlobalVariables.ReadOnly[(int)GlobalVariables.LoadFilesOrder.tradenodes] && !GlobalVariables.CreateNewFilesReadOnly)
+                                    return;                                     
+                                NodeFile nf = new NodeFile();
+                                List<Tradenode> left = new List<Tradenode>();
+                                left.AddRange(GlobalVariables.TradeNodes);
+                                List<Tradenode> done = new List<Tradenode>();
+                                do
+                                {
+                                    foreach (Tradenode tn in left)
+                                    {
+                                        if (tn.Incoming.Any(x => !done.Contains(x)))
+                                            continue;
+                                        Node n = new Node(tn.Name);
+                                        if (tn.Location != null)
+                                            n.AddVariable("location", tn.Location.ID + "");
+                                        else if (tn.Provinces.Any())
+                                            n.AddVariable("location", tn.Provinces[0].ID + "");
+                                        if (tn.Inland)
+                                            n.AddVariable("inland", "yes");
+                                        if (!tn.Destination.Any())
+                                            n.AddVariable("end", "yes");
+                                        Node cl = new Node("color");
+                                        cl.AddPureValue(tn.Color.R + "");
+                                        cl.AddPureValue(tn.Color.G + "");
+                                        cl.AddPureValue(tn.Color.B + "");
+
+                                        n.AddNode(cl);
+                                        foreach (Destination ds in tn.Destination)
+                                        {
+                                            Node des = new Node("outgoing");
+                                            des.AddVariable("name", "\"" + ds.TradeNode.Name + "\"");
+                                            Node path = new Node("path");
+                                            foreach (string s in ds.Path)
+                                                path.AddPureValue(s);
+                                            des.AddNode(path);
+                                            Node control = new Node("control");
+                                            foreach (string s in ds.Control)
+                                                control.AddPureValue(s);
+                                            des.AddNode(control);
+                                            n.AddNode(des);
+                                        }
+                                        Node members = new Node("members");
+                                        tn.Provinces.ForEach(x => members.AddPureValue(x.ID + ""));
+                                        n.AddNode(members);
+                                        nf.MainNode.AddNode(n);
+                                        done.Add(tn);
+                                    }
+                                    left.RemoveAll(x => done.Contains(x));
+                                } while (left.Any());
+                                nf.SaveFile(GlobalVariables.pathtomod + "common\\tradenodes\\00_tradenodes.txt");
                             }
                             break;
                     }                
@@ -1149,7 +1219,7 @@ namespace Eu4ModEditor
 
         public class SpecialSavingObject
         {
-            public enum SavingType { Area, Region, Continent, Superregion, TradeCompany, TagFile, Climate, Terrain }
+            public enum SavingType { Area, Region, Continent, Superregion, TradeCompany, TagFile, Climate, Terrain, TradeNode }
             public SavingType Type;
             public SpecialSavingObject(SavingType sv)
             {

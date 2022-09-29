@@ -242,7 +242,6 @@
             this.TradeGoodsTab = new System.Windows.Forms.TabPage();
             this.TradeGoodsInfoPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.TradeNodesTab = new System.Windows.Forms.TabPage();
-            this.SaveTradeNodeFile = new System.Windows.Forms.Button();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.AddTradeNodeDestClickButton = new System.Windows.Forms.Button();
             this.label25 = new System.Windows.Forms.Label();
@@ -2785,7 +2784,6 @@
             // 
             // TradeNodesTab
             // 
-            this.TradeNodesTab.Controls.Add(this.SaveTradeNodeFile);
             this.TradeNodesTab.Controls.Add(this.groupBox8);
             this.TradeNodesTab.Controls.Add(this.groupBox7);
             this.TradeNodesTab.Location = new System.Drawing.Point(4, 22);
@@ -2794,16 +2792,6 @@
             this.TradeNodesTab.TabIndex = 4;
             this.TradeNodesTab.Text = "Trade Nodes";
             this.TradeNodesTab.UseVisualStyleBackColor = true;
-            // 
-            // SaveTradeNodeFile
-            // 
-            this.SaveTradeNodeFile.Location = new System.Drawing.Point(16, 573);
-            this.SaveTradeNodeFile.Name = "SaveTradeNodeFile";
-            this.SaveTradeNodeFile.Size = new System.Drawing.Size(533, 23);
-            this.SaveTradeNodeFile.TabIndex = 24;
-            this.SaveTradeNodeFile.Text = "Save trade nodes file";
-            this.SaveTradeNodeFile.UseVisualStyleBackColor = true;
-            this.SaveTradeNodeFile.Click += new System.EventHandler(this.SaveTradeNodeFile_Click);
             // 
             // groupBox8
             // 
@@ -2993,6 +2981,7 @@
             this.TradeNodeDestinationsBox.Name = "TradeNodeDestinationsBox";
             this.TradeNodeDestinationsBox.Size = new System.Drawing.Size(347, 61);
             this.TradeNodeDestinationsBox.TabIndex = 24;
+            
             // 
             // label20
             // 
@@ -4590,7 +4579,6 @@
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.TextBox TradeNodeProvinceLocationBox;
         private System.Windows.Forms.Button RemoveTradeNodeButton;
-        private System.Windows.Forms.Button SaveTradeNodeFile;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.TextBox TradeNodeProvincesBox;
         private System.Windows.Forms.Button AddTradeNodeDestClickButton;

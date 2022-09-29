@@ -510,7 +510,6 @@ namespace Eu4ModEditor
                 case UpdateMapOptions.DiscoveredBy:
                     GlobalVariables.DiscoveredByBitmap = new LockBitmap(new Bitmap(GlobalVariables.BaseWhiteProvincesBitmap.source, GlobalVariables.BaseWhiteProvincesBitmap.Width, GlobalVariables.BaseWhiteProvincesBitmap.Height));
                     GlobalVariables.DiscoveredByBitmap.LockBits();
-
                     foreach (Province p in provinces)
                     {
                         bool ctr = false;

@@ -477,7 +477,7 @@ namespace Eu4ModEditor
             {
                 if (GlobalVariables.TradeNodes.IndexOf(GlobalVariables.ClickedProvinces[0].TradeNode) + 1 != ProvinceTradeNodeBox.SelectedIndex)
                 {
-                    ChangeValueInternally(ProvinceTradeNodeBox, GlobalVariables.TradeNodes.IndexOf(GlobalVariables.ClickedProvinces[0].TradeNode) + 1);
+                    ChangeValueInternally(ProvinceTradeNodeBox, GlobalVariables.ClickedProvinces[0].TradeNode);
                 }
                 //TODO
                 //Why is this here
@@ -654,7 +654,7 @@ namespace Eu4ModEditor
                     Country ct = change.Object as Country;
                     gb.Text = "Country " + ct.Tag;
                 }
-                gb.Size = new Size(507, 37);
+                gb.Size = new Size(507, 57);
                 ChangesLayoutPanel.Controls.Add(gb);
 
                 Label varlab = new Label();
@@ -664,7 +664,7 @@ namespace Eu4ModEditor
                 gb.Controls.Add(varlab);
 
                 Label oldlab = new Label();
-                oldlab.Location = new Point(114, 16);
+                oldlab.Location = new Point(126, 16);
                 oldlab.AutoSize = true;
                 if (change.PreviousValue != null)
                 {
@@ -696,7 +696,7 @@ namespace Eu4ModEditor
 
                 Label newlab = new Label();
                 newlab.AutoSize = true;
-                newlab.Location = new Point(230, 16);
+                newlab.Location = new Point(126, 36);
                 if (change.CurrentValue != null)
                 {
                     if (change.CurrentValue is Religion)
@@ -727,16 +727,21 @@ namespace Eu4ModEditor
                 Button keep = new Button();
                 keep.Location = new Point(348, 10);
                 keep.Text = "Keep";
-                keep.Size = new Size(75, 21);
+                keep.Size = new Size(75, 41);
                 keep.Tag = GlobalVariables.Changes.IndexOf(change);
                 keep.Click += KeepAndSave;
 
                 gb.Controls.Add(keep);
 
+                //TODO
+                //REVERTING CHANGES DOESN'T DO EVERYTHING
+                //EXAMPLE: REVERTING OWNER DOESN'T REMOVE THE PROVINE FROM COUNTRY
+
+
                 Button revert = new Button();
                 revert.Location = new Point(428, 10);
                 revert.Text = "Revert";
-                revert.Size = new Size(75, 21);
+                revert.Size = new Size(75, 41);
                 revert.Tag = GlobalVariables.Changes.IndexOf(change);
                 revert.Click += Revert;
                 gb.Controls.Add(revert);
@@ -862,6 +867,10 @@ namespace Eu4ModEditor
                         case Saving.SpecialSavingObject.SavingType.Climate:
                             name = "Climate file";
                             path = GlobalVariables.pathtomod + "map\\climate.txt";
+                            break;
+                        case Saving.SpecialSavingObject.SavingType.TradeNode:
+                            name = "Tradenode files";
+                            path = GlobalVariables.pathtomod + "common\\tradenodes\\";
                             break;
                     }
                 }
@@ -1582,12 +1591,7 @@ namespace Eu4ModEditor
                     int index = AreaBox.Items.Count - 2;
                     foreach (Province p in GlobalVariables.ClickedProvinces)
                     {
-                        if (p.Area != null)
-                            p.Area.Provinces.Remove(p);
                         p.Area = GlobalVariables.Areas[index];
-                        GlobalVariables.Areas[index].Provinces.Add(p);
-                        //if (!GlobalVariables.ToUpdate.Contains(p))
-                        // GlobalVariables.ToUpdate.Add(p);
                     }
                     MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Area);
                     if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area)
@@ -1683,6 +1687,8 @@ namespace Eu4ModEditor
             MapManagement.UpdateMap(tn.Provinces, MapManagement.UpdateMapOptions.TradeNode);
             if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
                 UpdateMap();
+            if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.TradeNode))
+                GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.TradeNode));
         }
         public void TradeNodeClick(object sender, MouseEventArgs e)
         {
@@ -1705,6 +1711,8 @@ namespace Eu4ModEditor
                     if (!tn.Destination.Any(x => x.TradeNode == tr) && tn != tr && !tn.Incoming.Contains(tr))
                         AddTradeNodeDestinationBox.Items.Add(tr.Name);
                 }
+                if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.TradeNode))
+                    GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.TradeNode));
             }
         }
         private void TradeNodeNameSaveButton_Click(object sender, EventArgs e)
@@ -1724,6 +1732,9 @@ namespace Eu4ModEditor
             GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Name = ChangeTradeNodeNameBox.Text.ToLower().Replace(' ', '_');
             TradeNodeBox.Items[TradeNodeBox.SelectedIndex] = ChangeTradeNodeNameBox.Text.ToLower().Replace(' ', '_');
             ProvinceTradeNodeBox.Items[TradeNodeBox.SelectedIndex] = ChangeTradeNodeNameBox.Text.ToLower().Replace(' ', '_');
+
+            if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.TradeNode))
+                GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.TradeNode));
         }
         private void AddTradeNodeDestinationButton_Click(object sender, EventArgs e)
         {
@@ -1742,6 +1753,8 @@ namespace Eu4ModEditor
             MapManagement.UpdateMap(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeNode);
             if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
                 UpdateMap();
+            if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.TradeNode))
+                GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.TradeNode));
         }
         private void ChangeTradeNodeColorButton_Click(object sender, EventArgs e)
         {
@@ -1755,6 +1768,8 @@ namespace Eu4ModEditor
                 MapManagement.UpdateMap(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeNode);
                 if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
                     UpdateMap();
+                if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.TradeNode))
+                    GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.TradeNode));
             }
         }
         private void TradeNodeLocationSetAsCliecked_Click(object sender, EventArgs e)
@@ -1775,6 +1790,8 @@ namespace Eu4ModEditor
                 MapManagement.UpdateMap(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeNode);
                 if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
                     UpdateMap();
+                if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.TradeNode))
+                    GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.TradeNode));
             }
 
         }
@@ -1793,6 +1810,8 @@ namespace Eu4ModEditor
             MapManagement.UpdateMap(GlobalVariables.TradeNodes[TradeNodeBox.SelectedIndex - 1].Provinces, MapManagement.UpdateMapOptions.TradeNode);
             if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
                 UpdateMap();
+            if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.TradeNode))
+                GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.TradeNode));
         }
         private void TradeNodeSelectAllProvinces_Click(object sender, EventArgs e)
         {
@@ -1821,6 +1840,8 @@ namespace Eu4ModEditor
             TradeNodeBox.Items.Remove(tn.Name);
             ProvinceTradeNodeBox.Items.Remove(tn.Name);
             TradeNodeBox.SelectedIndex = 0;
+            if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.TradeNode))
+                GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.TradeNode));
 
         }
         private void TradeNodeColorButton_Click(object sender, EventArgs e)
@@ -1834,59 +1855,6 @@ namespace Eu4ModEditor
         private void TradeNodeRandomColorButton_Click(object sender, EventArgs e)
         {
             TradeNodeColorButton.BackColor = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
-        }
-        private void SaveTradeNodeFile_Click(object sender, EventArgs e)
-        {
-            if (GlobalVariables.ReadOnly[12])
-                return;
-            NodeFile nf = new NodeFile();
-            List<Tradenode> left = new List<Tradenode>();
-            left.AddRange(GlobalVariables.TradeNodes);
-            List<Tradenode> done = new List<Tradenode>();
-            do
-            {
-                foreach (Tradenode tn in left)
-                {
-                    if (tn.Incoming.Any(x => !done.Contains(x)))
-                        continue;
-                    Node n = new Node(tn.Name);
-                    if (tn.Location != null)
-                        n.AddVariable("location", tn.Location.ID + "");
-                    else if (tn.Provinces.Any())
-                        n.AddVariable("location", tn.Provinces[0].ID + "");
-                    if (tn.Inland)
-                        n.AddVariable("inland", "yes");
-                    if (!tn.Destination.Any())
-                        n.AddVariable("end", "yes");                      
-                    Node cl = new Node("color");
-                    cl.AddPureValue(tn.Color.R + "");
-                    cl.AddPureValue(tn.Color.G + "");
-                    cl.AddPureValue(tn.Color.B + "");
-                    
-                    n.AddNode(cl);
-                    foreach (Destination ds in tn.Destination)
-                    {
-                        Node des = new Node("outgoing");
-                        des.AddVariable("name", "\"" + ds.TradeNode.Name + "\"");
-                        Node path = new Node("path");
-                        foreach (string s in ds.Path)
-                            path.AddPureValue(s);
-                        des.AddNode(path);
-                        Node control = new Node("control");
-                        foreach (string s in ds.Control)
-                            control.AddPureValue(s);
-                        des.AddNode(control);
-                        n.AddNode(des);
-                    }
-                    Node members = new Node("members");
-                    tn.Provinces.ForEach(x => members.AddPureValue(x.ID + ""));
-                    n.AddNode(members);
-                    nf.MainNode.AddNode(n);
-                    done.Add(tn);
-                }
-                left.RemoveAll(x => done.Contains(x));
-            } while (left.Any());
-            nf.SaveFile(GlobalVariables.pathtomod + "common\\tradenodes\\00_tradenodes.txt");
         }
         private void AddTradeNodeDestClickButton_Click(object sender, EventArgs e)
         {
@@ -1926,10 +1894,7 @@ namespace Eu4ModEditor
                     int index = ContinentBox.Items.Count - 2;
                     foreach (Province p in GlobalVariables.ClickedProvinces)
                     {
-                        if (p.Continent != null)
-                            p.Continent.Provinces.Remove(p);
                         p.Continent = GlobalVariables.Continents[index];
-                        GlobalVariables.Continents[index].Provinces.Add(p);
                         if (!GlobalVariables.ToUpdate.Contains(p))
                             GlobalVariables.ToUpdate.Add(p);
                     }
@@ -2867,34 +2832,10 @@ namespace Eu4ModEditor
         {
             if (GlobalVariables.InternalChanges)
                 return;
-
-            if (GlobalVariables.ClickedProvinces.Any())
-            {
-                int index = ProvinceTradeNodeBox.SelectedIndex - 1;
-                List<Province> provincestoupdate = new List<Province>();
-                foreach (Province p in GlobalVariables.ClickedProvinces)
-                {
-                    if (p.TradeNode != null)
-                    {
-                        p.TradeNode.Provinces.Remove(p);
-                    }
-                    if (index == -1)
-                        p.TradeNode = null;
-                    else
-                    {
-                        p.TradeNode = GlobalVariables.TradeNodes[index];
-                        GlobalVariables.TradeNodes[index].Provinces.Add(p);
-                    }
-
-                }
-
-                provincestoupdate = provincestoupdate.Distinct().ToList();
-                //Saving.SaveThingsToUpdate();
-                MapManagement.UpdateMap(provincestoupdate, MapManagement.UpdateMapOptions.TradeNode);
-                if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
-                    UpdateMap();
-
-            }
+            if(ProvinceTradeNodeBox.SelectedItem is string)
+                ChangeProvinceInfo(ChangeProvinceMode.TradeNode, null);
+            else
+                ChangeProvinceInfo(ChangeProvinceMode.TradeNode, ProvinceTradeNodeBox.SelectedItem);
         }
         private void TradeNodeBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -2919,8 +2860,6 @@ namespace Eu4ModEditor
                 int index = ContinentBox.SelectedIndex - 1;
                 foreach (Province p in GlobalVariables.ClickedProvinces)
                 {
-                    if (p.Continent != null)
-                        p.Continent.Provinces.Remove(p);
                     if (index == -1)
                     {
                         p.Continent = null;
@@ -2928,10 +2867,7 @@ namespace Eu4ModEditor
                     else
                     {
                         p.Continent = GlobalVariables.Continents[index];
-                        GlobalVariables.Continents[index].Provinces.Add(p);
                     }
-                    //if (!GlobalVariables.ToUpdate.Contains(p))
-                    //GlobalVariables.ToUpdate.Add(p);
                 }
                 MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.Continent);
                 if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent)
@@ -3629,7 +3565,7 @@ namespace Eu4ModEditor
         }
         #endregion
 
-        public enum ChangeProvinceMode { CoT, Fort, HRE, Religion, Culture, DiscoveredBy, DiscoveredByOwner, Area, Owner, Controller, City, Building, Core, Claim, CoreOwner, Superregion, Region, Continent };
+        public enum ChangeProvinceMode { CoT, Fort, HRE, Religion, Culture, DiscoveredBy, DiscoveredByOwner, Area, Owner, Controller, City, Building, Core, Claim, CoreOwner, Superregion, Region, Continent, TradeNode };
 
         #region Functions
         public void ChangeProvinceInfo(ChangeProvinceMode mode, object change, object secondvalue = null)
@@ -3639,6 +3575,29 @@ namespace Eu4ModEditor
                 ApplyTo.AddRange(GlobalVariables.ClickedProvinces);
             switch (mode)
             {
+                case ChangeProvinceMode.TradeNode:
+                    {
+                        List<Province> provincestoupdate = new List<Province>();
+                        Tradenode tochange = (Tradenode)change;
+                        foreach (Province p in ApplyTo)
+                        {
+                            if (p.TradeNode != null)
+                            {
+                                p.TradeNode.Provinces.Remove(p);
+                            }                            
+                            if (p.TradeNode != tochange)
+                                provincestoupdate.Add(p);
+                            p.TradeNode = tochange;
+                            if(tochange != null)
+                                tochange.Provinces.Add(p);
+                        }
+                        provincestoupdate = provincestoupdate.Distinct().ToList();
+                        MapManagement.UpdateMap(provincestoupdate, MapManagement.UpdateMapOptions.TradeNode);
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
+                            UpdateMap();
+                    }
+                    break;
+
                 case ChangeProvinceMode.CoT:
                     foreach (Province p in ApplyTo)
                     {
@@ -3729,12 +3688,9 @@ namespace Eu4ModEditor
                     int index = (int)change;
                     foreach (Province p in ApplyTo)
                     {
-                        if (p.Area != null)
-                            p.Area.Provinces.Remove(p);
                         if (index != -1)
                         {
                             p.Area = GlobalVariables.Areas[index];
-                            GlobalVariables.Areas[index].Provinces.Add(p);
                         }
                         else
                             p.Area = null;
@@ -3848,75 +3804,79 @@ namespace Eu4ModEditor
                     }
                     break;
                 case ChangeProvinceMode.Superregion:
-                    int indexsuperregion = (int)change;
-                    List<Province> provincestoupdatesuperregion = new List<Province>();
-                    foreach (Province p in ApplyTo)
                     {
-                        if (p.Area != null)
+                        int indexsuperregion = (int)change;
+                        List<Province> provincestoupdatesuperregion = new List<Province>();
+                        foreach (Province p in ApplyTo)
                         {
-                            if (p.Area.Region != null)
+                            if (p.Area != null)
                             {
-                                foreach(Area a in p.Area.Region.Areas)
-                                    provincestoupdatesuperregion.AddRange(a.Provinces);
-                                if (p.Area.Region.Superregion != null)
+                                if (p.Area.Region != null)
                                 {
-                                    p.Area.Region.Superregion.Regions.Remove(p.Area.Region);
-                                }
+                                    foreach (Area a in p.Area.Region.Areas)
+                                        provincestoupdatesuperregion.AddRange(a.Provinces);
+                                    if (p.Area.Region.Superregion != null)
+                                    {
+                                        p.Area.Region.Superregion.Regions.Remove(p.Area.Region);
+                                    }
 
-                                if (indexsuperregion == -1)
-                                {
-                                    p.Area.Region.Superregion = null;
-                                }
-                                else
-                                {
-                                    p.Area.Region.Superregion = GlobalVariables.Superregions[indexsuperregion];
-                                    GlobalVariables.Superregions[indexsuperregion].Regions.Add(p.Area.Region);
+                                    if (indexsuperregion == -1)
+                                    {
+                                        p.Area.Region.Superregion = null;
+                                    }
+                                    else
+                                    {
+                                        p.Area.Region.Superregion = GlobalVariables.Superregions[indexsuperregion];
+                                        GlobalVariables.Superregions[indexsuperregion].Regions.Add(p.Area.Region);
+                                    }
                                 }
                             }
                         }
+                        if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Superregion))
+                            GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Superregion));
+                        provincestoupdatesuperregion = provincestoupdatesuperregion.Distinct().ToList();
+                        MapManagement.UpdateMap(provincestoupdatesuperregion, MapManagement.UpdateMapOptions.Superregion);
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Superregion)
+                            UpdateMap();
                     }
-                    if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Superregion))
-                        GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Superregion));
-                    provincestoupdatesuperregion = provincestoupdatesuperregion.Distinct().ToList();
-                    MapManagement.UpdateMap(provincestoupdatesuperregion, MapManagement.UpdateMapOptions.Superregion);
-                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Superregion)
-                        UpdateMap();
                     break;
                 case ChangeProvinceMode.Region:
-                    int indexregion = (int)change;
-                    List<Province> provincestoupdate = new List<Province>();
-                    foreach (Province p in ApplyTo)
                     {
-
-                        if (p.Area != null)
+                        int indexregion = (int)change;
+                        List<Province> provincestoupdate = new List<Province>();
+                        foreach (Province p in ApplyTo)
                         {
-                            provincestoupdate.AddRange(p.Area.Provinces);
-                            if (p.Area.Region != null)
-                            {
-                                p.Area.Region.Areas.Remove(p.Area);
-                            }
 
-                            if (indexregion == -1)
+                            if (p.Area != null)
                             {
-                                p.Area.Region = null;
-                            }
+                                provincestoupdate.AddRange(p.Area.Provinces);
+                                if (p.Area.Region != null)
+                                {
+                                    p.Area.Region.Areas.Remove(p.Area);
+                                }
 
-                            else
-                            {
-                                p.Area.Region = GlobalVariables.Regions[indexregion];
-                                GlobalVariables.Regions[indexregion].Areas.Add(p.Area);
+                                if (indexregion == -1)
+                                {
+                                    p.Area.Region = null;
+                                }
+
+                                else
+                                {
+                                    p.Area.Region = GlobalVariables.Regions[indexregion];
+                                    GlobalVariables.Regions[indexregion].Areas.Add(p.Area);
+                                }
                             }
                         }
+
+                        provincestoupdate = provincestoupdate.Distinct().ToList();
+
+                        if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Region))
+                            GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Region));
+
+                        MapManagement.UpdateMap(provincestoupdate, MapManagement.UpdateMapOptions.Region);
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region)
+                            UpdateMap();
                     }
-
-                    provincestoupdate = provincestoupdate.Distinct().ToList();
-
-                    if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Region))
-                        GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Region));
-
-                    MapManagement.UpdateMap(provincestoupdate, MapManagement.UpdateMapOptions.Region);
-                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Region)
-                        UpdateMap();
                     break;
             }
         }
@@ -3969,7 +3929,7 @@ namespace Eu4ModEditor
             {
                 if (value is int)
                 {
-                    if ((int)value == -1)
+                    if ((int)value < 0)
                         ((ComboBox)control).SelectedIndex = 0;
                     else
                         ((ComboBox)control).SelectedIndex = (int)value;
@@ -4018,6 +3978,8 @@ namespace Eu4ModEditor
                 if (!start.Destination.Any(x => x.TradeNode == tnn) && start != tnn)
                     AddTradeNodeDestinationBox.Items.Add(tnn.Name);
             }
+            if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.TradeNode))
+                GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.TradeNode));
         }
         
         public void ChangeDarkMode()
@@ -4045,14 +4007,41 @@ namespace Eu4ModEditor
                 else
                     newList.Add(change);
             }
+            newList = newList.Where(x => x.PreviousValue != x.CurrentValue).ToList();
             GlobalVariables.Changes.Clear();
             GlobalVariables.Changes.AddRange(newList);
         }
+        
         public void KeepAndSave(object sender, EventArgs e)
         {
             int index = (int)(sender as Control).Tag;
-            if (!GlobalVariables.Saves.Contains(GlobalVariables.Changes[index].Object))
-                GlobalVariables.Saves.Add(GlobalVariables.Changes[index].Object);
+            switch (GlobalVariables.Changes[index].VariableName)
+            {
+                case "TradeNode":
+                    {
+                        if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.TradeNode))
+                            GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.TradeNode));
+                    }
+                    break;
+                case "Area":
+                    {
+                        if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Area))
+                            GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Area));
+                    }
+                    break;
+                case "Continent":
+                    {
+                        if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Continent))
+                            GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Continent));
+                    }
+                    break;
+                default:
+                    {
+                        if (!GlobalVariables.Saves.Contains(GlobalVariables.Changes[index].Object))
+                            GlobalVariables.Saves.Add(GlobalVariables.Changes[index].Object);
+                    }
+                    break;
+            }          
             GlobalVariables.Changes.RemoveAt((int)(sender as Control).Tag);
             UpdateChangesTab();
             UpdateSavesTab();
@@ -4893,7 +4882,5 @@ namespace Eu4ModEditor
                 ConsoleInputBox.Text = "";
             }
         }
-
-
     }
 }

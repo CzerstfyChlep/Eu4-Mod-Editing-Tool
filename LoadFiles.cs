@@ -979,7 +979,7 @@ namespace Eu4ModEditor
                                     OriginalName = n.Name
                                 };
                                 foreach (Province pro in a.Provinces)
-                                    pro.Area = a;
+                                    pro.Variables["Area"] = a;
                             }
                         }
                     }
@@ -1027,7 +1027,7 @@ namespace Eu4ModEditor
                                 Continent c = new Continent(n.Name, ctp);
                                 c.OriginalName = n.Name;
                                 foreach (Province pr in c.Provinces)
-                                    pr.Continent = c;
+                                    pr.Variables["Continent"] = c;
                             }
                         }
                     }
@@ -1717,6 +1717,13 @@ namespace Eu4ModEditor
                         {
                             if (p.Pixels.Any())
                             {
+
+                                int minX = p.Pixels.Min(x => x.X);
+                                int minY = p.Pixels.Min(x => x.Y);
+                                int maxX = p.Pixels.Max(x => x.X);
+                                int maxY = p.Pixels.Max(x => x.Y);
+                                p.ContainingRectangle = new Rectangle(minX, minY, maxX - minX, maxY - minY);
+
                                 int X = 0;
                                 int Y = 0;
                                 int N = 0;
@@ -3067,9 +3074,10 @@ namespace Eu4ModEditor
                     }
                     foreach (Tradenode tn in GlobalVariables.TradeNodes)
                     {
-                        ModEditor.form.ProvinceTradeNodeBox.Items.Add(tn.Name);
+                        ModEditor.form.ProvinceTradeNodeBox.Items.Add(tn);
                         ModEditor.form.TradeNodeBox.Items.Add(tn.Name);
                     }
+                    ModEditor.form.ProvinceTradeNodeBox.Sorted = true;
                     foreach (Area a in GlobalVariables.Areas)
                         ModEditor.form.AreaBox.Items.Add(a.Name);
                     foreach (Region r in GlobalVariables.Regions)
