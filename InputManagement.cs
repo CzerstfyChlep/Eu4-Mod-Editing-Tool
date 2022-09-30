@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using System.Drawing;
+using System.Diagnostics;
 
 namespace Eu4ModEditor
 {
@@ -22,6 +24,9 @@ namespace Eu4ModEditor
 
         public static void __HandleMoveButton(string name)
         {
+
+            Point CameraPositionFirst = GlobalVariables.CameraPosition;
+
             //TODO
             //Make this smaller for smaller windows
             if (name == "RightButton")
@@ -40,7 +45,30 @@ namespace Eu4ModEditor
                 GlobalVariables.CameraPosition.Y = GlobalVariables.ProvincesMap.Height - GlobalVariables.MapDrawingHeight;
             else if (GlobalVariables.CameraPosition.Y < 0)
                 GlobalVariables.CameraPosition.Y = 0;
-           
+
+            Rectangle toDraw = new Rectangle();
+
+            int XDifference = GlobalVariables.CameraPosition.X - CameraPositionFirst.X;
+            int YDifference = GlobalVariables.CameraPosition.Y - CameraPositionFirst.Y;
+
+            if (XDifference < 0)
+            {
+                toDraw = new Rectangle(GlobalVariables.CameraPosition, new Size(XDifference*-1, GlobalVariables.MapDrawingHeight));
+            }
+            else if (XDifference > 0)
+            {
+                toDraw = new Rectangle(CameraPositionFirst.X + GlobalVariables.MapDrawingWidth, GlobalVariables.CameraPosition.Y, XDifference, GlobalVariables.MapDrawingHeight);
+            }
+            else if (YDifference < 0)
+            {
+                toDraw = new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, YDifference*-1));
+            }
+            else if (YDifference > 0)
+            {
+                toDraw = new Rectangle(GlobalVariables.CameraPosition.X, CameraPositionFirst.Y + GlobalVariables.MapDrawingHeight, GlobalVariables.MapDrawingWidth, YDifference);
+            }
+
+            MapManagement.DrawPixelsOnMap(new List<Rectangle> { toDraw });
             ModEditor.UpdateMap();
         }
 

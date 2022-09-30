@@ -12,7 +12,7 @@ namespace Eu4ModEditor
             switch (snd.Name)
             {
                 case "ProvincesMapmodeButton":
-                    GlobalVariables.mapmode = MapManagement.UpdateMapOptions.Provinces;
+                    GlobalVariables.mapmode = MapManagement.UpdateMapOptions.Provinces;                   
                     break;
                 case "DevelopmentMapmode":
                     GlobalVariables.mapmode = MapManagement.UpdateMapOptions.Development;
@@ -72,6 +72,8 @@ namespace Eu4ModEditor
                     GlobalVariables.mapmode = MapManagement.UpdateMapOptions.Terrain;
                     break;
             }
+            MapManagement.UpdateProvinceColors(GlobalVariables.Provinces, GlobalVariables.mapmode);
+            MapManagement.DrawPixelsOnMap(new List<System.Drawing.Rectangle> { new System.Drawing.Rectangle(GlobalVariables.CameraPosition, new System.Drawing.Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)) });
             ModEditor.UpdateMap();
         }
     }

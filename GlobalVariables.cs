@@ -39,6 +39,9 @@ namespace Eu4ModEditor
         public static LockBitmap ClimateLocked;
         public static LockBitmap WinterLocked;
         public static LockBitmap TerrainLocked;
+
+        public static LockBitmap DrawingMain;
+
         public static List<Task<Dictionary<int, List<Point>>>> MapLines = new List<Task<Dictionary<int, List<Point>>>>();
         public static List<TradeGood> TradeGoods = new List<TradeGood>();
         public static List<TradeGood> LatentTradeGoods = new List<TradeGood>();

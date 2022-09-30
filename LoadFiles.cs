@@ -1717,7 +1717,6 @@ namespace Eu4ModEditor
                         {
                             if (p.Pixels.Any())
                             {
-
                                 int minX = p.Pixels.Min(x => x.X);
                                 int minY = p.Pixels.Min(x => x.Y);
                                 int maxX = p.Pixels.Max(x => x.X);
@@ -2937,131 +2936,20 @@ namespace Eu4ModEditor
                     foreach (Province p in GlobalVariables.Provinces)
                     {
                         p.BorderPixels = GraphicsMethods.CreateBorders(p);
+                        p.NonBorderPixels = p.Pixels.Except(p.BorderPixels).ToList();
                     }
                     MapManagement.CreateClickMask();
                 });
                 umapmisc.Start();
                 await umapmisc;
 
-
-
                 List<Task> MapTasks = new List<Task>();
                 progress.UpdateProgress(18, 0);
                 Task umapdev = new Task(() =>
                 {
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Development);
                 });
                 umapdev.Start();
                 MapTasks.Add(umapdev);
-                Task umaptradegood = new Task(() =>
-                {
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.TradeGood);
-                });
-                umaptradegood.Start();
-                MapTasks.Add(umaptradegood);
-                Task umapreligion = new Task(() =>
-                {
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Religion);
-                });
-                umapreligion.Start();
-                MapTasks.Add(umapreligion);
-                Task umapculture = new Task(() =>
-                {
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Culture);
-                });
-                umapculture.Start();
-                MapTasks.Add(umapculture);
-                Task umappolitical = new Task(() =>
-                {
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Political);
-                });
-                umappolitical.Start();
-                MapTasks.Add(umappolitical);
-                Task umaparea = new Task(() =>
-                {
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Area);
-                });
-                umaparea.Start();
-                MapTasks.Add(umaparea);
-                Task umapregion = new Task(() =>
-                {
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Region);
-                });
-                umapregion.Start();
-                MapTasks.Add(umapregion);
-                Task umaptradenode = new Task(() =>
-                {
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.TradeNode);
-                });
-                umaptradenode.Start();
-                MapTasks.Add(umaptradenode);
-                Task umaphre = new Task(() =>
-                {
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.HRE);
-                });
-                umaphre.Start();
-                MapTasks.Add(umaphre);
-                Task umapfort = new Task(() =>
-                {
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Fort);
-                });
-                umapfort.Start();
-                MapTasks.Add(umapfort);
-                Task umapcontinent = new Task(() =>
-                {
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Continent);
-                });
-                umapcontinent.Start();
-                MapTasks.Add(umapcontinent);
-                Task umapsuperregion = new Task(() =>
-                {
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Superregion);
-                });
-                umapsuperregion.Start();
-                MapTasks.Add(umapsuperregion);
-                Task umaptradecompany = new Task(() =>
-                {
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.TradeCompany);
-                });
-                umaptradecompany.Start();
-                MapTasks.Add(umaptradecompany);
-                Task umapgovernment = new Task(() =>
-                {
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Government);
-                });
-                umapgovernment.Start();
-                MapTasks.Add(umapgovernment);
-
-                Task umaplocalisation = new Task(() =>
-                {
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Localisation);
-                });
-                umaplocalisation.Start();
-                MapTasks.Add(umaplocalisation);
-
-
-                Task umapwinter = new Task(() =>
-                {
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Winter);
-                });
-                umapwinter.Start();
-                MapTasks.Add(umapwinter);
-
-                Task umapclimate = new Task(() =>
-                {
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Climate);
-                });
-                umapclimate.Start();
-                MapTasks.Add(umapclimate);
-
-                Task umapterrain = new Task(() =>
-                {
-                    MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.Terrain);
-                });
-                umapterrain.Start();
-                MapTasks.Add(umapterrain);
-
-
 
                 Task ucontrol = new Task(() =>
                 {

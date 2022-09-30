@@ -429,6 +429,7 @@ namespace Eu4ModEditor
         public Point Pixel = new Point();
         public List<Point> Pixels = new List<Point>();
         public List<Point> BorderPixels = new List<Point>();
+        public List<Point> NonBorderPixels = new List<Point>();
         public Rectangle ContainingRectangle;
         public Point Center = new Point();
         public Color c;

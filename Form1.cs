@@ -45,29 +45,10 @@ namespace Eu4ModEditor
 
 
             this.FormClosing += OnExitDo;
-            GlobalVariables.DevelopmentBitmap = new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height);
-            GlobalVariables.DevelopmentBitmapLocked = new LockBitmap(GlobalVariables.DevelopmentBitmap);
-            GlobalVariables.TradeGoodBitmapLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-            GlobalVariables.ReligionBitmapLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-            GlobalVariables.CultureBitmapLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-            GlobalVariables.PoliticalBitmapLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-            GlobalVariables.ClickedMask = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-            GlobalVariables.AreaBitmapLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-            GlobalVariables.RegionBitmapLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-            GlobalVariables.TradeNodeBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-            GlobalVariables.HREBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-            GlobalVariables.FortBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-            GlobalVariables.ContinentBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-            GlobalVariables.SuperregionBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-            GlobalVariables.BaseWhiteProvincesBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-            GlobalVariables.DiscoveredByBitmap = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-            GlobalVariables.TradeCompanyLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-            GlobalVariables.GovernmentLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-            GlobalVariables.LocalisationLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
 
-            GlobalVariables.ClimateLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-            GlobalVariables.WinterLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
-            GlobalVariables.TerrainLocked = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
+            GlobalVariables.ClickedMask = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
+            GlobalVariables.DrawingMain = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));     
+            
 
 
             ProvincesMapmodeButton.Click += ChangeMapmode.ChangeMapmodeVoid;
@@ -92,6 +73,10 @@ namespace Eu4ModEditor
             TerrainMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
 
             LoadFilesClass.LoadFiles();
+
+            MapManagement.DrawBordersOnMap();
+            MapManagement.DrawPixelsOnMap(new List<Rectangle> { new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)) });
+
 
             CheckForIllegalCrossThreadCalls = false;
 
@@ -176,20 +161,6 @@ namespace Eu4ModEditor
 
             MoveCameraTo(GlobalVariables.Provinces[0]);
             GlobalVariables.UpdtGraphicsThread.Start();
-            GotFocus += GainedFocus;
-
-            MapManagement.CreateBaseWhiteMap();
-
-            foreach (Province p in GlobalVariables.Provinces)
-            {
-                if (p.OwnerCountry == null)
-                    continue;
-                if (p.GetCores().Contains(p.OwnerCountry.Tag))
-                    continue;
-                p.AddCore(p.OwnerCountry.Tag, true);
-                //GlobalVariables.ToUpdate.Add(p);
-            }
-            //Saving.SaveThingsToUpdate();
 
             CultureBox.Items.AddRange(Culture.Cultures.ToArray());
             CultureBox.Sorted = true;
@@ -265,6 +236,12 @@ namespace Eu4ModEditor
             Tabs.Selected += TabChanged;
             NamesTabs.Selected += TabChanged;
             ProvinceTabControl.Selected += TabChanged;
+
+            }
+
+        public void ProvUpdNum(int num)
+        {
+            label80.Text = num.ToString();
         }
 
         public void TabChanged(object sender, EventArgs e)
@@ -307,105 +284,41 @@ namespace Eu4ModEditor
 
         #region Graphical
         public static Graphics graphics;
-        private void ModEditor_Load(object sender, EventArgs e)
+
+        public void UpdateLab(string txt, int type)
         {
-            UpMp();
-        }
-        public void GainedFocus(object sender, EventArgs e)
-        {
-            UpdateMap();
-        }
-        public void UpMp()
-        {
-            UpdateMap();
-        }
-        public static void UpdateMap()
-        {
-            //TODO
-            //make this update only a part of the screen saving resources
-            switch (GlobalVariables.mapmode)
+            switch (type)
             {
-                case MapManagement.UpdateMapOptions.Provinces:
-                    graphics.DrawImage(GlobalVariables.ProvincesMap, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
+                case 0:
+                    label80.Text = "Last draw time: " + txt;
                     break;
-                case MapManagement.UpdateMapOptions.Development:
-                    graphics.DrawImage(GlobalVariables.DevelopmentBitmap, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
+                case 1:
+                    label81.Text = "Last set pixels time: " + txt;
                     break;
-                case MapManagement.UpdateMapOptions.TradeGood:
-                    graphics.DrawImage(GlobalVariables.TradeGoodBitmapLocked.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-                    break;
-                case MapManagement.UpdateMapOptions.Religion:
-                    graphics.DrawImage(GlobalVariables.ReligionBitmapLocked.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-                    break;
-                case MapManagement.UpdateMapOptions.Culture:
-                    graphics.DrawImage(GlobalVariables.CultureBitmapLocked.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-                    break;
-                case MapManagement.UpdateMapOptions.Political:
-                    graphics.DrawImage(GlobalVariables.PoliticalBitmapLocked.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-                    break;
-                case MapManagement.UpdateMapOptions.Area:
-                    graphics.DrawImage(GlobalVariables.AreaBitmapLocked.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-                    break;
-                case MapManagement.UpdateMapOptions.Region:
-                    graphics.DrawImage(GlobalVariables.RegionBitmapLocked.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-                    break;
-                case MapManagement.UpdateMapOptions.TradeNode:
-                    graphics.DrawImage(GlobalVariables.TradeNodeBitmap.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-                    break;
-                case MapManagement.UpdateMapOptions.HRE:
-                    graphics.DrawImage(GlobalVariables.HREBitmap.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-                    break;
-                case MapManagement.UpdateMapOptions.Fort:
-                    graphics.DrawImage(GlobalVariables.FortBitmap.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-                    break;
-                case MapManagement.UpdateMapOptions.Continent:
-                    graphics.DrawImage(GlobalVariables.ContinentBitmap.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-                    break;
-                case MapManagement.UpdateMapOptions.Superregion:
-                    graphics.DrawImage(GlobalVariables.SuperregionBitmap.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-                    break;
-                case MapManagement.UpdateMapOptions.DiscoveredBy:
-                    graphics.DrawImage(GlobalVariables.DiscoveredByBitmap.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-                    break;
-                case MapManagement.UpdateMapOptions.TradeCompany:
-                    graphics.DrawImage(GlobalVariables.TradeCompanyLocked.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-                    break;
-                case MapManagement.UpdateMapOptions.Government:
-                    graphics.DrawImage(GlobalVariables.GovernmentLocked.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-                    break;
-                case MapManagement.UpdateMapOptions.Localisation:
-                    graphics.DrawImage(GlobalVariables.LocalisationLocked.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-                    break;
-                case MapManagement.UpdateMapOptions.Winter:
-                    graphics.DrawImage(GlobalVariables.WinterLocked.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-                    break;
-                case MapManagement.UpdateMapOptions.Climate:
-                    graphics.DrawImage(GlobalVariables.ClimateLocked.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-                    break;
-                case MapManagement.UpdateMapOptions.Terrain:
-                    graphics.DrawImage(GlobalVariables.TerrainLocked.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
+                case 2:
+                    label82.Text = "Last set colours time: " + txt;
                     break;
             }
+        }
 
-            //TODO
-            // make this not flicker
+        public static Stopwatch stopwatch = new Stopwatch();
 
-            graphics.DrawImage(GlobalVariables.ClickedMask.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
+        public static void UpdateMap()
+        {
+            stopwatch.Reset();
+            stopwatch.Start();
+            graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+            graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            graphics.DrawImage(GlobalVariables.DrawingMain.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
+            graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+            //graphics.DrawImage(GlobalVariables.ClickedMask.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
+            stopwatch.Stop();
+            GlobalVariables.MainForm.UpdateLab(stopwatch.ElapsedMilliseconds.ToString(), 0);
+
         }
         public void UpdateGraphics()
         {
 
-            //TODO
-            //Figure out why this doesn't work
-            int a = 0;
-            while (true)
-            {
-                Thread.Sleep(100);
-                UpdateMap();
-                a++;
-                if (a == 8)
-                    break;
-            }
         }
         #endregion
 
@@ -1997,85 +1910,6 @@ namespace Eu4ModEditor
         }
         private void SaveTradeCompanyFile_Click(object sender, EventArgs e)
         {
-            /*
-            if (GlobalVariables.ReadOnly[19] && (!GlobalVariables.CreateNewFilesReadOnly && !GlobalVariables.NewObjectsNewFiles))
-                return;
-
-
-            //NodeFile nf = new NodeFile(GlobalVariables.pathtomod + "map\\continent.txt");
-            //List<Node> newNodes = new List<Node>();
-
-
-
-            foreach (TradeCompany tc in GlobalVariables.TradeCompanies)
-            {
-                if (!tc.MadeChanges)
-                    continue;
-                tc.MadeChanges = false;
-                NodeFile toSaveTo = DetermineSaveLocation(GlobalVariables.ModNodeFileTypes.TradeCompanies, tc.NodeFile);
-                //MessageBox.Show(GetModNodeFileName(GlobalVariables.ModNodeFileTypes.TradeCompanies));
-
-                if (toSaveTo == null)
-                    continue;
-                tc.NodeFile = toSaveTo;
-                Node n = tc.NodeFile.MainNode.Nodes.Find(x => x.Name == tc.Name);
-                if (n == null)
-                {
-                    n = new Node(tc.Name, toSaveTo.MainNode);
-                    tc.NodeFile.MainNode.AddNode(n);
-                    n.Parent = tc.NodeFile.MainNode;
-
-                    Node color = new Node("color", n)
-                    {
-                        PureValues = new List<PureValue>() { new PureValue(tc.Color.R.ToString()), new PureValue(tc.Color.G.ToString()), new PureValue(tc.Color.B.ToString()) }
-                    };
-                    n.AddNode(color);
-                    Node provinces = new Node("provinces", n);
-                    n.AddNode(provinces);
-                    foreach (Province p in tc.Provinces)
-                        provinces.AddPureValue(p.ID.ToString());
-                    foreach (string name in tc.Names)
-                    {
-                        Node nm = new Node("names", n);
-                        n.AddNode(nm);
-                        nm.ChangeVariable("name", name, true);
-                    }
-
-                }
-                else
-                {
-                    n.Nodes.Find(x => x.Name == "color").PureValues = new List<PureValue>() { new PureValue(tc.Color.R.ToString()), new PureValue(tc.Color.G.ToString()), new PureValue(tc.Color.B.ToString()) };
-                    Node pnode = n.Nodes.Find(x => x.Name == "provinces");
-                    pnode.PureValues.Clear();
-                    foreach (Province p in tc.Provinces)
-                        pnode.AddPureValue(p.ID.ToString());
-                    int N = 0;
-                    List<Node> ToRemove = new List<Node>();
-                    foreach (Node namenode in n.Nodes.FindAll(x => x.Name == "names"))
-                    {
-                        if (N >= tc.Names.Count)
-                        {
-                            ToRemove.Add(namenode);
-                            continue;
-                        }
-                        namenode.ChangeVariable("name", tc.Names[N]);
-                        N++;
-                    }
-                    if (N < tc.Names.Count)
-                    {
-                        for (; N < tc.Names.Count; N++)
-                        {
-                            Node nm = new Node("names", n);
-                            n.AddNode(nm);
-                            nm.ChangeVariable("name", tc.Names[N], true);
-                        }
-                    }
-                    n.Nodes.RemoveAll(x => ToRemove.Contains(x));
-                    n.ItemOrder.RemoveAll(x => ToRemove.Contains(x));
-                }
-                toSaveTo.SaveFile(toSaveTo.Path);
-            }
-            */
         }
         private void TradeCompanyRandomColor_Click(object sender, EventArgs e)
         {
