@@ -131,6 +131,50 @@ namespace Eu4ModEditor
             return clr;
         }
 
+
+        public void SetAllPixels(List<Point> pixels, Color color)
+        {
+            int cCount = Depth / 8;
+
+
+            if (Depth == 32) // For 32 bpp set Red, Green, Blue and Alpha
+            {         
+                foreach (Point p in pixels)
+                {
+                    // Get start index of the specified pixel
+                    int i = ((p.Y * Width) + p.X) * cCount;
+                    Pixels[i] = color.B;
+                    Pixels[i + 1] = color.G;
+                    Pixels[i + 2] = color.R;
+                    Pixels[i + 3] = color.A;
+                }
+                
+            }
+            if (Depth == 24) // For 24 bpp set Red, Green and Blue
+            {
+                foreach (Point p in pixels)
+                {
+                    // Get start index of the specified pixel
+                    int i = ((p.Y * Width) + p.X) * cCount;
+                    Pixels[i] = color.B;
+                    Pixels[i + 1] = color.G;
+                    Pixels[i + 2] = color.R;
+                }
+                  
+            }
+            if (Depth == 8)
+            // For 8 bpp set color value (Red, Green and Blue values are the same)
+            {
+                foreach (Point p in pixels)
+                {
+                    // Get start index of the specified pixel
+                    int i = ((p.Y * Width) + p.X) * cCount;
+                    Pixels[i] = color.B;
+
+                }
+            }         
+        }
+
         /// <summary>
         /// Set the color of the specified pixel
         /// </summary>
