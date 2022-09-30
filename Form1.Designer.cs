@@ -394,7 +394,6 @@
             this.label80 = new System.Windows.Forms.Label();
             this.label81 = new System.Windows.Forms.Label();
             this.label82 = new System.Windows.Forms.Label();
-            this.monoGameControl1 = new Eu4ModEditor.MonoGameControl();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.ProvinceTabControl.SuspendLayout();
@@ -4370,14 +4369,6 @@
             this.label82.TabIndex = 28;
             this.label82.Text = "label82";
             // 
-            // monoGameControl1
-            // 
-            this.monoGameControl1.Location = new System.Drawing.Point(40, 43);
-            this.monoGameControl1.Name = "monoGameControl1";
-            this.monoGameControl1.Size = new System.Drawing.Size(1086, 770);
-            this.monoGameControl1.TabIndex = 29;
-            this.monoGameControl1.Text = "monoGameControl1";
-            // 
             // ModEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4385,7 +4376,6 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.ClientSize = new System.Drawing.Size(1736, 931);
-            this.Controls.Add(this.monoGameControl1);
             this.Controls.Add(this.label82);
             this.Controls.Add(this.label81);
             this.Controls.Add(this.label80);
@@ -4414,6 +4404,7 @@
             this.Controls.Add(this.DownButton);
             this.Controls.Add(this.UpButton);
             this.Controls.Add(this.Tabs);
+            this.DoubleBuffered = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MaximizeBox = false;
@@ -4893,7 +4884,6 @@
         private System.Windows.Forms.Label label80;
         private System.Windows.Forms.Label label81;
         private System.Windows.Forms.Label label82;
-        public MonoGameControl monoGameControl1;
     }
 }
 

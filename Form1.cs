@@ -25,6 +25,7 @@ namespace Eu4ModEditor
             /*LanguageWindow lg = new LanguageWindow();
             lg.ShowDialog();*/
             this.AutoScaleMode = AutoScaleMode.None;
+
             LoadingScreen sc = new LoadingScreen();
             sc.ShowDialog();
 
@@ -236,12 +237,7 @@ namespace Eu4ModEditor
             NamesTabs.Selected += TabChanged;
             ProvinceTabControl.Selected += TabChanged;
 
-            //glControl.Load += new EventHandler(this.GLControl_Load);
-            //glControl.Resize += new System.EventHandler(this.GLControl_Resize);
-            //this.gLControl.Paint += new System.Windows.Forms.PaintEventHandler(this.GLControl_Paint);
-        }
-
-        OpenTK.GLControl OGGraphics;
+            }
 
         public void ProvUpdNum(int num)
         {
@@ -294,15 +290,14 @@ namespace Eu4ModEditor
             switch (type)
             {
                 case 0:
-                    label80.Text = "Last draw time: " + txt +"ms";
+                    label80.Text = "Last draw time: " + txt;
                     break;
                 case 1:
-                    label81.Text = "Last set pixels time: " + txt + "ms";
+                    label81.Text = "Last set pixels time: " + txt;
                     break;
                 case 2:
-                    label82.Text = "Last set colours time: " + txt + "ms";
+                    label82.Text = "Last set colours time: " + txt;
                     break;
-                    
             }
         }
 
@@ -312,9 +307,11 @@ namespace Eu4ModEditor
         {
             stopwatch.Reset();
             stopwatch.Start();
-            //graphics.DrawImage(GlobalVariables.DrawingMain.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
+            graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
+            graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            graphics.DrawImage(GlobalVariables.DrawingMain.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
+            graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
             //graphics.DrawImage(GlobalVariables.ClickedMask.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-            GlobalVariables.MainForm.monoGameControl1.Invalidate();
             stopwatch.Stop();
             GlobalVariables.MainForm.UpdateLab(stopwatch.ElapsedMilliseconds.ToString(), 0);
 

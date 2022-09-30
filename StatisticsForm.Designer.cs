@@ -750,7 +750,7 @@
             this.dataGridViewTextBoxColumn5.HeaderText = "ID";
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
             this.dataGridViewTextBoxColumn5.ReadOnly = true;
-            this.dataGridViewTextBoxColumn5.Width = 40;
+            this.dataGridViewTextBoxColumn5.Width = 50;
             // 
             // dataGridViewTextBoxColumn6
             // 
@@ -764,28 +764,28 @@
             this.dataGridViewTextBoxColumn7.HeaderText = "Dev.";
             this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
             this.dataGridViewTextBoxColumn7.ReadOnly = true;
-            this.dataGridViewTextBoxColumn7.Width = 35;
+            this.dataGridViewTextBoxColumn7.Width = 45;
             // 
             // dataGridViewTextBoxColumn8
             // 
             this.dataGridViewTextBoxColumn8.HeaderText = "Tax";
             this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
             this.dataGridViewTextBoxColumn8.ReadOnly = true;
-            this.dataGridViewTextBoxColumn8.Width = 35;
+            this.dataGridViewTextBoxColumn8.Width = 45;
             // 
             // Column1
             // 
             this.Column1.HeaderText = "Production";
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
-            this.Column1.Width = 35;
+            this.Column1.Width = 45;
             // 
             // Column2
             // 
             this.Column2.HeaderText = "Manpower";
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
-            this.Column2.Width = 35;
+            this.Column2.Width = 45;
             // 
             // Column3
             // 
