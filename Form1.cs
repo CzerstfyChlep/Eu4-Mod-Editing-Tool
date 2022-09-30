@@ -307,11 +307,8 @@ namespace Eu4ModEditor
         {
             stopwatch.Reset();
             stopwatch.Start();
-            graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-            graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             graphics.DrawImage(GlobalVariables.DrawingMain.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-            graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-            //graphics.DrawImage(GlobalVariables.ClickedMask.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
+            graphics.DrawImage(GlobalVariables.ClickedMask.source, new Rectangle(40, 40, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
             stopwatch.Stop();
             GlobalVariables.MainForm.UpdateLab(stopwatch.ElapsedMilliseconds.ToString(), 0);
 

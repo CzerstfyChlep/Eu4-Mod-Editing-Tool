@@ -555,7 +555,7 @@ namespace Eu4ModEditor
 
         static Stopwatch stopwatch = new Stopwatch();
 
-        public static async void DrawPixelsOnMap(List<Rectangle> PlacesToUpdate)
+        public static void DrawPixelsOnMap(List<Rectangle> PlacesToUpdate)
         {
             stopwatch.Reset();
             stopwatch.Start();
@@ -565,24 +565,7 @@ namespace Eu4ModEditor
             if (toDraw.Any())
             {
 
-                List<Province> div1 = new List<Province>();
-                List<Province> div2 = new List<Province>();
-                List<Province> div3 = new List<Province>();
-                int a = 0;
-                foreach (Province p in toDraw)
-                {
-                    a = (a + 1) % 3;
-                    if (a == 0)
-                        div1.Add(p);
-                    else if(a == 1)
-                        div2.Add(p);
-                    else
-                        div3.Add(p);
-                }
-
                 GlobalVariables.DrawingMain.LockBits();
-
-
                 
                 foreach (Province prov in toDraw)
                 {
@@ -594,7 +577,7 @@ namespace Eu4ModEditor
                     {
                         foreach (Point pt in prov.NonBorderPixels)
                         {
-                            //GlobalVariables.DrawingMain.SetPixel(pt.X, pt.Y, prov.MainColor);
+                            GlobalVariables.DrawingMain.SetPixel(pt.X, pt.Y, prov.MainColor);
                         }                          
                     }
                     else if (prov.VerticalStripes != Color.Transparent && prov.MainStripes == Color.Transparent)
@@ -602,9 +585,9 @@ namespace Eu4ModEditor
                         foreach (Point pt in prov.NonBorderPixels)
                         {
                             if (pt.X % 6 == 0 || pt.X % 6 == 1)
-                                ;//GlobalVariables.DrawingMain.SetPixel(pt.X, pt.Y, prov.VerticalStripes);
+                                GlobalVariables.DrawingMain.SetPixel(pt.X, pt.Y, prov.VerticalStripes);
                             else
-                                ;//GlobalVariables.DrawingMain.SetPixel(pt.X, pt.Y, prov.MainColor);
+                                GlobalVariables.DrawingMain.SetPixel(pt.X, pt.Y, prov.MainColor);
                         }
                     }
                     else if (prov.VerticalStripes == Color.Transparent && prov.MainStripes != Color.Transparent)
@@ -612,9 +595,9 @@ namespace Eu4ModEditor
                         foreach (Point pt in prov.NonBorderPixels)
                         {
                             if ((pt.X + (int)Math.Floor(pt.Y / 2f)) % 8 == 2 || (pt.X + (int)Math.Floor(pt.Y / 2f)) % 8 == 3)
-                                ;// GlobalVariables.DrawingMain.SetPixel(pt.X, pt.Y, prov.MainStripes);
+                                GlobalVariables.DrawingMain.SetPixel(pt.X, pt.Y, prov.MainStripes);
                             else
-                                ;// GlobalVariables.DrawingMain.SetPixel(pt.X, pt.Y, prov.MainColor);
+                                GlobalVariables.DrawingMain.SetPixel(pt.X, pt.Y, prov.MainColor);
                         }
                     }
                     else
@@ -622,11 +605,11 @@ namespace Eu4ModEditor
                         foreach (Point pt in prov.NonBorderPixels)
                         {
                             if ((pt.X + (int)Math.Floor(pt.Y / 2f)) % 8 == 2 || (pt.X + (int)Math.Floor(pt.Y / 2f)) % 8 == 3)
-                                ;//GlobalVariables.DrawingMain.SetPixel(pt.X, pt.Y, prov.MainStripes);
+                                GlobalVariables.DrawingMain.SetPixel(pt.X, pt.Y, prov.MainStripes);
                             else if (pt.X % 6 == 0 || pt.X % 6 == 1)
-                                ;// GlobalVariables.DrawingMain.SetPixel(pt.X, pt.Y, prov.VerticalStripes);
+                                GlobalVariables.DrawingMain.SetPixel(pt.X, pt.Y, prov.VerticalStripes);
                             else
-                                ;// GlobalVariables.DrawingMain.SetPixel(pt.X, pt.Y, prov.MainColor);
+                                GlobalVariables.DrawingMain.SetPixel(pt.X, pt.Y, prov.MainColor);
                         }
                     }
                 }
@@ -640,7 +623,6 @@ namespace Eu4ModEditor
         {
 
             UpdateProvinceColors(provinces, options);
-
             return;
 
             switch (options)
