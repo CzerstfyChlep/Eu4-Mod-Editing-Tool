@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -8,10 +7,6 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using System.IO;
-using System.Threading.Tasks;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
-using System.Reflection;
 using System.Diagnostics;
 
 namespace Eu4ModEditor
@@ -36,9 +31,9 @@ namespace Eu4ModEditor
             form = this;
             graphics = this.CreateGraphics();
             //GlobalVariables.pathtomod = File.ReadAllText("path.txt");
-            if (GlobalVariables.UseMod[1] == 1 || GlobalVariables.UseMod[1] == 2)
+            if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.provincesBMP] == 1 || GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.provincesBMP] == 2)
                 GlobalVariables.ProvincesMap = Image.FromFile(GlobalVariables.pathtomod + "map/provinces.bmp");
-            else if (GlobalVariables.UseMod[1] == 0)
+            else if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.provincesBMP] == 0)
                 GlobalVariables.ProvincesMap = Image.FromFile(GlobalVariables.pathtogame + "map/provinces.bmp");
             GlobalVariables.ProvincesMapBitmap = new Bitmap(GlobalVariables.ProvincesMap);
             GlobalVariables.UpdtGraphicsThread = new Thread(UpdateGraphics);
@@ -49,8 +44,6 @@ namespace Eu4ModEditor
             GlobalVariables.ClickedMask = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));
             GlobalVariables.DrawingMain = new LockBitmap(new Bitmap(GlobalVariables.ProvincesMapBitmap, GlobalVariables.ProvincesMapBitmap.Width, GlobalVariables.ProvincesMapBitmap.Height));     
             
-
-
             ProvincesMapmodeButton.Click += ChangeMapmode.ChangeMapmodeVoid;
             DevelopmentMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
             TradeGoodsMapmode.Click += ChangeMapmode.ChangeMapmodeVoid;
@@ -251,7 +244,7 @@ namespace Eu4ModEditor
                 if (Tabs.SelectedTab == CountryPage)
                 {
                     UpdateCountryPage();
-                    if (NamesTabs.SelectedTab == MonarchNamesTab)
+                    if (NamesTabs.SelectedTab == MonarchNamesTab && !GlobalVariables.NamesHidden)
                         UpdateMonarchNames();
                 }
                 else if (Tabs.SelectedTab == ProvinceTab)                
@@ -264,7 +257,7 @@ namespace Eu4ModEditor
             }
             else if(sender == NamesTabs)
             {
-                if (NamesTabs.SelectedTab == MonarchNamesTab)
+                if (NamesTabs.SelectedTab == MonarchNamesTab && !GlobalVariables.NamesHidden)
                     UpdateMonarchNames();
             }
             else if(sender == ProvinceTabControl)
@@ -381,8 +374,8 @@ namespace Eu4ModEditor
             ChangeValueInternally(CultureBox, GlobalVariables.ClickedProvinces[0].Culture);
             ChangeValueInternally(ReligionBox, GlobalVariables.ClickedProvinces[0].Religion);
             ChangeValueInternally(OwnerBox, GlobalVariables.ClickedProvinces[0].OwnerCountry);
-            ChangeValueInternally(TradeGoodBox, TradeGoodBox.Items.IndexOf(GlobalVariables.ClickedProvinces[0].TradeGood?.ReadableName ?? ""));
-            ChangeValueInternally(LatentTradeGoodBox, LatentTradeGoodBox.Items.IndexOf(GlobalVariables.ClickedProvinces[0].LatentTradeGood?.ReadableName ?? ""));
+            ChangeValueInternally(TradeGoodBox, GlobalVariables.ClickedProvinces[0].TradeGood);
+            ChangeValueInternally(LatentTradeGoodBox, GlobalVariables.ClickedProvinces[0].LatentTradeGood);
             if (GlobalVariables.ClickedProvinces[0].Controller != null)            
                 ChangeValueInternally(ControllerBox, GlobalVariables.ClickedProvinces[0].Controller);            
             else
@@ -409,6 +402,10 @@ namespace Eu4ModEditor
             ChangeValueInternally(MonsoonBox, GlobalVariables.ClickedProvinces[0].Monsoon);
             ChangeValueInternally(ClimateBox, GlobalVariables.ClickedProvinces[0].Climate);
             ChangeValueInternally(ImpassableBox, GlobalVariables.ClickedProvinces[0].Impassable);
+
+            UpdateBuildings();
+            UpdateCoresPanel();
+            UpdateDiscoveredBy();
 
         }
         public void UpdateAreaAndRegionPage()
@@ -2179,10 +2176,11 @@ namespace Eu4ModEditor
         {
             if (BuildingsBox.SelectedIndex != -1)
             {
-                Building bl = GlobalVariables.Buildings.Find(x => x.Name.ToLower() == BuildingsBox.SelectedItem.ToString().ToLower());
+                Building bl = (Building)BuildingsBox.SelectedItem;
                 if (bl != null)
                     ChangeProvinceInfo(ChangeProvinceMode.Building, bl);
                 UpdateBuildings();
+                UpdateProvincePanel();
             }
         }
         public void BuildingClick(object sender, MouseEventArgs e)
@@ -2193,6 +2191,7 @@ namespace Eu4ModEditor
                 ChangeProvinceInfo(ChangeProvinceMode.Building, (Building)l.Tag, true);
             }
             UpdateBuildings();
+            UpdateProvincePanel();
         }
         public void TechClick(object sender, MouseEventArgs e)
         {
@@ -2522,7 +2521,7 @@ namespace Eu4ModEditor
                 return;
             if (GlobalVariables.ClickedProvinces.Any())
             {
-                TradeGood tg = GlobalVariables.TradeGoods.Find(x => x.ReadableName == (string)TradeGoodBox.SelectedItem);
+                TradeGood tg = (TradeGood)TradeGoodBox.SelectedItem;
                 foreach (Province p in GlobalVariables.ClickedProvinces)
                 {
                     if (p.TradeGood != null)
@@ -2622,7 +2621,12 @@ namespace Eu4ModEditor
                 return;
             if (GlobalVariables.ClickedProvinces.Any())
             {
-                TradeGood tg = GlobalVariables.TradeGoods.Find(x => x.ReadableName == (string)LatentTradeGoodBox.SelectedItem);
+                TradeGood tg = null;
+                if (!(LatentTradeGoodBox.SelectedItem is string))
+                {
+                    tg = (TradeGood)LatentTradeGoodBox.SelectedItem;
+                }
+
                 foreach (Province p in GlobalVariables.ClickedProvinces)
                 {
                     if (p.LatentTradeGood != null)
@@ -2639,6 +2643,7 @@ namespace Eu4ModEditor
                     //if (!GlobalVariables.ToUpdate.Contains(p))
                     //GlobalVariables.ToUpdate.Add(p);
                 }
+
                 MapManagement.UpdateMap(GlobalVariables.ClickedProvinces, MapManagement.UpdateMapOptions.TradeGood);
                 if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeGood)
                     UpdateMap();
@@ -3453,6 +3458,8 @@ namespace Eu4ModEditor
                     MapManagement.UpdateMap(ApplyTo, MapManagement.UpdateMapOptions.Fort);
                     if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Fort)
                         UpdateMap();
+                    UpdateProvincePanel();
+                    UpdateBuildings();
                     break;
 
                 case ChangeProvinceMode.HRE:
@@ -3463,6 +3470,7 @@ namespace Eu4ModEditor
                     MapManagement.UpdateMap(ApplyTo, MapManagement.UpdateMapOptions.HRE);
                     if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.HRE)
                         UpdateMap();
+                    UpdateProvincePanel();
                     break;
 
 
@@ -3564,6 +3572,7 @@ namespace Eu4ModEditor
                     }
                     MapManagement.UpdateMap(ApplyTo, MapManagement.UpdateMapOptions.Political);
                     MapManagement.UpdateMap(ApplyTo, MapManagement.UpdateMapOptions.Government);
+                    UpdateCoresPanel();
                     if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Political)
                         UpdateMap();
 
@@ -3888,37 +3897,240 @@ namespace Eu4ModEditor
             VariableChange vc = GlobalVariables.Changes[(int)(sender as Control).Tag];
             if (vc.Object is Province)
             {
-                if (vc.VariableName != "Core" && vc.VariableName != "DiscoveredBy" && vc.VariableName != "Buildings" && vc.VariableName != "Claims")
-                    (vc.Object as Province).Variables[vc.VariableName] = vc.PreviousValue;
-                else if (vc.VariableName == "Core")
-                {
-                    if (vc.PreviousValue == null)
-                        ((vc.Object as Province).Variables["Cores"] as List<string>).Remove(vc.CurrentValue.ToString());
-                    else if (vc.CurrentValue == null)
-                        ((vc.Object as Province).Variables["Cores"] as List<string>).Add(vc.PreviousValue.ToString());
-                }
-                else if (vc.VariableName == "DiscoveredBy")
-                {
-                    if (vc.PreviousValue == null)
-                        ((vc.Object as Province).Variables["DiscoveredBy"] as List<string>).Remove(vc.CurrentValue.ToString());
-                    else if (vc.CurrentValue == null)
-                        ((vc.Object as Province).Variables["DiscoveredBy"] as List<string>).Add(vc.PreviousValue.ToString());
-                }
-                else if (vc.VariableName == "Buildings")
-                {
-                    if (vc.PreviousValue == null)
-                        ((vc.Object as Province).Variables["Buildings"] as List<Building>).Remove(vc.CurrentValue as Building);
-                    else if (vc.CurrentValue == null)
-                        ((vc.Object as Province).Variables["Buildings"] as List<Building>).Add(vc.PreviousValue as Building);
-                }
-                else if (vc.VariableName == "Claims")
-                {
-                    if (vc.PreviousValue == null)
-                        ((vc.Object as Province).Variables["Claims"] as List<string>).Remove(vc.CurrentValue.ToString());
-                    else if (vc.CurrentValue == null)
-                        ((vc.Object as Province).Variables["Claims"] as List<string>).Add(vc.PreviousValue.ToString());
-                }
+                Province revProv = (Province)vc.Object;
 
+                switch (vc.VariableName)
+                {
+                    case "Core":
+                        if (vc.PreviousValue == null)
+                            (revProv.Variables["Cores"] as List<string>).Remove(vc.CurrentValue.ToString());
+                        else if (vc.CurrentValue == null)
+                            (revProv.Variables["Cores"] as List<string>).Add(vc.PreviousValue.ToString());
+                        break;
+                    case "DiscoveredBy":
+                        if (vc.PreviousValue == null)
+                            (revProv.Variables["DiscoveredBy"] as List<string>).Remove(vc.CurrentValue.ToString());
+                        else if (vc.CurrentValue == null)
+                            (revProv.Variables["DiscoveredBy"] as List<string>).Add(vc.PreviousValue.ToString());
+
+                        if(GlobalVariables.mapmode == MapManagement.UpdateMapOptions.DiscoveredBy)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.DiscoveredBy);
+                            UpdateMap();
+                        }
+                        break;
+                    case "Buildings":
+                        if (vc.PreviousValue == null)
+                            (revProv.Variables["Buildings"] as List<Building>).Remove(vc.CurrentValue as Building);
+                        else if (vc.CurrentValue == null)
+                            (revProv.Variables["Buildings"] as List<Building>).Add(vc.PreviousValue as Building);
+                        break;
+                    case "Claims":
+
+                        if (vc.PreviousValue == null)
+                            (revProv.Variables["Claims"] as List<string>).Remove(vc.CurrentValue.ToString());
+                        else if (vc.CurrentValue == null)
+                            (revProv.Variables["Claims"] as List<string>).Add(vc.PreviousValue.ToString());
+                        break;
+
+                    case "OwnerCountry":
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Political)
+                        {
+                            if (revProv.OwnerCountry != null)
+                                revProv.OwnerCountry.Provinces.Remove(revProv);
+                            if (vc.PreviousValue != null)
+                                (vc.PreviousValue as Country).Provinces.Add(revProv);
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Political);
+                        }
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        break;
+                    case "Tax":
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Development)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Development);
+                            UpdateMap();
+                        }                   
+                        break;
+                    case "Production":
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Development)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Development);
+                            UpdateMap();
+                        }                        
+                        break;
+                    case "Manpower":
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Development)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Development);
+                            UpdateMap();
+                        }
+                        
+                        break;
+                    case "CenterOfTrade":
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.TradeNode);
+                            UpdateMap();
+                        }                        
+                        break;
+                    case "HRE":
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.HRE)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.HRE);                           
+                            UpdateMap();
+                        }                        
+                        break;
+                    case "Fort":
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Fort)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Fort);
+                            UpdateMap();
+                        }                       
+                        break;
+                    case "TradeGood":
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeGood)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.TradeGood);
+                            UpdateMap();
+                        }
+                        
+                        break;
+                    case "LatentTradeGood":
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeGood)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.TradeGood);
+                            UpdateMap();
+                        }
+                        
+                        break;
+                    case "TradeNode":
+                        if (revProv.TradeNode != null)
+                            revProv.TradeNode.Provinces.Remove(revProv);
+
+                        if(vc.PreviousValue != null)                       
+                            (vc.PreviousValue as Tradenode).Provinces.Add(revProv);
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.TradeNode);
+                            UpdateMap();
+                        }
+                        
+                        break;
+                    case "Religion":
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Religion)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Religion);
+                            UpdateMap();
+                        }
+                        
+                        break;
+                    case "Culture":
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Culture)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Culture);
+                            UpdateMap();
+                        }
+                        
+                        break;
+                    case "Area":
+                        if (revProv.Area != null)
+                            revProv.Area.Provinces.Remove(revProv);
+                        if (vc.PreviousValue != null)
+                            (vc.PreviousValue as Area).Provinces.Add(revProv);
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Area);
+                            UpdateMap();
+                        }
+                        
+                        break;
+                    case "Continent":
+                        if (revProv.Continent != null)
+                            revProv.Continent.Provinces.Remove(revProv);
+                        if (vc.PreviousValue != null)
+                            (vc.PreviousValue as Continent).Provinces.Add(revProv);
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Continent);
+                            UpdateMap();
+                        }
+                        
+                        break;
+                    case "TradeCompany":
+                        if (revProv.TradeCompany != null)
+                            revProv.TradeCompany.Provinces.Remove(revProv);
+                        if (vc.PreviousValue != null)
+                            (vc.PreviousValue as TradeCompany).Provinces.Add(revProv);
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeCompany)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.TradeCompany);
+                            UpdateMap();
+                        }
+                       
+                        break;
+                    case "Winter":
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Winter)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Winter);
+                            UpdateMap();
+                        }
+                        
+                        break;
+                    case "Climate":
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Climate)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Climate);
+                            UpdateMap();
+                        }
+                        
+                        break;
+                    case "Terrain":
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Terrain)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Terrain);
+                            UpdateMap();
+                        }
+                        
+                        break;
+                    case "Impassable":
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Climate)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Climate);
+                            UpdateMap();
+                        }
+                       
+                        break;
+                    case "Monsoon":
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Winter)
+                        {
+                            MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Winter);
+                            UpdateMap();
+                        }                       
+                        break;
+
+                    default:
+                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        break;
+                }                   
             }
             else if (vc.Object is Country)
             {
@@ -4717,6 +4929,21 @@ namespace Eu4ModEditor
             {
                 SendToConsole(ConsoleInputBox.Text);
                 ConsoleInputBox.Text = "";
+            }
+        }
+
+        private void ShowHideNames_Click(object sender, EventArgs e)
+        {
+            GlobalVariables.NamesHidden = !GlobalVariables.NamesHidden;
+            if (GlobalVariables.NamesHidden)
+            {
+                NamesGroupBox.Visible = false;
+            }
+            else
+            {
+                NamesGroupBox.Visible = true;
+                if (NamesTabs.SelectedTab == MonarchNamesTab)
+                    UpdateMonarchNames();
             }
         }
     }

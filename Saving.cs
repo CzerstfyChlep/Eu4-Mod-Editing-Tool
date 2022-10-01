@@ -72,6 +72,12 @@ namespace Eu4ModEditor
                 }
                 if (province.TradeGood != null && province.TradeGood != TradeGood.nothing)
                     nf.MainNode.ChangeVariable("trade_goods", province.TradeGood.Name, true);
+                else
+                {
+                    Variable vra = nf.MainNode.Variables.Find(x => x.Name == "trade_goods");
+                    if(vra!= null) 
+                        nf.MainNode.RemoveVariable(vra);
+                }
                 if (province.Religion != null && province.Religion != Religion.NoReligion)
                     nf.MainNode.ChangeVariable("religion", province.Religion.Name, true);
                 else

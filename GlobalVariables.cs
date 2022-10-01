@@ -12,8 +12,8 @@ namespace Eu4ModEditor
 {
     public static class GlobalVariables
     {
-        public static bool __DEBUG = true;
-        public static string Version = "1.1.12";
+        public static bool __DEBUG = false;
+        public static string Version = "1.2.1";
 
         public static List<Province> Provinces = new List<Province>();
         public static Dictionary<string, Province> ColorToProvince = new Dictionary<string, Province>();
@@ -162,6 +162,8 @@ namespace Eu4ModEditor
         public static DateTime CurrentDate = new DateTime(1444, 11, 11);
 
         public static bool OldMapUpdatingStyle = false;
+
+        public static bool NamesHidden = false;
         
 
     }

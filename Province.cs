@@ -303,6 +303,18 @@ namespace Eu4ModEditor
                 if (GlobalVariables.FullyLoaded)
                     GlobalVariables.Changes.Add(new VariableChange(this, "Fort", Variables["Fort"], value));
                 Variables["Fort"] = value;
+                if (value)
+                {
+                    Building fort = GlobalVariables.Buildings.Find(x => x.Name == "fort_15th");
+                    if (fort != null)
+                        AddBuilding(GlobalVariables.Buildings.Find(x => x.Name == "fort_15th"), true);
+                }
+                else
+                {
+                    Building fort = GlobalVariables.Buildings.Find(x => x.Name == "fort_15th");
+                    if (fort != null)
+                        RemoveBuilding(GlobalVariables.Buildings.Find(x => x.Name == "fort_15th"), true);
+                }
             }
         }
         public bool City
@@ -338,6 +350,8 @@ namespace Eu4ModEditor
                 Buildings.Add(Building);
                 if (!noChange)
                     GlobalVariables.Changes.Add(new VariableChange(this, "Buildings", null, Building));
+                if (Building.Name == "fort_15th")
+                    Variables["Fort"] = true;
             }
         }
         public void RemoveBuilding(Building Building, bool noChange = false)
@@ -347,6 +361,8 @@ namespace Eu4ModEditor
                 Buildings.Remove(Building);
                 if (!noChange)
                     GlobalVariables.Changes.Add(new VariableChange(this, "Buildings", Building, null));
+                if (Building.Name == "fort_15th")
+                    Variables["Fort"] = false;
             }
         }
         public Building[] GetBuildings()

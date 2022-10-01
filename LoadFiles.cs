@@ -2956,9 +2956,9 @@ namespace Eu4ModEditor
                     foreach (TradeGood tg in GlobalVariables.TradeGoods)
                     {
                         if (!GlobalVariables.LatentTradeGoods.Contains(tg))
-                            ModEditor.form.TradeGoodBox.Items.Add(tg.ReadableName);
+                            ModEditor.form.TradeGoodBox.Items.Add(tg);
                         else
-                            ModEditor.form.LatentTradeGoodBox.Items.Add(tg.ReadableName);
+                            ModEditor.form.LatentTradeGoodBox.Items.Add(tg);
                     }
                     foreach (Tradenode tn in GlobalVariables.TradeNodes)
                     {
@@ -2975,7 +2975,7 @@ namespace Eu4ModEditor
                     foreach (Government g in GlobalVariables.Governments)
                         ModEditor.form.GovernmentTypeBox.Items.Add(g.Type);
                     foreach (Building bl in GlobalVariables.Buildings)
-                        ModEditor.form.BuildingsBox.Items.Add(bl.Name);
+                        ModEditor.form.BuildingsBox.Items.Add(bl);
                     foreach (Superregion sr in GlobalVariables.Superregions)
                         ModEditor.form.SuperregionBox.Items.Add(sr.Name);
                     foreach (TradeCompany tc in GlobalVariables.TradeCompanies)

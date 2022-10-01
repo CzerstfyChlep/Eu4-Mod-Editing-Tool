@@ -14,10 +14,13 @@ namespace Eu4ModEditor
             HRE, Fort, Continent, Superregion, DiscoveredBy, TradeCompany, Government, Localisation, Climate, Winter, Terrain };
 
 
+        public static void UpdateProvinceColors(Province province, UpdateMapOptions options)
+        {
+            UpdateProvinceColors(new List<Province> { province }, options);
+        }
+
         public static void UpdateProvinceColors(List<Province> provinces, UpdateMapOptions options)
         {
-            stopwatch.Reset();
-            stopwatch.Start();
             switch (options)
             {
                 case UpdateMapOptions.Provinces:
@@ -531,8 +534,6 @@ namespace Eu4ModEditor
                     }
                     break;
             }
-            stopwatch.Stop();
-            GlobalVariables.MainForm.UpdateLab(stopwatch.ElapsedMilliseconds.ToString(), 2);
         }
 
         public static void DrawBordersOnMap()
@@ -552,16 +553,12 @@ namespace Eu4ModEditor
 
         public static void DrawPixelsOnMap(List<Rectangle> PlacesToUpdate)
         {
-            stopwatch.Reset();
-            stopwatch.Start();
             
             Rectangle DrawingRectangle = new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight));
-            List<Province> toDraw = GlobalVariables.Provinces.Where(x => x.ContainingRectangle.IntersectsWith(DrawingRectangle) && PlacesToUpdate.Any(y => x.ContainingRectangle.IntersectsWith(y)) && (x.OldMainColor.ToArgb() != x.MainColor.ToArgb() || x.OldMainStripes.ToArgb() != x.MainStripes.ToArgb() || x.OldVerticalStripes.ToArgb() != x.VerticalStripes.ToArgb())).ToList();
+            List<Province> toDraw = GlobalVariables.Provinces.Where(x => x.ContainingRectangle.IntersectsWith(DrawingRectangle) && PlacesToUpdate.Any(y => x.ContainingRectangle.IntersectsWith(y) || y.Contains(x.Center)) && (x.OldMainColor.ToArgb() != x.MainColor.ToArgb() || x.OldMainStripes.ToArgb() != x.MainStripes.ToArgb() || x.OldVerticalStripes.ToArgb() != x.VerticalStripes.ToArgb())).ToList();
             if (toDraw.Any())
             {
-
-                GlobalVariables.DrawingMain.LockBits();
-                
+                GlobalVariables.DrawingMain.LockBits();                
                 foreach (Province prov in toDraw)
                 {
                     prov.OldMainColor = prov.MainColor;
@@ -610,9 +607,6 @@ namespace Eu4ModEditor
                 }
                 GlobalVariables.DrawingMain.UnlockBits();
             }
-            stopwatch.Stop();
-            GlobalVariables.MainForm.UpdateLab(stopwatch.ElapsedMilliseconds.ToString(), 1);
-            GlobalVariables.MainForm.UpdateLab(toDraw.Count().ToString(), 3);
         }
 
         public static void UpdateMap(List<Province> provinces, UpdateMapOptions options)
@@ -622,7 +616,7 @@ namespace Eu4ModEditor
                 UpdateProvinceColors(provinces, options);
                 List<Rectangle> toUp = new List<Rectangle>();
                 provinces.ForEach(x => toUp.Add(x.ContainingRectangle));
-                MapManagement.DrawPixelsOnMap(toUp);
+                DrawPixelsOnMap(toUp);
             }
             return;
 

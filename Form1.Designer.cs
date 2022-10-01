@@ -175,7 +175,7 @@
             this.ProvinceColorLabelG = new System.Windows.Forms.Label();
             this.ProvinceColorLabelR = new System.Windows.Forms.Label();
             this.CountryPage = new System.Windows.Forms.TabPage();
-            this.groupBox23 = new System.Windows.Forms.GroupBox();
+            this.NamesGroupBox = new System.Windows.Forms.GroupBox();
             this.SaveNamesToFiles = new System.Windows.Forms.Button();
             this.NamesTabs = new System.Windows.Forms.TabControl();
             this.MonarchNamesTab = new System.Windows.Forms.TabPage();
@@ -395,6 +395,7 @@
             this.label81 = new System.Windows.Forms.Label();
             this.label82 = new System.Windows.Forms.Label();
             this.label83 = new System.Windows.Forms.Label();
+            this.ShowHideNames = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.ProvinceTabControl.SuspendLayout();
@@ -421,7 +422,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.ProvinceTaxNumeric)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.CountryPage.SuspendLayout();
-            this.groupBox23.SuspendLayout();
+            this.NamesGroupBox.SuspendLayout();
             this.NamesTabs.SuspendLayout();
             this.MonarchNamesTab.SuspendLayout();
             this.LeaderNamesTab.SuspendLayout();
@@ -657,9 +658,9 @@
             this.groupBox16.Controls.Add(this.AddBuildingButton);
             this.groupBox16.Controls.Add(this.BuildingsBox);
             this.groupBox16.Controls.Add(this.BuildingsPanel);
-            this.groupBox16.Location = new System.Drawing.Point(6, 345);
+            this.groupBox16.Location = new System.Drawing.Point(6, 340);
             this.groupBox16.Name = "groupBox16";
-            this.groupBox16.Size = new System.Drawing.Size(260, 111);
+            this.groupBox16.Size = new System.Drawing.Size(260, 127);
             this.groupBox16.TabIndex = 41;
             this.groupBox16.TabStop = false;
             this.groupBox16.Text = "Buildings";
@@ -693,6 +694,7 @@
             this.BuildingsBox.Location = new System.Drawing.Point(6, 19);
             this.BuildingsBox.Name = "BuildingsBox";
             this.BuildingsBox.Size = new System.Drawing.Size(171, 24);
+            this.BuildingsBox.Sorted = true;
             this.BuildingsBox.TabIndex = 25;
             this.BuildingsBox.TabStop = false;
             // 
@@ -754,9 +756,9 @@
             this.groupBox12.Controls.Add(this.AddDiscoveredByButton);
             this.groupBox12.Controls.Add(this.DiscoveredByBox);
             this.groupBox12.Controls.Add(this.DiscoveredByPanel);
-            this.groupBox12.Location = new System.Drawing.Point(6, 203);
+            this.groupBox12.Location = new System.Drawing.Point(6, 198);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(260, 136);
+            this.groupBox12.Size = new System.Drawing.Size(242, 136);
             this.groupBox12.TabIndex = 40;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Discovered by";
@@ -774,7 +776,7 @@
             // 
             this.AddOwnerDiscoveredByButton.Location = new System.Drawing.Point(5, 47);
             this.AddOwnerDiscoveredByButton.Name = "AddOwnerDiscoveredByButton";
-            this.AddOwnerDiscoveredByButton.Size = new System.Drawing.Size(252, 23);
+            this.AddOwnerDiscoveredByButton.Size = new System.Drawing.Size(231, 23);
             this.AddOwnerDiscoveredByButton.TabIndex = 27;
             this.AddOwnerDiscoveredByButton.Text = "Add owner\'s technology group";
             this.AddOwnerDiscoveredByButton.UseVisualStyleBackColor = true;
@@ -784,7 +786,7 @@
             // 
             this.AddDiscoveredByButton.Location = new System.Drawing.Point(183, 19);
             this.AddDiscoveredByButton.Name = "AddDiscoveredByButton";
-            this.AddDiscoveredByButton.Size = new System.Drawing.Size(75, 23);
+            this.AddDiscoveredByButton.Size = new System.Drawing.Size(53, 23);
             this.AddDiscoveredByButton.TabIndex = 26;
             this.AddDiscoveredByButton.Text = "Add";
             this.AddDiscoveredByButton.UseVisualStyleBackColor = true;
@@ -800,6 +802,7 @@
             this.DiscoveredByBox.Location = new System.Drawing.Point(6, 19);
             this.DiscoveredByBox.Name = "DiscoveredByBox";
             this.DiscoveredByBox.Size = new System.Drawing.Size(171, 24);
+            this.DiscoveredByBox.Sorted = true;
             this.DiscoveredByBox.TabIndex = 25;
             this.DiscoveredByBox.TabStop = false;
             // 
@@ -808,7 +811,7 @@
             this.DiscoveredByPanel.BackColor = System.Drawing.Color.LightGray;
             this.DiscoveredByPanel.Location = new System.Drawing.Point(6, 92);
             this.DiscoveredByPanel.Name = "DiscoveredByPanel";
-            this.DiscoveredByPanel.Size = new System.Drawing.Size(251, 38);
+            this.DiscoveredByPanel.Size = new System.Drawing.Size(230, 38);
             this.DiscoveredByPanel.TabIndex = 25;
             // 
             // groupBox13
@@ -819,7 +822,7 @@
             this.groupBox13.Controls.Add(this.OwnerBox);
             this.groupBox13.Location = new System.Drawing.Point(6, 103);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(260, 89);
+            this.groupBox13.Size = new System.Drawing.Size(242, 89);
             this.groupBox13.TabIndex = 43;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "Owner";
@@ -828,7 +831,7 @@
             // 
             this.label37.AutoSize = true;
             this.label37.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label37.Location = new System.Drawing.Point(16, 54);
+            this.label37.Location = new System.Drawing.Point(7, 53);
             this.label37.Name = "label37";
             this.label37.Size = new System.Drawing.Size(68, 16);
             this.label37.TabIndex = 22;
@@ -841,9 +844,9 @@
             this.ControllerBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ControllerBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.ControllerBox.FormattingEnabled = true;
-            this.ControllerBox.Location = new System.Drawing.Point(99, 50);
+            this.ControllerBox.Location = new System.Drawing.Point(79, 50);
             this.ControllerBox.Name = "ControllerBox";
-            this.ControllerBox.Size = new System.Drawing.Size(153, 24);
+            this.ControllerBox.Size = new System.Drawing.Size(157, 24);
             this.ControllerBox.TabIndex = 21;
             this.ControllerBox.TabStop = false;
             this.ControllerBox.SelectedIndexChanged += new System.EventHandler(this.ControllerBox_SelectedIndexChanged);
@@ -852,7 +855,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label5.Location = new System.Drawing.Point(16, 27);
+            this.label5.Location = new System.Drawing.Point(7, 26);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(49, 16);
             this.label5.TabIndex = 20;
@@ -865,9 +868,9 @@
             this.OwnerBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.OwnerBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.OwnerBox.FormattingEnabled = true;
-            this.OwnerBox.Location = new System.Drawing.Point(99, 23);
+            this.OwnerBox.Location = new System.Drawing.Point(79, 23);
             this.OwnerBox.Name = "OwnerBox";
-            this.OwnerBox.Size = new System.Drawing.Size(153, 24);
+            this.OwnerBox.Size = new System.Drawing.Size(157, 24);
             this.OwnerBox.TabIndex = 19;
             this.OwnerBox.TabStop = false;
             this.OwnerBox.SelectedIndexChanged += new System.EventHandler(this.OwnerBox_SelectedIndexChanged);
@@ -880,7 +883,7 @@
             this.groupBox10.Controls.Add(this.ReligionBox);
             this.groupBox10.Location = new System.Drawing.Point(6, 6);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(260, 91);
+            this.groupBox10.Size = new System.Drawing.Size(242, 91);
             this.groupBox10.TabIndex = 38;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Culture and Religion";
@@ -889,7 +892,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label6.Location = new System.Drawing.Point(15, 33);
+            this.label6.Location = new System.Drawing.Point(6, 33);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(52, 16);
             this.label6.TabIndex = 8;
@@ -902,9 +905,9 @@
             this.CultureBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CultureBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.CultureBox.FormattingEnabled = true;
-            this.CultureBox.Location = new System.Drawing.Point(99, 30);
+            this.CultureBox.Location = new System.Drawing.Point(66, 27);
             this.CultureBox.Name = "CultureBox";
-            this.CultureBox.Size = new System.Drawing.Size(152, 24);
+            this.CultureBox.Size = new System.Drawing.Size(170, 24);
             this.CultureBox.TabIndex = 9;
             this.CultureBox.TabStop = false;
             this.CultureBox.SelectedIndexChanged += new System.EventHandler(this.CultureBox_SelectedIndexChanged);
@@ -913,7 +916,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label7.Location = new System.Drawing.Point(16, 60);
+            this.label7.Location = new System.Drawing.Point(5, 57);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(61, 16);
             this.label7.TabIndex = 10;
@@ -924,9 +927,9 @@
             this.ReligionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ReligionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.ReligionBox.FormattingEnabled = true;
-            this.ReligionBox.Location = new System.Drawing.Point(99, 57);
+            this.ReligionBox.Location = new System.Drawing.Point(66, 54);
             this.ReligionBox.Name = "ReligionBox";
-            this.ReligionBox.Size = new System.Drawing.Size(152, 24);
+            this.ReligionBox.Size = new System.Drawing.Size(170, 24);
             this.ReligionBox.TabIndex = 11;
             this.ReligionBox.TabStop = false;
             this.ReligionBox.SelectedIndexChanged += new System.EventHandler(this.ReligionBox_SelectedIndexChanged);
@@ -939,9 +942,9 @@
             this.groupBox9.Controls.Add(this.TradeGoodBox);
             this.groupBox9.Controls.Add(this.LatentTradeGoodBox);
             this.groupBox9.Controls.Add(this.label14);
-            this.groupBox9.Location = new System.Drawing.Point(272, 6);
+            this.groupBox9.Location = new System.Drawing.Point(254, 6);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(260, 116);
+            this.groupBox9.Size = new System.Drawing.Size(278, 116);
             this.groupBox9.TabIndex = 37;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Trade";
@@ -950,7 +953,7 @@
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label17.Location = new System.Drawing.Point(13, 85);
+            this.label17.Location = new System.Drawing.Point(6, 85);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(82, 16);
             this.label17.TabIndex = 24;
@@ -965,9 +968,9 @@
             this.ProvinceTradeNodeBox.FormattingEnabled = true;
             this.ProvinceTradeNodeBox.Items.AddRange(new object[] {
             " "});
-            this.ProvinceTradeNodeBox.Location = new System.Drawing.Point(135, 82);
+            this.ProvinceTradeNodeBox.Location = new System.Drawing.Point(88, 82);
             this.ProvinceTradeNodeBox.Name = "ProvinceTradeNodeBox";
-            this.ProvinceTradeNodeBox.Size = new System.Drawing.Size(119, 24);
+            this.ProvinceTradeNodeBox.Size = new System.Drawing.Size(184, 24);
             this.ProvinceTradeNodeBox.TabIndex = 23;
             this.ProvinceTradeNodeBox.TabStop = false;
             this.ProvinceTradeNodeBox.SelectedIndexChanged += new System.EventHandler(this.ProvinceTradeNodeBox_SelectedIndexChanged);
@@ -976,7 +979,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label4.Location = new System.Drawing.Point(13, 25);
+            this.label4.Location = new System.Drawing.Point(6, 25);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(83, 16);
             this.label4.TabIndex = 7;
@@ -989,9 +992,10 @@
             this.TradeGoodBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.TradeGoodBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.TradeGoodBox.FormattingEnabled = true;
-            this.TradeGoodBox.Location = new System.Drawing.Point(135, 22);
+            this.TradeGoodBox.Location = new System.Drawing.Point(122, 22);
             this.TradeGoodBox.Name = "TradeGoodBox";
-            this.TradeGoodBox.Size = new System.Drawing.Size(119, 24);
+            this.TradeGoodBox.Size = new System.Drawing.Size(150, 24);
+            this.TradeGoodBox.Sorted = true;
             this.TradeGoodBox.TabIndex = 6;
             this.TradeGoodBox.TabStop = false;
             this.TradeGoodBox.SelectedIndexChanged += new System.EventHandler(this.TradeGoodBox_SelectedIndexChanged);
@@ -1003,9 +1007,10 @@
             this.LatentTradeGoodBox.FormattingEnabled = true;
             this.LatentTradeGoodBox.Items.AddRange(new object[] {
             " "});
-            this.LatentTradeGoodBox.Location = new System.Drawing.Point(135, 52);
+            this.LatentTradeGoodBox.Location = new System.Drawing.Point(122, 52);
             this.LatentTradeGoodBox.Name = "LatentTradeGoodBox";
-            this.LatentTradeGoodBox.Size = new System.Drawing.Size(119, 24);
+            this.LatentTradeGoodBox.Size = new System.Drawing.Size(150, 24);
+            this.LatentTradeGoodBox.Sorted = true;
             this.LatentTradeGoodBox.TabIndex = 22;
             this.LatentTradeGoodBox.TabStop = false;
             this.LatentTradeGoodBox.SelectedIndexChanged += new System.EventHandler(this.LatentTradeGoodBox_SelectedIndexChanged);
@@ -1014,7 +1019,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.label14.Location = new System.Drawing.Point(15, 55);
+            this.label14.Location = new System.Drawing.Point(6, 55);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(116, 16);
             this.label14.TabIndex = 21;
@@ -2082,7 +2087,8 @@
             // 
             // CountryPage
             // 
-            this.CountryPage.Controls.Add(this.groupBox23);
+            this.CountryPage.Controls.Add(this.ShowHideNames);
+            this.CountryPage.Controls.Add(this.NamesGroupBox);
             this.CountryPage.Controls.Add(this.groupBox22);
             this.CountryPage.Controls.Add(this.groupBox14);
             this.CountryPage.Controls.Add(this.OpenCountryHistoryFileButton);
@@ -2096,16 +2102,16 @@
             this.CountryPage.Text = "Country";
             this.CountryPage.UseVisualStyleBackColor = true;
             // 
-            // groupBox23
+            // NamesGroupBox
             // 
-            this.groupBox23.Controls.Add(this.SaveNamesToFiles);
-            this.groupBox23.Controls.Add(this.NamesTabs);
-            this.groupBox23.Location = new System.Drawing.Point(6, 509);
-            this.groupBox23.Name = "groupBox23";
-            this.groupBox23.Size = new System.Drawing.Size(537, 241);
-            this.groupBox23.TabIndex = 44;
-            this.groupBox23.TabStop = false;
-            this.groupBox23.Text = "Names";
+            this.NamesGroupBox.Controls.Add(this.SaveNamesToFiles);
+            this.NamesGroupBox.Controls.Add(this.NamesTabs);
+            this.NamesGroupBox.Location = new System.Drawing.Point(6, 509);
+            this.NamesGroupBox.Name = "NamesGroupBox";
+            this.NamesGroupBox.Size = new System.Drawing.Size(537, 241);
+            this.NamesGroupBox.TabIndex = 44;
+            this.NamesGroupBox.TabStop = false;
+            this.NamesGroupBox.Text = "Names";
             // 
             // SaveNamesToFiles
             // 
@@ -2550,6 +2556,7 @@
             this.GraphicalCultureBox.Location = new System.Drawing.Point(367, 135);
             this.GraphicalCultureBox.Name = "GraphicalCultureBox";
             this.GraphicalCultureBox.Size = new System.Drawing.Size(154, 24);
+            this.GraphicalCultureBox.Sorted = true;
             this.GraphicalCultureBox.TabIndex = 38;
             this.GraphicalCultureBox.TabStop = false;
             this.GraphicalCultureBox.SelectedIndexChanged += new System.EventHandler(this.GraphicalCultureBox_SelectedIndexChanged);
@@ -4379,6 +4386,16 @@
             this.label83.TabIndex = 29;
             this.label83.Text = "label83";
             // 
+            // ShowHideNames
+            // 
+            this.ShowHideNames.Location = new System.Drawing.Point(363, 462);
+            this.ShowHideNames.Name = "ShowHideNames";
+            this.ShowHideNames.Size = new System.Drawing.Size(180, 41);
+            this.ShowHideNames.TabIndex = 45;
+            this.ShowHideNames.Text = "Show/Hide Names editor (causes lag when displayed)";
+            this.ShowHideNames.UseVisualStyleBackColor = true;
+            this.ShowHideNames.Click += new System.EventHandler(this.ShowHideNames_Click);
+            // 
             // ModEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4464,7 +4481,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.CountryPage.ResumeLayout(false);
-            this.groupBox23.ResumeLayout(false);
+            this.NamesGroupBox.ResumeLayout(false);
             this.NamesTabs.ResumeLayout(false);
             this.MonarchNamesTab.ResumeLayout(false);
             this.MonarchNamesTab.PerformLayout();
@@ -4844,7 +4861,7 @@
         private System.Windows.Forms.Label label66;
         private System.Windows.Forms.TextBox CountryAdjLocalisationBox;
         private System.Windows.Forms.Button StatisticsButton;
-        private System.Windows.Forms.GroupBox groupBox23;
+        private System.Windows.Forms.GroupBox NamesGroupBox;
         private System.Windows.Forms.Button TradeComapnyNameChangeSave;
         private System.Windows.Forms.Button SuperregionNameChangeSave;
         private System.Windows.Forms.Button AreaNameChangeSave;
@@ -4896,6 +4913,7 @@
         private System.Windows.Forms.Label label81;
         private System.Windows.Forms.Label label82;
         private System.Windows.Forms.Label label83;
+        private System.Windows.Forms.Button ShowHideNames;
     }
 }
 
