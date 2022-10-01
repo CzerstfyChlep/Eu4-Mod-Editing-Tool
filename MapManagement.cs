@@ -20,13 +20,12 @@ namespace Eu4ModEditor
             stopwatch.Start();
             switch (options)
             {
-
                 case UpdateMapOptions.Provinces:
                     foreach (Province p in provinces)
                     {
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.MainStripes = Color.Transparent;
                         p.VerticalStripes = Color.Transparent;
@@ -38,9 +37,9 @@ namespace Eu4ModEditor
                 case UpdateMapOptions.Development:
                     foreach (Province p in provinces)
                     {
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.MainStripes = Color.Transparent;
                         p.VerticalStripes = Color.Transparent;
@@ -65,9 +64,9 @@ namespace Eu4ModEditor
                 case UpdateMapOptions.Religion:
                     foreach (Province p in provinces)
                     {
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.VerticalStripes = Color.Transparent;
 
@@ -99,9 +98,9 @@ namespace Eu4ModEditor
                 case UpdateMapOptions.Government:
                     foreach (Province p in provinces)
                     {
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.MainColor = p.OwnerCountry?.Government?.Color ?? Color.White;
                         if (p.Lake || p.Sea)
@@ -114,9 +113,9 @@ namespace Eu4ModEditor
                 case UpdateMapOptions.Culture:
                     foreach (Province p in provinces)
                     {
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.MainStripes = Color.Transparent;
                         p.VerticalStripes = Color.Transparent;
@@ -133,9 +132,9 @@ namespace Eu4ModEditor
                     foreach (Province p in provinces)
                     {
 
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.VerticalStripes = Color.Transparent;
                         p.MainStripes = Color.Transparent;
@@ -162,9 +161,9 @@ namespace Eu4ModEditor
                 case UpdateMapOptions.TradeGood:
                     foreach (Province p in provinces)
                     {
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.MainStripes = Color.Transparent;
                         p.VerticalStripes = Color.Transparent;
@@ -187,9 +186,9 @@ namespace Eu4ModEditor
                 case UpdateMapOptions.Area:
                     foreach (Province p in provinces)
                     {
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.MainStripes = Color.Transparent;
                         p.VerticalStripes = Color.Transparent;
@@ -209,10 +208,9 @@ namespace Eu4ModEditor
                 case UpdateMapOptions.Region:
                     foreach (Province p in provinces)
                     {
-
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.MainColor = Color.White;
                         p.MainStripes = Color.Transparent;
@@ -233,9 +231,9 @@ namespace Eu4ModEditor
                 case UpdateMapOptions.Superregion:
                     foreach (Province p in provinces)
                     {
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.MainColor = Color.White;
                         p.MainStripes = Color.Transparent;
@@ -260,9 +258,9 @@ namespace Eu4ModEditor
                 case UpdateMapOptions.TradeNode:
                     foreach (Province p in provinces)
                     {
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.MainColor = Color.White;
                         p.MainStripes = Color.Transparent;
@@ -288,9 +286,9 @@ namespace Eu4ModEditor
                 case UpdateMapOptions.TradeCompany:
                     foreach (Province p in provinces)
                     {
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.MainColor = Color.White;
                         p.MainStripes = Color.Transparent;
@@ -311,9 +309,9 @@ namespace Eu4ModEditor
                 case UpdateMapOptions.HRE:
                     foreach (Province p in provinces)
                     {
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.MainColor = Color.White;
                         p.MainStripes = Color.Transparent;
@@ -339,9 +337,9 @@ namespace Eu4ModEditor
 
                     foreach (Province p in provinces)
                     {
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.MainColor = Color.White;
                         p.MainStripes = Color.Transparent;
@@ -361,9 +359,9 @@ namespace Eu4ModEditor
                 case UpdateMapOptions.Continent:
                     foreach (Province p in provinces)
                     {
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.MainColor = Color.White;
                         p.MainStripes = Color.Transparent;
@@ -381,9 +379,9 @@ namespace Eu4ModEditor
                 case UpdateMapOptions.DiscoveredBy:
                     foreach (Province p in provinces)
                     {
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.MainColor = Color.White;
                         p.MainStripes = Color.Transparent;
@@ -408,9 +406,9 @@ namespace Eu4ModEditor
                 case UpdateMapOptions.Localisation:
                     foreach (Province p in provinces)
                     {
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.MainColor = Color.White;
                         p.MainStripes = Color.Transparent;
@@ -437,9 +435,9 @@ namespace Eu4ModEditor
                 case UpdateMapOptions.Climate:
                     foreach (Province p in provinces)
                     {
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.MainColor = Color.White;
                         p.MainStripes = Color.Transparent;
@@ -473,12 +471,9 @@ namespace Eu4ModEditor
                 case UpdateMapOptions.Winter:
                     foreach (Province p in provinces)
                     {
-                        Color c = Color.FromArgb(30, 30, 30);
-                        Color stripec = Color.Pink;
-
-                        p.OldMainColor = p.MainColor;
-                        p.OldMainStripes = p.MainStripes;
-                        p.OldVerticalStripes = p.VerticalStripes;
+                        //p.OldMainColor = p.MainColor;
+                        //p.OldMainStripes = p.MainStripes;
+                        //p.OldVerticalStripes = p.VerticalStripes;
 
                         p.MainColor = Color.FromArgb(30, 30, 30);
                         p.MainStripes = Color.Transparent;
@@ -617,12 +612,15 @@ namespace Eu4ModEditor
             }
             stopwatch.Stop();
             GlobalVariables.MainForm.UpdateLab(stopwatch.ElapsedMilliseconds.ToString(), 1);
+            GlobalVariables.MainForm.UpdateLab(toDraw.Count().ToString(), 3);
         }
 
         public static void UpdateMap(List<Province> provinces, UpdateMapOptions options)
         {
-
-            UpdateProvinceColors(provinces, options);
+            if (GlobalVariables.mapmode == options)
+            {
+                UpdateProvinceColors(provinces, options);
+            }
             return;
 
             switch (options)

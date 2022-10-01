@@ -298,6 +298,9 @@ namespace Eu4ModEditor
                 case 2:
                     label82.Text = "Last set colours time: " + txt;
                     break;
+                case 3:
+                    label83.Text = "Provinces drawn: " + txt;
+                    break;
             }
         }
 
