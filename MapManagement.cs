@@ -620,6 +620,9 @@ namespace Eu4ModEditor
             if (GlobalVariables.mapmode == options)
             {
                 UpdateProvinceColors(provinces, options);
+                List<Rectangle> toUp = new List<Rectangle>();
+                provinces.ForEach(x => toUp.Add(x.ContainingRectangle));
+                MapManagement.DrawPixelsOnMap(toUp);
             }
             return;
 

@@ -161,6 +161,7 @@ namespace Eu4ModEditor
         public static DateTime StartDate = new DateTime(1444, 11, 11);
         public static DateTime CurrentDate = new DateTime(1444, 11, 11);
 
+        public static bool OldMapUpdatingStyle = false;
         
 
     }
