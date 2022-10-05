@@ -175,6 +175,7 @@
             this.ProvinceColorLabelG = new System.Windows.Forms.Label();
             this.ProvinceColorLabelR = new System.Windows.Forms.Label();
             this.CountryPage = new System.Windows.Forms.TabPage();
+            this.ShowHideNames = new System.Windows.Forms.Button();
             this.NamesGroupBox = new System.Windows.Forms.GroupBox();
             this.SaveNamesToFiles = new System.Windows.Forms.Button();
             this.NamesTabs = new System.Windows.Forms.TabControl();
@@ -391,11 +392,6 @@
             this.WinterMapmode = new System.Windows.Forms.Button();
             this.ClimateMapmode = new System.Windows.Forms.Button();
             this.TerrainMapmode = new System.Windows.Forms.Button();
-            this.label80 = new System.Windows.Forms.Label();
-            this.label81 = new System.Windows.Forms.Label();
-            this.label82 = new System.Windows.Forms.Label();
-            this.label83 = new System.Windows.Forms.Label();
-            this.ShowHideNames = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.ProvinceTabControl.SuspendLayout();
@@ -2101,6 +2097,16 @@
             this.CountryPage.TabIndex = 1;
             this.CountryPage.Text = "Country";
             this.CountryPage.UseVisualStyleBackColor = true;
+            // 
+            // ShowHideNames
+            // 
+            this.ShowHideNames.Location = new System.Drawing.Point(363, 462);
+            this.ShowHideNames.Name = "ShowHideNames";
+            this.ShowHideNames.Size = new System.Drawing.Size(180, 41);
+            this.ShowHideNames.TabIndex = 45;
+            this.ShowHideNames.Text = "Show/Hide Names editor (causes lag when displayed)";
+            this.ShowHideNames.UseVisualStyleBackColor = true;
+            this.ShowHideNames.Click += new System.EventHandler(this.ShowHideNames_Click);
             // 
             // NamesGroupBox
             // 
@@ -4350,52 +4356,6 @@
             this.TerrainMapmode.Text = "Terrain mapmode";
             this.TerrainMapmode.UseVisualStyleBackColor = true;
             // 
-            // label80
-            // 
-            this.label80.AutoSize = true;
-            this.label80.Location = new System.Drawing.Point(1260, 864);
-            this.label80.Name = "label80";
-            this.label80.Size = new System.Drawing.Size(41, 13);
-            this.label80.TabIndex = 26;
-            this.label80.Text = "label80";
-            // 
-            // label81
-            // 
-            this.label81.AutoSize = true;
-            this.label81.Location = new System.Drawing.Point(1262, 888);
-            this.label81.Name = "label81";
-            this.label81.Size = new System.Drawing.Size(41, 13);
-            this.label81.TabIndex = 27;
-            this.label81.Text = "label81";
-            // 
-            // label82
-            // 
-            this.label82.AutoSize = true;
-            this.label82.Location = new System.Drawing.Point(1260, 909);
-            this.label82.Name = "label82";
-            this.label82.Size = new System.Drawing.Size(41, 13);
-            this.label82.TabIndex = 28;
-            this.label82.Text = "label82";
-            // 
-            // label83
-            // 
-            this.label83.AutoSize = true;
-            this.label83.Location = new System.Drawing.Point(1206, 872);
-            this.label83.Name = "label83";
-            this.label83.Size = new System.Drawing.Size(41, 13);
-            this.label83.TabIndex = 29;
-            this.label83.Text = "label83";
-            // 
-            // ShowHideNames
-            // 
-            this.ShowHideNames.Location = new System.Drawing.Point(363, 462);
-            this.ShowHideNames.Name = "ShowHideNames";
-            this.ShowHideNames.Size = new System.Drawing.Size(180, 41);
-            this.ShowHideNames.TabIndex = 45;
-            this.ShowHideNames.Text = "Show/Hide Names editor (causes lag when displayed)";
-            this.ShowHideNames.UseVisualStyleBackColor = true;
-            this.ShowHideNames.Click += new System.EventHandler(this.ShowHideNames_Click);
-            // 
             // ModEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4403,10 +4363,6 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.ClientSize = new System.Drawing.Size(1736, 931);
-            this.Controls.Add(this.label83);
-            this.Controls.Add(this.label82);
-            this.Controls.Add(this.label81);
-            this.Controls.Add(this.label80);
             this.Controls.Add(this.TerrainMapmode);
             this.Controls.Add(this.ClimateMapmode);
             this.Controls.Add(this.WinterMapmode);
@@ -4438,6 +4394,7 @@
             this.MaximizeBox = false;
             this.Name = "ModEditor";
             this.Text = "EUIV - Mod Editor";
+            this.Load += new System.EventHandler(this.ModEditor_Load);
             this.Tabs.ResumeLayout(false);
             this.ProvinceTab.ResumeLayout(false);
             this.ProvinceTabControl.ResumeLayout(false);
@@ -4541,7 +4498,6 @@
             this.ChangesTab.ResumeLayout(false);
             this.SavingTab.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -4909,10 +4865,6 @@
         public System.Windows.Forms.ComboBox ImpassableBox;
         public System.Windows.Forms.ComboBox ClimateBox;
         public System.Windows.Forms.ComboBox MonsoonBox;
-        private System.Windows.Forms.Label label80;
-        private System.Windows.Forms.Label label81;
-        private System.Windows.Forms.Label label82;
-        private System.Windows.Forms.Label label83;
         private System.Windows.Forms.Button ShowHideNames;
     }
 }

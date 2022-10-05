@@ -232,10 +232,6 @@ namespace Eu4ModEditor
 
             }
 
-        public void ProvUpdNum(int num)
-        {
-            label80.Text = num.ToString();
-        }
 
         public void TabChanged(object sender, EventArgs e)
         {
@@ -278,24 +274,7 @@ namespace Eu4ModEditor
         #region Graphical
         public static Graphics graphics;
 
-        public void UpdateLab(string txt, int type)
-        {
-            switch (type)
-            {
-                case 0:
-                    label80.Text = "Last draw time: " + txt;
-                    break;
-                case 1:
-                    label81.Text = "Last set pixels time: " + txt;
-                    break;
-                case 2:
-                    label82.Text = "Last set colours time: " + txt;
-                    break;
-                case 3:
-                    label83.Text = "Provinces drawn: " + txt;
-                    break;
-            }
-        }
+
 
         public static Stopwatch stopwatch = new Stopwatch();
 
@@ -790,7 +769,7 @@ namespace Eu4ModEditor
 
                 GroupBox gb = new GroupBox();
                 gb.Text = name;
-                gb.Size = new Size(507, 37);
+                gb.Size = new Size(507, 57);
                 SaveFilesPanel.Controls.Add(gb);
 
                 Label pathl = new Label();
@@ -805,7 +784,7 @@ namespace Eu4ModEditor
                 {
                     Label pathl2 = new Label();
                     pathl2.AutoSize = true;
-                    pathl2.Location = new Point(140, 16);
+                    pathl2.Location = new Point(8, 36);
                     pathl2.Text = "Path: " + path2.Replace(GlobalVariables.pathtomod, "");
                     pathl2.Click += OpenFile;
                     pathl2.Tag = path2;
@@ -1881,12 +1860,10 @@ namespace Eu4ModEditor
         private void SaveAllChangesButton_Click(object sender, EventArgs e)
         {
             MergeChanges();
-            foreach (VariableChange vc in GlobalVariables.Changes)
+            foreach (VariableChange vc in GlobalVariables.Changes.ToArray())
             {
-                if (!GlobalVariables.Saves.Contains(vc.Object))
-                    GlobalVariables.Saves.Add(vc.Object);
+                KeepChange(vc, false);
             }
-            GlobalVariables.Changes.Clear();
             UpdateChangesTab();
             UpdateSavesTab();
         }
@@ -2421,8 +2398,13 @@ namespace Eu4ModEditor
                 }
 
                 if (GlobalVariables.ClickedProvinces.Any())
+                {
                     if (GlobalVariables.ClickedProvinces[0].OwnerCountry != null && GlobalVariables.ClickedProvinces[0].OwnerCountry != Country.NoCountry)
                         CountryBox.SelectedItem = GlobalVariables.ClickedProvinces[0].OwnerCountry;
+                    if (GlobalVariables.ClickedProvinces[0].TradeNode != null)
+                        TradeNodeBox.SelectedIndex = GlobalVariables.TradeNodes.IndexOf(GlobalVariables.ClickedProvinces[0].TradeNode) + 1;
+                }
+
 
             }
             if (Tabs.SelectedTab == ProvinceTab)
@@ -2674,10 +2656,10 @@ namespace Eu4ModEditor
         {
             if (GlobalVariables.InternalChanges)
                 return;
-            if(ProvinceTradeNodeBox.SelectedItem is string)
+            if(ProvinceTradeNodeBox.SelectedIndex == 0)
                 ChangeProvinceInfo(ChangeProvinceMode.TradeNode, null);
             else
-                ChangeProvinceInfo(ChangeProvinceMode.TradeNode, ProvinceTradeNodeBox.SelectedItem);
+                ChangeProvinceInfo(ChangeProvinceMode.TradeNode, GlobalVariables.TradeNodes.Find(x=>x.Name == ProvinceTradeNodeBox.Text));
         }
         private void TradeNodeBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -3858,10 +3840,9 @@ namespace Eu4ModEditor
             GlobalVariables.Changes.AddRange(newList);
         }
         
-        public void KeepAndSave(object sender, EventArgs e)
+        public void KeepChange(VariableChange vc, bool Update = true)
         {
-            int index = (int)(sender as Control).Tag;
-            switch (GlobalVariables.Changes[index].VariableName)
+            switch (vc.VariableName)
             {
                 case "TradeNode":
                     {
@@ -3883,14 +3864,23 @@ namespace Eu4ModEditor
                     break;
                 default:
                     {
-                        if (!GlobalVariables.Saves.Contains(GlobalVariables.Changes[index].Object))
-                            GlobalVariables.Saves.Add(GlobalVariables.Changes[index].Object);
+                        if (!GlobalVariables.Saves.Contains(vc.Object))
+                            GlobalVariables.Saves.Add(vc.Object);
                     }
                     break;
-            }          
-            GlobalVariables.Changes.RemoveAt((int)(sender as Control).Tag);
-            UpdateChangesTab();
-            UpdateSavesTab();
+            }
+            GlobalVariables.Changes.Remove(vc);
+            if (Update)
+            {
+                UpdateChangesTab();
+                UpdateSavesTab();
+            }
+        }
+
+        public void KeepAndSave(object sender, EventArgs e)
+        {
+            int index = (int)(sender as Control).Tag;
+            KeepChange(GlobalVariables.Changes[index]);
         }
         public void Revert(object sender, EventArgs e)
         {
@@ -4142,7 +4132,14 @@ namespace Eu4ModEditor
         }
         public void OpenFile(object sender, EventArgs e)
         {
-            Process.Start((sender as Control).Tag.ToString());
+            try
+            {
+                Process.Start((sender as Control).Tag.ToString());
+            }
+            catch
+            {
+                MessageBox.Show("File can't be opened!");
+            }
         }
         public void SaveFile(object sender, EventArgs e)
         {
@@ -4945,6 +4942,11 @@ namespace Eu4ModEditor
                 if (NamesTabs.SelectedTab == MonarchNamesTab)
                     UpdateMonarchNames();
             }
+        }
+
+        private void ModEditor_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
