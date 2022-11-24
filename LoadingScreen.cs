@@ -132,6 +132,8 @@ namespace Eu4ModEditor
         public List<Label> StatusLabels = new List<Label>();
         public List<FileStatus> FileStatuses = new List<FileStatus>();
 
+        public List<Bookmark> bookmarks = new List<Bookmark>();
+
         private void CheckFilesButton_Click(object sender, EventArgs e)
         {
             File.WriteAllText("directories.txt", GameDirectoryBox.Text + "\n" + ModDirectoryBox.Text);
@@ -153,6 +155,94 @@ namespace Eu4ModEditor
                     GlobalVariables.pathtomod = ModDirectoryBox.Text + "\\";
             }
 
+
+            //BOOKMARKS READING
+
+            bookmarks.Clear();
+
+            List<string> FilesDone = new List<string>();
+
+            if (Directory.Exists(GlobalVariables.pathtomod + "common\\bookmarks\\"))
+            {
+                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\bookmarks\\"))
+                {
+                    FilesDone.Add(Path.GetFileName(file));
+                    NodeFile nf = new NodeFile(file);
+                    Node bookmark = nf.MainNode.Nodes.Find(x => x.Name.ToLower() == "bookmark");
+                    if (bookmark != null)
+                    {
+                        Variable date = bookmark.Variables.Find(x => x.Name.ToLower() == "date");
+                        if (date != null)
+                        {
+
+                            string[] spl = date.Value.Split('.');
+                            if (spl.Count() >= 3)
+                            {
+                                int year = 1444, month = 11, day = 11;
+                                int.TryParse(spl[0], out year);
+                                int.TryParse(spl[1], out month);
+                                int.TryParse(spl[2], out day);
+
+                                if (year > 0 && month > 0 && day > 0 && month < 12 && day < 32)
+                                {
+                                    Bookmark bm = new Bookmark(year, month, day);
+                                    if (!bookmarks.Any(x => x.Date.CompareTo(bm.Date) == 0))
+                                        bookmarks.Add(bm);
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            if (Directory.Exists(GlobalVariables.pathtogame + "common\\bookmarks\\"))
+            {
+                foreach(string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\bookmarks\\"))
+                {
+                   // MessageBox.Show("DAte found: " + file);
+                    if (FilesDone.Contains(Path.GetFileName(file)))
+                        continue;
+                    NodeFile nf = new NodeFile(file);
+                   // MessageBox.Show(nf.MainNode.Nodes[0].Name);
+                    Node bookmark = nf.MainNode.Nodes.Find(x => x.Name.ToLower() == "bookmark");
+                    if (bookmark!= null)
+                    {
+                        Variable date = bookmark.Variables.Find(x => x.Name.ToLower() == "date");
+                        
+                        if (date != null)
+                        {
+                           
+                            string[] spl = date.Value.Split('.');
+                            if(spl.Count() >= 3)
+                            {
+                                int year = 1444, month = 11, day = 11;
+                                int.TryParse(spl[0], out year);
+                                int.TryParse(spl[1], out month);
+                                int.TryParse(spl[2], out day);
+                                
+                                if(year > 0 && month > 0 && day > 0 && month < 12 && day < 32)
+                                {
+                                    Bookmark bm = new Bookmark(year, month, day);
+                                    if (!bookmarks.Any(x=>x.Date.CompareTo(bm.Date) == 0))
+                                        bookmarks.Add(bm);
+                                }                                  
+                            }
+                            
+                        }
+                    }
+                }
+            }
+
+            bookmarks.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
+
+            BookmarksComboBox.Items.Clear();
+            BookmarksComboBox.Items.AddRange(bookmarks.ToArray());
+
+            if (bookmarks.Any())
+            {
+                StartDateBox.Text = $"{bookmarks[0].Date.Year}.{bookmarks[0].Date.Month}.{bookmarks[0].Date.Day}";
+            }
             FileStatuses.Clear();
 
             int n = 0;
@@ -534,6 +624,23 @@ namespace Eu4ModEditor
                 if(b is Button)
                     (b as Button).FlatStyle = FlatStyle.Flat;
             }
+        }
+
+        public class Bookmark
+        {
+            public bool MOD = false;
+            public DateTime Date = new DateTime(1444,11,11);           
+            public Bookmark(int year, int month, int day, bool mod = false)
+            {
+                Date = new DateTime(year, month, day);
+                MOD = mod;
+            }
+            
+        }
+
+        private void BookmarksComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            StartDateBox.Text = $"{bookmarks[BookmarksComboBox.SelectedIndex].Date.Year}.{bookmarks[BookmarksComboBox.SelectedIndex].Date.Month}.{bookmarks[BookmarksComboBox.SelectedIndex].Date.Day}";
         }
     }
 }

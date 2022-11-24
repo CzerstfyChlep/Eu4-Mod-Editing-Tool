@@ -46,6 +46,8 @@
             this.LoadingPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.ConfirmFileUsage = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.BookmarksComboBox = new System.Windows.Forms.ComboBox();
             this.label6 = new System.Windows.Forms.Label();
             this.StartDateBox = new System.Windows.Forms.TextBox();
             this.DarkmodeOption = new System.Windows.Forms.Button();
@@ -228,6 +230,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label7);
+            this.groupBox3.Controls.Add(this.BookmarksComboBox);
             this.groupBox3.Controls.Add(this.label6);
             this.groupBox3.Controls.Add(this.StartDateBox);
             this.groupBox3.Controls.Add(this.DarkmodeOption);
@@ -245,6 +249,25 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Special options";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(13, 269);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(60, 13);
+            this.label7.TabIndex = 11;
+            this.label7.Text = "Bookmarks";
+            // 
+            // BookmarksComboBox
+            // 
+            this.BookmarksComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.BookmarksComboBox.FormattingEnabled = true;
+            this.BookmarksComboBox.Location = new System.Drawing.Point(79, 266);
+            this.BookmarksComboBox.Name = "BookmarksComboBox";
+            this.BookmarksComboBox.Size = new System.Drawing.Size(121, 21);
+            this.BookmarksComboBox.TabIndex = 10;
+            this.BookmarksComboBox.SelectedIndexChanged += new System.EventHandler(this.BookmarksComboBox_SelectedIndexChanged);
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -256,7 +279,7 @@
             // 
             // StartDateBox
             // 
-            this.StartDateBox.Location = new System.Drawing.Point(16, 266);
+            this.StartDateBox.Location = new System.Drawing.Point(16, 293);
             this.StartDateBox.Name = "StartDateBox";
             this.StartDateBox.Size = new System.Drawing.Size(100, 20);
             this.StartDateBox.TabIndex = 8;
@@ -288,7 +311,8 @@
             this.AppSizeBox.FormattingEnabled = true;
             this.AppSizeBox.Items.AddRange(new object[] {
             "1752 x 970",
-            "1290 x 970"});
+            "1290 x 970",
+            "1290 x 870"});
             this.AppSizeBox.Location = new System.Drawing.Point(16, 216);
             this.AppSizeBox.Name = "AppSizeBox";
             this.AppSizeBox.Size = new System.Drawing.Size(136, 21);
@@ -404,5 +428,7 @@
         private System.Windows.Forms.Button DarkmodeOption;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox StartDateBox;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ComboBox BookmarksComboBox;
     }
 }

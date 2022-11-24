@@ -13,7 +13,7 @@ namespace Eu4ModEditor
         /// </summary>
         public enum EntryType { CoresAdd, CoresRemove, ClaimsAdd, ClaimsRemove, Owner, Controller,
             Tax, Production, Manpower, Capital, CenterOfTrade, HRE, BuildingAdd, BuildingRemove,
-            TradeGood, LatentTradeGood, Religion, Culture, DiscoveredByAdd, DiscoveredByRemove, Revolt
+            TradeGood, LatentTradeGood, Religion, Culture, DiscoveredByAdd, DiscoveredByRemove, Revolt, Fort, City
         }
 
         public class Entry
@@ -28,6 +28,21 @@ namespace Eu4ModEditor
         }
 
         public List<Entry> Entries = new List<Entry>();
+
+        public bool TryGetValue(EntryType type, out object value)
+        {
+            Entry e = Entries.Find(x => x.Type == type);
+            if(e == null)
+            {
+                value = null;
+                return false;
+            }
+            else
+            {
+                value = e.Value;
+                return true;
+            }
+        }
 
         public DateTime Date;
 
@@ -143,6 +158,31 @@ namespace Eu4ModEditor
             }
         }
 
+        private void SetValueWithDates<T>(object value, ProvinceDateEntry.EntryType type)
+        {
+            if (DateTime.Compare(GlobalVariables.CurrentDate, GlobalVariables.StartDate) == 0)
+            {
+                if (GlobalVariables.FullyLoaded)
+                    GlobalVariables.Changes.Add(new VariableChange(this, type.ToString(), Variables[type.ToString()], (T)value));
+                Variables[type.ToString()] = value;
+            }
+            else
+            {
+                ProvinceDateEntry pde = DateEntries.Find(x => DateTime.Compare(x.Date, GlobalVariables.CurrentDate) == 0);
+                if (pde == null)
+                {
+                    pde = new ProvinceDateEntry(GlobalVariables.CurrentDate);
+                    AddDateEntry(pde);
+                }
+                ProvinceDateEntry.Entry entry = pde.Entries.Find(x => x.Type == type);
+                if (entry == null)
+                {
+                    entry = new ProvinceDateEntry.Entry(type, value);
+                    pde.Entries.Add(entry);
+                }
+            }
+        }
+
         private List<string> Claims
         {
             get
@@ -180,11 +220,12 @@ namespace Eu4ModEditor
         }
 
         public List<ProvinceDateEntry> DateEntries = new List<ProvinceDateEntry>();
+        
 
         public void AddDateEntry(ProvinceDateEntry entry)
         {
             DateEntries.Add(entry);
-            DateEntries = DateEntries.OrderByDescending(x => x.Date).ToList();
+            DateEntries.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
         }
 
 
@@ -218,72 +259,279 @@ namespace Eu4ModEditor
         {
             get
             {
-                return (int)Variables["Tax"];
+                int Value = (int)Variables["Tax"];
+                if (!DateEntries.Any())
+                    return Value;
+                else
+                {
+                    foreach (ProvinceDateEntry pd in DateEntries)
+                    {
+                        if (DateTime.Compare(GlobalVariables.CurrentDate, pd.Date) >= 0)
+                        {
+                            if (pd.TryGetValue(ProvinceDateEntry.EntryType.Tax, out object value))
+                            {
+                                Value = (int)value;
+                            }
+                        }
+                        else
+                            continue;
+                    }
+                    return Value;
+                }
             }
             set
             {
+
+                SetValueWithDates<int>(value, ProvinceDateEntry.EntryType.Tax);
+                if (DateTime.Compare(GlobalVariables.CurrentDate, GlobalVariables.StartDate) == 0)
+                {
+                    if (GlobalVariables.FullyLoaded)
+                        GlobalVariables.Changes.Add(new VariableChange(this, "Tax", Variables["Tax"], (int)value));
+                    Variables["Tax"] = value;
+                }
+                else
+                {
+                    ProvinceDateEntry pde = DateEntries.Find(x => DateTime.Compare(x.Date, GlobalVariables.CurrentDate) == 0);
+                    if (pde == null)
+                    {
+                        pde = new ProvinceDateEntry(GlobalVariables.CurrentDate);
+                        AddDateEntry(pde);
+                    }
+                    ProvinceDateEntry.Entry entry = pde.Entries.Find(x => x.Type == ProvinceDateEntry.EntryType.Tax);
+                    if (entry == null)
+                    {
+                        entry = new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.Tax, value);
+                        pde.Entries.Add(entry);
+                    }
+                }
+                /*
                 if (GlobalVariables.FullyLoaded)
                     GlobalVariables.Changes.Add(new VariableChange(this, "Tax", Variables["Tax"], (int)value));
                 Variables["Tax"] = value;
+                */
             }
         }
         public int Production
         {
             get
             {
-                return (int)Variables["Production"];
+                int Value = (int)Variables["Production"];
+                if (!DateEntries.Any())
+                    return Value;
+                else
+                {
+                    foreach (ProvinceDateEntry pd in DateEntries)
+                    {
+                        if (DateTime.Compare(GlobalVariables.CurrentDate, pd.Date) >= 0)
+                        {
+                            if (pd.TryGetValue(ProvinceDateEntry.EntryType.Production, out object value))
+                            {
+                                Value = (int)value;
+                            }
+                        }
+                        else
+                            continue;
+                    }
+                    return Value;
+                }
             }
             set
             {
-                if (GlobalVariables.FullyLoaded)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "Production", Variables["Production"], value));
-                Variables["Production"] = value;
+                if (DateTime.Compare(GlobalVariables.CurrentDate, GlobalVariables.StartDate) == 0)
+                {
+                    if (GlobalVariables.FullyLoaded)
+                        GlobalVariables.Changes.Add(new VariableChange(this, "Production", Variables["Production"], (int)value));
+                    Variables["Production"] = value;
+                }
+                else
+                {
+                    ProvinceDateEntry pde = DateEntries.Find(x => DateTime.Compare(x.Date, GlobalVariables.CurrentDate) == 0);
+                    if (pde == null)
+                    {
+                        pde = new ProvinceDateEntry(GlobalVariables.CurrentDate);
+                        AddDateEntry(pde);
+                    }
+                    ProvinceDateEntry.Entry entry = pde.Entries.Find(x => x.Type == ProvinceDateEntry.EntryType.Production);
+                    if (entry == null)
+                    {
+                        entry = new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.Production, value);
+                        pde.Entries.Add(entry);
+                    }
+                }
+
             }
         }
         public int Manpower
         {
             get
             {
-                return (int)Variables["Manpower"];
+                int Value = (int)Variables["Manpower"];
+                if (!DateEntries.Any())
+                    return Value;
+                else
+                {
+                    foreach (ProvinceDateEntry pd in DateEntries)
+                    {
+                        if (DateTime.Compare(GlobalVariables.CurrentDate, pd.Date) >= 0)
+                        {
+                            if (pd.TryGetValue(ProvinceDateEntry.EntryType.Manpower, out object value))
+                            {
+                                Value = (int)value;
+                            }
+                        }
+                        else
+                            continue;
+                    }
+                    return Value;
+                }
             }
             set
             {
-                if (GlobalVariables.FullyLoaded)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "Manpower", Variables["Manpower"], value));
-                Variables["Manpower"] = value;
+                if (DateTime.Compare(GlobalVariables.CurrentDate, GlobalVariables.StartDate) == 0)
+                {
+                    if (GlobalVariables.FullyLoaded)
+                        GlobalVariables.Changes.Add(new VariableChange(this, "Manpower", Variables["Manpower"], (int)value));
+                    Variables["Manpower"] = value;
+                }
+                else
+                {
+                    ProvinceDateEntry pde = DateEntries.Find(x => DateTime.Compare(x.Date, GlobalVariables.CurrentDate) == 0);
+                    if (pde == null)
+                    {
+                        pde = new ProvinceDateEntry(GlobalVariables.CurrentDate);
+                        AddDateEntry(pde);
+                    }
+                    ProvinceDateEntry.Entry entry = pde.Entries.Find(x => x.Type == ProvinceDateEntry.EntryType.Manpower);
+                    if (entry == null)
+                    {
+                        entry = new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.Manpower, value);
+                        pde.Entries.Add(entry);
+                    }
+                }
             }
         }
         public string Capital
         {
             get
             {
-                return Variables["Capital"] as string;
+                string Value = (string)Variables["Capital"];
+                if (!DateEntries.Any())
+                    return Value;
+                else
+                {
+                    foreach (ProvinceDateEntry pd in DateEntries)
+                    {
+                        if (DateTime.Compare(GlobalVariables.CurrentDate, pd.Date) >= 0)
+                        {
+                            if (pd.TryGetValue(ProvinceDateEntry.EntryType.Capital, out object value))
+                            {
+                                Value = (string)value;
+                            }
+                        }
+                        else
+                            continue;
+                    }
+                    return Value;
+                }
             }
             set
             {
-                if (GlobalVariables.FullyLoaded)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "Capital", Variables["Capital"], value));
-                Variables["Capital"] = value;
+                if (DateTime.Compare(GlobalVariables.CurrentDate, GlobalVariables.StartDate) == 0)
+                {
+                    if (GlobalVariables.FullyLoaded)
+                        GlobalVariables.Changes.Add(new VariableChange(this, "Capital", Variables["Capital"], (string)value));
+                    Variables["Capital"] = value;
+                }
+                else
+                {
+                    ProvinceDateEntry pde = DateEntries.Find(x => DateTime.Compare(x.Date, GlobalVariables.CurrentDate) == 0);
+                    if (pde == null)
+                    {
+                        pde = new ProvinceDateEntry(GlobalVariables.CurrentDate);
+                        AddDateEntry(pde);
+                    }
+                    ProvinceDateEntry.Entry entry = pde.Entries.Find(x => x.Type == ProvinceDateEntry.EntryType.Capital);
+                    if (entry == null)
+                    {
+                        entry = new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.Capital, value);
+                        pde.Entries.Add(entry);
+                    }
+                }
             }
         }
         public int CenterOfTrade
         {
             get
             {
-                return (int)Variables["CenterOfTrade"];
+                int Value = (int)Variables["CenterOfTrade"];
+                if (!DateEntries.Any())
+                    return Value;
+                else
+                {
+                    foreach (ProvinceDateEntry pd in DateEntries)
+                    {
+                        if (DateTime.Compare(GlobalVariables.CurrentDate, pd.Date) >= 0)
+                        {
+                            if (pd.TryGetValue(ProvinceDateEntry.EntryType.CenterOfTrade, out object value))
+                            {
+                                Value = (int)value;
+                            }
+                        }
+                        else
+                            continue;
+                    }
+                    return Value;
+                }
             }
             set
             {
-                if (GlobalVariables.FullyLoaded)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "CenterOfTrade", Variables["CenterOfTrade"], value));
-                Variables["CenterOfTrade"] = value;
+                if (DateTime.Compare(GlobalVariables.CurrentDate, GlobalVariables.StartDate) == 0)
+                {
+                    if (GlobalVariables.FullyLoaded)
+                        GlobalVariables.Changes.Add(new VariableChange(this, "CenterOfTrade", Variables["CenterOfTrade"], (int)value));
+                    Variables["CenterOfTrade"] = value;
+                }
+                else
+                {
+                    ProvinceDateEntry pde = DateEntries.Find(x => DateTime.Compare(x.Date, GlobalVariables.CurrentDate) == 0);
+                    if (pde == null)
+                    {
+                        pde = new ProvinceDateEntry(GlobalVariables.CurrentDate);
+                        AddDateEntry(pde);
+                    }
+                    ProvinceDateEntry.Entry entry = pde.Entries.Find(x => x.Type == ProvinceDateEntry.EntryType.CenterOfTrade);
+                    if (entry == null)
+                    {
+                        entry = new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.CenterOfTrade, value);
+                        pde.Entries.Add(entry);
+                    }
+                }
+
             }
         }
         public bool HRE
         {
             get
             {
-                return (bool)Variables["HRE"];
+                bool Value = (bool)Variables["HRE"];
+                if (!DateEntries.Any())
+                    return Value;
+                else
+                {
+                    foreach (ProvinceDateEntry pd in DateEntries)
+                    {
+                        if (DateTime.Compare(GlobalVariables.CurrentDate, pd.Date) >= 0)
+                        {
+                            if (pd.TryGetValue(ProvinceDateEntry.EntryType.HRE, out object value))
+                            {
+                                Value = (bool)value;
+                            }
+                        }
+                        else
+                            continue;
+                    }
+                    return Value;
+                }
             }
             set
             {
@@ -296,7 +544,25 @@ namespace Eu4ModEditor
         {
             get
             {
-                return (bool)Variables["Fort"];
+                bool Value = (bool)Variables["Fort"];
+                if (!DateEntries.Any())
+                    return Value;
+                else
+                {
+                    foreach (ProvinceDateEntry pd in DateEntries)
+                    {
+                        if (DateTime.Compare(GlobalVariables.CurrentDate, pd.Date) >= 0)
+                        {
+                            if (pd.TryGetValue(ProvinceDateEntry.EntryType.Fort, out object value))
+                            {
+                                Value = (bool)value;
+                            }
+                        }
+                        else
+                            continue;
+                    }
+                    return Value;
+                }
             }
             set
             {
@@ -321,7 +587,25 @@ namespace Eu4ModEditor
         {
             get
             {
-                return (bool)Variables["City"];
+                bool Value = (bool)Variables["City"];
+                if (!DateEntries.Any())
+                    return Value;
+                else
+                {
+                    foreach (ProvinceDateEntry pd in DateEntries)
+                    {
+                        if (DateTime.Compare(GlobalVariables.CurrentDate, pd.Date) >= 0)
+                        {
+                            if (pd.TryGetValue(ProvinceDateEntry.EntryType.City, out object value))
+                            {
+                                Value = (bool)value;
+                            }
+                        }
+                        else
+                            continue;
+                    }
+                    return Value;
+                }
             }
             set
             {
@@ -334,7 +618,33 @@ namespace Eu4ModEditor
         {
             get
             {
-                return Variables["Buildings"] as List<Building>;
+                //return Variables["Buildings"] as List<Building>;
+
+                List<Building> Value = ((List<Building>)Variables["Buildings"]).ToList();
+                if (!DateEntries.Any())
+                    return Value;
+                else
+                {
+                    foreach (ProvinceDateEntry pd in DateEntries)
+                    {
+                        if (DateTime.Compare(GlobalVariables.CurrentDate, pd.Date) >= 0)
+                        {
+                            foreach(ProvinceDateEntry.Entry entry in pd.Entries.Where(x=>x.Type == ProvinceDateEntry.EntryType.BuildingAdd || x.Type == ProvinceDateEntry.EntryType.BuildingRemove))
+                            {
+                                if (entry.Type == ProvinceDateEntry.EntryType.BuildingRemove)
+                                    Value.Remove((Building)entry.Value);
+                                else
+                                    Value.Add((Building)entry.Value);
+                            }
+                        }
+                        else
+                            continue;
+                    }
+                    return Value;
+                }
+
+
+
             }
             set
             {
@@ -343,6 +653,10 @@ namespace Eu4ModEditor
                 Variables["Buildings"] = value;
             }
         }
+
+        //OR IN THE ONE ABOVE
+
+        //TODO: DATE NODES HERE?
         public void AddBuilding(Building Building, bool noChange = false)
         {
             if (!Buildings.Contains(Building))
@@ -374,7 +688,25 @@ namespace Eu4ModEditor
         {
             get
             {
-                return Variables["TradeGood"] as TradeGood;
+                TradeGood Value = (TradeGood)Variables["TradeGood"];
+                if (!DateEntries.Any())
+                    return Value;
+                else
+                {
+                    foreach (ProvinceDateEntry pd in DateEntries)
+                    {
+                        if (DateTime.Compare(GlobalVariables.CurrentDate, pd.Date) >= 0)
+                        {
+                            if (pd.TryGetValue(ProvinceDateEntry.EntryType.TradeGood, out object value))
+                            {
+                                Value = (TradeGood)value;
+                            }
+                        }
+                        else
+                            continue;
+                    }
+                    return Value;
+                }
             }
             set
             {
@@ -387,7 +719,25 @@ namespace Eu4ModEditor
         {
             get
             {
-                return Variables["LatentTradeGood"] as TradeGood;
+                TradeGood Value = (TradeGood)Variables["LatentTradeGood"];
+                if (!DateEntries.Any())
+                    return Value;
+                else
+                {
+                    foreach (ProvinceDateEntry pd in DateEntries)
+                    {
+                        if (DateTime.Compare(GlobalVariables.CurrentDate, pd.Date) >= 0)
+                        {
+                            if (pd.TryGetValue(ProvinceDateEntry.EntryType.LatentTradeGood, out object value))
+                            {
+                                Value = (TradeGood)value;
+                            }
+                        }
+                        else
+                            continue;
+                    }
+                    return Value;
+                }
             }
             set
             {
@@ -414,7 +764,25 @@ namespace Eu4ModEditor
         {
             get
             {
-                return Variables["Religion"] as Religion;
+                Religion Value = (Religion)Variables["Religion"];
+                if (!DateEntries.Any())
+                    return Value;
+                else
+                {
+                    foreach (ProvinceDateEntry pd in DateEntries)
+                    {
+                        if (DateTime.Compare(GlobalVariables.CurrentDate, pd.Date) >= 0)
+                        {
+                            if (pd.TryGetValue(ProvinceDateEntry.EntryType.Religion, out object value))
+                            {
+                                Value = (Religion)value;
+                            }
+                        }
+                        else
+                            continue;
+                    }
+                    return Value;
+                }
             }
             set
             {
@@ -428,7 +796,25 @@ namespace Eu4ModEditor
         {
             get
             {
-                return Variables["Culture"] as Culture;
+                Culture Value = (Culture)Variables["Culture"];
+                if (!DateEntries.Any())
+                    return Value;
+                else
+                {
+                    foreach (ProvinceDateEntry pd in DateEntries)
+                    {
+                        if (DateTime.Compare(GlobalVariables.CurrentDate, pd.Date) >= 0)
+                        {
+                            if (pd.TryGetValue(ProvinceDateEntry.EntryType.Culture, out object value))
+                            {
+                                Value = (Culture)value;
+                            }
+                        }
+                        else
+                            continue;
+                    }
+                    return Value;
+                }
             }
             set
             {
@@ -582,6 +968,9 @@ namespace Eu4ModEditor
             }
         }
 
+
+
+        //ADD DATE ENTRIES
         private List<string> DiscoveredBy
         {
             get

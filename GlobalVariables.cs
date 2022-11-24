@@ -13,17 +13,18 @@ namespace Eu4ModEditor
     public static class GlobalVariables
     {
         public static bool __DEBUG = false;
-        public static string Version = "1.2.2";
+        public static string Version = "1.3.0";
 
         public static List<Province> Provinces = new List<Province>();
         public static Dictionary<string, Province> ColorToProvince = new Dictionary<string, Province>();
         public static MapManagement.UpdateMapOptions mapmode = MapManagement.UpdateMapOptions.Provinces;
+        
         public static LockBitmap DevelopmentBitmapLocked;
         public static LockBitmap TradeGoodBitmapLocked;
         public static LockBitmap ReligionBitmapLocked;
         public static LockBitmap CultureBitmapLocked;
         public static LockBitmap PoliticalBitmapLocked;
-        public static LockBitmap ClickedMask;
+
         public static LockBitmap AreaBitmapLocked;
         public static LockBitmap RegionBitmapLocked;
         public static LockBitmap TradeNodeBitmap;
@@ -39,10 +40,12 @@ namespace Eu4ModEditor
         public static LockBitmap ClimateLocked;
         public static LockBitmap WinterLocked;
         public static LockBitmap TerrainLocked;
+        
 
         public static LockBitmap DrawingMain;
+        public static LockBitmap ClickedMask;
 
-        public static List<Task<Dictionary<int, List<Point>>>> MapLines = new List<Task<Dictionary<int, List<Point>>>>();
+        //public static List<Task<Dictionary<int, List<Point>>>> MapLines = new List<Task<Dictionary<int, List<Point>>>>();
         public static List<TradeGood> TradeGoods = new List<TradeGood>();
         public static List<TradeGood> LatentTradeGoods = new List<TradeGood>();
         public static Random GlobalRandom = new Random();
@@ -145,8 +148,11 @@ namespace Eu4ModEditor
         public static int AppSizeOption = 0;
         public static bool DarkMode = false;
 
+        public static int MapDrawingPosX = 36;
+        public static int MapDrawingPosY = 60;
+
         public static int MapDrawingWidth = 1090;
-        public static int MapDrawingHeight = 770;
+        public static int MapDrawingHeight = 730;
 
         public static bool Exited = false;
 

@@ -51,182 +51,280 @@ namespace Eu4ModEditor
 
         char[] specialChars = { '=', '{', '}', '#' };
 
-        public NodeFileReadStatus ReadFile(string path)
+        public NodeFileReadStatus ReadFile(string path, bool localPath = false)
         {
-            Path = path;
-            FileName = path.Split('\\').Last().Replace(".txt", "");
             Node CurrentNode = new Node("__MainNode");
             MainNode = CurrentNode;
-            if (!Directory.Exists(System.IO.Path.GetDirectoryName(Path)))
+            if (!localPath)
             {
-                Directory.CreateDirectory(System.IO.Path.GetDirectoryName(Path));
+                Path = path;
+                FileName = path.Split('/').Last().Replace(".txt", "");
+                if (!Directory.Exists(System.IO.Path.GetDirectoryName(Path)))
+                {
+                    Directory.CreateDirectory(System.IO.Path.GetDirectoryName(Path));
+                }
+                if (!File.Exists(path))
+                {
+                    CreatedByEditor = true;
+                    return new NodeFileReadStatus();
+                }
+                if (string.IsNullOrWhiteSpace(File.ReadAllText(path)))
+                    return new NodeFileReadStatus();
             }
-            if (!File.Exists(path))
-            {
-                CreatedByEditor = true;
-                return new NodeFileReadStatus();
-            }
-
-            bool comment = false;
-            bool commentline = false;
-            bool equals = false;
-            string pretxt = "";
-            bool insideAp = false;
-
-            if (string.IsNullOrWhiteSpace(File.ReadAllText(path)))
-                return new NodeFileReadStatus();
             int linen = 0;
 
-            foreach (string line in File.ReadAllLines(path))
+            try
             {
-                linen++;
-                try
+
+                string read = File.ReadAllText(path);
+
+                bool InComment = false;
+                string ReadValue = "";
+                string SavedValue = "";
+                string Comment = "";
+                bool Quote = false;
+                int LastValueReadLocation = 0;
+
+                bool EncounteredWhiteSpace = false;
+                bool NothingButComment = true;
+                for (int a = 0; a < read.Length; a++)
                 {
-                    string nospaces = "";
-                    int n = 0;
-                    foreach (char c in line)
-                    {
-                        if (specialChars.Contains(c) && !insideAp)
-                            nospaces += $" {c} ";
-                        else if (c == '"' && n + 1 < line.Length)
-                        {
-                            if (line[n + 1] == '"')
-                                nospaces += $"{c} ";
-                            else
-                                nospaces += c;
-                        }
-                        else
-                            nospaces += c;
-                        n++;
-                        if (c == '"')
-                            insideAp = !insideAp;
+                    char C = read[a];
 
+                    if (InComment && C != '\n' && C != '\r')
+                    {
+                        Comment += C;
+                        continue;
                     }
-
-                    nospaces = Regex.Replace(nospaces.Replace("\t", " "), @"\s+", " ").Trim();
-
-                    //Console.WriteLine(nospaces);
-
-                    List<string> contentsl = nospaces.Split(' ').ToList();
-                    contentsl.RemoveAll(x => x == " " || x == "");
-                    string[] contents = contentsl.ToArray();
-
-                    for (int a = 0; a < contents.Length; a++)
+                    else if (InComment && C == '\n')
                     {
-                        if (!comment)
+                        if (NothingButComment)
                         {
-                            switch (contents[a])
+                            if (CurrentNode.ItemOrder.Any())
                             {
-                                case "#":
-                                    if (pretxt != "")
-                                        CurrentNode.AddPureValue(pretxt, contents.Length == 1);
-                                    comment = true;
-                                    equals = false;
-                                    pretxt = "";
-                                    if (a == 0)
-                                        commentline = true;
-                                    break;
-                                case "=":
-                                    equals = true;
-                                    break;
-                                case "{":
-                                    CurrentNode = CurrentNode.AddNode(pretxt);
-                                    pretxt = "";
-                                    equals = false;
-                                    break;
-                                case "}":
-                                    if (pretxt != "")
-                                        CurrentNode.AddPureValue(pretxt, contents.Length == 1);
-                                    CurrentNode = CurrentNode.Parent;
-                                    pretxt = "";
-                                    break;
-                                default:
-                                    string textmem = "";
-                                    if (contents[a].Count(x => x == '"') == 1)
-                                    {
-                                        textmem += contents[a] + " ";
-                                        do
-                                        {
-                                            a++;
-                                            textmem += contents[a] + " ";
-                                        } while (a + 1 < contents.Length && !contents[a].Contains("\""));
-                                        textmem.Trim();
-                                    }
-
-                                    if (!equals && pretxt != "")
-                                    {
-                                        CurrentNode.AddPureValue(pretxt, contents.Length == 1);
-                                        CurrentNode.AddPureValue(textmem == "" ? contents[a] : textmem, contents.Length == 1);
-                                        pretxt = "";
-                                    }
-                                    else if (!equals && pretxt == "")
-                                    {
-                                        if (a + 1 == contents.Length)
-                                            CurrentNode.AddPureValue(contents[a], contents.Length == 1);
-                                        else
-                                            pretxt = textmem == "" ? contents[a] : textmem;
-
-                                    }
-                                    else if (equals)
-                                    {
-                                        Variable v = new Variable(pretxt, textmem == "" ? contents[a] : textmem);
-                                        CurrentNode.AddVariable(v);
-                                        equals = false;
-                                        pretxt = "";
-                                    }
-                                    break;
+                                CommentLine cl = new CommentLine(Comment, CurrentNode.ItemOrder.Last());
+                                CurrentNode.Comments.Add(cl);
+                            }
+                            else
+                            {
+                                CommentLine cl = new CommentLine(Comment, null);
+                                CurrentNode.Comments.Add(cl);
                             }
                         }
                         else
                         {
-                            string textleft = "";
-                            for (; a < contents.Length; a++)
+                            if (CurrentNode.ItemOrder.Any())
+                                CurrentNode.ItemOrder.Last().Comment = Comment;
+                            else
+                                CurrentNode.FirstBracketComment = Comment;
+                        }
+                        linen++;
+                        InComment = false;
+                        Comment = "";
+                        EncounteredWhiteSpace = true;
+                        continue;
+                    }
+                    else if (InComment)
+                    {
+                        continue;
+                    }
+
+                    if (Quote && C != '"')
+                    {
+                        if (C != '\r' && C != '\n')
+                            ReadValue += C;
+                        else if (C == '\n')
+                            ReadValue += ' ';
+                        continue;
+                    }
+
+                    if (C == ' ' || C == '\t')
+                    {
+                        EncounteredWhiteSpace = true;
+                        continue;
+                    }
+
+                    switch (C)
+                    {
+                        case '\n':
+                            EncounteredWhiteSpace = true;
+                            linen++;
+                            InComment = false;
+                            NothingButComment = true;
+                            continue;
+                        case '=':
+                            //SWITCH
+                            SavedValue = ReadValue;
+                            ReadValue = "";
+                            NothingButComment = false;
+                            break;
+                        case '"':
+                            if (Quote)
                             {
-                                textleft += contents[a] + " ";
-                            }
-
-                            if (commentline)
-                            {
-                                if (CurrentNode.ItemOrder.Any())
+                                //SWITCH
+                                if (ReadValue != "" && SavedValue == "")
                                 {
-                                    CommentLine cl = new CommentLine(textleft, CurrentNode.ItemOrder.Last());
-                                    CurrentNode.Comments.Add(cl);
-                                }
-                                else if (CurrentNode.PureValues.Any())
-                                {
-                                    CommentLine cl = new CommentLine(textleft, CurrentNode.PureValues.Last());
-                                    CurrentNode.Comments.Add(cl);
-                                }
-                                else
-                                {
-                                    NodeItem nl = null;
-                                    CommentLine cl = new CommentLine(textleft, nl);
-                                    CurrentNode.Comments.Add(cl);
-                                }
+                                    bool separate = false;
+                                    if (LastValueReadLocation != a)
+                                    {
+                                        string LastRead = read.Substring(LastValueReadLocation, a - LastValueReadLocation);
+                                        if (LastRead.Contains('\n'))
+                                            separate = true;
+                                    }
+                                    CurrentNode.AddPureValue(ReadValue.Trim(), separate).Quoted = true;
 
-
+                                }
+                                else if (ReadValue != "")
+                                {
+                                    CurrentNode.AddVariable(SavedValue, ReadValue.Trim()).QuotedValue = true;
+                                    SavedValue = "";
+                                }
+                                ReadValue = "";
                             }
                             else
                             {
-                                if (CurrentNode.ItemOrder.Any())
-                                    CurrentNode.ItemOrder.Last().Comment = textleft;
-                                else
-                                    CurrentNode.FirstBracketComment = textleft;
+                                if (ReadValue != "" && SavedValue == "")
+                                {
+                                    bool separate = false;
+                                    if (LastValueReadLocation != a)
+                                    {
+                                        string LastRead = read.Substring(LastValueReadLocation, a - LastValueReadLocation);
+                                        if (LastRead.Contains('\n'))
+                                            separate = true;
+                                    }
+                                    CurrentNode.AddPureValue(ReadValue, separate);
+
+                                }
+                                else if (ReadValue != "")
+                                {
+                                    CurrentNode.AddVariable(SavedValue, ReadValue); ;
+                                    SavedValue = "";
+                                }
+                                ReadValue = "";
                             }
-                        }
+                            Quote = !Quote;
+                            NothingButComment = false;
+                            break;
+                        case '#':
+                            //ENDLINE
+
+                            if (ReadValue != "" && SavedValue == "")
+                            {
+                                bool separate = false;
+                                if (LastValueReadLocation != a)
+                                {
+                                    string LastRead = read.Substring(LastValueReadLocation, a - LastValueReadLocation);
+                                    if (LastRead.Contains('\n'))
+                                        separate = true;
+                                }
+                                CurrentNode.AddPureValue(ReadValue, separate);
+
+                            }
+                            else if (ReadValue != "")
+                            {
+                                CurrentNode.AddVariable(SavedValue, ReadValue);
+                                SavedValue = "";
+                            }
+                            ReadValue = "";
+                            InComment = true;
+
+                            break;
+                        case '{':
+                            if (ReadValue != "")
+                                CurrentNode = CurrentNode.AddNode(ReadValue);
+                            else if (SavedValue != "")
+                                CurrentNode = CurrentNode.AddNode(SavedValue);
+                            else
+                                CurrentNode = CurrentNode.AddNode("MOD_EDITOR_EMPTY_NODE_ERROR");
+                            SavedValue = "";
+                            ReadValue = "";
+                            NothingButComment = false;
+                            EncounteredWhiteSpace = false;
+                            break;
+                        case '}':
+                            if (ReadValue != "" && SavedValue == "")
+                            {
+                                bool separate = false;
+                                if (LastValueReadLocation != a)
+                                {
+                                    string LastRead = read.Substring(LastValueReadLocation, a - LastValueReadLocation);
+                                    if (LastRead.Contains('\n'))
+                                        separate = true;
+                                }
+                                CurrentNode.AddPureValue(ReadValue, separate);
+                            }
+                            else if (ReadValue != "")
+                            {
+                                CurrentNode.AddVariable(SavedValue, ReadValue);
+                                SavedValue = "";
+                            }
+                            ReadValue = "";
+
+                            CurrentNode = CurrentNode.Parent;
+                            ReadValue = "";
+                            SavedValue = "";
+                            EncounteredWhiteSpace = false;
+                            NothingButComment = false;
+                            break;
+                        case '\r':
+                            continue;
+                        default:
+                            if (EncounteredWhiteSpace)
+                            {
+                                EncounteredWhiteSpace = false;
+                                if (ReadValue != "" && SavedValue == "")
+                                {
+                                    bool separate = false;
+                                    if (LastValueReadLocation != a)
+                                    {
+                                        string LastRead = read.Substring(LastValueReadLocation, a - LastValueReadLocation);
+                                        if (LastRead.Contains('\n'))
+                                            separate = true;
+                                    }
+                                    CurrentNode.AddPureValue(ReadValue, separate);
+                                }
+                                else if (ReadValue != "")
+                                {
+                                    CurrentNode.AddVariable(SavedValue, ReadValue);
+                                    SavedValue = "";
+                                }
+                                ReadValue = "";
+
+                            }
+                            NothingButComment = false;
+                            ReadValue += C;
+                            LastValueReadLocation = a;
+                            break;
+
                     }
-                    comment = false;
-                    commentline = false;
-                    pretxt = "";
                 }
-                catch
+                if (ReadValue != "" && SavedValue == "")
                 {
-                    return new NodeFileReadStatus { HasError = true, LineError = linen };
+                    bool separate = false;
+                    if (LastValueReadLocation != read.Length)
+                    {
+                        string LastRead = read.Substring(LastValueReadLocation, read.Length - LastValueReadLocation);
+                        if (LastRead.Contains('\n'))
+                            separate = true;
+                    }
+                    CurrentNode.AddPureValue(ReadValue, separate);
+                }
+                else if (ReadValue != "")
+                {
+                    CurrentNode.AddVariable(SavedValue, ReadValue);
+                    SavedValue = "";
                 }
             }
+            catch
+            {
+                NodeFileReadStatus status = new NodeFileReadStatus();
+                status.HasError = true;
+                status.LineError = linen;
+                return status;
+            }
             return new NodeFileReadStatus();
-
         }
+
         public void SaveFile(string path)
         {
             File.WriteAllText(path, Node.NodeToText(MainNode));
@@ -256,14 +354,16 @@ namespace Eu4ModEditor
     public class PureValue : NodeItem
     {
         public bool SeparateLine = false;
+        public bool Quoted = false;
         public override string ToString()
         {
             return Name;
         }
-        public PureValue(string val, bool sep = false)
+        public PureValue(string val, bool sep = false, bool quot = false)
         {
             Name = val;
             SeparateLine = sep;
+            Quoted = quot;
         }
     }
 
@@ -296,46 +396,6 @@ namespace Eu4ModEditor
                     text += "#" + cl.Text + "\n";
             }
 
-            /*if (n.PureValues.Any())
-            {
-                int count = 0;
-                bool lastwassep = false;
-                foreach (PureValue s in n.PureValues)
-                {
-                    if (s.SeparateLine)
-                    {
-                        if (!lastwassep)
-                            text += "\n";
-                        text += s.Name + "\n";
-                        lastwassep = true;
-                        count = 0;
-                    }
-                    else
-                    {
-                        count++;
-                        if (count == 10)
-                        {
-                            count = 0;
-                            text += s + "\n";
-                        }
-                        else
-                        {
-                            text += s + " ";
-                        }
-                        lastwassep = false;
-                    }
-                    foreach (CommentLine cl in n.Comments.FindAll(x => x.BelowPureValue == s))
-                    {
-                        if (!lastwassep)
-                            text += "\n";
-                        text += "#" + cl.Text + "\n";
-                        lastwassep = true;
-                    }
-                }
-                text += "\n";
-            }
-            */
-
             int count = 0;
             bool lastwassep = false;
             bool lastwaspure = false;
@@ -349,7 +409,10 @@ namespace Eu4ModEditor
                     count = 0;
                     lastwassep = true;
                     Variable v = (Variable)ni;
-                    text += v.Name + " = " + v.Value;
+                    if (v.QuotedValue)
+                        text += v.Name + " = \"" + v.Value + "\"";
+                    else
+                        text += v.Name + " = " + v.Value;
                     if (v.Comment != "")
                         text += "#" + v.Comment;
                     text += "\n";
@@ -399,14 +462,17 @@ namespace Eu4ModEditor
                             text += "#" + cl.Text + "\n";
                     }
                 }
-                else if(ni is PureValue)
+                else if (ni is PureValue)
                 {
                     PureValue s = (PureValue)ni;
                     if (s.SeparateLine)
                     {
                         if (!lastwassep)
-                            text += "\n";
-                        text += s.Name + "\n";
+                            text += " ";
+                        if (s.Quoted)
+                            text += "\"" + s.Name + "\"\n";
+                        else
+                            text += s.Name + "\n";
                         lastwassep = true;
                         count = 0;
                     }
@@ -416,11 +482,17 @@ namespace Eu4ModEditor
                         if (count == 10)
                         {
                             count = 0;
-                            text += s + "\n";
+                            if (s.Quoted)
+                                text += "\"" + s + "\"\n";
+                            else
+                                text += s + "\n";
                         }
                         else
                         {
-                            text += s + " ";
+                            if (s.Quoted)
+                                text += "\"" + s + "\"";
+                            else
+                                text += s + " ";
                         }
                         lastwassep = false;
                     }
@@ -475,7 +547,7 @@ namespace Eu4ModEditor
         }
         public PureValue AddPureValue(string name, bool sep = false, bool checkexists = false)
         {
-            if(checkexists)
+            if (checkexists)
             {
                 if (PureValues.Any(x => x.Name == name))
                     return null;
@@ -504,17 +576,15 @@ namespace Eu4ModEditor
             Variables.Add(v);
             ItemOrder.Add(v);
         }
-
         public void RemoveVariable(Variable v)
         {
             Variables.Remove(v);
             ItemOrder.Remove(v);
         }
-
         public void RemovePureValue(string v)
         {
             PureValue va = PureValues.Find(x => x.Name == v);
-            if(va != null)
+            if (va != null)
             {
                 PureValues.Remove(va);
                 ItemOrder.Remove(va);
@@ -536,11 +606,12 @@ namespace Eu4ModEditor
     public class Variable : NodeItem
     {
         public string Value = "";
-
-        public Variable(string name, string value)
+        public bool QuotedValue = false;
+        public Variable(string name, string value, bool quot = false)
         {
             Name = name;
             Value = value;
+            QuotedValue = quot;
         }
     }
 }

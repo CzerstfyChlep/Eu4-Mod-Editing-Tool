@@ -552,8 +552,7 @@ namespace Eu4ModEditor
         static Stopwatch stopwatch = new Stopwatch();
 
         public static void DrawPixelsOnMap(List<Rectangle> PlacesToUpdate)
-        {
-            
+        {          
             Rectangle DrawingRectangle = new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight));
             List<Province> toDraw = GlobalVariables.Provinces.Where(x => x.ContainingRectangle.IntersectsWith(DrawingRectangle) && PlacesToUpdate.Any(y => x.ContainingRectangle.IntersectsWith(y) || y.Contains(x.Center)) && (x.OldMainColor.ToArgb() != x.MainColor.ToArgb() || x.OldMainStripes.ToArgb() != x.MainStripes.ToArgb() || x.OldVerticalStripes.ToArgb() != x.VerticalStripes.ToArgb())).ToList();
             if (toDraw.Any())

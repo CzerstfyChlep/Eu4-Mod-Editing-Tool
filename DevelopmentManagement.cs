@@ -17,12 +17,12 @@ namespace Eu4ModEditor
             //Replace by average values
             if (GlobalVariables.ClickedProvinces.Any())
             {
-                if (ModEditor.form.ProvinceTaxNumeric.Value > 1)
-                    ModEditor.form.ProvinceTaxNumeric.DownButton();
-                if (ModEditor.form.ProvinceProductionNumeric.Value > 1)
-                    ModEditor.form.ProvinceProductionNumeric.DownButton();
-                if (ModEditor.form.ProvinceManpowerNumeric.Value > 1)
-                    ModEditor.form.ProvinceManpowerNumeric.DownButton();
+                if (TabsSeparate.form.ProvinceTaxNumeric.Value > 1)
+                    TabsSeparate.form.ProvinceTaxNumeric.DownButton();
+                if (TabsSeparate.form.ProvinceProductionNumeric.Value > 1)
+                    TabsSeparate.form.ProvinceProductionNumeric.DownButton();
+                if (TabsSeparate.form.ProvinceManpowerNumeric.Value > 1)
+                    TabsSeparate.form.ProvinceManpowerNumeric.DownButton();
             }
         }
         /// <summary>
@@ -37,47 +37,47 @@ namespace Eu4ModEditor
             {               
                 int TaxRandom = GlobalVariables.GlobalRandom.Next(0, 10);
                 if (TaxRandom < 1)
-                    ModEditor.form.ProvinceTaxNumeric.Value = 1;
+                    TabsSeparate.form.ProvinceTaxNumeric.Value = 1;
                 else if (TaxRandom < 2)
-                    ModEditor.form.ProvinceTaxNumeric.Value = 2;
+                    TabsSeparate.form.ProvinceTaxNumeric.Value = 2;
                 else if (TaxRandom < 4)
-                    ModEditor.form.ProvinceTaxNumeric.Value = 3;
+                    TabsSeparate.form.ProvinceTaxNumeric.Value = 3;
                 else if (TaxRandom < 7)
-                    ModEditor.form.ProvinceTaxNumeric.Value = 4;
+                    TabsSeparate.form.ProvinceTaxNumeric.Value = 4;
                 else if (TaxRandom < 9)
-                    ModEditor.form.ProvinceTaxNumeric.Value = 5;
+                    TabsSeparate.form.ProvinceTaxNumeric.Value = 5;
                 else
-                    ModEditor.form.ProvinceTaxNumeric.Value = 6;
+                    TabsSeparate.form.ProvinceTaxNumeric.Value = 6;
 
 
                 int ProductionRandom = GlobalVariables.GlobalRandom.Next(0, 10);
                 if (ProductionRandom < 1)
-                    ModEditor.form.ProvinceProductionNumeric.Value = 1;
+                    TabsSeparate.form.ProvinceProductionNumeric.Value = 1;
                 else if (ProductionRandom < 2)
-                    ModEditor.form.ProvinceProductionNumeric.Value = 2;
+                    TabsSeparate.form.ProvinceProductionNumeric.Value = 2;
                 else if (ProductionRandom < 4)
-                    ModEditor.form.ProvinceProductionNumeric.Value = 3;
+                    TabsSeparate.form.ProvinceProductionNumeric.Value = 3;
                 else if (ProductionRandom < 7)
-                    ModEditor.form.ProvinceProductionNumeric.Value = 4;
+                    TabsSeparate.form.ProvinceProductionNumeric.Value = 4;
                 else if (ProductionRandom < 9)
-                    ModEditor.form.ProvinceProductionNumeric.Value = 5;
+                    TabsSeparate.form.ProvinceProductionNumeric.Value = 5;
                 else
-                    ModEditor.form.ProvinceProductionNumeric.Value = 6;
+                    TabsSeparate.form.ProvinceProductionNumeric.Value = 6;
 
 
                 int ManpowerRandom = GlobalVariables.GlobalRandom.Next(0, 10);
                 if (ManpowerRandom < 1)
-                    ModEditor.form.ProvinceManpowerNumeric.Value = 1;
+                    TabsSeparate.form.ProvinceManpowerNumeric.Value = 1;
                 else if (ManpowerRandom < 2)
-                    ModEditor.form.ProvinceManpowerNumeric.Value = 2;
+                    TabsSeparate.form.ProvinceManpowerNumeric.Value = 2;
                 else if (ManpowerRandom < 4)
-                    ModEditor.form.ProvinceManpowerNumeric.Value = 3;
+                    TabsSeparate.form.ProvinceManpowerNumeric.Value = 3;
                 else if (ManpowerRandom < 7)
-                    ModEditor.form.ProvinceManpowerNumeric.Value = 4;
+                    TabsSeparate.form.ProvinceManpowerNumeric.Value = 4;
                 else if (ManpowerRandom < 9)
-                    ModEditor.form.ProvinceManpowerNumeric.Value = 5;
+                    TabsSeparate.form.ProvinceManpowerNumeric.Value = 5;
                 else
-                    ModEditor.form.ProvinceManpowerNumeric.Value = 6;
+                    TabsSeparate.form.ProvinceManpowerNumeric.Value = 6;
             }
         }
         /// <summary>
@@ -91,35 +91,35 @@ namespace Eu4ModEditor
             {
                 int TaxRandom = GlobalVariables.GlobalRandom.Next(0, 10);
                 if (TaxRandom < 2)
-                    ModEditor.form.ProvinceTaxNumeric.Value = 1;
+                    TabsSeparate.form.ProvinceTaxNumeric.Value = 1;
                 else if (TaxRandom < 6)
-                    ModEditor.form.ProvinceTaxNumeric.Value = 2;
+                    TabsSeparate.form.ProvinceTaxNumeric.Value = 2;
                 else if (TaxRandom < 9)
-                    ModEditor.form.ProvinceTaxNumeric.Value = 3;
+                    TabsSeparate.form.ProvinceTaxNumeric.Value = 3;
                 else
-                    ModEditor.form.ProvinceTaxNumeric.Value = 4;
+                    TabsSeparate.form.ProvinceTaxNumeric.Value = 4;
 
 
                 int ProductionRandom = GlobalVariables.GlobalRandom.Next(0, 10);
                 if (ProductionRandom < 2)
-                    ModEditor.form.ProvinceProductionNumeric.Value = 1;
+                    TabsSeparate.form.ProvinceProductionNumeric.Value = 1;
                 else if (ProductionRandom < 6)
-                    ModEditor.form.ProvinceProductionNumeric.Value = 2;
+                    TabsSeparate.form.ProvinceProductionNumeric.Value = 2;
                 else if (ProductionRandom < 9)
-                    ModEditor.form.ProvinceProductionNumeric.Value = 3;
+                    TabsSeparate.form.ProvinceProductionNumeric.Value = 3;
                 else
-                    ModEditor.form.ProvinceProductionNumeric.Value = 4;
+                    TabsSeparate.form.ProvinceProductionNumeric.Value = 4;
 
 
                 int ManpowerRandom = GlobalVariables.GlobalRandom.Next(0, 10);
                 if (ManpowerRandom < 2)
-                    ModEditor.form.ProvinceManpowerNumeric.Value = 1;
+                    TabsSeparate.form.ProvinceManpowerNumeric.Value = 1;
                 else if (ManpowerRandom < 6)
-                    ModEditor.form.ProvinceManpowerNumeric.Value = 2;
+                    TabsSeparate.form.ProvinceManpowerNumeric.Value = 2;
                 else if (ManpowerRandom < 9)
-                    ModEditor.form.ProvinceManpowerNumeric.Value = 3;
+                    TabsSeparate.form.ProvinceManpowerNumeric.Value = 3;
                 else
-                    ModEditor.form.ProvinceManpowerNumeric.Value = 4;
+                    TabsSeparate.form.ProvinceManpowerNumeric.Value = 4;
             }
         }
         /// <summary>
@@ -133,29 +133,29 @@ namespace Eu4ModEditor
             {
                 int TaxRandom = GlobalVariables.GlobalRandom.Next(0, 10);
                 if (TaxRandom < 5)
-                    ModEditor.form.ProvinceTaxNumeric.Value = 1;
+                    TabsSeparate.form.ProvinceTaxNumeric.Value = 1;
                 else if (TaxRandom < 9)
-                    ModEditor.form.ProvinceTaxNumeric.Value = 2;
+                    TabsSeparate.form.ProvinceTaxNumeric.Value = 2;
                 else
-                    ModEditor.form.ProvinceTaxNumeric.Value = 3;
+                    TabsSeparate.form.ProvinceTaxNumeric.Value = 3;
 
 
                 int ProductionRandom = GlobalVariables.GlobalRandom.Next(0, 10);
                 if (ProductionRandom < 6)
-                    ModEditor.form.ProvinceProductionNumeric.Value = 1;
+                    TabsSeparate.form.ProvinceProductionNumeric.Value = 1;
                 else if (ProductionRandom < 9)
-                    ModEditor.form.ProvinceProductionNumeric.Value = 2;
+                    TabsSeparate.form.ProvinceProductionNumeric.Value = 2;
                 else
-                    ModEditor.form.ProvinceProductionNumeric.Value = 3;
+                    TabsSeparate.form.ProvinceProductionNumeric.Value = 3;
 
 
                 int ManpowerRandom = GlobalVariables.GlobalRandom.Next(0, 10);
                 if (ManpowerRandom < 5)
-                    ModEditor.form.ProvinceManpowerNumeric.Value = 1;
+                    TabsSeparate.form.ProvinceManpowerNumeric.Value = 1;
                 else if (ManpowerRandom < 9)
-                    ModEditor.form.ProvinceManpowerNumeric.Value = 2;
+                    TabsSeparate.form.ProvinceManpowerNumeric.Value = 2;
                 else
-                    ModEditor.form.ProvinceManpowerNumeric.Value = 3;
+                    TabsSeparate.form.ProvinceManpowerNumeric.Value = 3;
             }
         }
         /// <summary>
@@ -167,9 +167,9 @@ namespace Eu4ModEditor
             //Replace by average values
             if (GlobalVariables.ClickedProvinces.Any())
             {
-                ModEditor.form.ProvinceTaxNumeric.UpButton();
-                ModEditor.form.ProvinceProductionNumeric.UpButton();
-                ModEditor.form.ProvinceManpowerNumeric.UpButton();
+                TabsSeparate.form.ProvinceTaxNumeric.UpButton();
+                TabsSeparate.form.ProvinceProductionNumeric.UpButton();
+                TabsSeparate.form.ProvinceManpowerNumeric.UpButton();
             }
         }
         /// <summary>

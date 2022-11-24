@@ -6,6 +6,15 @@ namespace Eu4ModEditor
 {
     public static class ChangeMapmode
     {
+
+        public static void ChangeMapmodeDirectly(MapManagement.UpdateMapOptions op)
+        {
+            GlobalVariables.mapmode = op;
+            MapManagement.UpdateProvinceColors(GlobalVariables.Provinces, GlobalVariables.mapmode);
+            MapManagement.DrawPixelsOnMap(new List<System.Drawing.Rectangle> { new System.Drawing.Rectangle(GlobalVariables.CameraPosition, new System.Drawing.Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)) });
+            ModEditor.UpdateMap();
+        }
+
         public static void ChangeMapmodeVoid(object sender, EventArgs e)
         {
             Button snd = (Button)sender;
