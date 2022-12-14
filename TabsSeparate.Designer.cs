@@ -145,14 +145,22 @@
             this.label52 = new System.Windows.Forms.Label();
             this.ProvinceNameLocalisationBox = new System.Windows.Forms.TextBox();
             this.label51 = new System.Windows.Forms.Label();
+            this.DateEntriesPage = new System.Windows.Forms.TabPage();
+            this.DateEntryFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.AddNew = new System.Windows.Forms.GroupBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.DateEntryAddButton = new System.Windows.Forms.Button();
+            this.DateEntryAddBox = new System.Windows.Forms.TextBox();
+            this.RemoveDateEntryButton = new System.Windows.Forms.Button();
+            this.label80 = new System.Windows.Forms.Label();
+            this.DateEntrySelectionBox = new System.Windows.Forms.ComboBox();
             this.ReloadProvinceAllMapmodesButton = new System.Windows.Forms.Button();
             this.ReloadProvinceFromFileButton = new System.Windows.Forms.Button();
             this.OpenProvinceFileButton = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label41 = new System.Windows.Forms.Label();
             this.CenterOfTradeNumeric = new System.Windows.Forms.NumericUpDown();
-            this.RemoveFortButton = new System.Windows.Forms.Button();
-            this.AddFortButton = new System.Windows.Forms.Button();
             this.RemoveFromHREButton = new System.Windows.Forms.Button();
             this.AddToHREButton = new System.Windows.Forms.Button();
             this.RandomDevHigh = new System.Windows.Forms.Button();
@@ -160,7 +168,6 @@
             this.RandomDevLow = new System.Windows.Forms.Button();
             this.DevRemoveAll = new System.Windows.Forms.Button();
             this.DevIncreaseAll = new System.Windows.Forms.Button();
-            this.FortCheckbox = new System.Windows.Forms.CheckBox();
             this.HRECheckbox = new System.Windows.Forms.CheckBox();
             this.ProvinceManpowerNumeric = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
@@ -368,6 +375,7 @@
             this.SaveAllFilesButton = new System.Windows.Forms.Button();
             this.SaveFilesPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.RefreshSavesButton = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.ProvinceTabControl.SuspendLayout();
@@ -387,6 +395,9 @@
             this.groupBox6.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.LocalisationPage.SuspendLayout();
+            this.DateEntriesPage.SuspendLayout();
+            this.DateEntryFlowLayoutPanel.SuspendLayout();
+            this.AddNew.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CenterOfTradeNumeric)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ProvinceManpowerNumeric)).BeginInit();
@@ -469,6 +480,7 @@
             this.ProvinceTabControl.Controls.Add(this.MainPage);
             this.ProvinceTabControl.Controls.Add(this.AreaRegionPage);
             this.ProvinceTabControl.Controls.Add(this.LocalisationPage);
+            this.ProvinceTabControl.Controls.Add(this.DateEntriesPage);
             this.ProvinceTabControl.Location = new System.Drawing.Point(6, 177);
             this.ProvinceTabControl.Name = "ProvinceTabControl";
             this.ProvinceTabControl.SelectedIndex = 0;
@@ -1740,6 +1752,108 @@
             this.label51.TabIndex = 0;
             this.label51.Text = "Province name:";
             // 
+            // DateEntriesPage
+            // 
+            this.DateEntriesPage.Controls.Add(this.DateEntryFlowLayoutPanel);
+            this.DateEntriesPage.Controls.Add(this.DateEntryAddButton);
+            this.DateEntriesPage.Controls.Add(this.DateEntryAddBox);
+            this.DateEntriesPage.Controls.Add(this.RemoveDateEntryButton);
+            this.DateEntriesPage.Controls.Add(this.label80);
+            this.DateEntriesPage.Controls.Add(this.DateEntrySelectionBox);
+            this.DateEntriesPage.Location = new System.Drawing.Point(4, 22);
+            this.DateEntriesPage.Name = "DateEntriesPage";
+            this.DateEntriesPage.Padding = new System.Windows.Forms.Padding(3);
+            this.DateEntriesPage.Size = new System.Drawing.Size(537, 477);
+            this.DateEntriesPage.TabIndex = 3;
+            this.DateEntriesPage.Text = "Date entries";
+            this.DateEntriesPage.UseVisualStyleBackColor = true;
+            // 
+            // DateEntryFlowLayoutPanel
+            // 
+            this.DateEntryFlowLayoutPanel.AutoScroll = true;
+            this.DateEntryFlowLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.DateEntryFlowLayoutPanel.Controls.Add(this.AddNew);
+            this.DateEntryFlowLayoutPanel.Location = new System.Drawing.Point(9, 51);
+            this.DateEntryFlowLayoutPanel.Name = "DateEntryFlowLayoutPanel";
+            this.DateEntryFlowLayoutPanel.Size = new System.Drawing.Size(520, 420);
+            this.DateEntryFlowLayoutPanel.TabIndex = 5;
+            // 
+            // AddNew
+            // 
+            this.AddNew.Controls.Add(this.comboBox1);
+            this.AddNew.Controls.Add(this.button1);
+            this.AddNew.Location = new System.Drawing.Point(3, 3);
+            this.AddNew.Name = "AddNew";
+            this.AddNew.Size = new System.Drawing.Size(192, 46);
+            this.AddNew.TabIndex = 0;
+            this.AddNew.TabStop = false;
+            this.AddNew.Text = "Add new";
+            this.AddNew.Visible = false;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(6, 16);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(133, 21);
+            this.comboBox1.TabIndex = 2;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(143, 14);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(42, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Add";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // DateEntryAddButton
+            // 
+            this.DateEntryAddButton.Location = new System.Drawing.Point(481, 25);
+            this.DateEntryAddButton.Name = "DateEntryAddButton";
+            this.DateEntryAddButton.Size = new System.Drawing.Size(50, 20);
+            this.DateEntryAddButton.TabIndex = 4;
+            this.DateEntryAddButton.Text = "Add";
+            this.DateEntryAddButton.UseVisualStyleBackColor = true;
+            this.DateEntryAddButton.Click += new System.EventHandler(this.DateEntryAddButton_Click);
+            // 
+            // DateEntryAddBox
+            // 
+            this.DateEntryAddBox.Location = new System.Drawing.Point(376, 25);
+            this.DateEntryAddBox.Name = "DateEntryAddBox";
+            this.DateEntryAddBox.Size = new System.Drawing.Size(99, 20);
+            this.DateEntryAddBox.TabIndex = 3;
+            // 
+            // RemoveDateEntryButton
+            // 
+            this.RemoveDateEntryButton.Location = new System.Drawing.Point(295, 24);
+            this.RemoveDateEntryButton.Name = "RemoveDateEntryButton";
+            this.RemoveDateEntryButton.Size = new System.Drawing.Size(75, 21);
+            this.RemoveDateEntryButton.TabIndex = 2;
+            this.RemoveDateEntryButton.Text = "Remove";
+            this.RemoveDateEntryButton.UseVisualStyleBackColor = true;
+            this.RemoveDateEntryButton.Click += new System.EventHandler(this.RemoveDateEntryButton_Click);
+            // 
+            // label80
+            // 
+            this.label80.AutoSize = true;
+            this.label80.Location = new System.Drawing.Point(6, 8);
+            this.label80.Name = "label80";
+            this.label80.Size = new System.Drawing.Size(56, 13);
+            this.label80.TabIndex = 1;
+            this.label80.Text = "Date entry";
+            // 
+            // DateEntrySelectionBox
+            // 
+            this.DateEntrySelectionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.DateEntrySelectionBox.FormattingEnabled = true;
+            this.DateEntrySelectionBox.Location = new System.Drawing.Point(9, 24);
+            this.DateEntrySelectionBox.Name = "DateEntrySelectionBox";
+            this.DateEntrySelectionBox.Size = new System.Drawing.Size(283, 21);
+            this.DateEntrySelectionBox.Sorted = true;
+            this.DateEntrySelectionBox.TabIndex = 0;
+            this.DateEntrySelectionBox.SelectedIndexChanged += new System.EventHandler(this.DateEntrySelectionBox_SelectedIndexChanged);
+            // 
             // ReloadProvinceAllMapmodesButton
             // 
             this.ReloadProvinceAllMapmodesButton.Location = new System.Drawing.Point(4, 744);
@@ -1774,8 +1888,6 @@
             // 
             this.groupBox2.Controls.Add(this.label41);
             this.groupBox2.Controls.Add(this.CenterOfTradeNumeric);
-            this.groupBox2.Controls.Add(this.RemoveFortButton);
-            this.groupBox2.Controls.Add(this.AddFortButton);
             this.groupBox2.Controls.Add(this.RemoveFromHREButton);
             this.groupBox2.Controls.Add(this.AddToHREButton);
             this.groupBox2.Controls.Add(this.RandomDevHigh);
@@ -1783,7 +1895,6 @@
             this.groupBox2.Controls.Add(this.RandomDevLow);
             this.groupBox2.Controls.Add(this.DevRemoveAll);
             this.groupBox2.Controls.Add(this.DevIncreaseAll);
-            this.groupBox2.Controls.Add(this.FortCheckbox);
             this.groupBox2.Controls.Add(this.HRECheckbox);
             this.groupBox2.Controls.Add(this.ProvinceManpowerNumeric);
             this.groupBox2.Controls.Add(this.label3);
@@ -1801,7 +1912,7 @@
             // label41
             // 
             this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(322, 79);
+            this.label41.Location = new System.Drawing.Point(322, 69);
             this.label41.Name = "label41";
             this.label41.Size = new System.Drawing.Size(84, 13);
             this.label41.TabIndex = 26;
@@ -1809,7 +1920,7 @@
             // 
             // CenterOfTradeNumeric
             // 
-            this.CenterOfTradeNumeric.Location = new System.Drawing.Point(413, 76);
+            this.CenterOfTradeNumeric.Location = new System.Drawing.Point(413, 66);
             this.CenterOfTradeNumeric.Maximum = new decimal(new int[] {
             3,
             0,
@@ -1820,29 +1931,9 @@
             this.CenterOfTradeNumeric.TabIndex = 25;
             this.CenterOfTradeNumeric.ValueChanged += new System.EventHandler(this.CenterOfTradeNumeric_ValueChanged);
             // 
-            // RemoveFortButton
-            // 
-            this.RemoveFortButton.Location = new System.Drawing.Point(448, 47);
-            this.RemoveFortButton.Name = "RemoveFortButton";
-            this.RemoveFortButton.Size = new System.Drawing.Size(85, 23);
-            this.RemoveFortButton.TabIndex = 24;
-            this.RemoveFortButton.Text = "Remove Fort";
-            this.RemoveFortButton.UseVisualStyleBackColor = true;
-            this.RemoveFortButton.Click += new System.EventHandler(this.RemoveFortButton_Click);
-            // 
-            // AddFortButton
-            // 
-            this.AddFortButton.Location = new System.Drawing.Point(380, 46);
-            this.AddFortButton.Name = "AddFortButton";
-            this.AddFortButton.Size = new System.Drawing.Size(62, 23);
-            this.AddFortButton.TabIndex = 23;
-            this.AddFortButton.Text = "Add Fort";
-            this.AddFortButton.UseVisualStyleBackColor = true;
-            this.AddFortButton.Click += new System.EventHandler(this.AddFortButton_Click);
-            // 
             // RemoveFromHREButton
             // 
-            this.RemoveFromHREButton.Location = new System.Drawing.Point(448, 15);
+            this.RemoveFromHREButton.Location = new System.Drawing.Point(448, 30);
             this.RemoveFromHREButton.Name = "RemoveFromHREButton";
             this.RemoveFromHREButton.Size = new System.Drawing.Size(85, 23);
             this.RemoveFromHREButton.TabIndex = 22;
@@ -1852,7 +1943,7 @@
             // 
             // AddToHREButton
             // 
-            this.AddToHREButton.Location = new System.Drawing.Point(380, 15);
+            this.AddToHREButton.Location = new System.Drawing.Point(380, 30);
             this.AddToHREButton.Name = "AddToHREButton";
             this.AddToHREButton.Size = new System.Drawing.Size(62, 23);
             this.AddToHREButton.TabIndex = 21;
@@ -1908,24 +1999,12 @@
             this.DevIncreaseAll.UseVisualStyleBackColor = true;
             this.DevIncreaseAll.Click += new System.EventHandler(this.DevIncreaseAll_Click);
             // 
-            // FortCheckbox
-            // 
-            this.FortCheckbox.AutoSize = true;
-            this.FortCheckbox.Enabled = false;
-            this.FortCheckbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.FortCheckbox.Location = new System.Drawing.Point(321, 47);
-            this.FortCheckbox.Name = "FortCheckbox";
-            this.FortCheckbox.Size = new System.Drawing.Size(57, 24);
-            this.FortCheckbox.TabIndex = 13;
-            this.FortCheckbox.Text = "Fort";
-            this.FortCheckbox.UseVisualStyleBackColor = true;
-            // 
             // HRECheckbox
             // 
             this.HRECheckbox.AutoSize = true;
             this.HRECheckbox.Enabled = false;
             this.HRECheckbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.HRECheckbox.Location = new System.Drawing.Point(321, 17);
+            this.HRECheckbox.Location = new System.Drawing.Point(321, 32);
             this.HRECheckbox.Name = "HRECheckbox";
             this.HRECheckbox.Size = new System.Drawing.Size(63, 24);
             this.HRECheckbox.TabIndex = 12;
@@ -3096,6 +3175,7 @@
             // 
             // AdditionalPage
             // 
+            this.AdditionalPage.Controls.Add(this.button2);
             this.AdditionalPage.Controls.Add(this.panel1);
             this.AdditionalPage.Controls.Add(this.DarkmodeButton);
             this.AdditionalPage.Controls.Add(this.StatisticsButton);
@@ -4109,10 +4189,21 @@
             this.RefreshSavesButton.UseVisualStyleBackColor = true;
             this.RefreshSavesButton.Click += new System.EventHandler(this.RefreshSavesButton_Click);
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(10, 480);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 8;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // TabsSeparate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(574, 814);
             this.Controls.Add(this.Tabs);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -4155,6 +4246,10 @@
             this.groupBox3.PerformLayout();
             this.LocalisationPage.ResumeLayout(false);
             this.LocalisationPage.PerformLayout();
+            this.DateEntriesPage.ResumeLayout(false);
+            this.DateEntriesPage.PerformLayout();
+            this.DateEntryFlowLayoutPanel.ResumeLayout(false);
+            this.AddNew.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CenterOfTradeNumeric)).EndInit();
@@ -4348,8 +4443,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label41;
         private System.Windows.Forms.NumericUpDown CenterOfTradeNumeric;
-        private System.Windows.Forms.Button RemoveFortButton;
-        private System.Windows.Forms.Button AddFortButton;
         private System.Windows.Forms.Button RemoveFromHREButton;
         private System.Windows.Forms.Button AddToHREButton;
         private System.Windows.Forms.Button RandomDevHigh;
@@ -4357,7 +4450,6 @@
         private System.Windows.Forms.Button RandomDevLow;
         private System.Windows.Forms.Button DevRemoveAll;
         private System.Windows.Forms.Button DevIncreaseAll;
-        private System.Windows.Forms.CheckBox FortCheckbox;
         private System.Windows.Forms.CheckBox HRECheckbox;
         public System.Windows.Forms.NumericUpDown ProvinceManpowerNumeric;
         private System.Windows.Forms.Label label3;
@@ -4567,5 +4659,16 @@
         public System.Windows.Forms.TabPage MacroSelecter;
         public System.Windows.Forms.TabPage ChangesTab;
         public System.Windows.Forms.TabPage SavingTab;
+        private System.Windows.Forms.TabPage DateEntriesPage;
+        private System.Windows.Forms.FlowLayoutPanel DateEntryFlowLayoutPanel;
+        private System.Windows.Forms.Button DateEntryAddButton;
+        private System.Windows.Forms.TextBox DateEntryAddBox;
+        private System.Windows.Forms.Button RemoveDateEntryButton;
+        private System.Windows.Forms.Label label80;
+        private System.Windows.Forms.ComboBox DateEntrySelectionBox;
+        private System.Windows.Forms.GroupBox AddNew;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
     }
 }

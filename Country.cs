@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-
+using System;
 
 namespace Eu4ModEditor
 {
@@ -31,6 +31,23 @@ namespace Eu4ModEditor
         /// All provinces belonging to a country
         /// </summary>
         public List<Province> Provinces = new List<Province>();
+
+        public List<Province> GetProvincesInCurrentDate()
+        {          
+            if (DateTime.Compare(GlobalVariables.CurrentDate, GlobalVariables.StartDate) == 0)
+                return Provinces;
+            else
+            {
+                List<Province> ToReturn = new List<Province>();
+                foreach (Province p in Provinces)
+                {
+                    if (p.OwnerCountry == this)
+                        ToReturn.Add(p);
+                }
+                return ToReturn;
+            }
+        }
+
         /// <summary>
         /// Capital province of a country
         /// </summary>

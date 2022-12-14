@@ -55,7 +55,9 @@ namespace Eu4ModEditor
         public static Image ProvincesMap;
         public static Bitmap ProvincesMapBitmap;
         public static Bitmap DevelopmentBitmap;
-        public static Thread UpdtGraphicsThread;
+
+
+       
 
         public static bool ShowSeaTilesAreaMapmode = false;
 
@@ -170,8 +172,47 @@ namespace Eu4ModEditor
         public static bool OldMapUpdatingStyle = false;
 
         public static bool NamesHidden = false;
-        
 
+        public static (string, int)[] FortBuildings = new (string, int)[] { };
+
+
+
+
+
+        //#####################     OPTIONS     ###################        
+        public static class Options
+        {
+            public static bool Autosaving = false;
+            public static int AutosavingInterval = 5;
+            public static string AutosavingPath = "";
+            public static bool AutosavingOnExit = false;
+
+            public static bool SaveCrash = false;
+            public static string SaveCrashPath = "";
+
+            public static bool RandomProvinceCustom = false;
+
+            public static int RandomProvinceLowMinimum = 1;
+            public static int RandomProvinceLowAverage = 1;
+            public static int RandomProvinceLowMaximum = 1;
+
+            public static int RandomProvinceMediumMinimum = 1;
+            public static int RandomProvinceMediumAverage = 1;
+            public static int RandomProvinceMediumMaximum = 1;
+
+            public static int RandomProvinceHighMinimum = 1;
+            public static int RandomProvinceHighAverage = 1;
+            public static int RandomProvinceHighMaximum = 1;
+
+            public static bool SameValueForAllProvinces = false;
+        }
+        //###################   THREADS    ########################
+
+        public static class Threads
+        {
+            public static Thread UpdtGraphicsThread;
+            public static Thread AutoSaveThread;
+        }
     }
 }
 

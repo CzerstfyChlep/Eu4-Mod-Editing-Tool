@@ -108,7 +108,7 @@ namespace Eu4ModEditor
                                         if (file.Split('.')[1] == "yml")
                                         {
                                             int linenumber = 0;
-                                            foreach (string line in File.ReadAllLines(file, Encoding.Default))
+                                            foreach (string line in File.ReadAllLines(file, Encoding.GetEncoding(1252)))
                                             {
                                                 linenumber++;
                                                 if (linenumber == 1)
@@ -187,7 +187,7 @@ namespace Eu4ModEditor
                                 if (file.Split('.')[1] == "yml")
                                 {
                                     int linenumber = 0;
-                                    foreach (string line in File.ReadAllLines(file, Encoding.Default))
+                                    foreach (string line in File.ReadAllLines(file, Encoding.GetEncoding(1252)))
                                     {
                                         linenumber++;
                                         if (linenumber == 1)
@@ -235,7 +235,7 @@ namespace Eu4ModEditor
                                     }
 
 
-                                    foreach (string line in File.ReadAllLines(file, Encoding.Default))
+                                    foreach (string line in File.ReadAllLines(file, Encoding.GetEncoding(1252)))
                                     {
                                         string linetoread = line.Split('#')[0];
 
@@ -941,6 +941,7 @@ namespace Eu4ModEditor
                             }
                         }
 
+                        List<(string, int)> fortBuildings = new List<(string, int)>();
                         foreach (NodeFile buildings in buildingsfiles)
                         {
                             foreach (Node node in buildings.MainNode.Nodes)
@@ -950,9 +951,26 @@ namespace Eu4ModEditor
                                 Building bl = new Building();
                                 bl.Name = node.Name;
                                 bl.NodeFile = buildings;
+
+                                Node modifier = node.Nodes.Find(x => x.Name == "modifier");
+                                if (modifier != null)
+                                {
+                                    if(modifier.TryGetVariableValue("fort_level", out string value))
+                                    {
+                                        if(int.TryParse(value, out int fortL))
+                                            fortBuildings.Add((node.Name, fortL));
+                                        else
+                                            progress.ReportError($"Error: Unexpected value in fort_level of '{node.Name}'!");
+                                    }
+                                    
+                                }
+
                                 GlobalVariables.Buildings.Add(bl);
                             }
                         }
+
+                        GlobalVariables.FortBuildings = fortBuildings.ToArray();
+
                     }
                     catch (Exception e)
                     {
@@ -1021,7 +1039,7 @@ namespace Eu4ModEditor
                                     OriginalName = n.Name
                                 };
                                 foreach (Province pro in a.Provinces)
-                                    pro.Variables["Area"] = a;
+                                    pro.Variables[Province.Variable.Area] = a;
                             }
                         }
                     }
@@ -1069,7 +1087,7 @@ namespace Eu4ModEditor
                                 Continent c = new Continent(n.Name, ctp);
                                 c.OriginalName = n.Name;
                                 foreach (Province pr in c.Provinces)
-                                    pr.Variables["Continent"] = c;
+                                    pr.Variables[Province.Variable.Continent] = c;
                             }
                         }
                     }
@@ -2703,7 +2721,7 @@ namespace Eu4ModEditor
                                     GlobalVariables.TotalUsableProvinces++;
 
                                 //CHECK
-                                ReadProvinceValuesFromNode(province, nodefile.MainNode, progress);
+                                ReadProvinceValuesFromNode(province, GlobalVariables.CurrentDate, nodefile.MainNode, progress);
 
 
                                 //TODO
@@ -2731,14 +2749,7 @@ namespace Eu4ModEditor
                                                 else
                                                 {
                                                     DateTime date = new DateTime(y, m, d);
-
-                                                    /*
-                                                    if (DateTime.Compare(date, GlobalVariables.StartDate) <= 0)
-                                                    {
-                                                        ReadProvinceValuesFromNode(province, dateNode);
-                                                    }*/
-                                                    ReadProvinceDateEntryFromNode(province, dateNode, date, progress);
-
+                                                    ReadProvinceValuesFromNode(province, date, dateNode, progress);
                                                 }
                                             }
                                         }
@@ -2749,28 +2760,17 @@ namespace Eu4ModEditor
                                     }
                                 }
 
+
                                 if (province.TradeGood != null)
                                 {
                                     province.TradeGood.TotalDev += province.Tax + province.Production + province.Manpower;
                                 }
-
-                                Node n = nodefile.MainNode.Nodes.Find(x => x.Name.ToLower() == "latent_trade_goods");
-                                if (n != null)
+                                if (province.LatentTradeGood != null)
                                 {
-                                    if (n.PureValues.Any())
-                                    {
-                                        province.LatentTradeGood = GlobalVariables.TradeGoods.Find(x => x.Name.ToLower() == n.PureValues[0].Name.Trim().ToLower());
-                                        if (province.LatentTradeGood != null)
-                                        {
-                                            province.LatentTradeGood.TotalProvinces++;
-                                            province.TradeGood.TotalDev += province.Tax + province.Production + province.Manpower;
-                                        }
-                                        else
-                                        {
-                                            progress.ReportError($"Error: Latent trade good in province {id} is incorrect! Ignoring.");
-                                        }
-                                    }
+                                    province.TradeGood.TotalDev += province.Tax + province.Production + province.Manpower;
                                 }
+
+                                
                             }
                         }
 
@@ -3181,20 +3181,22 @@ namespace Eu4ModEditor
             
         }
 
-        public static void ReadProvinceValuesFromNode(Province province, Node n, LoadingProgress progress = null)
+        public static void ReadProvinceValuesFromNode(Province province, DateTime date, Node n, LoadingProgress progress = null)
         {
+            GlobalVariables.CurrentDate = date;
             foreach (Variable v in n.Variables)
             {
                 Building bl = GlobalVariables.Buildings.Find(x => x.Name.ToLower() == v.Name.ToLower());
-                if (bl != null && v.Value == "yes")
+                if (bl != null && v.Value.ToLower().Trim() == "yes")
                 {
-                    province.AddBuilding(bl, true);
-                }                   
-
+                    province.AddBuilding(bl, date, true);
+                }
+                else if(bl != null && v.Value == "no")
+                    province.RemoveBuilding(bl, date, true);
                 switch (v.Name)
                 {
                     case "add_core":
-                        province.AddCore(v.Value.ToUpper(), true);
+                        province.AddCore(v.Value.ToUpper(), date, true);
                         if (v.Value == "---")
                             continue;
                         if (progress != null)
@@ -3204,7 +3206,7 @@ namespace Eu4ModEditor
                         }
                         break; 
                     case "add_claim":
-                        province.AddClaim(v.Value.ToUpper(), true);
+                        province.AddClaim(v.Value.ToUpper(),date, true);
                         if (v.Value == "---")
                             continue;
                         if (progress != null)
@@ -3214,7 +3216,7 @@ namespace Eu4ModEditor
                         }
                         break;
                     case "owner":
-                        if (province.OwnerCountry != null)
+                        if (province.OwnerCountry != null && DateTime.Compare(GlobalVariables.StartDate, date)==0)
                             province.OwnerCountry.Provinces.Remove(province);
                         if (v.Value == "---")
                             province.OwnerCountry = null;
@@ -3280,12 +3282,6 @@ namespace Eu4ModEditor
                         else
                             province.HRE = false;
                         break;
-                    case "fort_15th":
-                        if (v.Value == "yes")
-                            province.Fort = true;
-                        else
-                            province.Fort = false;
-                        break;
                     case "base_tax":
                         int tax = 0;
                         if(!int.TryParse(v.Value, out tax))
@@ -3313,11 +3309,11 @@ namespace Eu4ModEditor
                     case "trade_goods":
                         TradeGood tg = GlobalVariables.TradeGoods.Find(x => x.Name.ToLower() == v.Value.ToLower());                        
                         province.TradeGood = tg;
-                        if (province.TradeGood != null)
+                        if (province.TradeGood != null && GlobalVariables.CurrentDate == GlobalVariables.StartDate)
                         {
                             province.TradeGood.TotalProvinces++;
                         }
-                        else
+                        else if(province.TradeGood == null)
                         {
                             progress.ReportError($"Error: Province {province.ID} has unknown trade good '{v.Value.ToUpper()}'!");
                         }
@@ -3334,7 +3330,7 @@ namespace Eu4ModEditor
                         province.CenterOfTrade = cot;
                         break;
                     case "discovered_by":
-                        province.AddDiscoveredBy(v.Value, true);
+                        province.AddDiscoveredBy(v.Value,date, true);
                         break;
                     case "is_city":
                         if (v.Value == "yes")
@@ -3344,176 +3340,40 @@ namespace Eu4ModEditor
                         break;
                 }
             }
-        }
 
-        public static void ReadProvinceDateEntryFromNode(Province province, Node n, DateTime Time, LoadingProgress progress = null)
-        {
-
-            ProvinceDateEntry PD = new ProvinceDateEntry(Time);
-
-            foreach (Variable v in n.Variables)
+            Node revoltNode = n.Nodes.Find(x => x.Name.ToLower() == "revolt");
+            if(revoltNode != null)
             {
-                Building bl = GlobalVariables.Buildings.Find(x => x.Name.ToLower() == v.Name.ToLower());
-                if (bl != null && v.Value == "yes")                
-                    PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.BuildingAdd, bl));              
-                else if(bl != null && v.Value == "no")
-                    PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.BuildingRemove, bl));
-                switch (v.Name)
-                {
-                    case "add_core":
-                        PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.CoresAdd, v.Value.ToUpper()));
-                        if (v.Value == "---")
-                            continue;
-                        if (progress != null)
-                        {
-                            if (!GlobalVariables.Countries.Any(x => x.Tag == v.Value.ToUpper()))
-                                progress.ReportError($"Alert: Province {province.ID} has unknown country tag in cores {v.Value.ToUpper()} in {Time.Year}.{Time.Month}.{Time.Day}");
-                        }
-                        break;
-                    case "add_claim":
-                        PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.ClaimsAdd, v.Value.ToUpper()));
-                        if (v.Value == "---")
-                            continue;
-                        if (progress != null)
-                        {
-                            if (!GlobalVariables.Countries.Any(x => x.Tag == v.Value.ToUpper()))
-                                progress.ReportError($"Alert: Province {province.ID} has unknown country tag in claims {v.Value.ToUpper()} in {Time.Year}.{Time.Month}.{Time.Day}");
-                        }
-                        break;
-                    case "owner":
-                        if (v.Value == "---")
-                            PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.Owner, null));
-                        else
-                        {
-                            Country c = GlobalVariables.Countries.Find(x => x.Tag == v.Value.ToUpper());
-                            if (c == null)
-                            {
-                                if (progress != null)
-                                {
-                                    progress.ReportError($"Error: Province {province.ID} has unknown owner '{v.Value.ToUpper()}' in {Time.Year}.{Time.Month}.{Time.Day}");
-                                }
-                            }
-                            if (c != null)
-                            {
-                                PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.Owner, c));
-                            }
-                        }
-                        break;
-                    case "controller":
-                        if (v.Value == "---")
-                            PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.Controller, null));
-                        else
-                        {
-                            Country cont = GlobalVariables.Countries.Find(x => x.Tag == v.Value.ToUpper());
-                            if (cont == null)
-                            {
-                                if (progress != null)
-                                {
-                                    progress.ReportError($"Error: Province {province.ID} has unknown controller '{v.Value.ToUpper()}' in {Time.Year}.{Time.Month}.{Time.Day}");
-                                }
-                            }
-                            else
-                                PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.Controller, cont));
-                        }
-                        break;
-                    case "culture":
-                        Culture cul = Culture.Cultures.Find(x => x.Name.ToLower() == v.Value.ToLower());
-                        if (cul == null)
-                        {
-                            if (progress != null)
-                                progress.ReportError($"Error: Province {province.ID} has unknown culture '{v.Value.ToUpper()}' in {Time.Year}.{Time.Month}.{Time.Day}");
-                        }
-                        else
-                            PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.Culture, cul));
-
-                        break;
-                    case "religion":
-                        Religion r = Religion.Religions.Find(x => x.Name.ToLower() == v.Value.Replace("\"", "").ToLower());
-                        if (r == null)
-                        {
-                            if (progress != null)
-                                progress.ReportError($"Error: Province {province.ID} has unknown religion '{v.Value.ToUpper()}' in {Time.Year}.{Time.Month}.{Time.Day}");
-                        }
-                        else
-                        {
-                            PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.Religion, r));
-                        }
-                        break;
-                    case "hre":
-                        if (v.Value == "yes")
-                            PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.HRE, true));
-                        else
-                            PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.HRE, false));
-                        break;
-                    case "fort_15th":
-                        if (v.Value == "yes")
-                            PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.Fort, true));
-                        else
-                            PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.Fort, false));
-                        break;
-                    case "base_tax":
-                        int tax = 0;
-                        if (!int.TryParse(v.Value, out tax))
-                        {
-                            progress.ReportError($"Error: Province {province.ID} has unexpected value '{v.Value.ToUpper()}' in base tax in {Time.Year}.{Time.Month}.{Time.Day}!");
-                        }
-                        PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.Tax, tax));
-                        break;
-                    case "base_production":
-                        int production = 0;
-                        if (!int.TryParse(v.Value, out production))
-                        {
-                            progress.ReportError($"Error: Province {province.ID} has unexpected value '{v.Value.ToUpper()}' in base production in {Time.Year}.{Time.Month}.{Time.Day}!");
-                        }
-                        PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.Production, production));
-                        break;
-                    case "base_manpower":
-                        int manpower = 0;
-                        if (!int.TryParse(v.Value, out manpower))
-                        {
-                            progress.ReportError($"Error: Province {province.ID} has unexpected value '{v.Value.ToUpper()}' in base manpower in {Time.Year}.{Time.Month}.{Time.Day}!");
-                        }
-                        PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.Manpower, manpower));
-                        break;
-                    case "trade_goods":
-                        TradeGood tg = GlobalVariables.TradeGoods.Find(x => x.Name.ToLower() == v.Value.ToLower());
-                        PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.TradeGood, tg));
-                        if (province.TradeGood != null)
-                        {
-                            province.TradeGood.TotalProvinces++;
-                        }
-                        else
-                        {
-                            progress.ReportError($"Error: Province {province.ID} has unknown trade good '{v.Value.ToUpper()}' in {Time.Year}.{Time.Month}.{Time.Day}!");
-                        }
-                        break;
-                    case "capital":
-                        PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.Capital, v.Value.Replace("\"", "")));
-                        break;
-                    case "center_of_trade":
-                        int cot = 0;
-                        if (!int.TryParse(v.Value, out cot))
-                        {
-                            progress.ReportError($"Error: Province {province.ID} has unexpected value '{v.Value.ToUpper()}' as a center of trade in {Time.Year}.{Time.Month}.{Time.Day}!");
-                        }
-                        PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.CenterOfTrade, cot));
-                        break;
-                    case "discovered_by":
-                        PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.DiscoveredByAdd, v.Value));
-                        break;
-                    case "is_city":
-                        if (v.Value == "yes")
-                            PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.City, true));
-                        else
-                            PD.Entries.Add(new ProvinceDateEntry.Entry(ProvinceDateEntry.EntryType.City, false));
-                        break;
-                }
+                ProvinceDateEntry.Revolt revolt = new ProvinceDateEntry.Revolt();
+                if(revoltNode.TryGetVariableValue("type", out string outputType))                
+                    revolt.Type = outputType;
+                if (revoltNode.TryGetVariableValue("size", out string outputSize))
+                    if (int.TryParse(outputSize, out int intSize))
+                        revolt.Size = intSize;
+                if (revoltNode.TryGetVariableValue("name", out string outputName))
+                    revolt.Name = outputName;
+                if (revoltNode.TryGetVariableValue("leader", out string outputLeader))
+                    revolt.Leader = outputLeader;
+                province.AddRevolt(date,revolt);
             }
 
-            province.AddDateEntry(PD);
+
+            Node ltgn = n.Nodes.Find(x => x.Name.ToLower() == "latent_trade_goods");
+            if (ltgn != null)
+            {
+                if (ltgn.PureValues.Any())
+                {
+                    province.LatentTradeGood = GlobalVariables.TradeGoods.Find(x => x.Name.ToLower() == ltgn.PureValues[0].Name.Trim().ToLower());
+                    if(province.LatentTradeGood != null && GlobalVariables.CurrentDate == GlobalVariables.StartDate)
+                        province.LatentTradeGood.TotalProvinces++;
+                    else if(province.LatentTradeGood == null)
+                    {
+                        progress.ReportError($"Error: Latent trade good in province {province.ID} is incorrect! Ignoring.");
+                    }
+                }
+            }
+            GlobalVariables.CurrentDate = GlobalVariables.StartDate;
         }
-
-
     }
 
     public class ProvinceNeighbourRay

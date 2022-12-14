@@ -10,9 +10,19 @@ namespace Eu4ModEditor
     {
         public object Object;
         public string VariableName = "";
+        public Province.Variable ProvinceVariable;
         public object PreviousValue;
         public object CurrentValue;
         public NonVariableChange SpecialChange;
+
+        public VariableChange(object obj, Province.Variable name, object prev, object cur)
+        {
+            Object = obj;
+            ProvinceVariable = name;
+            VariableName = ProvinceVariable.ToString();
+            PreviousValue = prev;
+            CurrentValue = cur;
+        }
         public VariableChange(object obj, string name, object prev, object cur)
         {
             Object = obj;

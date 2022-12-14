@@ -348,10 +348,19 @@ namespace Eu4ModEditor
                         p.MainStripes = Color.Transparent;
                         p.VerticalStripes = Color.Transparent;
 
-                        if (p.Fort)
+                        int f = p.FortLevel();
+                        if (f > 1 && f < 10)
                         {
-                            p.MainColor = Color.Green;
+                            p.MainColor = Color.FromArgb(0, 55 + 200 / f, 0);
                         }
+                        else if (f == 1 && p.OwnerCountry?.Capital == p)
+                        {
+                            p.MainColor = Color.Purple;
+                        }
+                        else if (f == 1)
+                            p.MainColor = Color.LightGreen;
+                        else if (f >= 10)
+                            p.MainColor = Color.FromArgb(0, 45, 0);
                         if (p.Lake || p.Sea)
                         {
                             p.MainColor = Color.Black;
@@ -1066,7 +1075,7 @@ namespace Eu4ModEditor
                     foreach (Province p in provinces)
                     {
                         Color c = Color.White;
-                        if (p.Fort)
+                        if (p.FortLevel() > 0)
                         {
                             c = Color.Green;
                         }

@@ -18,9 +18,6 @@ namespace Eu4ModEditor
             /*LanguageWindow lg = new LanguageWindow();
             lg.ShowDialog();*/
             this.AutoScaleMode = AutoScaleMode.None;
-
-            
-
             LoadingScreen sc = new LoadingScreen();
             sc.ShowDialog();
 
@@ -36,8 +33,8 @@ namespace Eu4ModEditor
             else if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.provincesBMP] == 0)
                 GlobalVariables.ProvincesMap = Image.FromFile(GlobalVariables.pathtogame + "map/provinces.bmp");
             GlobalVariables.ProvincesMapBitmap = new Bitmap(GlobalVariables.ProvincesMap);
-            GlobalVariables.UpdtGraphicsThread = new Thread(UpdateGraphics);
-
+            GlobalVariables.Threads.UpdtGraphicsThread = new Thread(UpdateGraphics);
+            GlobalVariables.Threads.AutoSaveThread = new Thread(Autosaving);
 
             this.FormClosing += OnExitDo;
 
@@ -74,11 +71,14 @@ namespace Eu4ModEditor
             MapmodesSeparateWindow.Show();
 
             MoveCameraTo(GlobalVariables.Provinces[0]);
-            GlobalVariables.UpdtGraphicsThread.Start();
+            GlobalVariables.Threads.UpdtGraphicsThread.Start();
+            GlobalVariables.Threads.AutoSaveThread.Start();
+            
 
             this.ResizeEnd += Resizing;
           
             //SIZING
+            /*
             if (GlobalVariables.AppSizeOption == 1)
             {
                 this.Width = 1290;
@@ -101,8 +101,10 @@ namespace Eu4ModEditor
                 //ButtonsPanel.Location = new Point(ButtonsPanel.Location.X,738);
                 DownButton.Location = new Point(DownButton.Location.X, 710);
             }
-
+            */
             this.FormBorderStyle = FormBorderStyle.Sizable;
+
+            GlobalVariables.CurrentDate = GlobalVariables.StartDate;
         }
 
     }

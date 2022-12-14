@@ -23,6 +23,7 @@ namespace Eu4ModEditor
             PrevDayValue = (int)DayInput.Value;
             PrevMonthValue = (int)MonthInput.Value;
             PrevYearValue = (int)YearInput.Value;
+            this.TopMost = true;
         }
 
         int PrevDayValue = 0;

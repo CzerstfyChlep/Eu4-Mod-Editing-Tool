@@ -66,6 +66,7 @@
             this.climateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideNavigationButtonsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showOptionsMenuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TopMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -189,53 +190,53 @@
             this.cultureGroupToolStripMenuItem,
             this.governmentToolStripMenuItem});
             this.politicalToolStripMenuItem.Name = "politicalToolStripMenuItem";
-            this.politicalToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.politicalToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.politicalToolStripMenuItem.Text = "Political";
             // 
             // politicalToolStripMenuItem1
             // 
             this.politicalToolStripMenuItem1.Name = "politicalToolStripMenuItem1";
-            this.politicalToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.politicalToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.politicalToolStripMenuItem1.Text = "Political";
             this.politicalToolStripMenuItem1.Click += new System.EventHandler(this.politicalToolStripMenuItem1_Click);
             // 
             // hREToolStripMenuItem
             // 
             this.hREToolStripMenuItem.Name = "hREToolStripMenuItem";
-            this.hREToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.hREToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.hREToolStripMenuItem.Text = "HRE";
             this.hREToolStripMenuItem.Click += new System.EventHandler(this.hREToolStripMenuItem_Click);
             // 
             // religionToolStripMenuItem
             // 
             this.religionToolStripMenuItem.Name = "religionToolStripMenuItem";
-            this.religionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.religionToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.religionToolStripMenuItem.Text = "Religion";
             this.religionToolStripMenuItem.Click += new System.EventHandler(this.religionToolStripMenuItem_Click);
             // 
             // religionGroupToolStripMenuItem
             // 
             this.religionGroupToolStripMenuItem.Name = "religionGroupToolStripMenuItem";
-            this.religionGroupToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.religionGroupToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.religionGroupToolStripMenuItem.Text = "Religion group";
             // 
             // cultureToolStripMenuItem
             // 
             this.cultureToolStripMenuItem.Name = "cultureToolStripMenuItem";
-            this.cultureToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cultureToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.cultureToolStripMenuItem.Text = "Culture";
             this.cultureToolStripMenuItem.Click += new System.EventHandler(this.cultureToolStripMenuItem_Click);
             // 
             // cultureGroupToolStripMenuItem
             // 
             this.cultureGroupToolStripMenuItem.Name = "cultureGroupToolStripMenuItem";
-            this.cultureGroupToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.cultureGroupToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.cultureGroupToolStripMenuItem.Text = "Culture group";
             // 
             // governmentToolStripMenuItem
             // 
             this.governmentToolStripMenuItem.Name = "governmentToolStripMenuItem";
-            this.governmentToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.governmentToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.governmentToolStripMenuItem.Text = "Government";
             this.governmentToolStripMenuItem.Click += new System.EventHandler(this.governmentToolStripMenuItem_Click);
             // 
@@ -247,34 +248,34 @@
             this.superregionToolStripMenuItem,
             this.continentToolStripMenuItem});
             this.locationToolStripMenuItem.Name = "locationToolStripMenuItem";
-            this.locationToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.locationToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.locationToolStripMenuItem.Text = "Location";
             // 
             // areaToolStripMenuItem
             // 
             this.areaToolStripMenuItem.Name = "areaToolStripMenuItem";
-            this.areaToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.areaToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.areaToolStripMenuItem.Text = "Area";
             this.areaToolStripMenuItem.Click += new System.EventHandler(this.areaToolStripMenuItem_Click);
             // 
             // regionToolStripMenuItem
             // 
             this.regionToolStripMenuItem.Name = "regionToolStripMenuItem";
-            this.regionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.regionToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.regionToolStripMenuItem.Text = "Region";
             this.regionToolStripMenuItem.Click += new System.EventHandler(this.regionToolStripMenuItem_Click);
             // 
             // superregionToolStripMenuItem
             // 
             this.superregionToolStripMenuItem.Name = "superregionToolStripMenuItem";
-            this.superregionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.superregionToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.superregionToolStripMenuItem.Text = "Superregion";
             this.superregionToolStripMenuItem.Click += new System.EventHandler(this.superregionToolStripMenuItem_Click);
             // 
             // continentToolStripMenuItem
             // 
             this.continentToolStripMenuItem.Name = "continentToolStripMenuItem";
-            this.continentToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.continentToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.continentToolStripMenuItem.Text = "Continent";
             this.continentToolStripMenuItem.Click += new System.EventHandler(this.continentToolStripMenuItem_Click);
             // 
@@ -285,27 +286,27 @@
             this.tradeNodesToolStripMenuItem,
             this.tradeCompaniesToolStripMenuItem});
             this.tradeToolStripMenuItem.Name = "tradeToolStripMenuItem";
-            this.tradeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.tradeToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.tradeToolStripMenuItem.Text = "Trade";
             // 
             // tradeGoodToolStripMenuItem
             // 
             this.tradeGoodToolStripMenuItem.Name = "tradeGoodToolStripMenuItem";
-            this.tradeGoodToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.tradeGoodToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.tradeGoodToolStripMenuItem.Text = "Trade goods";
             this.tradeGoodToolStripMenuItem.Click += new System.EventHandler(this.tradeGoodToolStripMenuItem_Click);
             // 
             // tradeNodesToolStripMenuItem
             // 
             this.tradeNodesToolStripMenuItem.Name = "tradeNodesToolStripMenuItem";
-            this.tradeNodesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.tradeNodesToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.tradeNodesToolStripMenuItem.Text = "Trade nodes";
             this.tradeNodesToolStripMenuItem.Click += new System.EventHandler(this.tradeNodesToolStripMenuItem_Click);
             // 
             // tradeCompaniesToolStripMenuItem
             // 
             this.tradeCompaniesToolStripMenuItem.Name = "tradeCompaniesToolStripMenuItem";
-            this.tradeCompaniesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.tradeCompaniesToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.tradeCompaniesToolStripMenuItem.Text = "Trade companies";
             this.tradeCompaniesToolStripMenuItem.Click += new System.EventHandler(this.tradeCompaniesToolStripMenuItem_Click);
             // 
@@ -319,55 +320,56 @@
             this.winterMonsoonToolStripMenuItem,
             this.climateToolStripMenuItem});
             this.otherToolStripMenuItem.Name = "otherToolStripMenuItem";
-            this.otherToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.otherToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
             this.otherToolStripMenuItem.Text = "Other";
             // 
             // developmentToolStripMenuItem
             // 
             this.developmentToolStripMenuItem.Name = "developmentToolStripMenuItem";
-            this.developmentToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.developmentToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.developmentToolStripMenuItem.Text = "Development";
             this.developmentToolStripMenuItem.Click += new System.EventHandler(this.developmentToolStripMenuItem_Click);
             // 
             // provincesToolStripMenuItem
             // 
             this.provincesToolStripMenuItem.Name = "provincesToolStripMenuItem";
-            this.provincesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.provincesToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.provincesToolStripMenuItem.Text = "Provinces";
             this.provincesToolStripMenuItem.Click += new System.EventHandler(this.provincesToolStripMenuItem_Click);
             // 
             // fortToolStripMenuItem
             // 
             this.fortToolStripMenuItem.Name = "fortToolStripMenuItem";
-            this.fortToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fortToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.fortToolStripMenuItem.Text = "Fort";
             this.fortToolStripMenuItem.Click += new System.EventHandler(this.fortToolStripMenuItem_Click);
             // 
             // discoveredByToolStripMenuItem
             // 
             this.discoveredByToolStripMenuItem.Name = "discoveredByToolStripMenuItem";
-            this.discoveredByToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.discoveredByToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.discoveredByToolStripMenuItem.Text = "Discovered by";
             this.discoveredByToolStripMenuItem.Click += new System.EventHandler(this.discoveredByToolStripMenuItem_Click);
             // 
             // winterMonsoonToolStripMenuItem
             // 
             this.winterMonsoonToolStripMenuItem.Name = "winterMonsoonToolStripMenuItem";
-            this.winterMonsoonToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.winterMonsoonToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.winterMonsoonToolStripMenuItem.Text = "Winter/Monsoon";
             this.winterMonsoonToolStripMenuItem.Click += new System.EventHandler(this.winterMonsoonToolStripMenuItem_Click);
             // 
             // climateToolStripMenuItem
             // 
             this.climateToolStripMenuItem.Name = "climateToolStripMenuItem";
-            this.climateToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.climateToolStripMenuItem.Size = new System.Drawing.Size(165, 22);
             this.climateToolStripMenuItem.Text = "Climate";
             this.climateToolStripMenuItem.Click += new System.EventHandler(this.climateToolStripMenuItem_Click);
             // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.hideNavigationButtonsToolStripMenuItem});
+            this.hideNavigationButtonsToolStripMenuItem,
+            this.showOptionsMenuToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
             this.optionsToolStripMenuItem.Text = "Options";
@@ -379,6 +381,13 @@
             this.hideNavigationButtonsToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
             this.hideNavigationButtonsToolStripMenuItem.Text = "Hide navigation buttons";
             this.hideNavigationButtonsToolStripMenuItem.Click += new System.EventHandler(this.hideNavigationButtonsToolStripMenuItem_Click);
+            // 
+            // showOptionsMenuToolStripMenuItem
+            // 
+            this.showOptionsMenuToolStripMenuItem.Name = "showOptionsMenuToolStripMenuItem";
+            this.showOptionsMenuToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.showOptionsMenuToolStripMenuItem.Text = "Show options menu";
+            this.showOptionsMenuToolStripMenuItem.Click += new System.EventHandler(this.showOptionsMenuToolStripMenuItem_Click);
             // 
             // ModEditor
             // 
@@ -444,6 +453,7 @@
         private System.Windows.Forms.ToolStripMenuItem climateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hideNavigationButtonsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showOptionsMenuToolStripMenuItem;
     }
 }
 

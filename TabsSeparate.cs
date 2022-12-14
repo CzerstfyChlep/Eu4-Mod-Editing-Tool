@@ -87,6 +87,11 @@ namespace Eu4ModEditor
             {
                 DiscoveredByBox.Items.Add(s);
             }
+            foreach(Country s in GlobalVariables.Countries)
+            {
+                DiscoveredByBox.Items.Add(s.Tag);
+              
+            }
 
 
             foreach (TradeGood tg in GlobalVariables.TradeGoods)
@@ -276,6 +281,8 @@ namespace Eu4ModEditor
                     UpdateAreaAndRegionPage();
                 else if (ProvinceTabControl.SelectedTab == LocalisationPage)
                     UpdateProvinceLocalisationPage();
+                else if (ProvinceTabControl.SelectedTab == DateEntriesPage)
+                    UpdateDateEntriesPage();
             }
         }
 
@@ -313,103 +320,108 @@ namespace Eu4ModEditor
         #region Control Updaters
         public void UpdateMainProvincePage()
         {
-            ChangeValueInternally(CultureBox, GlobalVariables.ClickedProvinces[0].Culture);
-            ChangeValueInternally(ReligionBox, GlobalVariables.ClickedProvinces[0].Religion);
-            ChangeValueInternally(OwnerBox, GlobalVariables.ClickedProvinces[0].OwnerCountry);
-            ChangeValueInternally(TradeGoodBox, GlobalVariables.ClickedProvinces[0].TradeGood);
-            ChangeValueInternally(LatentTradeGoodBox, GlobalVariables.ClickedProvinces[0].LatentTradeGood);
-            if (GlobalVariables.ClickedProvinces[0].Controller != null)
-                ChangeValueInternally(ControllerBox, GlobalVariables.ClickedProvinces[0].Controller);
-            else
-                if (ControllerBox.SelectedIndex != 0)
-                ChangeValueInternally(ControllerBox, 0);
-            IsCityCheckbox.Checked = GlobalVariables.ClickedProvinces[0].City;
-            if (GlobalVariables.ClickedProvinces[0].TradeNode != null)
+            if (GlobalVariables.ClickedProvinces.Any())
             {
-                if (GlobalVariables.TradeNodes.IndexOf(GlobalVariables.ClickedProvinces[0].TradeNode) + 1 != ProvinceTradeNodeBox.SelectedIndex)
+                ChangeValueInternally(CultureBox, GlobalVariables.ClickedProvinces[0].Culture);
+                ChangeValueInternally(ReligionBox, GlobalVariables.ClickedProvinces[0].Religion);
+                ChangeValueInternally(OwnerBox, GlobalVariables.ClickedProvinces[0].OwnerCountry);
+                ChangeValueInternally(TradeGoodBox, GlobalVariables.ClickedProvinces[0].TradeGood);
+                ChangeValueInternally(LatentTradeGoodBox, GlobalVariables.ClickedProvinces[0].LatentTradeGood);
+                if (GlobalVariables.ClickedProvinces[0].Controller != null)
+                    ChangeValueInternally(ControllerBox, GlobalVariables.ClickedProvinces[0].Controller);
+                else
+                    if (ControllerBox.SelectedIndex != 0)
+                    ChangeValueInternally(ControllerBox, 0);
+                IsCityCheckbox.Checked = GlobalVariables.ClickedProvinces[0].City;
+                if (GlobalVariables.ClickedProvinces[0].TradeNode != null)
                 {
-                    ChangeValueInternally(ProvinceTradeNodeBox, GlobalVariables.ClickedProvinces[0].TradeNode);
+                    if (GlobalVariables.TradeNodes.IndexOf(GlobalVariables.ClickedProvinces[0].TradeNode) + 1 != ProvinceTradeNodeBox.SelectedIndex)
+                    {
+                        ChangeValueInternally(ProvinceTradeNodeBox, GlobalVariables.ClickedProvinces[0].TradeNode);
+                    }
+                    //TODO
+                    //Why is this here
+                    //TradeNodeBox.SelectedIndex = GlobalVariables.TradeNodes.IndexOf(p.TradeNode) + 1;
                 }
-                //TODO
-                //Why is this here
-                //TradeNodeBox.SelectedIndex = GlobalVariables.TradeNodes.IndexOf(p.TradeNode) + 1;
+                else
+                {
+                    if (ProvinceTradeNodeBox.SelectedIndex != 0)
+                        ChangeValueInternally(ProvinceTradeNodeBox, 0);
+                }
+
+                ChangeValueInternally(WinterBox, GlobalVariables.ClickedProvinces[0].Winter);
+                ChangeValueInternally(MonsoonBox, GlobalVariables.ClickedProvinces[0].Monsoon);
+                ChangeValueInternally(ClimateBox, GlobalVariables.ClickedProvinces[0].Climate);
+                ChangeValueInternally(ImpassableBox, GlobalVariables.ClickedProvinces[0].Impassable);
+
+                UpdateBuildings();
+                UpdateCoresPanel();
+                UpdateDiscoveredBy();
             }
-            else
-            {
-                if (ProvinceTradeNodeBox.SelectedIndex != 0)
-                    ChangeValueInternally(ProvinceTradeNodeBox, 0);
-            }
-
-            ChangeValueInternally(WinterBox, GlobalVariables.ClickedProvinces[0].Winter);
-            ChangeValueInternally(MonsoonBox, GlobalVariables.ClickedProvinces[0].Monsoon);
-            ChangeValueInternally(ClimateBox, GlobalVariables.ClickedProvinces[0].Climate);
-            ChangeValueInternally(ImpassableBox, GlobalVariables.ClickedProvinces[0].Impassable);
-
-            UpdateBuildings();
-            UpdateCoresPanel();
-            UpdateDiscoveredBy();
-
         }
         public void UpdateAreaAndRegionPage()
         {
-            if (GlobalVariables.ClickedProvinces[0].Area != null)
+            if (GlobalVariables.ClickedProvinces.Any())
             {
-                if (AreaBox.SelectedIndex != GlobalVariables.Areas.IndexOf(GlobalVariables.ClickedProvinces[0].Area) + 1)
+                if (GlobalVariables.ClickedProvinces[0].Area != null)
                 {
-                    ChangeValueInternally(AreaBox, GlobalVariables.Areas.IndexOf(GlobalVariables.ClickedProvinces[0].Area) + 1);
-                }
-
-                if (GlobalVariables.ClickedProvinces[0].Area.Region != null)
-                {
-                    if (RegionBox.SelectedIndex != GlobalVariables.Regions.IndexOf(GlobalVariables.ClickedProvinces[0].Area.Region) + 1)
+                    if (AreaBox.SelectedIndex != GlobalVariables.Areas.IndexOf(GlobalVariables.ClickedProvinces[0].Area) + 1)
                     {
-                        ChangeValueInternally(RegionBox, GlobalVariables.Regions.IndexOf(GlobalVariables.ClickedProvinces[0].Area.Region) + 1);
+                        ChangeValueInternally(AreaBox, GlobalVariables.Areas.IndexOf(GlobalVariables.ClickedProvinces[0].Area) + 1);
                     }
-                    if (GlobalVariables.ClickedProvinces[0].Area.Region.Superregion != null)
+
+                    if (GlobalVariables.ClickedProvinces[0].Area.Region != null)
                     {
-                        if (SuperregionBox.SelectedIndex != GlobalVariables.Superregions.IndexOf(GlobalVariables.ClickedProvinces[0].Area.Region.Superregion) + 1)
+                        if (RegionBox.SelectedIndex != GlobalVariables.Regions.IndexOf(GlobalVariables.ClickedProvinces[0].Area.Region) + 1)
                         {
-                            ChangeValueInternally(SuperregionBox, GlobalVariables.Superregions.IndexOf(GlobalVariables.ClickedProvinces[0].Area.Region.Superregion) + 1);
+                            ChangeValueInternally(RegionBox, GlobalVariables.Regions.IndexOf(GlobalVariables.ClickedProvinces[0].Area.Region) + 1);
                         }
+                        if (GlobalVariables.ClickedProvinces[0].Area.Region.Superregion != null)
+                        {
+                            if (SuperregionBox.SelectedIndex != GlobalVariables.Superregions.IndexOf(GlobalVariables.ClickedProvinces[0].Area.Region.Superregion) + 1)
+                            {
+                                ChangeValueInternally(SuperregionBox, GlobalVariables.Superregions.IndexOf(GlobalVariables.ClickedProvinces[0].Area.Region.Superregion) + 1);
+                            }
+                        }
+                        else
+                            ChangeValueInternally(SuperregionBox, 0);
                     }
-                    else
-                        ChangeValueInternally(SuperregionBox, 0);
+                    else if (RegionBox.SelectedIndex != 0)
+                        ChangeValueInternally(RegionBox, 0);
+
+
                 }
-                else if (RegionBox.SelectedIndex != 0)
-                    ChangeValueInternally(RegionBox, 0);
-
-
-            }
-            else
-            {
-                if (AreaBox.SelectedIndex != 0)
-                    ChangeValueInternally(AreaBox, 0);
-                if (RegionBox.SelectedIndex != 0)
-                    ChangeValueInternally(RegionBox, 0);
-            }
-            if (GlobalVariables.ClickedProvinces[0].Continent != null)
-            {
-                if (GlobalVariables.Continents.IndexOf(GlobalVariables.ClickedProvinces[0].Continent) + 1 != ContinentBox.SelectedIndex)
-                    ChangeValueInternally(ContinentBox, GlobalVariables.Continents.IndexOf(GlobalVariables.ClickedProvinces[0].Continent) + 1);
-            }
-            else
-            {
-                if (ContinentBox.SelectedIndex != 0)
-                    ChangeValueInternally(ContinentBox, 0);
-            }
-            if (GlobalVariables.ClickedProvinces[0].TradeCompany != null)
-            {
-                if (GlobalVariables.TradeCompanies.IndexOf(GlobalVariables.ClickedProvinces[0].TradeCompany) + 1 != TradeCompanyBox.SelectedIndex)
+                else
                 {
-                    ChangeValueInternally(TradeCompanyBox, GlobalVariables.TradeCompanies.IndexOf(GlobalVariables.ClickedProvinces[0].TradeCompany) + 1);
-                    TradeCompanyColorButton.BackColor = GlobalVariables.ClickedProvinces[0].TradeCompany.Color;
+                    if (AreaBox.SelectedIndex != 0)
+                        ChangeValueInternally(AreaBox, 0);
+                    if (RegionBox.SelectedIndex != 0)
+                        ChangeValueInternally(RegionBox, 0);
                 }
-            }
-            else
-            {
-                if (TradeCompanyBox.SelectedIndex != 0)
-                    ChangeValueInternally(TradeCompanyBox, 0);
+                if (GlobalVariables.ClickedProvinces[0].Continent != null)
+                {
+                    if (GlobalVariables.Continents.IndexOf(GlobalVariables.ClickedProvinces[0].Continent) + 1 != ContinentBox.SelectedIndex)
+                        ChangeValueInternally(ContinentBox, GlobalVariables.Continents.IndexOf(GlobalVariables.ClickedProvinces[0].Continent) + 1);
+                }
+                else
+                {
+                    if (ContinentBox.SelectedIndex != 0)
+                        ChangeValueInternally(ContinentBox, 0);
+                }
+                if (GlobalVariables.ClickedProvinces[0].TradeCompany != null)
+                {
+                    if (GlobalVariables.TradeCompanies.IndexOf(GlobalVariables.ClickedProvinces[0].TradeCompany) + 1 != TradeCompanyBox.SelectedIndex)
+                    {
+                        ChangeValueInternally(TradeCompanyBox, GlobalVariables.TradeCompanies.IndexOf(GlobalVariables.ClickedProvinces[0].TradeCompany) + 1);
+                        TradeCompanyColorButton.BackColor = GlobalVariables.ClickedProvinces[0].TradeCompany.Color;
+                    }
+                }
+                else
+                {
+                    if (TradeCompanyBox.SelectedIndex != 0)
+                        ChangeValueInternally(TradeCompanyBox, 0);
 
+                }
             }
         }
         public void UpdateProvinceLocalisationPage()
@@ -437,6 +449,518 @@ namespace Eu4ModEditor
                 ((Control)LocalisationPage).Enabled = false;
             }
         }
+
+        public ProvinceDateEntry SelectedDateEntry = null;
+
+
+
+        public void RemoveEntryClick(object sender, EventArgs e)
+        {
+            Button b = (Button)sender;
+            ProvinceDateEntry.Entry entry = (ProvinceDateEntry.Entry)b.Parent.Tag;
+            entry.Parent.Entries.Remove(entry);
+            b.Parent.Parent.Controls.Remove(b.Parent);
+            GlobalVariables.Saves.Add(entry.Parent.GetParentProvince());
+        }
+
+        public void ChangeValueInDateEntryCB(object sender, EventArgs e)
+        {
+            ComboBox cb = (ComboBox)sender;
+            ProvinceDateEntry.Entry entry = (ProvinceDateEntry.Entry)cb.Parent.Tag;
+            entry.Value = cb.SelectedItem;
+            Province parent = entry.Parent.GetParentProvince();
+            if (!GlobalVariables.Saves.Contains(parent))
+                GlobalVariables.Saves.Add(parent);
+        }
+        public void ChangeValueInDateEntryNum(object sender, EventArgs e)
+        {
+            NumericUpDown nm = (NumericUpDown)sender;
+            ProvinceDateEntry.Entry entry = (ProvinceDateEntry.Entry)nm.Parent.Tag;
+            entry.Value = (int)nm.Value;
+            Province parent = entry.Parent.GetParentProvince();
+            if (!GlobalVariables.Saves.Contains(parent))
+                GlobalVariables.Saves.Add(parent);
+        }
+        public void ChangeValueInDateEntryTex(object sender, EventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            ProvinceDateEntry.Entry entry = (ProvinceDateEntry.Entry)tb.Parent.Tag;
+            entry.Value = tb.Text;
+            Province parent = entry.Parent.GetParentProvince();
+            if (!GlobalVariables.Saves.Contains(parent))
+                GlobalVariables.Saves.Add(parent);
+        }
+        public void ChangeValueInDateEntryChk(object sender, EventArgs e)
+        {
+            CheckBox ch = (CheckBox)sender;
+            ProvinceDateEntry.Entry entry = (ProvinceDateEntry.Entry)ch.Parent.Tag;
+            entry.Value = ch.Checked;
+            Province parent = entry.Parent.GetParentProvince();
+            if (!GlobalVariables.Saves.Contains(parent))
+                GlobalVariables.Saves.Add(parent);
+        }
+
+        public void ChangeRevoltType(object sender, EventArgs e)
+        {
+            ComboBox cb = (ComboBox)sender;
+            ProvinceDateEntry.Entry entry = (ProvinceDateEntry.Entry)cb.Parent.Tag;
+            (entry.Value as ProvinceDateEntry.Revolt).Type = (string)cb.SelectedItem;
+            Province parent = entry.Parent.GetParentProvince();
+            if (!GlobalVariables.Saves.Contains(parent))
+                GlobalVariables.Saves.Add(parent);
+        }
+        public void ChangeRevoltName(object sender, EventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            ProvinceDateEntry.Entry entry = (ProvinceDateEntry.Entry)tb.Parent.Tag;
+            (entry.Value as ProvinceDateEntry.Revolt).Name = tb.Text;
+            Province parent = entry.Parent.GetParentProvince();
+            if (!GlobalVariables.Saves.Contains(parent))
+                GlobalVariables.Saves.Add(parent);
+        }
+        public void ChangeRevoltLeader(object sender, EventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            ProvinceDateEntry.Entry entry = (ProvinceDateEntry.Entry)tb.Parent.Tag;
+            (entry.Value as ProvinceDateEntry.Revolt).Leader = tb.Text;
+            Province parent = entry.Parent.GetParentProvince();
+            if (!GlobalVariables.Saves.Contains(parent))
+                GlobalVariables.Saves.Add(parent);
+        }
+        public void ChangeRevoltSize(object sender, EventArgs e)
+        {
+            NumericUpDown nm = (NumericUpDown)sender;
+            ProvinceDateEntry.Entry entry = (ProvinceDateEntry.Entry)nm.Parent.Tag;
+            (entry.Value as ProvinceDateEntry.Revolt).Size = (int)nm.Value;
+            Province parent = entry.Parent.GetParentProvince();
+            if (!GlobalVariables.Saves.Contains(parent))
+                GlobalVariables.Saves.Add(parent);
+        }
+
+        public GroupBox CreateDateEntryControl(ProvinceDateEntry.Entry entry)
+        {
+            GroupBox gb = new GroupBox();
+            Button remove = new Button();
+            gb.Tag = entry;
+            remove.AutoSize = true;
+            remove.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            remove.Text = "x";
+            remove.Click += RemoveEntryClick;
+            gb.Controls.Add(remove);
+            gb.AutoSize = true;
+            gb.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            switch (entry.Type)
+            {
+                case Province.Variable.Tax:
+                    gb.Text = "Tax";
+                    break;
+                case Province.Variable.Production:
+                    gb.Text = "Production";
+                    break;
+                case Province.Variable.Manpower:
+                    gb.Text = "Manpower";
+                    break;
+                case Province.Variable.TradeGood:
+                    gb.Text = "Trade good";
+                    break;
+                case Province.Variable.LatentTradeGood:
+                    gb.Text = "Latent trade good";
+                    break;
+                case Province.Variable.BuildingAdd:
+                    gb.Text = "Add building";
+                    break;
+                case Province.Variable.BuildingRemove:
+                    gb.Text = "Remove building";
+                    break;
+                case Province.Variable.Capital:
+                    gb.Text = "Capital name";
+                    break;
+                case Province.Variable.CenterOfTrade:
+                    gb.Text = "Center of Trade";
+                    break;
+                case Province.Variable.ClaimsAdd:
+                    gb.Text = "Add claims";
+                    break;
+                case Province.Variable.ClaimsRemove:
+                    gb.Text = "Remove claims";
+                    break;
+                case Province.Variable.Controller:
+                    gb.Text = "Controller";
+                    break;
+                case Province.Variable.CoresAdd:
+                    gb.Text = "Add cores";
+                    break;
+                case Province.Variable.CoresRemove:
+                    gb.Text = "Remove cores";
+                    break;
+                case Province.Variable.Culture:
+                    gb.Text = "Culture";
+                    break;
+                case Province.Variable.DiscoveredByAdd:
+                    gb.Text = "Add Discovered by";
+                    break;
+                case Province.Variable.DiscoveredByRemove:
+                    gb.Text = "Remove Discovered by";
+                    break;
+                case Province.Variable.HRE:
+                    gb.Text = "HRE";
+                    break;
+                case Province.Variable.OwnerCountry:
+                    gb.Text = "Owner";
+                    break;
+                case Province.Variable.Religion:
+                    gb.Text = "Religion";
+                    break;
+                case Province.Variable.Revolt:
+                    gb.Text = "Revolt";
+                    break;
+            }
+            switch (entry.Type)
+            {
+                case Province.Variable.Revolt:
+                    {
+                        ComboBox cb = new ComboBox();
+                        //cb.Items.AddRange({"antitax"});
+                        //TODO 
+                        //ADD REVOLT TYPES
+                        Label l1 = new Label();
+                        l1.AutoSize = true;
+                        l1.Text = "Type";
+                        l1.Location = new Point(6, 19);
+                        
+                        cb.Size = new Size(133, 21);
+                        cb.Location = new Point(60, 19);
+                        cb.SelectedItem = entry.Value;
+                        cb.SelectedValueChanged += ChangeRevoltType;
+                        cb.DropDownStyle = ComboBoxStyle.DropDownList;
+                        remove.Location = new Point(200, 11);
+
+                        Label l2 = new Label();
+                        l2.Text = "Name";
+                        l2.Location = new Point(6, 48);
+                        l2.AutoSize = true;
+                        TextBox tb1 = new TextBox();
+                        tb1.Size = new Size(133, 21);
+                        tb1.Location = new Point(60, 46);
+                        tb1.MaxLength = 255;
+                        tb1.Text = ((ProvinceDateEntry.Revolt)(entry.Value)).Name;
+                        tb1.TextChanged += ChangeRevoltName;
+
+                        Label l3 = new Label();
+                        l3.Text = "Leader";
+                        l3.Location = new Point(6, 72);
+                        l3.AutoSize = true;
+                        TextBox tb2 = new TextBox();
+                        tb2.Size = new Size(133, 21);
+                        tb2.Location = new Point(60, 70);
+                        tb2.MaxLength = 255;
+                        tb2.Text = ((ProvinceDateEntry.Revolt)(entry.Value)).Leader;
+                        tb2.TextChanged += ChangeRevoltLeader;
+
+                        Label l4 = new Label();
+                        l4.Text = "Size";
+                        l4.AutoSize = true;
+                        l4.Location = new Point(6, 94);
+                        NumericUpDown nm1 = new NumericUpDown();
+                        nm1.Size = new Size(30, 21);
+                        nm1.Location = new Point(60, 92);
+                        nm1.Minimum = 0;
+                        nm1.Maximum = 100;
+                        nm1.Value = ((ProvinceDateEntry.Revolt)(entry.Value)).Size;
+                        nm1.ValueChanged += ChangeRevoltSize;
+
+                        gb.Controls.Add(l1);
+                        gb.Controls.Add(cb);
+                        gb.Controls.Add(l2);
+                        gb.Controls.Add(tb1);
+                        gb.Controls.Add(l3);
+                        gb.Controls.Add(tb2);
+                        gb.Controls.Add(l4);
+                        gb.Controls.Add(nm1);
+                    }
+                    break;
+                case Province.Variable.Culture:
+                    {
+                        ComboBox cb = new ComboBox();
+                        cb.Items.AddRange(Culture.Cultures.ToArray());
+                        cb.Size = new Size(133, 21);
+                        cb.Location = new Point(6, 19);
+                        cb.SelectedItem = entry.Value;
+                        cb.SelectedValueChanged += ChangeValueInDateEntryCB;
+                        cb.DropDownStyle = ComboBoxStyle.DropDownList;
+                        remove.Location = new Point(144, 11);
+                        gb.Controls.Add(cb);
+                    }
+                    break;
+                case Province.Variable.Religion:
+                    {
+                        ComboBox cb = new ComboBox();
+                        cb.Items.AddRange(Religion.Religions.ToArray());
+                        cb.Size = new Size(133, 21);
+                        cb.Location = new Point(6, 19);
+                        cb.SelectedItem = entry.Value;
+                        cb.SelectedValueChanged += ChangeValueInDateEntryCB;
+                        cb.DropDownStyle = ComboBoxStyle.DropDownList;
+                        remove.Location = new Point(144, 11);
+                        gb.Controls.Add(cb);
+                    }
+                    break;
+                case Province.Variable.HRE:
+                    {
+                        CheckBox cb = new CheckBox();
+                        cb.Text = "In HRE";
+                        cb.AutoSize = true;
+                        cb.Location = new Point(6, 19);
+                        cb.Checked = (bool)entry.Value;
+                        cb.CheckedChanged += ChangeValueInDateEntryChk;
+                        remove.Location = new Point(144, 11);
+                        gb.Controls.Add(cb);
+                    }
+                    break;
+
+                case Province.Variable.CoresRemove:
+                case Province.Variable.CoresAdd:
+                case Province.Variable.ClaimsAdd:
+                case Province.Variable.ClaimsRemove:
+                    {
+                        ComboBox cb = new ComboBox();
+                        cb.Items.AddRange(GlobalVariables.Countries.ConvertAll(x => x.Tag).ToArray());
+                        cb.Size = new Size(133, 21);
+                        cb.Location = new Point(6, 19);
+                        cb.SelectedItem = entry.Value;
+                        cb.SelectedValueChanged += ChangeValueInDateEntryCB;
+                        cb.DropDownStyle = ComboBoxStyle.DropDownList;
+                        remove.Location = new Point(144, 11);
+                        gb.Controls.Add(cb);
+                    }
+                    break;
+
+                case Province.Variable.DiscoveredByAdd:
+                case Province.Variable.DiscoveredByRemove:
+                    {
+                        ComboBox cb = new ComboBox();
+                        cb.Items.AddRange(GlobalVariables.TechGroups.ToArray());
+                        cb.Size = new Size(133, 21);
+                        cb.Location = new Point(6, 19);
+                        cb.SelectedItem = entry.Value;
+                        cb.SelectedValueChanged += ChangeValueInDateEntryCB;
+                        cb.DropDownStyle = ComboBoxStyle.DropDownList;
+                        remove.Location = new Point(144, 11);
+                        gb.Controls.Add(cb);
+                    }
+                    break;
+                case Province.Variable.Controller:
+                case Province.Variable.OwnerCountry:
+                    {
+                        ComboBox cb = new ComboBox();
+                        cb.Items.AddRange(GlobalVariables.Countries.ToArray());
+                        cb.Size = new Size(133, 21);
+                        cb.Location = new Point(6, 19);
+                        cb.SelectedItem = entry.Value;
+                        cb.SelectedValueChanged += ChangeValueInDateEntryCB;
+                        cb.DropDownStyle = ComboBoxStyle.DropDownList;
+                        remove.Location = new Point(144, 11);
+                        gb.Controls.Add(cb);
+                    }
+                    break;
+
+                case Province.Variable.Tax:
+                case Province.Variable.Production:
+                case Province.Variable.Manpower:
+                case Province.Variable.CenterOfTrade:
+                    {
+                       
+                        NumericUpDown nud = new NumericUpDown();
+                        nud.Minimum = 0;
+                        nud.Maximum = int.MaxValue;
+                        nud.Size = new Size(68, 20);
+                        nud.Location = new Point(6, 19);
+                        nud.Value = (int)entry.Value;
+                        nud.ValueChanged += ChangeValueInDateEntryNum;
+                        remove.Location = new Point(82, 11);
+                        gb.Controls.Add(nud);
+                    }
+                    break;
+
+                case Province.Variable.TradeGood:
+                case Province.Variable.LatentTradeGood:
+                    {
+                        ComboBox cb = new ComboBox();
+                        cb.Items.AddRange(GlobalVariables.TradeGoods.ToArray());
+                        cb.Size = new Size(133, 21);
+                        cb.Location = new Point(6, 19);
+                        cb.SelectedItem = entry.Value;
+                        cb.SelectedValueChanged += ChangeValueInDateEntryCB;
+                        cb.DropDownStyle = ComboBoxStyle.DropDownList;
+                        remove.Location = new Point(144, 11);
+                        gb.Controls.Add(cb);
+                    }
+                    break;
+
+                case Province.Variable.Capital:
+                    {
+                        TextBox tb = new TextBox();
+                        tb.Size = new Size(133, 21);
+                        tb.Location = new Point(6, 19);
+                        tb.Text = (string)entry.Value;
+                        tb.TextChanged += ChangeValueInDateEntryTex;
+                        remove.Location = new Point(144, 11);
+                        gb.Controls.Add(tb);
+                    }
+                    break;
+
+                case Province.Variable.BuildingAdd:
+                case Province.Variable.BuildingRemove:
+                    {
+                        ComboBox cb = new ComboBox();
+                        cb.Items.AddRange(GlobalVariables.Buildings.ToArray());
+                        cb.Size = new Size(133, 21);
+                        cb.Location = new Point(6, 19);
+                        cb.SelectedItem = entry.Value;
+                        cb.SelectedValueChanged += ChangeValueInDateEntryCB;
+                        cb.DropDownStyle = ComboBoxStyle.DropDownList;
+                        remove.Location = new Point(144, 11);
+                        gb.Controls.Add(cb);
+                    }
+                    break;
+            }
+            return gb;
+        }
+        public GroupBox AddNewValueChangeInDateEntry()
+        {
+            GroupBox gb = new GroupBox();
+            gb.Size = new Size(192, 46);
+            gb.Text = "Add new";
+
+            ComboBox cb = new ComboBox();
+            gb.Controls.Add(cb);
+            cb.Location = new Point(6,16);         
+            cb.DropDownStyle = ComboBoxStyle.DropDownList;
+            cb.Size = new Size(133,21);
+           
+            cb.Items.AddRange(new string[] { "Tax", "Production", "Manpower", "Trade good",
+            "Latent trade good", "Add building", "Remove building", "Capital name", "Center of trade",
+            "Add claims", "Remove claims", "Controller", "Add cores", "Remove cores", "Culture",
+            "Add Discovered by", /*"Remove Discovered by",*/ "HRE", "Owner", "Religion", "Revolt" });
+            Button bt = new Button();
+            gb.Controls.Add(bt);
+            bt.Text = "Add";
+            bt.Size = new Size(42, 23);
+            bt.Tag = cb;
+            bt.Location = new Point(143, 14);
+            bt.Click += AddNewDateEntryClick;
+            return gb;
+        }
+
+        public void AddNewDateEntryClick(object sender, EventArgs e)
+        {
+            if (SelectedDateEntry == null)
+                return;
+            Button b = (Button)sender;
+            ComboBox cb = (ComboBox)b.Tag;
+            ProvinceDateEntry.Entry en = null;
+            switch (cb.SelectedItem)
+            {
+                case "Tax":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.Tax, 1);
+                    break;
+                case "Production":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.Production, 1);
+                    break;
+                case "Manpower":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.Manpower, 1);
+                    break;
+                case "Trade good":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.TradeGood, GlobalVariables.TradeGoods[0]);
+                    break;
+                case "Latent trade good":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.LatentTradeGood, GlobalVariables.TradeGoods[0]);
+                    break;
+                case "Add building":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.BuildingAdd, GlobalVariables.Buildings[0]);
+                    break;
+                case "Remove building":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.BuildingRemove, GlobalVariables.Buildings[0]);
+                    break;
+                case "Capital name":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.Capital, "");
+                    break;
+                case "Center of trade":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.CenterOfTrade, 0);
+                    break;
+                case "Add claims":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.ClaimsAdd, "");
+                    break;
+                case "Remove claims":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.ClaimsRemove, "");
+                    break;
+                case "Controller":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.Controller, SelectedDateEntry.GetParentProvince().Controller);
+                    break;
+                case "Add cores":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.CoresAdd, "");
+                    break;
+                case "Remove cores":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.CoresRemove, "");
+                    break;
+                case "Culture":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.Culture, "");
+                    break;
+                case "Add Discovered by":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.DiscoveredByAdd, "");
+                    break;
+                case "HRE":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.HRE, false);
+                    break;
+                case "Owner":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.OwnerCountry, SelectedDateEntry.GetParentProvince().OwnerCountry);
+                    break;
+                case "Religion":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.Religion, Religion.Religions[0]);
+                    break;
+                case "Revolt":
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.Revolt, null);
+                    break;                   
+            }
+            if(en != null)
+                AddOneDateEntryToPanel(en);
+        }
+
+        public void AddOneDateEntryToPanel(ProvinceDateEntry.Entry en)
+        {
+            DateEntryFlowLayoutPanel.Controls.RemoveAt(DateEntryFlowLayoutPanel.Controls.Count - 1);
+            DateEntryFlowLayoutPanel.Controls.Add(CreateDateEntryControl(en));
+            DateEntryFlowLayoutPanel.Controls.Add(AddNewValueChangeInDateEntry());
+        }
+
+       
+
+        public void UpdateDateEntriesPanel()
+        {
+            if (SelectedDateEntry != null)
+            {
+                DateEntryFlowLayoutPanel.Controls.Clear();
+                foreach (ProvinceDateEntry.Entry en in SelectedDateEntry.Entries)
+                {
+                    DateEntryFlowLayoutPanel.Controls.Add(CreateDateEntryControl(en));
+                }
+                DateEntryFlowLayoutPanel.Controls.Add(AddNewValueChangeInDateEntry());
+            }
+        }
+
+
+        public void UpdateDateEntriesPage()
+        {
+            DateEntrySelectionBox.Items.Clear();
+            if (GlobalVariables.ClickedProvinces.Count > 0)
+            {
+                DateEntrySelectionBox.Items.AddRange(GlobalVariables.ClickedProvinces[0].DateEntries.ToArray());
+                DateEntrySelectionBox.Sorted = true;
+                UpdateDateEntriesPanel();
+            }
+            //TODO
+        }
+
         public void UpdateProvincePanel()
         {
             //TODO
@@ -474,7 +998,6 @@ namespace Eu4ModEditor
             ChangeValueInternally(ProvinceManpowerNumeric, GlobalVariables.ClickedProvinces[0].Manpower);
 
             ChangeValueInternally(HRECheckbox, GlobalVariables.ClickedProvinces[0].HRE);
-            ChangeValueInternally(FortCheckbox, GlobalVariables.ClickedProvinces[0].Fort);
             ChangeValueInternally(CenterOfTradeNumeric, GlobalVariables.ClickedProvinces[0].CenterOfTrade);
 
             // CountryBox.SelectedItem = GlobalVariables.ClickedProvinces[0].OwnerCountry;
@@ -485,6 +1008,8 @@ namespace Eu4ModEditor
                 UpdateAreaAndRegionPage();
             else if (ProvinceTabControl.SelectedTab == LocalisationPage)
                 UpdateProvinceLocalisationPage();
+            else if (ProvinceTabControl.SelectedTab == DateEntriesPage)
+                UpdateDateEntriesPage();
 
         }
         public void UpdateChangesTab()
@@ -731,7 +1256,7 @@ namespace Eu4ModEditor
 
                 GroupBox gb = new GroupBox();
                 gb.Text = name;
-                gb.Size = new Size(507, 57);
+                gb.Size = new Size(507, 77);
                 SaveFilesPanel.Controls.Add(gb);
 
                 Label pathl = new Label();
@@ -754,7 +1279,7 @@ namespace Eu4ModEditor
                 }
 
                 Button save = new Button();
-                save.Location = new Point(303, 10);
+                save.Location = new Point(10, 50);
                 save.Text = "Save";
                 save.Size = new Size(75, 23);
                 save.Tag = GlobalVariables.Saves.IndexOf(obj);
@@ -762,7 +1287,7 @@ namespace Eu4ModEditor
                 gb.Controls.Add(save);
 
                 Button load = new Button();
-                load.Location = new Point(384, 10);
+                load.Location = new Point(100, 50);
                 load.Text = "Load again";
                 load.Size = new Size(115, 23);
                 load.Tag = GlobalVariables.Saves.IndexOf(obj);
@@ -770,6 +1295,34 @@ namespace Eu4ModEditor
                 gb.Controls.Add(load);
 
 
+                (string, object, int) savingOption;
+                savingOption.Item1 = path;
+                savingOption.Item2 = obj;
+                savingOption.Item3 = 0;
+
+                Button compare = new Button();
+                compare.Location = new Point(240, 50);
+                compare.Text = "Compare";
+                compare.Size = new Size(80, 23);
+                compare.Tag = savingOption;
+                compare.Click += Comapre;
+                gb.Controls.Add(compare);
+
+                if (path2 != "")
+                {
+                    (string, object, int) savingOptionS;
+                    savingOptionS.Item1 = path2;
+                    savingOptionS.Item2 = obj;
+                    savingOptionS.Item3 = 1;
+
+                    Button compare2 = new Button();
+                    compare2.Location = new Point(240, 50);
+                    compare2.Text = "Compare 2";
+                    compare2.Size = new Size(80, 23);
+                    compare2.Tag = savingOptionS;
+                    compare2.Click += Comapre;
+                    gb.Controls.Add(compare);
+                }
             }
         }
         public void UpdateDiscoveredBy()
@@ -1753,7 +2306,7 @@ namespace Eu4ModEditor
             {
                 if (vc.Object is Province)
                 {
-                    (vc.Object as Province).Variables[vc.VariableName] = vc.PreviousValue;
+                    (vc.Object as Province).Variables[vc.ProvinceVariable] = vc.PreviousValue;
                 }
                 else if (vc.Object is Country)
                 {
@@ -1968,8 +2521,12 @@ namespace Eu4ModEditor
         }
         private void OpenProvinceFileButton_Click(object sender, EventArgs e)
         {
-            if (GlobalVariables.ClickedProvinces[0] != null)
-                Process.Start(GlobalVariables.ClickedProvinces[0].HistoryFile.Path);
+            if (GlobalVariables.ClickedProvinces.Any())
+            {
+                string path = GlobalVariables.ClickedProvinces[0]?.HistoryFile?.Path ?? "";
+                if(path != "")
+                    Process.Start(path);
+            }
         }
         private void ReloadProvinceFromFileButton_Click(object sender, EventArgs e)
         {
@@ -2166,10 +2723,15 @@ namespace Eu4ModEditor
         }
         #endregion
         #region Value Changed Handlers
+
+        decimal TaxNumericPreviousValue = -1;
         private void ProvinceTaxNumeric_ValueChanged(object sender, EventArgs e)
         {
             if (GlobalVariables.InternalChanges)
+            {
+                TaxNumericPreviousValue = ProvinceTaxNumeric.Value;
                 return;
+            }
             if (GlobalVariables.ClickedProvinces.Any())
             {
                 foreach (Province p in GlobalVariables.ClickedProvinces)
@@ -2187,10 +2749,14 @@ namespace Eu4ModEditor
             if (Tabs.SelectedTab == TradeGoodsTab)
                 RefreshTradeGoodsTab();
         }
+        decimal ProductionNumericPreviousValue = -1;
         private void ProvinceProductionNumeric_ValueChanged(object sender, EventArgs e)
         {
             if (GlobalVariables.InternalChanges)
+            {
+                ProductionNumericPreviousValue = ProvinceProductionNumeric.Value;
                 return;
+            }
             if (GlobalVariables.ClickedProvinces.Any())
             {
                 foreach (Province p in GlobalVariables.ClickedProvinces)
@@ -2209,10 +2775,14 @@ namespace Eu4ModEditor
                 RefreshTradeGoodsTab();
 
         }
+        decimal ManpowerNumericPreviousValue = -1;
         private void ProvinceManpowerNumeric_ValueChanged(object sender, EventArgs e)
         {
             if (GlobalVariables.InternalChanges)
+            {
+                ManpowerNumericPreviousValue = ProvinceManpowerNumeric.Value;
                 return;
+            }
             if (GlobalVariables.ClickedProvinces.Any())
             {
                 foreach (Province p in GlobalVariables.ClickedProvinces)
@@ -2231,6 +2801,9 @@ namespace Eu4ModEditor
                 RefreshTradeGoodsTab();
 
         }
+
+
+
         private void TradeGoodBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (GlobalVariables.InternalChanges)
@@ -2753,6 +3326,8 @@ namespace Eu4ModEditor
         }
         private void MacroWithFort_Click(object sender, EventArgs e)
         {
+            return;
+            /*
             List<Province> ToSelect = new List<Province>();
             foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
             {
@@ -2762,9 +3337,12 @@ namespace Eu4ModEditor
                 }
             }
             PerformMacroFunc(ToSelect);
+            */
         }
         private void MacroWithoutFort_Click(object sender, EventArgs e)
         {
+            return;
+            /*
             List<Province> ToSelect = new List<Province>();
             foreach (Province p in GlobalVariables.Provinces.Where(x => !x.Wasteland && !x.Lake && !x.Sea))
             {
@@ -2774,6 +3352,7 @@ namespace Eu4ModEditor
                 }
             }
             PerformMacroFunc(ToSelect);
+            */
         }
         private void MacroInsideFort_Click(object sender, EventArgs e)
         {
@@ -3173,18 +3752,6 @@ namespace Eu4ModEditor
                         UpdateMap();
                     break;
 
-                case ChangeProvinceMode.Fort:
-                    foreach (Province p in ApplyTo)
-                    {
-                        p.Fort = (bool)change;
-                    }
-                    MapManagement.UpdateMap(ApplyTo, MapManagement.UpdateMapOptions.Fort);
-                    if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Fort)
-                        UpdateMap();
-                    UpdateProvincePanel();
-                    UpdateBuildings();
-                    break;
-
                 case ChangeProvinceMode.HRE:
                     foreach (Province p in ApplyTo)
                     {
@@ -3225,14 +3792,14 @@ namespace Eu4ModEditor
                     {
                         foreach (Province p in ApplyTo)
                         {
-                            p.RemoveDiscoveredBy(Tech);
+                            p.RemoveDiscoveredBy(Tech, GlobalVariables.CurrentDate);
                         }
                     }
                     else
                     {
                         foreach (Province p in ApplyTo)
                         {
-                            p.AddDiscoveredBy(Tech);
+                            p.AddDiscoveredBy(Tech, GlobalVariables.CurrentDate);
                         }
                     }
 
@@ -3245,7 +3812,7 @@ namespace Eu4ModEditor
                     foreach (Province p in ApplyTo)
                     {
                         if (p.OwnerCountry != null)
-                            p.AddDiscoveredBy(p.OwnerCountry.TechnologyGroup);
+                            p.AddDiscoveredBy(p.OwnerCountry.TechnologyGroup, GlobalVariables.CurrentDate);
                     }
                     if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.DiscoveredBy)
                         UpdateMap();
@@ -3275,8 +3842,9 @@ namespace Eu4ModEditor
                         {
                             if (p.OwnerCountry != null)
                             {
-                                p.OwnerCountry.Provinces.Remove(p);
-                                p.RemoveCore(p.OwnerCountry.Tag);
+                                if(DateTime.Compare(GlobalVariables.StartDate, GlobalVariables.CurrentDate) == 0)
+                                    p.OwnerCountry.Provinces.Remove(p);
+                                p.RemoveCore(p.OwnerCountry.Tag, GlobalVariables.CurrentDate);
                             }
                             p.OwnerCountry = null;
                             p.Controller = null;
@@ -3285,11 +3853,12 @@ namespace Eu4ModEditor
                         {
                             if (p.OwnerCountry != null)
                             {
-                                p.OwnerCountry.Provinces.Remove(p);
-                                p.RemoveCore(p.OwnerCountry.Tag);
+                                if (DateTime.Compare(GlobalVariables.StartDate, GlobalVariables.CurrentDate) == 0)
+                                    p.OwnerCountry.Provinces.Remove(p);
+                                p.RemoveCore(p.OwnerCountry.Tag, GlobalVariables.CurrentDate);
                             }
                             p.OwnerCountry = (Country)change;
-                            p.AddCore(p.OwnerCountry.Tag);
+                            p.AddCore(p.OwnerCountry.Tag, GlobalVariables.CurrentDate);
                             p.Controller = p.OwnerCountry;
                         }
                     }
@@ -3322,14 +3891,14 @@ namespace Eu4ModEditor
                     {
                         foreach (Province p in ApplyTo)
                         {
-                            p.RemoveBuilding((Building)change);
+                            p.RemoveBuilding((Building)change, GlobalVariables.CurrentDate);
                         }
                     }
                     else
                     {
                         foreach (Province p in ApplyTo)
                         {
-                            p.AddBuilding((Building)change);
+                            p.AddBuilding((Building)change, GlobalVariables.CurrentDate);
                         }
                     }
                     break;
@@ -3338,14 +3907,14 @@ namespace Eu4ModEditor
                     {
                         foreach (Province p in ApplyTo)
                         {
-                            p.RemoveCore((string)change);
+                            p.RemoveCore((string)change, GlobalVariables.CurrentDate);
                         }
                     }
                     else
                     {
                         foreach (Province p in ApplyTo)
                         {
-                            p.AddCore((string)change);
+                            p.AddCore((string)change, GlobalVariables.CurrentDate);
                         }
                     }
                     break;
@@ -3354,14 +3923,14 @@ namespace Eu4ModEditor
                     {
                         foreach (Province p in ApplyTo)
                         {
-                            p.RemoveClaim((string)change);
+                            p.RemoveClaim((string)change, GlobalVariables.CurrentDate);
                         }
                     }
                     else
                     {
                         foreach (Province p in ApplyTo)
                         {
-                            p.AddClaim((string)change);
+                            p.AddClaim((string)change, GlobalVariables.CurrentDate);
                         }
                     }
                     break;
@@ -3369,7 +3938,7 @@ namespace Eu4ModEditor
                     foreach (Province p in ApplyTo)
                     {
                         if (p.OwnerCountry != null)
-                            p.AddCore(p.OwnerCountry.Tag);
+                            p.AddCore(p.OwnerCountry.Tag, GlobalVariables.CurrentDate);
                     }
                     break;
                 case ChangeProvinceMode.Superregion:
@@ -3582,20 +4151,20 @@ namespace Eu4ModEditor
             if (vc.Object is Province)
             {
                 Province revProv = (Province)vc.Object;
-
+                //TODO REPLACE WITH ENUMS
                 switch (vc.VariableName)
                 {
                     case "Core":
                         if (vc.PreviousValue == null)
-                            (revProv.Variables["Cores"] as List<string>).Remove(vc.CurrentValue.ToString());
+                            (revProv.Variables[Province.Variable.Cores] as List<string>).Remove(vc.CurrentValue.ToString());
                         else if (vc.CurrentValue == null)
-                            (revProv.Variables["Cores"] as List<string>).Add(vc.PreviousValue.ToString());
+                            (revProv.Variables[Province.Variable.Cores] as List<string>).Add(vc.PreviousValue.ToString());
                         break;
                     case "DiscoveredBy":
                         if (vc.PreviousValue == null)
-                            (revProv.Variables["DiscoveredBy"] as List<string>).Remove(vc.CurrentValue.ToString());
+                            (revProv.Variables[Province.Variable.DiscoveredBy] as List<string>).Remove(vc.CurrentValue.ToString());
                         else if (vc.CurrentValue == null)
-                            (revProv.Variables["DiscoveredBy"] as List<string>).Add(vc.PreviousValue.ToString());
+                            (revProv.Variables[Province.Variable.DiscoveredBy] as List<string>).Add(vc.PreviousValue.ToString());
 
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.DiscoveredBy)
                         {
@@ -3605,16 +4174,16 @@ namespace Eu4ModEditor
                         break;
                     case "Buildings":
                         if (vc.PreviousValue == null)
-                            (revProv.Variables["Buildings"] as List<Building>).Remove(vc.CurrentValue as Building);
+                            (revProv.Variables[Province.Variable.Buildings] as List<Building>).Remove(vc.CurrentValue as Building);
                         else if (vc.CurrentValue == null)
-                            (revProv.Variables["Buildings"] as List<Building>).Add(vc.PreviousValue as Building);
+                            (revProv.Variables[Province.Variable.Buildings] as List<Building>).Add(vc.PreviousValue as Building);
                         break;
                     case "Claims":
 
                         if (vc.PreviousValue == null)
-                            (revProv.Variables["Claims"] as List<string>).Remove(vc.CurrentValue.ToString());
+                            (revProv.Variables[Province.Variable.Claims] as List<string>).Remove(vc.CurrentValue.ToString());
                         else if (vc.CurrentValue == null)
-                            (revProv.Variables["Claims"] as List<string>).Add(vc.PreviousValue.ToString());
+                            (revProv.Variables[Province.Variable.Claims] as List<string>).Add(vc.PreviousValue.ToString());
                         break;
 
                     case "OwnerCountry":
@@ -3626,10 +4195,10 @@ namespace Eu4ModEditor
                                 (vc.PreviousValue as Country).Provinces.Add(revProv);
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Political);
                         }
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.OwnerCountry] = vc.PreviousValue;
                         break;
                     case "Tax":
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.Tax] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Development)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Development);
@@ -3637,7 +4206,7 @@ namespace Eu4ModEditor
                         }
                         break;
                     case "Production":
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.Production] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Development)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Development);
@@ -3645,7 +4214,7 @@ namespace Eu4ModEditor
                         }
                         break;
                     case "Manpower":
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.Manpower] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Development)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Development);
@@ -3654,7 +4223,7 @@ namespace Eu4ModEditor
 
                         break;
                     case "CenterOfTrade":
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.CenterOfTrade] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.TradeNode);
@@ -3662,7 +4231,7 @@ namespace Eu4ModEditor
                         }
                         break;
                     case "HRE":
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.HRE] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.HRE)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.HRE);
@@ -3670,15 +4239,16 @@ namespace Eu4ModEditor
                         }
                         break;
                     case "Fort":
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        /*revProv.Variables[vc.VariableName] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Fort)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Fort);
                             UpdateMap();
                         }
+                        */
                         break;
                     case "TradeGood":
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.TradeGood] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeGood)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.TradeGood);
@@ -3687,7 +4257,7 @@ namespace Eu4ModEditor
 
                         break;
                     case "LatentTradeGood":
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.LatentTradeGood] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeGood)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.TradeGood);
@@ -3701,7 +4271,7 @@ namespace Eu4ModEditor
 
                         if (vc.PreviousValue != null)
                             (vc.PreviousValue as Tradenode).Provinces.Add(revProv);
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.TradeNode] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeNode)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.TradeNode);
@@ -3710,7 +4280,7 @@ namespace Eu4ModEditor
 
                         break;
                     case "Religion":
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.Religion] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Religion)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Religion);
@@ -3719,7 +4289,7 @@ namespace Eu4ModEditor
 
                         break;
                     case "Culture":
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.Culture] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Culture)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Culture);
@@ -3732,7 +4302,7 @@ namespace Eu4ModEditor
                             revProv.Area.Provinces.Remove(revProv);
                         if (vc.PreviousValue != null)
                             (vc.PreviousValue as Area).Provinces.Add(revProv);
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.Area] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Area)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Area);
@@ -3745,7 +4315,7 @@ namespace Eu4ModEditor
                             revProv.Continent.Provinces.Remove(revProv);
                         if (vc.PreviousValue != null)
                             (vc.PreviousValue as Continent).Provinces.Add(revProv);
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.Continent] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Continent)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Continent);
@@ -3758,7 +4328,7 @@ namespace Eu4ModEditor
                             revProv.TradeCompany.Provinces.Remove(revProv);
                         if (vc.PreviousValue != null)
                             (vc.PreviousValue as TradeCompany).Provinces.Add(revProv);
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.TradeCompany] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.TradeCompany)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.TradeCompany);
@@ -3767,7 +4337,7 @@ namespace Eu4ModEditor
 
                         break;
                     case "Winter":
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.Winter] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Winter)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Winter);
@@ -3776,7 +4346,7 @@ namespace Eu4ModEditor
 
                         break;
                     case "Climate":
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.Climate] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Climate)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Climate);
@@ -3785,7 +4355,7 @@ namespace Eu4ModEditor
 
                         break;
                     case "Terrain":
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.Terrain] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Terrain)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Terrain);
@@ -3794,7 +4364,7 @@ namespace Eu4ModEditor
 
                         break;
                     case "Impassable":
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.Impassable] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Climate)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Climate);
@@ -3803,7 +4373,7 @@ namespace Eu4ModEditor
 
                         break;
                     case "Monsoon":
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+                        revProv.Variables[Province.Variable.Monsoon] = vc.PreviousValue;
                         if (GlobalVariables.mapmode == MapManagement.UpdateMapOptions.Winter)
                         {
                             MapManagement.UpdateMap(revProv, MapManagement.UpdateMapOptions.Winter);
@@ -3812,7 +4382,10 @@ namespace Eu4ModEditor
                         break;
 
                     default:
-                        revProv.Variables[vc.VariableName] = vc.PreviousValue;
+
+                        //TODO
+                        //FIND VARIABLE BY STRING
+                        revProv.Variables[vc.ProvinceVariable] = vc.PreviousValue;
                         break;
                 }
             }
@@ -3846,8 +4419,35 @@ namespace Eu4ModEditor
             Saving.LoadObject(GlobalVariables.Saves[(int)(sender as Control).Tag]);
             UpdateSavesTab();
         }
+        public void Comapre(object sender, EventArgs e)
+        {
+            (string, object, int) savingOption = ((string, object, int))(sender as Control).Tag;
+            string s = File.ReadAllText(savingOption.Item1, Encoding.GetEncoding(1252));
+            NodeFile nf = new NodeFile(savingOption.Item1);
+            Saving.WriteToNodeFile(nf, savingOption.Item2, savingOption.Item3);
+            string s2 = Node.NodeToText(nf.MainNode);
 
+            CompareResult result = new CompareResult();
+            CompareOriginalEdited coe = new CompareOriginalEdited(s, s2, result);
+            coe.ShowDialog();
+            if(result.SaveEdited)
+            {
+                if(savingOption.Item2 is Country) {
+                    MessageBox.Show("Saving country files in the editor is not yet supported!");
+                }
+                else
+                {
 
+                    Saving.SaveObject(savingOption.Item2, staticText: result.EditedText);
+                }
+               
+            }
+        }
+        public class CompareResult
+        {
+            public bool SaveEdited;
+            public string EditedText;
+        }
 
         #endregion
 
@@ -4128,20 +4728,20 @@ namespace Eu4ModEditor
                                                 GlobalVariables.Changes.Add(new VariableChange(p, "Controller tag", oldtag, newtag));
                                             else if (p.GetDiscoveredBy().Contains(GlobalVariables.SelectedCountry.Tag))
                                             {
-                                                p.RemoveDiscoveredBy(oldtag, true);
-                                                p.AddDiscoveredBy(newtag, true);
+                                                p.RemoveDiscoveredBy(oldtag, GlobalVariables.CurrentDate, true);
+                                                p.AddDiscoveredBy(newtag, GlobalVariables.CurrentDate, true);
                                                 GlobalVariables.Changes.Add(new VariableChange(p, "Discovered by tag", oldtag, newtag));
                                             }
                                             else if (p.GetCores().Contains(GlobalVariables.SelectedCountry.Tag))
                                             {
-                                                p.RemoveCore(oldtag, true);
-                                                p.AddCore(newtag, true);
+                                                p.RemoveCore(oldtag, GlobalVariables.CurrentDate, true);
+                                                p.AddCore(newtag, GlobalVariables.CurrentDate, true);
                                                 GlobalVariables.Changes.Add(new VariableChange(p, "Core tag", oldtag, newtag));
                                             }
                                             else if (p.GetClaims().Contains(GlobalVariables.SelectedCountry.Tag))
                                             {
-                                                p.RemoveClaim(oldtag, true);
-                                                p.AddClaim(newtag, true);
+                                                p.RemoveClaim(oldtag, GlobalVariables.CurrentDate, true);
+                                                p.AddClaim(newtag, GlobalVariables.CurrentDate, true);
                                                 GlobalVariables.Changes.Add(new VariableChange(p, "Claim tag", oldtag, newtag));
                                             }
                                         }
@@ -4625,6 +5225,59 @@ namespace Eu4ModEditor
                 if (NamesTabs.SelectedTab == MonarchNamesTab)
                     UpdateMonarchNames();
             }
+        }
+
+        private void RemoveDateEntryButton_Click(object sender, EventArgs e)
+        {
+            if(SelectedDateEntry != null)
+            {
+                SelectedDateEntry.GetParentProvince().DateEntries.Remove(SelectedDateEntry);
+                UpdateDateEntriesPage();
+            }
+        }
+
+        private void DateEntryAddButton_Click(object sender, EventArgs e)
+        {
+            if (!GlobalVariables.ClickedProvinces.Any())
+            {
+                MessageBox.Show("No province");
+                return;
+            }
+                
+            try
+            {
+                Province p = GlobalVariables.ClickedProvinces[0];
+                string[] datesplit = DateEntryAddBox.Text.Split('.');
+                if(datesplit.Count() > 2)
+                {
+                    DateTime dt = new DateTime(int.Parse(datesplit[0]), int.Parse(datesplit[1]), int.Parse(datesplit[2]));
+                    if (!p.DateEntries.Any(x=>DateTime.Compare(dt, x.Date) == 0))
+                    {
+                        ProvinceDateEntry pde = new ProvinceDateEntry(dt, p);
+                        UpdateDateEntriesPage();
+                        DateEntryAddBox.Text = "";
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Invalid date! It should be Year.Month.Day");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Invalid date! It should be Year.Month.Day");
+            }
+        }
+
+        private void DateEntrySelectionBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SelectedDateEntry = (ProvinceDateEntry)DateEntrySelectionBox.SelectedItem;
+            UpdateDateEntriesPanel();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            throw new Exception();
         }
     }
 }

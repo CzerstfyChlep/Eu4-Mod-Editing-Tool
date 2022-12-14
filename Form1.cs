@@ -8,6 +8,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace Eu4ModEditor
 {
@@ -18,6 +19,7 @@ namespace Eu4ModEditor
         public static TabsSeparate TabsSeparateWindow;
         public static MapmodesWindow MapmodesSeparateWindow;
         public static DateWindow DateSeparateWindow;
+        public static Options OptionsWindow;
 
         #region Graphical
         public static Graphics graphics;
@@ -49,6 +51,88 @@ namespace Eu4ModEditor
             //base.OnPaint(e);
         }
 
+
+        public void SaveOptionsToFile()
+        {
+            if (!File.Exists("options.txt"))
+                File.Create("options.txt");
+            NodeFile options = new NodeFile("options.txt");
+
+            options.MainNode.ChangeVariable("autosaving", GlobalVariables.Options.Autosaving.ToString(), true);
+            options.MainNode.ChangeVariable("autosaving_interval", GlobalVariables.Options.AutosavingInterval.ToString(), true);
+            if (GlobalVariables.Options.AutosavingPath != "")
+                options.MainNode.ChangeVariable("autosaving_path", GlobalVariables.Options.AutosavingPath, true);
+            else
+                options.MainNode.RemoveVariable(options.MainNode.Variables.Find(x => x.Name == "autosaving_path"));
+            options.MainNode.ChangeVariable("autosaving_on_exit", GlobalVariables.Options.AutosavingOnExit.ToString(), true);
+            options.MainNode.ChangeVariable("save_on_crash", GlobalVariables.Options.SaveCrash.ToString(), true);
+            if(GlobalVariables.Options.SaveCrashPath != "")
+                options.MainNode.ChangeVariable("save_on_crash_path", GlobalVariables.Options.SaveCrashPath, true);
+            else
+                options.MainNode.RemoveVariable(options.MainNode.Variables.Find(x => x.Name == "save_on_crash_path"));
+            options.MainNode.ChangeVariable("custom_province_random", GlobalVariables.Options.RandomProvinceCustom.ToString(), true);
+
+            Node low = new Node("province_low");
+            low.AddPureValue(GlobalVariables.Options.RandomProvinceLowMinimum.ToString());
+            low.AddPureValue(GlobalVariables.Options.RandomProvinceLowAverage.ToString());
+            low.AddPureValue(GlobalVariables.Options.RandomProvinceLowMaximum.ToString());
+
+            Node medium = new Node("province_medium");
+            medium.AddPureValue(GlobalVariables.Options.RandomProvinceMediumMinimum.ToString());
+            medium.AddPureValue(GlobalVariables.Options.RandomProvinceMediumAverage.ToString());
+            medium.AddPureValue(GlobalVariables.Options.RandomProvinceMediumMaximum.ToString());
+
+            Node high = new Node("province_high");
+            high.AddPureValue(GlobalVariables.Options.RandomProvinceHighMinimum.ToString());
+            high.AddPureValue(GlobalVariables.Options.RandomProvinceHighAverage.ToString());
+            high.AddPureValue(GlobalVariables.Options.RandomProvinceHighMaximum.ToString());
+
+            if (options.MainNode.TryGetNode("province_low", out Node lowPR))
+                options.MainNode.ReplaceNode(lowPR, low);
+            else
+                options.MainNode.AddNode(low);
+
+            if (options.MainNode.TryGetNode("province_medium", out Node medPR))
+                options.MainNode.ReplaceNode(medPR, medium);
+            else
+                options.MainNode.AddNode(medium);
+
+            if (options.MainNode.TryGetNode("province_high", out Node highPR))
+                options.MainNode.ReplaceNode(highPR, high);
+            else
+                options.MainNode.AddNode(high);
+
+            options.MainNode.ChangeVariable("same_value_provinces", GlobalVariables.Options.SameValueForAllProvinces.ToString(), true);
+
+            options.SaveFile();
+        }
+
+        public void Autosaving()
+        {
+            while (!GlobalVariables.Exited)
+            {
+                //
+                if (GlobalVariables.Options.Autosaving)
+                {
+                    object[] saves = KeepLocalChanges(MergeLocalChanges());
+                    if (saves.Any())
+                    {
+                        string path = GlobalVariables.Options.AutosavingPath;
+                        if (path == "")
+                            path = Environment.CurrentDirectory;
+                        if (path.LastOrDefault() != '\\')
+                            path += "\\";
+                        path += $@"autosave_{DateTime.Now.Hour}_{DateTime.Now.Minute}_{DateTime.Now.Year}_{DateTime.Now.Month}_{DateTime.Now.Day}";
+                        Directory.CreateDirectory(path);
+                        foreach (object obj in saves)
+                        {
+                            Saving.SaveObject(obj, path);
+                        }
+                    }
+                }
+                Thread.Sleep(GlobalVariables.Options.AutosavingInterval * 60);
+            }
+        }
 
         #region Click Handlers
         void MouseClickHandler(object sender, MouseEventArgs e)
@@ -256,10 +340,108 @@ namespace Eu4ModEditor
 
         #region Important forms stuff
         public static ModEditor form;
-        public void OnExitDo(object sender, EventArgs e)
+
+        public VariableChange[] MergeLocalChanges()
         {
-            GlobalVariables.UpdtGraphicsThread.Abort();
+            List<VariableChange> newList = new List<VariableChange>();
+            foreach (VariableChange change in GlobalVariables.Changes)
+            {
+                if (change.VariableName == "Core" || change.VariableName == "DiscoveredBy" || change.VariableName == "Buildings" || change.VariableName == "Claims")
+                {
+                    newList.Add(change);
+                    continue;
+                }
+                VariableChange nv = newList.Find(x => x.Object == change.Object && x.VariableName == change.VariableName);
+                if (nv != null)
+                {
+                    nv.CurrentValue = change.CurrentValue;
+                }
+                else
+                    newList.Add(change);
+            }
+            newList = newList.Where(x => x.PreviousValue != x.CurrentValue).ToList();
+            return newList.ToArray();
+        }
+
+        public object[] KeepLocalChanges(VariableChange[] vc, bool Update = true)
+        {
+            List<object> saves = new List<object>();
+            foreach (VariableChange change in vc)
+            {
+                switch (change.VariableName)
+                {
+                    case "TradeNode":
+                        {
+                            if (!saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.TradeNode))
+                                saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.TradeNode));
+                        }
+                        break;
+                    case "Area":
+                        {
+                            if (!saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Area))
+                                saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Area));
+                        }
+                        break;
+                    case "Continent":
+                        {
+                            if (!saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Continent))
+                                saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Continent));
+                        }
+                        break;
+                    default:
+                        {
+                            if (!saves.Contains(change.Object))
+                                saves.Add(change.Object);
+                        }
+                        break;
+                }
+            }
+            return saves.ToArray();
+        }
+
+
+        public void OnExitDo(object sender, CancelEventArgs e)
+        {
+
+            if (GlobalVariables.Changes.Any() || GlobalVariables.Saves.Any())
+            {
+                var v = MessageBox.Show("You have unsaved changes. Exit? (If you have Autosaving turned on, it will be saved.)", "Unsaved changes", MessageBoxButtons.YesNo);
+                if (v == DialogResult.No)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+
+            GlobalVariables.Threads.UpdtGraphicsThread.Abort();
+            if(GlobalVariables.Threads.AutoSaveThread.ThreadState == System.Threading.ThreadState.Running)
+                GlobalVariables.Threads.AutoSaveThread.Abort();
             GlobalVariables.Exited = true;
+
+
+            object[] saves = KeepLocalChanges(MergeLocalChanges());
+
+            SaveOptionsToFile();
+
+            if (GlobalVariables.Options.AutosavingOnExit)
+            {
+                if (saves.Any())
+                {
+                    string path = GlobalVariables.Options.AutosavingPath;
+                    if (path == "")
+                        path = Environment.CurrentDirectory;
+                    if (path.LastOrDefault() != '\\')
+                        path += "\\";
+                    path += $@"exit_save_{DateTime.Now.Hour}_{DateTime.Now.Minute}_{DateTime.Now.Year}_{DateTime.Now.Month}_{DateTime.Now.Day}";                 
+                    Directory.CreateDirectory(path);
+                    foreach (object obj in saves)
+                    {
+                        Saving.SaveObject(obj, path);
+                        GlobalVariables.Saves.Remove(obj);
+                    }
+                }
+            }
+
             //TODO
             //Save files to temp?
         }
@@ -493,6 +675,14 @@ namespace Eu4ModEditor
         private void climateToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ChangeMapmode.ChangeMapmodeDirectly(MapManagement.UpdateMapOptions.Climate);
+        }
+
+        private void showOptionsMenuToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (OptionsWindow != null)
+                OptionsWindow.Close();
+            OptionsWindow = new Options();
+            OptionsWindow.Show();
         }
     }
 }
