@@ -12,8 +12,8 @@ namespace Eu4ModEditor
 {
     public partial class CreateCountryForm : Form
     {
-        public string Name = "";
-        public string Tag = "";
+        public string CName = "";
+        public string CTag = "";
         public bool Canceled = false;
         public Color CountryColor = Color.White;
         public CreateCountryForm()

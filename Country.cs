@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-
+using System;
 
 namespace Eu4ModEditor
 {
@@ -31,6 +31,23 @@ namespace Eu4ModEditor
         /// All provinces belonging to a country
         /// </summary>
         public List<Province> Provinces = new List<Province>();
+
+        public List<Province> GetProvincesInCurrentDate()
+        {          
+            if (DateTime.Compare(GlobalVariables.CurrentDate, GlobalVariables.StartDate) == 0)
+                return Provinces;
+            else
+            {
+                List<Province> ToReturn = new List<Province>();
+                foreach (Province p in Provinces)
+                {
+                    if (p.OwnerCountry == this)
+                        ToReturn.Add(p);
+                }
+                return ToReturn;
+            }
+        }
+
         /// <summary>
         /// Capital province of a country
         /// </summary>
@@ -43,13 +60,13 @@ namespace Eu4ModEditor
         {
             get
             {
-                return Variables["Government"] as Government;
+                return Variables[Variable.Government] as Government;
             }
             set
             {
                 if (GlobalVariables.FullyLoaded)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "Government", Variables["Government"], value));
-                Variables["Government"] = value;
+                    GlobalVariables.Changes.Add(new CountryVariableChange(this, Variable.Government, Variables[Variable.Government], value));
+                Variables[Variable.Government] = value;
             }
         }
         /// <summary>
@@ -59,13 +76,13 @@ namespace Eu4ModEditor
         {
             get
             {
-                return Variables["GovernmentReform"] as string;
+                return Variables[Variable.GovernmentReform] as string;
             }
             set
             {
                 if (GlobalVariables.FullyLoaded)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "GovernmentReform", Variables["GovernmentReform"], value));
-                Variables["GovernmentReform"] = value;
+                    GlobalVariables.Changes.Add(new CountryVariableChange(this, Variable.GovernmentReform, Variables[Variable.GovernmentReform], value));
+                Variables[Variable.GovernmentReform] = value;
             }
         }
         /// <summary>
@@ -75,13 +92,13 @@ namespace Eu4ModEditor
         {
             get
             {
-                return (int)Variables["GovernmentRank"];
+                return (int)Variables[Variable.GovernmentRank];
             }
             set
             {
                 if (GlobalVariables.FullyLoaded)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "GovernmentRank", Variables["GovernmentRank"], value));
-                Variables["GovernmentRank"] = value;
+                    GlobalVariables.Changes.Add(new CountryVariableChange(this, Variable.GovernmentRank, Variables[Variable.GovernmentRank], value));
+                Variables[Variable.GovernmentRank] = value;
             }
         }
 
@@ -92,13 +109,13 @@ namespace Eu4ModEditor
         {
             get
             {
-                return Variables["PrimaryCulture"] as Culture;
+                return Variables[Variable.PrimaryCulture] as Culture;
             }
             set
             {
                 if (GlobalVariables.FullyLoaded)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "PrimaryCulture", Variables["PrimaryCulture"], value));
-                Variables["PrimaryCulture"] = value;
+                    GlobalVariables.Changes.Add(new CountryVariableChange(this, Variable.PrimaryCulture, Variables[Variable.PrimaryCulture], value));
+                Variables[Variable.PrimaryCulture] = value;
             }
         }
         /// <summary>
@@ -108,13 +125,13 @@ namespace Eu4ModEditor
         {
             get
             {
-                return Variables["TechnologyGroup"] as string;
+                return Variables[Variable.TechnologyGroup] as string;
             }
             set
             {
                 if (GlobalVariables.FullyLoaded)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "TechnologyGroup", Variables["TechnologyGroup"], value));
-                Variables["TechnologyGroup"] = value;
+                    GlobalVariables.Changes.Add(new CountryVariableChange(this, Variable.TechnologyGroup, Variables[Variable.TechnologyGroup], value));
+                Variables[Variable.TechnologyGroup] = value;
             }
         }
         /// <summary>
@@ -124,13 +141,13 @@ namespace Eu4ModEditor
         {
             get
             {
-                return Variables["Religion"] as Religion;
+                return Variables[Variable.Religion] as Religion;
             }
             set
             {
                 if (GlobalVariables.FullyLoaded)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "Religion", Variables["Religion"], value));
-                Variables["Religion"] = value;
+                    GlobalVariables.Changes.Add(new CountryVariableChange(this, Variable.Religion, Variables[Variable.Religion], value));
+                Variables[Variable.Religion] = value;
             }
         }
 
@@ -175,13 +192,13 @@ namespace Eu4ModEditor
         {
             get
             {
-                return (int)Variables["CapitalID"];
+                return (int)Variables[Variable.CapitalID];
             }
             set
             {
                 if (GlobalVariables.FullyLoaded)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "CapitalID", Variables["CapitalID"], value));
-                Variables["CapitalID"] = value;
+                    GlobalVariables.Changes.Add(new CountryVariableChange(this, Variable.CapitalID, Variables[Variable.CapitalID], value));
+                Variables[Variable.CapitalID] = value;
             }
         }
 
@@ -193,13 +210,13 @@ namespace Eu4ModEditor
         {
             get
             {
-                return (string)Variables["GraphicalCulture"];
+                return (string)Variables[Variable.GraphicalCulture];
             }
             set
             {
                 if (GlobalVariables.FullyLoaded)
-                    GlobalVariables.Changes.Add(new VariableChange(this, "GraphicalCulture", Variables["GraphicalCulture"], value));
-                Variables["GraphicalCulture"] = value;
+                    GlobalVariables.Changes.Add(new CountryVariableChange(this, Variable.GraphicalCulture, Variables[Variable.GraphicalCulture], value));
+                Variables[Variable.GraphicalCulture] = value;
             }
         }
 
@@ -222,18 +239,23 @@ namespace Eu4ModEditor
         /// <summary>
         /// Internal variables.
         /// </summary>
-        public Dictionary<string, object> Variables = new Dictionary<string, object>();
+        public Dictionary<Variable, object> Variables = new Dictionary<Variable, object>();
+
+        public enum Variable
+        {
+            CapitalID = 100, Religion, TechnologyGroup, PrimaryCulture, Government, GovernmentReform, GovernmentRank, GraphicalCulture
+        }
 
         public Country()
         {
-            Variables.Add("CapitalID", 0);
-            Variables.Add("Religion", Religion.NoReligion);
-            Variables.Add("TechnologyGroup", Religion.NoReligion);
-            Variables.Add("PrimaryCulture", Culture.NoCulture);
-            Variables.Add("Government", "");
-            Variables.Add("GovernmentReform", "");
-            Variables.Add("GovernmentRank", 1);
-            Variables.Add("GraphicalCulture", "westerngfx");
+            Variables.Add(Variable.CapitalID, 0);
+            Variables.Add(Variable.Religion, Religion.NoReligion);
+            Variables.Add(Variable.TechnologyGroup, "");
+            Variables.Add(Variable.PrimaryCulture, Culture.NoCulture);
+            Variables.Add(Variable.Government, "");
+            Variables.Add(Variable.GovernmentReform, "");
+            Variables.Add(Variable.GovernmentRank, 1);
+            Variables.Add(Variable.GraphicalCulture, "westerngfx");
         }
 
 

@@ -86,7 +86,7 @@ namespace Eu4ModEditor
         public static void HandleButton(object sender, KeyEventArgs e)
         {
             GlobalVariables.PressedKeys.Add(e.KeyCode.GetHashCode());
-            if (!ModEditor.boxes.Any(x => x.DroppedDown) && !ModEditor.textboxes.Any(x=>x.Focused))
+            if (!TabsSeparate.boxes.Any(x => x.DroppedDown) && !TabsSeparate.textboxes.Any(x=>x.Focused))
             {
                     switch (e.KeyCode)
                     {
@@ -106,7 +106,7 @@ namespace Eu4ModEditor
                             break;
                     }                           
             }
-            else if(!ModEditor.boxes.Any(x => x.DroppedDown) && ModEditor.textboxes.Any(x => x.Focused))
+            else if(!TabsSeparate.boxes.Any(x => x.DroppedDown) && TabsSeparate.textboxes.Any(x => x.Focused))
             {
                 switch (e.KeyCode)
                 {

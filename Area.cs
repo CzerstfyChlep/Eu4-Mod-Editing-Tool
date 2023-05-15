@@ -40,5 +40,10 @@ namespace Eu4ModEditor
         {
             return Name;
         }
+
+        public static bool IsValid(string Name)
+        {
+            return GlobalVariables.Areas.Exists(x=>x.Name == Name);
+        }
     }
 }

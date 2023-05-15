@@ -348,10 +348,19 @@ namespace Eu4ModEditor
                         p.MainStripes = Color.Transparent;
                         p.VerticalStripes = Color.Transparent;
 
-                        if (p.Fort)
+                        int f = p.FortLevel();
+                        if (f > 1 && f < 10)
                         {
-                            p.MainColor = Color.Green;
+                            p.MainColor = Color.FromArgb(0, 55 + 200 / f, 0);
                         }
+                        else if (f == 1 && p.OwnerCountry?.Capital == p)
+                        {
+                            p.MainColor = Color.Purple;
+                        }
+                        else if (f == 1)
+                            p.MainColor = Color.LightGreen;
+                        else if (f >= 10)
+                            p.MainColor = Color.FromArgb(0, 45, 0);
                         if (p.Lake || p.Sea)
                         {
                             p.MainColor = Color.Black;
@@ -552,8 +561,7 @@ namespace Eu4ModEditor
         static Stopwatch stopwatch = new Stopwatch();
 
         public static void DrawPixelsOnMap(List<Rectangle> PlacesToUpdate)
-        {
-            
+        {          
             Rectangle DrawingRectangle = new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight));
             List<Province> toDraw = GlobalVariables.Provinces.Where(x => x.ContainingRectangle.IntersectsWith(DrawingRectangle) && PlacesToUpdate.Any(y => x.ContainingRectangle.IntersectsWith(y) || y.Contains(x.Center)) && (x.OldMainColor.ToArgb() != x.MainColor.ToArgb() || x.OldMainStripes.ToArgb() != x.MainStripes.ToArgb() || x.OldVerticalStripes.ToArgb() != x.VerticalStripes.ToArgb())).ToList();
             if (toDraw.Any())
@@ -1067,7 +1075,7 @@ namespace Eu4ModEditor
                     foreach (Province p in provinces)
                     {
                         Color c = Color.White;
-                        if (p.Fort)
+                        if (p.FortLevel() > 0)
                         {
                             c = Color.Green;
                         }

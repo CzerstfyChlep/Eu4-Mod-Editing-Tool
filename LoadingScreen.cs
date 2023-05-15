@@ -12,27 +12,124 @@ namespace Eu4ModEditor
 {
     public partial class LoadingScreen : Form
     {
+
+        NodeFile options;
+
+        public void ReadOptions()
+        {
+            if (!File.Exists("options.txt"))
+                File.Create("options.txt");
+
+            options = new NodeFile();
+            options.ReadFile("options.txt", true);
+
+
+            if (options.MainNode.TryGetVariableValue("gamepath", out string s))
+                GameDirectoryBox.Text = s;
+            if (options.MainNode.TryGetVariableValue("modpath", out string m))
+                ModDirectoryBox.Text = m;
+            if (options.MainNode.TryGetNode("lastOptions", out Node N))
+            {
+                for (int a = 0; a < N.PureValues.Count; a++)
+                {
+                    lastOptions[a] = int.Parse(N.PureValues[a].Name);
+                }
+            }
+            if (options.MainNode.TryGetVariableValue("autosaving", out string at))
+                GlobalVariables.Options.Autosaving = at.ToLower() == "true" ? true : false;
+            if (options.MainNode.TryGetVariableValue("autosaving_interval", out string ai))
+                GlobalVariables.Options.AutosavingInterval = int.TryParse(ai, out int inter) ? inter : 5;
+            if (options.MainNode.TryGetVariableValue("autosaving_path", out string atp))
+                GlobalVariables.Options.AutosavingPath = atp;
+            if (options.MainNode.TryGetVariableValue("autosaving_on_exit", out string atoe))
+                GlobalVariables.Options.AutosavingOnExit = atoe.ToLower() == "true" ? true : false;
+            if (options.MainNode.TryGetVariableValue("save_on_crash", out string soc))
+                GlobalVariables.Options.SaveCrash = soc.ToLower() == "true" ? true : false;
+            if (options.MainNode.TryGetVariableValue("save_on_crash_path", out string socp))
+                GlobalVariables.Options.SaveCrashPath = socp;
+            if (options.MainNode.TryGetVariableValue("custom_province_random", out string cspr))
+                GlobalVariables.Options.RandomProvinceCustom = cspr.ToLower() == "true" ? true : false;
+            if (options.MainNode.TryGetNode("province_low", out Node plow))
+            {
+                if (plow.PureValues.Count > 2)
+                {
+                    GlobalVariables.Options.RandomProvinceLowMinimum = int.TryParse(plow.PureValues[0].Name, out int plowmin) ? plowmin : 1;
+                    GlobalVariables.Options.RandomProvinceLowAverage = int.TryParse(plow.PureValues[1].Name, out int plowavg) ? plowavg : 1;
+                    GlobalVariables.Options.RandomProvinceLowMaximum = int.TryParse(plow.PureValues[2].Name, out int plowmax) ? plowmax : 1;
+                }
+            }
+            if (options.MainNode.TryGetNode("province_medium", out Node pmed))
+            {
+                if (pmed.PureValues.Count > 2)
+                {
+                    GlobalVariables.Options.RandomProvinceMediumMinimum = int.TryParse(plow.PureValues[0].Name, out int pmin) ? pmin : 1;
+                    GlobalVariables.Options.RandomProvinceMediumAverage = int.TryParse(plow.PureValues[1].Name, out int pavg) ? pavg : 1;
+                    GlobalVariables.Options.RandomProvinceMediumMaximum = int.TryParse(plow.PureValues[2].Name, out int pmax) ? pmax : 1;
+                }
+            }
+            if (options.MainNode.TryGetNode("province_high", out Node phigh))
+            {
+                if (phigh.PureValues.Count > 2)
+                {
+                    GlobalVariables.Options.RandomProvinceHighMinimum = int.TryParse(plow.PureValues[0].Name, out int pmin) ? pmin : 1;
+                    GlobalVariables.Options.RandomProvinceHighAverage = int.TryParse(plow.PureValues[1].Name, out int pavg) ? pavg : 1;
+                    GlobalVariables.Options.RandomProvinceHighMaximum = int.TryParse(plow.PureValues[2].Name, out int pmax) ? pmax : 1;
+                }
+            }
+            if (options.MainNode.TryGetVariableValue("same_value_provinces", out string svp))
+                GlobalVariables.Options.SameValueForAllProvinces = svp.ToLower() == "true" ? true : false;
+            if (options.MainNode.TryGetVariableValue("last_used_date", out string lsdt))
+                StartDateBox.Text = lsdt;
+        }
+
+
         public LoadingScreen()
         {
             InitializeComponent();
             Text = "Loading screen - " + GlobalVariables.Version;
             if (File.Exists("directories.txt"))
             {
+                string[] read = File.ReadAllLines("directories.txt", Encoding.GetEncoding(1252));
+                string towrite = "";
+
+                if (read.Length > 0)
+                    towrite += "gamepath=\"" + read[0]+"\"\n";
+                if (read.Length > 1)
+                    towrite += "modpath=\"" + read[1] +"\"";
+                File.WriteAllText("options.txt", towrite);
+                File.Delete("directories.txt");
+                /*
                 string txt = File.ReadAllText("directories.txt");
                 string[] sp = txt.Split('\n');
                 if (sp.Count() > 0)
                     GameDirectoryBox.Text = sp[0];
                 if (sp.Count() > 1)
                     ModDirectoryBox.Text = sp[1];
+                if (sp.Count() > 2) {
+                    int a = 0;
+                    foreach (string s in sp[2].Split(' '))
+                    {
+                        if (s != "")
+                        {
+                            lastOptions[a] = int.Parse(s);
+                            a++;
+                        }
+                    }
+                }
+                */                    
             }
-            if (File.Exists("modeditor_darkmode.txt"))
+            ReadOptions();
+           
+
+
+            /*if (File.Exists("modeditor_darkmode.txt"))
             {
                 string txt = File.ReadAllText("modeditor_darkmode.txt");
                 if(bool.TryParse(txt, out bool dm))
                     if(dm)
                         GlobalVariables.DarkMode = true;
                 //ApplyDarkMode();
-            }
+            }*/
 
 
             int n = 0;
@@ -98,8 +195,12 @@ namespace Eu4ModEditor
             /*10*/"map\\default.map", /*11*/"history\\countries\\", /*12*/"common\\tradenodes\\",
             /*13*/"map\\continent.txt", /*14*/"common\\country_tags\\", /*15*/"common\\technology.txt",
             /*16*/"common\\governments\\", /*17*/"common\\buildings\\", /*18*/"map\\superregion.txt",
-            /*19*/"common\\trade_companies\\", /*20*/"localisation\\", /*21*/"map\\climate.txt"
+            /*19*/"common\\trade_companies\\", /*20*/"localisation\\", /*21*/"map\\climate.txt", 
+            /*22*/"common\\rebel_types\\", /*23*/"common\\ideas\\", /*24*/"map\\terrain.bmp",
+            /*25*/"map\\terrain.txt",
         };
+
+        int[] lastOptions = new int[26];
 
         public void RadioButtonChange(object sender, EventArgs e)
         {
@@ -132,9 +233,14 @@ namespace Eu4ModEditor
         public List<Label> StatusLabels = new List<Label>();
         public List<FileStatus> FileStatuses = new List<FileStatus>();
 
+        public List<Bookmark> bookmarks = new List<Bookmark>();
+
         private void CheckFilesButton_Click(object sender, EventArgs e)
         {
-            File.WriteAllText("directories.txt", GameDirectoryBox.Text + "\n" + ModDirectoryBox.Text);
+            //File.WriteAllText("directories.txt", GameDirectoryBox.Text + "\n" + ModDirectoryBox.Text);
+            options.MainNode.ChangeVariable("gamepath", GameDirectoryBox.Text, true);
+            options.MainNode.ChangeVariable("modpath", ModDirectoryBox.Text, true);
+
 
             if (GameDirectoryBox.Text != "") 
                 {
@@ -153,6 +259,94 @@ namespace Eu4ModEditor
                     GlobalVariables.pathtomod = ModDirectoryBox.Text + "\\";
             }
 
+
+            //BOOKMARKS READING
+
+            bookmarks.Clear();
+
+            List<string> FilesDone = new List<string>();
+
+            if (Directory.Exists(GlobalVariables.pathtomod + "common\\bookmarks\\"))
+            {
+                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\bookmarks\\"))
+                {
+                    FilesDone.Add(Path.GetFileName(file));
+                    NodeFile nf = new NodeFile(file);
+                    Node bookmark = nf.MainNode.Nodes.Find(x => x.Name.ToLower() == "bookmark");
+                    if (bookmark != null)
+                    {
+                        Variable date = bookmark.Variables.Find(x => x.Name.ToLower() == "date");
+                        if (date != null)
+                        {
+
+                            string[] spl = date.Value.Split('.');
+                            if (spl.Count() >= 3)
+                            {
+                                int year = 1444, month = 11, day = 11;
+                                int.TryParse(spl[0], out year);
+                                int.TryParse(spl[1], out month);
+                                int.TryParse(spl[2], out day);
+
+                                if (year > 0 && month > 0 && day > 0 && month < 12 && day < 32)
+                                {
+                                    Bookmark bm = new Bookmark(year, month, day);
+                                    if (!bookmarks.Any(x => x.Date.CompareTo(bm.Date) == 0))
+                                        bookmarks.Add(bm);
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+
+            if (Directory.Exists(GlobalVariables.pathtogame + "common\\bookmarks\\"))
+            {
+                foreach(string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\bookmarks\\"))
+                {
+                   // MessageBox.Show("DAte found: " + file);
+                    if (FilesDone.Contains(Path.GetFileName(file)))
+                        continue;
+                    NodeFile nf = new NodeFile(file);
+                   // MessageBox.Show(nf.MainNode.Nodes[0].Name);
+                    Node bookmark = nf.MainNode.Nodes.Find(x => x.Name.ToLower() == "bookmark");
+                    if (bookmark!= null)
+                    {
+                        Variable date = bookmark.Variables.Find(x => x.Name.ToLower() == "date");
+                        
+                        if (date != null)
+                        {
+                           
+                            string[] spl = date.Value.Split('.');
+                            if(spl.Count() >= 3)
+                            {
+                                int year = 1444, month = 11, day = 11;
+                                int.TryParse(spl[0], out year);
+                                int.TryParse(spl[1], out month);
+                                int.TryParse(spl[2], out day);
+                                
+                                if(year > 0 && month > 0 && day > 0 && month < 12 && day < 32)
+                                {
+                                    Bookmark bm = new Bookmark(year, month, day);
+                                    if (!bookmarks.Any(x=>x.Date.CompareTo(bm.Date) == 0))
+                                        bookmarks.Add(bm);
+                                }                                  
+                            }
+                            
+                        }
+                    }
+                }
+            }
+
+            bookmarks.Sort((x, y) => DateTime.Compare(x.Date, y.Date));
+
+            BookmarksComboBox.Items.Clear();
+            BookmarksComboBox.Items.AddRange(bookmarks.ToArray());
+
+            if (bookmarks.Any())
+            {
+                StartDateBox.Text = $"{bookmarks[0].Date.Year}.{bookmarks[0].Date.Month}.{bookmarks[0].Date.Day}";
+            }
             FileStatuses.Clear();
 
             int n = 0;
@@ -225,8 +419,19 @@ namespace Eu4ModEditor
                         mod.Enabled = true;
                         game.Enabled = true;
                         check.Enabled = true;
-                        mod.Checked = true;
+                        //mod.Checked = true;
                         both.Enabled = true;
+                        if (lastOptions[index] == 0)
+                        {
+                            game.Checked = true;
+                            check.Checked = true;
+                            check.Enabled = false;
+                        }
+                        else if (lastOptions[index] == 1)
+                            mod.Checked = true;
+                        else
+                            both.Checked = true;
+                       
                         break;
                 }
             }
@@ -280,6 +485,7 @@ namespace Eu4ModEditor
 
                     GlobalVariables.UseMod[index] = (mod.Checked ? 1 : (both.Checked ? 2 : 0));
                     GlobalVariables.ReadOnly[index] = check.Checked;
+                    lastOptions[index] = (mod.Checked ? 1 : (both.Checked ? 2 : 0));
                 }
                 GlobalVariables.LoadedProperly = true;
                 GlobalVariables.CreateNewFilesReadOnly = ReadOnlyNewFiles.Checked;
@@ -304,7 +510,7 @@ namespace Eu4ModEditor
                         break;
                 }
                 GlobalVariables.AppSizeOption = AppSizeBox.SelectedIndex;
-                File.WriteAllText("modeditor_darkmode.txt", GlobalVariables.DarkMode.ToString());
+                //File.WriteAllText("modeditor_darkmode.txt", GlobalVariables.DarkMode.ToString());
 
                 try
                 {
@@ -315,6 +521,19 @@ namespace Eu4ModEditor
                 {
                     GlobalVariables.StartDate = new DateTime(1444, 11, 11);
                 }
+
+                options.MainNode.ChangeVariable("last_used_date", GlobalVariables.StartDate.Year + "." + GlobalVariables.StartDate.Month + "." + GlobalVariables.StartDate.Day, true);
+
+                Node lastOP = new Node("lastOptions");
+
+                foreach (int n in lastOptions)
+                    lastOP.AddPureValue(n.ToString(), -1);
+
+                if (options.MainNode.TryGetNode("lastOptions", out Node nd))
+                    options.MainNode.ReplaceNode(nd, lastOP);
+                else
+                    options.MainNode.AddNode(lastOP, -1);
+                options.SaveFile("options.txt");
                 this.Close();
             }
         }
@@ -534,6 +753,27 @@ namespace Eu4ModEditor
                 if(b is Button)
                     (b as Button).FlatStyle = FlatStyle.Flat;
             }
+        }
+
+        public class Bookmark
+        {
+            public bool MOD = false;
+            public DateTime Date = new DateTime(1444,11,11);           
+            public Bookmark(int year, int month, int day, bool mod = false)
+            {
+                Date = new DateTime(year, month, day);
+                MOD = mod;
+            }
+            public override string ToString()
+            {
+                return Date.ToString("yyyy.MM.dd");
+            }
+
+        }
+
+        private void BookmarksComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            StartDateBox.Text = $"{bookmarks[BookmarksComboBox.SelectedIndex].Date.Year}.{bookmarks[BookmarksComboBox.SelectedIndex].Date.Month}.{bookmarks[BookmarksComboBox.SelectedIndex].Date.Day}";
         }
     }
 }

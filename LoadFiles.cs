@@ -11,917 +11,151 @@ using System.Windows.Forms;
 
 namespace Eu4ModEditor
 {
-    public static class LoadFilesClass
+    public static partial class LoadFilesClass
     {
+        public static NodeFile ReadOneFile(string path, LoadingProgress progress)
+        {
+            return null;
+        }
+        public static NodeFile[] ReadFiles(string path, LoadingProgress progress)
+        {
+            List<NodeFile> files = new List<NodeFile>();
+            if (!Directory.Exists(path))
+                progress.ReportError($"Error: Directory '{path}' doesn't exist!");
+            else
+            {
+                foreach (string file in Directory.GetFiles(path))
+                {
+                    if (file.Contains('.'))
+                    {
+                        if (file.Split('.')[1] == "txt")
+                        {
+                            NodeFile nf = new NodeFile(file);
+                            if (nf.LastStatus.HasError)
+                                progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
+                            else
+                            {
+                                files.Add(nf);
+                            }
+                        }
+                    }
+                }
+            }
+            return files.ToArray();
+        }
+
+
         public static async void LoadFilesWork(LoadingProgress progress)
         {
             try
             {
+
+                /*NodeFile nodef = new NodeFile();
+                nodef.ReadFile("test.txt", true);
+                nodef.SaveFile("testout.txt");
+                */
+
+
                 //BackgroundWorker bw = (BackgroundWorker)sender;
                 List<NodeFile> tradegoodsfiles = new List<NodeFile>();
                 List<NodeFile> tradegoodspricesfiles = new List<NodeFile>();
                 List<NodeFile> culturesfiles = new List<NodeFile>();
                 List<NodeFile> religionsfiles = new List<NodeFile>();
                 List<NodeFile> governmentsfiles = new List<NodeFile>();
+                List<NodeFile> ideafiles = new List<NodeFile>();
                 Dictionary<string, string> NameToTag = new Dictionary<string, string>();
                 Dictionary<string, NodeFile> NameToFile = new Dictionary<string, NodeFile>();
                 List<NodeFile> countrytagsfiles = new List<NodeFile>();
                 List<NodeFile> buildingsfiles = new List<NodeFile>();
                 List<NodeFile> CountryCommonFiles = new List<NodeFile>();
-                NodeFile technology;
-                NodeFile areas;
-                NodeFile climate;
-                NodeFile regions;
-                NodeFile continents;
+                NodeFile technology = new NodeFile();
+                NodeFile areas = new NodeFile();
+                NodeFile climate = new NodeFile();
+                NodeFile regions = new NodeFile();
+                NodeFile continents = new NodeFile();
                 List<NodeFile> tradenodesfiles = new List<NodeFile>();
                 List<NodeFile> tradecompanyfiles = new List<NodeFile>();
-                NodeFile Superregions;
+                NodeFile Superregions = new NodeFile();
 
                 GlobalVariables.Countries.Add(Country.NoCountry);
-                //DONE
                 Task llocalisation = new Task(() =>
                 {
-                    string[] splitValues;
-                    string[] apostrophSplit;
-                    if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.localisation] != 1)
-                    {
-                        if (!Directory.Exists(GlobalVariables.pathtogame + "localisation\\"))
-                            progress.ReportError($"Error: Localisation directory missing! Expected path: {GlobalVariables.pathtogame + "localisation\\"}");
-                        else
-                        {
-                            try
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "localisation\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Contains("l_english") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.English)
-                                            continue;
-                                        if (file.Contains("l_french") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.French)
-                                            continue;
-                                        if (file.Contains("l_spanish") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.Spanish)
-                                            continue;
-                                        if (file.Contains("l_german") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.German)
-                                            continue;
-                                        if (!file.Contains("l_english") && !file.Contains("l_french") && !file.Contains("l_spanish") && !file.Contains("l_german"))
-                                            continue;
-                                        if (file.Split('.')[1] == "yml")
-                                        {
-                                            int linenumber = 0;
-                                            foreach (string line in File.ReadAllLines(file, Encoding.Default))
-                                            {
-                                                linenumber++;
-                                                if (linenumber == 1)
-                                                    continue;
-                                                string linetoread = line.Split('#')[0];
-                                                if (string.IsNullOrWhiteSpace(linetoread))
-                                                    continue;
-                                                if (!linetoread.Contains("\""))
-                                                {
-                                                    progress.ReportError($"Alert: Strange line number {linenumber} in localisation file '{Path.GetFileName(file)}'. Skipping.");
-                                                    continue;
-                                                }                                                
-                                                try
-                                                {
-                                                    splitValues = linetoread.Split(':');
-                                                    splitValues[0] = splitValues[0].Trim();
-                                                    if (string.IsNullOrWhiteSpace(splitValues[0]))
-                                                    {
-                                                        progress.ReportError($"Alert: Strange line number {linenumber} in localisation file '{Path.GetFileName(file)}'. Skipping.");
-                                                        continue;
-                                                    }
-                                                    if(splitValues.Count() < 2)
-                                                    {
-                                                        progress.ReportError($"Alert: Strange line number {linenumber} in localisation file '{Path.GetFileName(file)}'. Skipping.");
-                                                        continue;
-                                                    }
-                                                    apostrophSplit = splitValues[1].Split('"');
-                                                    if (apostrophSplit.Count() < 2)
-                                                    {
-                                                        progress.ReportError($"Alert: Strange line number {linenumber} in localisation file '{Path.GetFileName(file)}'. Skipping.");
-                                                        continue;
-                                                    }     
-                                                    if (GlobalVariables.LocalisationEntries.Keys.Contains(splitValues[0]))
-                                                        GlobalVariables.LocalisationEntries[splitValues[0]] = apostrophSplit[1];
-                                                    else
-                                                        GlobalVariables.LocalisationEntries.Add(splitValues[0], apostrophSplit[1]);
-                                                }
-                                                catch
-                                                {
-                                                    if (GlobalVariables.__DEBUG)
-                                                        throw;
-                                                    progress.ReportError($"Critical error: Localisation issue! -> { Path.GetFileName(file) } -> Line '{line}' is invalid!");
-                                                }
-
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            catch (UnauthorizedAccessException)
-                            {
-                                if (GlobalVariables.__DEBUG)
-                                    throw;
-                                progress.ReportError("Error: No access to localisation files! Program will exit after continuing");
-                            }
-                        }
-                    }
-
-
-                    if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.localisation] != 0)
-                    {
-                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "localisation\\"))
-                        {
-                            if (file.Contains('.'))
-                            {
-                                if (file.Contains("l_english") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.English)
-                                    continue;
-                                if (file.Contains("l_french") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.French)
-                                    continue;
-                                if (file.Contains("l_spanish") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.Spanish)
-                                    continue;
-                                if (file.Contains("l_german") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.German)
-                                    continue;
-                                if (!file.Contains("l_english") && !file.Contains("l_french") && !file.Contains("l_spanish") && !file.Contains("l_german"))
-                                    continue;
-                                if (file.Split('.')[1] == "yml")
-                                {
-                                    int linenumber = 0;
-                                    foreach (string line in File.ReadAllLines(file, Encoding.Default))
-                                    {
-                                        linenumber++;
-                                        if (linenumber == 1)
-                                            continue;
-                                        string linetoread = line.Split('#')[0];
-                                        if (string.IsNullOrWhiteSpace(linetoread))
-                                            continue;
-                                        if (!linetoread.Contains("\""))
-                                        {
-                                            progress.ReportError($"Alert: Strange line number {linenumber} in mod localisation file '{Path.GetFileName(file)}'. Skipping.");
-                                            continue;
-                                        }
-                                        try
-                                        {
-                                            splitValues = linetoread.Split(':');
-                                            splitValues[0] = splitValues[0].Trim();
-                                            if (string.IsNullOrWhiteSpace(splitValues[0]))
-                                            {
-                                                progress.ReportError($"Alert: Strange line number {linenumber} in mod localisation file '{Path.GetFileName(file)}'. Skipping.");
-                                                continue;
-                                            }
-                                            if (splitValues.Count() < 2)
-                                            {
-                                                progress.ReportError($"Alert: Strange line number {linenumber} in mod localisation file '{Path.GetFileName(file)}'. Skipping.");
-                                                continue;
-                                            }
-                                            apostrophSplit = splitValues[1].Split('"');
-                                            if (apostrophSplit.Count() < 2)
-                                            {
-                                                progress.ReportError($"Alert: Strange line number {linenumber} in mod localisation file '{Path.GetFileName(file)}'. Skipping.");
-                                                continue;
-                                            }
-                                            if (GlobalVariables.ModLocalisationEntries.Keys.Contains(splitValues[0]))
-                                                GlobalVariables.ModLocalisationEntries[splitValues[0]] = apostrophSplit[1];
-                                            else
-                                                GlobalVariables.ModLocalisationEntries.Add(splitValues[0], apostrophSplit[1]);
-                                        }
-                                        catch
-                                        {
-                                            if (GlobalVariables.__DEBUG)
-                                                throw;
-                                            progress.ReportError($"Critical error: Localisation issue! { Path.GetFileName(file) } has an unexpected error on line '{line}'!");
-                                        }
-
-                                    }
-
-
-                                    foreach (string line in File.ReadAllLines(file, Encoding.Default))
-                                    {
-                                        string linetoread = line.Split('#')[0];
-
-                                        if (linetoread.Contains("\""))
-                                        {
-                                            string name = "";
-                                            string value = "";
-                                            try
-                                            {
-                                                name = linetoread.Split(':')[0].Trim();
-                                                value = linetoread.Split(':')[1].Split('"')[1];
-                                                if (GlobalVariables.ModLocalisationEntries.Keys.Contains(name))
-                                                    GlobalVariables.ModLocalisationEntries[name] = value;
-                                                else
-                                                    GlobalVariables.ModLocalisationEntries.Add(name, value);
-                                            }
-                                            catch
-                                            {
-                                                if (GlobalVariables.__DEBUG)
-                                                    throw;
-                                                progress.ReportError($"Critical error: Localisation issue! { Path.GetFileName(file) } has an unexpected error on line '{line}'!");
-                                            }
-
-                                        }
-
-                                    }
-
-                                }
-                            }
-                        }
-                    }
+                    LoadLocalisation(progress);
                 });
                 llocalisation.Start();
                 progress.UpdateProgress(22, 0);
-                //DONE
+
                 Task ldefinition = new Task(() =>
                 {
-                    int linen = 0;
-                    try
-                    {
-                        StreamReader Reader;
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.definition] > 0)
-                            Reader = new StreamReader(GlobalVariables.pathtomod + "map\\definition.csv");
-                        else
-                            Reader = new StreamReader(GlobalVariables.pathtogame + "map\\definition.csv");
-
-                        while (!Reader.EndOfStream)
-                        {
-                            string data = Reader.ReadLine();
-                            linen++;
-                            if (data.Contains("province;red;"))
-                                continue;
-                            string[] values = data.Split(';');
-                            if(values.Count() < 5)
-                            {
-                                progress.ReportError($"Error: Incorrect line number {linen} in definition.csv");
-                                continue;
-                            }
-                            Province p = new Province(int.Parse(values[0]), int.Parse(values[1]), int.Parse(values[2]), int.Parse(values[3]), values[4]);
-                            GlobalVariables.CubeArray[int.Parse(values[1]), int.Parse(values[2]), int.Parse(values[3])] = p;
-                            GlobalVariables.Provinces.Add(p);
-                        }
-                    }
-                    catch
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Unexpected error with definition.csv! Program will exit after continuing!");
-                    }
+                    LoadDefinition(progress);
                 });
                 ldefinition.Start();
                 progress.UpdateProgress(0, 0);
-                //DONE
+
                 Task ltradegoods = new Task(() =>
                 {
-
-                    try
-                    {
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.tradegoods] != 0)
-                        {
-                            foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\tradegoods\\"))
-                            {
-                                if (file.Contains('.'))
-                                {
-                                    if (file.Split('.')[1] == "txt")
-                                    {
-                                        NodeFile nf = new NodeFile(file);
-                                        if (nf.LastStatus.HasError)
-                                            progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                        else
-                                        {
-                                            tradegoodsfiles.Add(nf);
-                                            GlobalVariables.ModTradeGoodsFiles.Add(nf);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.tradegoods] != 1)
-                        {
-                            foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\tradegoods\\"))
-                            {
-                                if (file.Contains('.'))
-                                {
-                                    if (file.Split('.')[1] == "txt")
-                                    {
-                                        NodeFile nf = new NodeFile(file, true);
-                                        if (nf.LastStatus.HasError)
-                                            progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                        else
-                                        {
-                                            if (!tradegoodsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                                                tradegoodsfiles.Add(nf);
-                                            GlobalVariables.GameTradeGoodsFile = nf;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    catch
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Unexpected issue with trade good files! Program will exit after continuing!");
-                        throw new Exception();
-                    }
+                    LoadTradeGoods(progress, tradegoodsfiles);
                 });
                 ltradegoods.Start();
                 progress.UpdateProgress(1, 0);
-                //DONE
+            
                 Task lcultures = new Task(() =>
                 {
-                    try
-                    {
-                        List<string> done = new List<string>();
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.cultures] != 0)
-                        {
-                            if (!Directory.Exists(GlobalVariables.pathtomod + "common\\cultures\\"))
-                            {
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtomod + "common\\cultures\\"}' doesn't exist!");
-                            }
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\cultures\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.')[1] == "txt")
-                                        {
-                                            NodeFile nf = new NodeFile(file);
-                                            if (nf.LastStatus.HasError)
-                                                progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                            else
-                                            {
-                                                culturesfiles.Add(nf);
-                                                GlobalVariables.ModCulturesFiles.Add(nf);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.cultures] != 1)
-                        {
-                            if (!Directory.Exists(GlobalVariables.pathtogame + "common\\cultures\\"))
-                            {
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtogame + "common\\cultures\\"}' doesn't exist!");
-                            }
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\cultures\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.')[1] == "txt")
-                                        {
-                                            NodeFile nf = new NodeFile(file, true);
-                                            if (nf.LastStatus.HasError)
-                                                progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                            else
-                                            {
-                                                if (!culturesfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                                                    culturesfiles.Add(nf);
-                                                GlobalVariables.GameCulturesFile = nf;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        done = new List<string>();
-                        foreach (NodeFile cultures in culturesfiles)
-                        {
-                            foreach (Node node in cultures.MainNode.Nodes)
-                            {
-                                if (done.Contains(node.Name))
-                                    continue;
-                                done.Add(node.Name);
-                                CultureGroup cg = new CultureGroup
-                                {
-                                    Name = node.Name
-                                };
-                                foreach (Node innernode in node.Nodes)
-                                {
-                                    if (innernode.Name != "dynasty_names" && innernode.Name != "female_names" && innernode.Name != "male_names" && innernode.Name != "graphical_culture")
-                                    {
-                                        Culture c = new Culture
-                                        {
-                                            Name = innernode.Name,
-                                            Group = cg,
-                                            NodeFile = cultures
-                                        };
-                                        cg.Cultures.Add(c);
-                                        Variable v = innernode.Variables.Find(x => x.Name.ToLower() == "primary");
-                                        if (v != null)
-                                            c.PrimaryTag = v.Value;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    catch
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Unexpected issue with cultures! Program will exit after continuing!");
-                        throw new Exception();
-                    }
+                    LoadCultures(progress, culturesfiles);
 
                 });
                 lcultures.Start();
                 progress.UpdateProgress(4, 0);
 
-                //DONE
+                Task lrebelTypes = new Task(() => {
+                    LoadRebels(progress);
+                });
+                lrebelTypes.Start();
+
                 Task lreligions = new Task(() =>
                 {
-                    try
-                    {
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.religions] != 0)
-                        {
-                            if (!Directory.Exists(GlobalVariables.pathtomod + "common\\religions\\"))
-                            {
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtomod + "common\\religions\\"}' doesn't exist!");
-                            }
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\religions\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.')[1] == "txt")
-                                        {
-                                            NodeFile nf = new NodeFile(file);
-                                            if (nf.LastStatus.HasError)
-                                                progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                            else
-                                            {
-                                                religionsfiles.Add(nf);
-                                                GlobalVariables.ModReligionsFiles.Add(nf);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.religions] != 1)
-                        {
-                            if (!Directory.Exists(GlobalVariables.pathtogame + "common\\religions\\"))
-                            {
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtogame + "common\\religions\\"}' doesn't exist!");
-                            }
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\religions\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.')[1] == "txt")
-                                        {
-                                            NodeFile nf = new NodeFile(file, true);
-                                            if (nf.LastStatus.HasError)
-                                                progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                            else
-                                            {
-                                                if (!religionsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                                                    religionsfiles.Add(nf);
-                                                GlobalVariables.GameReligionsFile = nf;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        string[] religionforbidden = new string[] { };
-                        foreach (NodeFile religions in religionsfiles)
-                        {
-                            foreach (Node node in religions.MainNode.Nodes)
-                            {
-                                ReligionGroup rg = new ReligionGroup
-                                {
-                                    Name = node.Name
-                                };
-                                foreach (Node innernode in node.Nodes)
-                                {
-                                    if (innernode.Name != "flag_emblem_index_range" && innernode.Name != "religious_schools")
-                                    {
-                                        try
-                                        {
-                                            Religion r = new Religion
-                                            {
-                                                Name = innernode.Name,
-                                                ReadableName = innernode.Name[0].ToString().ToUpper() + innernode.Name.Substring(1).Replace('_', ' '),
-                                                Group = rg,
-                                                NodeFile = religions
-                                            };
-                                            rg.Religions.Add(r);
-                                            Node colourNode = innernode.Nodes.Find(x => x.Name.ToLower() == "color");
-                                            if (colourNode == null)
-                                                progress.ReportError($"Error: No colour set for religion '{innernode.Name}'");
-                                            else
-                                            {
-                                                string[] colorstring = colourNode.GetPureValuesAsArray();
-                                                if (colorstring.Count() < 3)
-                                                    progress.ReportError($"Error: Invalid colour set for religion '{innernode.Name}'");
-                                                else
-                                                {
-                                                    if (colorstring[0].Contains(".") || colorstring[1].Contains(".") || colorstring[2].Contains("."))
-                                                    {
-                                                        r.Color = Color.FromArgb((int)(double.Parse(colorstring[0], CultureInfo.InvariantCulture)*255), (int)(double.Parse(colorstring[1], CultureInfo.InvariantCulture) * 255), (int)(double.Parse(colorstring[2], CultureInfo.InvariantCulture) * 255));
-                                                    }
-                                                    else
-                                                    {
-                                                        r.Color = Color.FromArgb(int.Parse(colorstring[0]), int.Parse(colorstring[1]), int.Parse(colorstring[2]));
-                                                    }
-                                                }
-                                            }
-                                            Variable iconVariable = innernode.Variables.Find(x => x.Name.ToLower() == "icon");
-                                            if (iconVariable == null)
-                                                progress.ReportError($"Error: No icon set for religion {innernode.Name}");
-                                            else
-                                                r.Icon = int.Parse(iconVariable.Value);
-                                        }
-                                        catch
-                                        {
-                                            progress.ReportError($"Error: Unexpected erorr in religion {innernode.Name}!");
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    catch
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Unexpected issue with religions! Program will exit after continuing!");
-                        throw new Exception();
-                    }
+                    LoadReligions(progress, religionsfiles);
                 });
                 lreligions.Start();
                 progress.UpdateProgress(5, 0);
 
-                //DONE
                 Task lgovernments = new Task(() =>
                 {
-                    try
-                    {
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.governments] != 0)
-                        {
-                            if (!Directory.Exists(GlobalVariables.pathtomod + "common\\governments\\"))
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtomod + "common\\governments\\"}' doesn't exist!");
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\governments\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.')[1] == "txt")
-                                        {
-                                            NodeFile nf = new NodeFile(file);
-                                            if (nf.LastStatus.HasError)
-                                                progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                            else
-                                            {
-                                                governmentsfiles.Add(nf);
-                                                GlobalVariables.ModGovernmentsFiles.Add(nf);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.governments] != 1)
-                        {
-                            if (!Directory.Exists(GlobalVariables.pathtogame + "common\\governments\\"))
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtogame + "common\\governments\\"}' doesn't exist!");
-                            foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\governments\\"))
-                            {
-                                if (file.Contains('.'))
-                                {
-                                    if (file.Split('.')[1] == "txt")
-                                    {
-                                        NodeFile nf = new NodeFile(file, true);
-                                        if (nf.LastStatus.HasError)
-                                            progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                        else
-                                        {
-                                            if (!governmentsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                                                governmentsfiles.Add(nf);
-                                            GlobalVariables.GameGovernmentsFile = nf;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        foreach (NodeFile government in governmentsfiles)
-                        {
-                            foreach (Node n in government.MainNode.Nodes)
-                            {
-                                if (n.Name.ToLower() != "pre_dharma_mapping")
-                                {
-                                    Government gv = new Government(n.Name);
-                                    Node reformLevels = n.Nodes.Find(x => x.Name.ToLower() == "reform_levels");
-                                    if(reformLevels == null)
-                                    {
-                                        progress.ReportError($"Error: Government '{n.Name}' has no reform levels!");
-                                        continue;
-                                    }
-                                    if(!reformLevels.Nodes.Any())
-                                    {
-                                        progress.ReportError($"Error: Government '{n.Name}' has no reforms!");
-                                        continue;
-                                    }
-                                    Node reforms = reformLevels.Nodes[0].Nodes.Find(x => x.Name.ToLower() == "reforms");
-                                    if(reforms == null)
-                                    {
-                                        progress.ReportError($"Error: Government '{n.Name}' has no reforms!");
-                                        continue;
-                                    }
-                                    gv.reforms.AddRange(reforms.GetPureValuesAsArray());
-                                    Node colornode = n.Nodes.Find(x => x.Name.ToLower() == "color");
-                                    if(colornode == null)
-                                    {
-                                        progress.ReportError($"Error: Government '{n.Name}' has no color set!");
-                                    }
-                                    else
-                                    {
-                                        if(colornode.PureValues.Count() < 3)
-                                        {
-                                            progress.ReportError($"Error: Government '{n.Name}' has incorrect number of color values!");
-                                        }
-                                        else
-                                        {
-                                            if(colornode.PureValues[0].Name.Contains(".") || colornode.PureValues[1].Name.Contains(".")|| colornode.PureValues[2].Name.Contains("."))
-                                            {
-                                                double R = 0;
-                                                double G = 0;
-                                                double B = 0;
-                                                if (!double.TryParse(colornode.PureValues[0].Name, NumberStyles.Any, CultureInfo.InvariantCulture,out R))
-                                                    progress.ReportError($"Error: Government '{n.Name}' has incorrect color values!");
-                                                else if (!double.TryParse(colornode.PureValues[1].Name, NumberStyles.Any, CultureInfo.InvariantCulture, out G))
-                                                    progress.ReportError($"Error: Government '{n.Name}' has incorrect color values!");
-                                                else if (!double.TryParse(colornode.PureValues[2].Name, NumberStyles.Any, CultureInfo.InvariantCulture, out B))
-                                                    progress.ReportError($"Error: Government '{n.Name}' has incorrect color values!");
-                                                else
-                                                    gv.Color = Color.FromArgb((int)(R*255), (int)(G * 255), (int)(B * 255));
-
-                                            }
-                                            else
-                                            {
-                                                int R = 0;
-                                                int G = 0;
-                                                int B = 0;
-                                                if (!int.TryParse(colornode.PureValues[0].Name, out R))
-                                                    progress.ReportError($"Error: Government '{n.Name}' has incorrect color values!");
-                                                else if (!int.TryParse(colornode.PureValues[1].Name, out G))
-                                                    progress.ReportError($"Error: Government '{n.Name}' has incorrect color values!");
-                                                else if (!int.TryParse(colornode.PureValues[2].Name, out B))
-                                                    progress.ReportError($"Error: Government '{n.Name}' has incorrect color values!");
-                                                else
-                                                    gv.Color = Color.FromArgb(R, G, B);
-                                            }
-                                            gv.Color = Color.FromArgb(int.Parse(colornode.PureValues[0].Name), int.Parse(colornode.PureValues[1].Name), int.Parse(colornode.PureValues[2].Name));
-                                        }
-                                    }                                    
-                                    GlobalVariables.Governments.Add(gv);
-                                }
-                            }
-                        }
-                    }
-                    catch
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Unexpected issue with governments! Program will exit after continuing!");
-                        throw new Exception();
-                    }
-
+                    LoadGovernments(progress, governmentsfiles);
                 });
                 lgovernments.Start();
                 progress.UpdateProgress(6, 0);
 
+                Task lideas = new Task(() =>
+                {
+                    LoadIdeas(progress, ideafiles);
+                });
+                lideas.Start();
 
-                //DONE
                 Task ltechnology = new Task(() =>
                 {
-                    try 
-                    {
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.technology] > 0)
-                            technology = new NodeFile(GlobalVariables.pathtomod + "common\\technology.txt");
-                        else
-                            technology = new NodeFile(GlobalVariables.pathtogame + "common\\technology.txt");
-
-                        if (technology.LastStatus.HasError)
-                            progress.ReportError($"Critical error: File '{technology.Path}' has an error in line {technology.LastStatus.LineError}");
-                        else
-                        {
-                            Node groups = technology.MainNode.Nodes.Find(x => x.Name.ToLower() == "groups");
-                            if (groups == null)
-                            {
-                                progress.ReportError($"Alert: No technology groups found!");
-                            }
-                            else
-                            {
-                                foreach (Node node in groups.Nodes)
-                                {
-                                    GlobalVariables.TechGroups.Add(node.Name);
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Unexpected issue with techgroups! Program will exit after continuing!");
-                        progress.ReportError(e.ToString());
-                    }
+                    LoadTechGroups(progress, technology);
                 });
                 ltechnology.Start();
                 progress.UpdateProgress(7, 0);
 
-                //DONE
                 Task ltags = new Task(() =>
                 {
-                    try
-                    {
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.countrytags] != 0)
-                        {
-                            if (!Directory.Exists(GlobalVariables.pathtomod + "common\\country_tags\\"))
-                            {
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtomod + "common\\country_tags\\"}' doesn't exist!");
-                            }
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\country_tags\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.')[1] == "txt")
-                                        {
-                                            NodeFile nf = new NodeFile(file);
-                                            if (nf.LastStatus.HasError)
-                                                progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                            else
-                                            {
-                                                countrytagsfiles.Add(nf);
-                                                GlobalVariables.ModCountryTagsFiles.Add(nf);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.countrytags] != 1)
-                        {
-                            if (!Directory.Exists(GlobalVariables.pathtogame + "common\\country_tags\\"))
-                            {
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtogame + "common\\country_tags\\"}' doesn't exist!");
-                            }
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\country_tags\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.')[1] == "txt")
-                                        {
-                                            NodeFile nf = new NodeFile(file, true);
-                                            if (nf.LastStatus.HasError)
-                                                progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                            else
-                                            {
-                                                if (!countrytagsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                                                    countrytagsfiles.Add(nf);
-                                                GlobalVariables.GameCountryTagsFile = nf;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        foreach (NodeFile countrytags in countrytagsfiles)
-                        {
-                            foreach (Variable v in countrytags.MainNode.Variables)
-                            {
-                                //TODO
-                                //tolerate both slashes!!!!!!!!
-                                string[] sp = v.Value.Replace("\"", "").Trim().Split('/');
-                                if (sp.Count() < 2)
-                                {
-                                    progress.ReportError($"Error: Issue with '{v.Name}' tag!");
-                                }
-                                else
-                                {
-                                    string n = sp[1].Split('.')[0];
-                                    if (!NameToTag.Keys.Contains(n))
-                                        NameToTag.Add(n, v.Name.Trim());
-                                    if (!NameToFile.Keys.Contains(n))
-                                        NameToFile.Add(n, countrytags);
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Unexpected issue with tag files! Program will exit after continuing!");
-                        progress.ReportError(e.ToString());
-                        throw new Exception();
-                    }
+                    LoadTags(progress, countrytagsfiles, NameToTag, NameToFile);   
                 });
                 ltags.Start();
                 progress.UpdateProgress(8, 0);
 
-
-                //DONE
                 Task lbuildings = new Task(() =>
                 {
-                    try
-                    {
-                        List<bool> GameFiles = new List<bool>();
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.buildings] != 0)
-                        {
-                            if (!Directory.Exists(GlobalVariables.pathtomod + "common\\buildings\\"))
-                            {
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtomod + "common\\buildings\\"}' doesn't exist!");
-                            }
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\buildings\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.')[1] == "txt")
-                                        {
-                                            NodeFile nf = new NodeFile(file);
-                                            if (nf.LastStatus.HasError)
-                                                progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                            else
-                                            {
-                                                buildingsfiles.Add(nf);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.buildings] != 1)
-                        {
-                            if (!Directory.Exists(GlobalVariables.pathtogame + "common\\buildings\\"))
-                            {
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtogame + "common\\buildings\\"}' doesn't exist!");
-                            }
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\buildings\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.')[1] == "txt")
-                                        {
-                                            NodeFile nf = new NodeFile(file, true);
-                                            if (nf.LastStatus.HasError)
-                                                progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                            else
-                                            {
-                                                if (!buildingsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                                                {
-                                                    buildingsfiles.Add(nf);
-                                                }
-                                            }
-
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        foreach (NodeFile buildings in buildingsfiles)
-                        {
-                            foreach (Node node in buildings.MainNode.Nodes)
-                            {
-                                if (GlobalVariables.Buildings.Any(x => x.Name.ToLower() == node.Name.ToLower()))
-                                    continue;
-                                Building bl = new Building();
-                                bl.Name = node.Name;
-                                bl.NodeFile = buildings;
-                                GlobalVariables.Buildings.Add(bl);
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Unexpected issue with buildings! Program will exit after continuing!");
-                        progress.ReportError(e.ToString());
-                    }
+                    LoadBuildings(progress, buildingsfiles);
                 });
                 lbuildings.Start();
                 progress.UpdateProgress(20, 0);
+
+                //TODO no progress
+                await lrebelTypes;
+                await lideas;
 
                 await ldefinition;
                 if (ldefinition.IsFaulted)
@@ -929,68 +163,9 @@ namespace Eu4ModEditor
                 else if (ldefinition.IsCompleted)
                     progress.UpdateProgress(0, 2);
 
-                //DONE
                 Task larea = new Task(() =>
                 {
-                    try
-                    {
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.area] > 0)
-                            areas = new NodeFile(GlobalVariables.pathtomod + "map\\area.txt");
-                        else
-                            areas = new NodeFile(GlobalVariables.pathtogame + "map\\area.txt");
-
-                        if (areas.LastStatus.HasError)
-                            progress.ReportError($"Critical error: File '{areas.Path}' has an error in line {areas.LastStatus.LineError}");
-                        else
-                        {
-
-                            foreach (Node n in areas.MainNode.Nodes)
-                            {
-                                List<Province> pr = new List<Province>();
-                                foreach (PureValue vr in n.PureValues)
-                                {
-                                    if (vr.Name != "")
-                                    {
-                                        int id = 0;
-                                        if (int.TryParse(vr.Name, out id))
-                                        {
-                                            Province p = GlobalVariables.Provinces.Find(x => x.ID == id);
-                                            if (p == null)
-                                            {
-                                                progress.ReportError($"Error: Invalid province ID found in area '{n.Name}'");
-                                            }
-                                            else
-                                            {
-                                                if(p.Area != null)
-                                                {
-                                                    progress.ReportError($"Alert: Province '{p.ID}' is in multiple areas, '{p.Area}' and '{n.Name}'! Using the second one!");
-                                                }
-                                                pr.Add(p);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            progress.ReportError($"Error: Unexpected value found in area '{n.Name}'");
-                                        }
-                                    }
-                                }
-                                Area a = new Area(n.Name, pr)
-                                {
-                                    OriginalName = n.Name
-                                };
-                                foreach (Province pro in a.Provinces)
-                                    pro.Variables["Area"] = a;
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Unexpected issue with areas! Program will exit after continuing!");
-                        progress.ReportError(e.ToString());
-                        throw new Exception();
-                    }
+                    LoadAreas(progress, areas);
                 });
                 larea.Start();
                 progress.UpdateProgress(12, 0);
@@ -998,46 +173,7 @@ namespace Eu4ModEditor
                 //DONE
                 Task lcontinent = new Task(() =>
                 {
-                    try
-                    {
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.continent] > 0)
-                            continents = new NodeFile(GlobalVariables.pathtomod + "map\\continent.txt");
-                        else
-                            continents = new NodeFile(GlobalVariables.pathtogame + "map\\continent.txt");
-                        if (continents.LastStatus.HasError)
-                            progress.ReportError($"Critical error: File '{continents.Path}' has an error in line {continents.LastStatus.LineError}");
-                        else
-                        {
-                            foreach (Node n in continents.MainNode.Nodes)
-                            {
-                                List<Province> ctp = new List<Province>();
-                                foreach (PureValue s in n.PureValues)
-                                {
-                                    int id = 0;
-                                    if (int.TryParse(s.Name.Trim(), out id)) {
-                                        Province p = GlobalVariables.Provinces.Find(x => x.ID == id);
-                                    if(p == null)
-                                        progress.ReportError($"Error: Invalid province ID found in continent '{n.Name}'");
-                                    else
-                                        ctp.Add(p);
-                                    }
-                                    else
-                                        progress.ReportError($"Error: Unexpected value in continent '{n.Name}'");
-                                }
-                                Continent c = new Continent(n.Name, ctp);
-                                c.OriginalName = n.Name;
-                                foreach (Province pr in c.Provinces)
-                                    pr.Variables["Continent"] = c;
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Unexpected issue with continents! Program will exit after continuing!");
-                        progress.ReportError(e.ToString());
-                    }
+                    LoadContinents(progress, continents);
                 });
                 lcontinent.Start();
                 progress.UpdateProgress(14, 0);
@@ -1045,218 +181,7 @@ namespace Eu4ModEditor
                 //DONE
                 Task ltradenodes = new Task(() =>
                 {
-                    try
-                    {
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.tradenodes] != 0)
-                        {
-                            if (!Directory.Exists(GlobalVariables.pathtomod + "common\\tradenodes\\"))
-                            {
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtomod + "common\\tradenodes\\"}' doesn't exist!");
-                            }
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\tradenodes\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.')[1] == "txt")
-                                        {
-                                            NodeFile nf = new NodeFile(file);
-                                            if (nf.LastStatus.HasError)
-                                                progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                            else
-                                            {
-                                                tradenodesfiles.Add(nf);
-                                                GlobalVariables.ModTradeNodesFiles.Add(nf);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.tradenodes] != 1)
-                        {
-                            if (!Directory.Exists(GlobalVariables.pathtogame + "common\\tradenodes\\"))
-                            {
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtogame + "common\\tradenodes\\"}' doesn't exist!");
-                            }
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\tradenodes\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.')[1] == "txt")
-                                        {
-                                            NodeFile nf = new NodeFile(file, true);
-                                            if (nf.LastStatus.HasError)
-                                                progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                            else
-                                            {
-                                                if (!tradenodesfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                                                    tradenodesfiles.Add(nf);
-                                                GlobalVariables.GameTradeNodesFile = nf;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        foreach (NodeFile tradenodes in tradenodesfiles)
-                        {
-                            foreach (Node node in tradenodes.MainNode.Nodes)
-                            {
-                                if (GlobalVariables.TradeNodes.Any(x => x.Name.ToLower() == node.Name.ToLower()))
-                                    continue;
-                                Tradenode tn = new Tradenode();
-                                tn.Name = node.Name;
-                                tn.NodeFile = tradenodes;
-                                GlobalVariables.TradeNodes.Add(tn);
-                            }
-                        }
-                        string lastTradeNode = "";
-
-                        foreach (NodeFile tradenodes in tradenodesfiles)
-                        {
-                            foreach (Node node in tradenodes.MainNode.Nodes)
-                            {
-                                lastTradeNode = node.Name;
-                                Tradenode tn = GlobalVariables.TradeNodes.Find(x => x.Name.ToLower() == node.Name.ToLower());
-                                tn.NodeFile = tradenodes;
-                                tn.Name = node.Name;
-                                Node ColorNode = node.Nodes.Find(x => x.Name.ToLower() == "color");
-                                if (ColorNode != null)
-                                    tn.Color = Color.FromArgb(int.Parse(ColorNode.PureValues[0].Name), int.Parse(ColorNode.PureValues[1].Name), int.Parse(ColorNode.PureValues[2].Name));
-                                else
-                                {
-                                    tn.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
-                                    //progress.ReportError($"Alert: Trade node '{tn.Name}' has no set colour. Using random! It will be saved with that colour!");
-                                }
-
-                                Variable v = node.Variables.Find(x => x.Name.ToLower() == "inland");
-                                if (v == null)
-                                    tn.Inland = false;
-                                else
-                                {
-                                    if (v.Value == "yes")
-                                        tn.Inland = true;
-                                    else
-                                        tn.Inland = false;
-                                }
-                                v = node.Variables.Find(x => x.Name.ToLower() == "end");
-                                if (v == null)
-                                    tn.Endnode = false;
-                                else
-                                {
-                                    if (v.Value == "yes")
-                                        tn.Endnode = true;
-                                    else
-                                        tn.Endnode = false;
-                                }
-
-                                foreach (Node outgoing in node.Nodes.FindAll(x => x.Name == "outgoing"))
-                                {
-                                    Tradenode dest = GlobalVariables.TradeNodes.Find(x => x.Name.ToLower() == outgoing.Variables.Find(y => y.Name == "name").Value.Replace("\"", "").ToLower());
-                                    if(dest == null)
-                                    {
-                                        progress.ReportError($"Error: Tradenode '{tn.Name}' has an invalid outgoing trade node!");
-                                        continue;
-                                    }
-                                    Destination dn = new Destination() { TradeNode =  dest };
-                                    Node path = outgoing.Nodes.Find(x => x.Name.ToLower() == "path");
-                                    if (path == null) {
-                                        progress.ReportError($"Error: Tradenode '{tn.Name}' has no path!");
-                                        continue;
-                                    }
-                                    dn.Path.AddRange(path.GetPureValuesAsArray());
-                                    if (outgoing.Nodes.Find(x => x.Name.ToLower() == "control") != null)
-                                        dn.Control.AddRange(outgoing.Nodes.Find(x => x.Name.ToLower() == "control").GetPureValuesAsArray());
-                                    tn.Destination.Add(dn);
-                                    dn.TradeNode.Incoming.Add(tn);
-                                }
-
-                                Node members = node.Nodes.Find(x => x.Name.ToLower() == "members");
-                                if (members == null) {
-                                    progress.ReportError($"Error: Tradenode '{tn.Name}' has no provinces!");
-                                }
-                                else { 
-                                    foreach (PureValue value in members.PureValues)
-                                    {
-                                        int id = 0;
-                                        if (!int.TryParse(value.Name, out id))
-                                        {
-                                            progress.ReportError($"Error: Tradenode '{tn.Name}' has an unexpected value in provinces!");
-                                        }
-                                        else
-                                        {
-
-                                            Province p = GlobalVariables.Provinces.Find(x => x.ID == id);
-
-                                            if (p == null)
-                                            {
-                                                progress.ReportError($"Error: Tradenode '{tn.Name}' has an invalid ID in provinces!");
-                                            }
-                                            else
-                                            {
-                                                if(p.TradeNode != null)
-                                                {
-                                                    progress.ReportError($"Error: Province '{p.ID}' belongs to multiple tradenodes! '{p.TradeNode}' and '{tn}'. Using the second one!");
-                                                    p.TradeNode.Provinces.Remove(p);
-                                                }
-                                                tn.Provinces.Add(p);
-                                                p.TradeNode = tn;
-                                            }
-                                        }
-                                    }
-                                }
-
-                                //
-
-                                int location = 0;
-                                Province locationp = null;
-                                Variable locationVar = node.Variables.Find(x => x.Name.ToLower() == "location");
-                                if (locationVar == null)
-                                {
-                                    progress.ReportError($"Alert: '{node.Name}' tradenode has no set location! Picking first province...");
-                                }
-                                else if (!int.TryParse(locationVar.Value, out location))
-                                {
-                                    progress.ReportError($"Error: '{node.Name}' node has incorrect location '{location}', using first valid node province member.");
-                                }
-                                else
-                                {
-                                    locationp = GlobalVariables.Provinces.Find(x => x.ID == location);
-                                    if(locationp == null)
-                                        progress.ReportError($"Error: Location of '{node.Name}' not found, using first valid node province member.");
-                                }
-
-
-
-                                if (locationp == null)
-                                {
-                                    if (!tn.Provinces.Any())
-                                    {
-                                        progress.ReportError($"Error: Tradenode '{node.Name}' has no provinces that can be used as it's location!");
-                                    }
-                                    else
-                                    {
-                                        locationp = tn.Provinces.First();
-                                    }
-                                }
-                                else
-                                {
-                                    tn.Location = locationp;
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Issue with tradenodes! Program will exit after continuing!");
-                        progress.ReportError(e.ToString());
-                    }
+                    LoadTradenodes(progress, tradenodesfiles);
                 });
                 ltradenodes.Start();
                 progress.UpdateProgress(15, 0);
@@ -1264,83 +189,7 @@ namespace Eu4ModEditor
                 //DONE
                 Task ldefaultmap = new Task(() =>
                 {
-                    try
-                    {
-                        NodeFile defaultmap;
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.mapdefault] > 0)
-                            defaultmap = new NodeFile(GlobalVariables.pathtomod + "map\\default.map");
-                        else
-                            defaultmap = new NodeFile(GlobalVariables.pathtogame + "map\\default.map");
-
-                        if (defaultmap.LastStatus.HasError)
-                            progress.ReportError($"Critical error: File '{defaultmap.Path}' has an error in line {defaultmap.LastStatus.LineError}");
-                        else
-                        {
-
-                            Variable width = defaultmap.MainNode.Variables.Find(x => x.Name.ToLower() == "width");
-                            Variable height = defaultmap.MainNode.Variables.Find(x => x.Name.ToLower() == "height");
-
-                            if (width == null || height == null)
-                            {
-                                progress.ReportError($"Error: No width or heigh specified in default.map!");
-                            }
-                            else {
-
-                                if (!int.TryParse(width.Value, out GlobalVariables.MapWidth) || !int.TryParse(height.Value, out GlobalVariables.MapHeight))
-                                {
-                                    progress.ReportError($"Error: Invalid values given for width or height in default.map!");
-                                }
-                            }
-
-                            Node seastarts = defaultmap.MainNode.Nodes.Find(x => x.Name.ToLower() == "sea_starts");
-                            if (seastarts == null)
-                            {
-                                progress.ReportError($"Alert: No sea_starts in default.map.");
-                            }
-                            else
-                            {
-                                foreach (string sea in seastarts.GetPureValuesAsArray())
-                                {
-                                    if (int.TryParse(sea, out int id))
-                                    {
-                                        Province f = GlobalVariables.Provinces.Find(x => x.ID == id);
-                                        if (f == null)
-                                            progress.ReportError($"Error: In default.map, sea_starts has invalid province ID!");
-                                        else
-                                            f.Sea = true;
-                                    }
-                                    else
-                                    {
-                                        progress.ReportError($"Error: In default.map, sea_starts has unexpected value!");
-                                    }
-                                }
-                            }
-
-                            foreach (string lake in defaultmap.MainNode.Nodes.Find(x => x.Name.ToLower() == "lakes").GetPureValuesAsArray())
-                            {
-                                if (int.TryParse(lake, out int id))
-                                {
-                                    Province f = GlobalVariables.Provinces.Find(x => x.ID == id);
-                                    if (f == null)
-                                        progress.ReportError($"Error: In default.map, lakes has invalid province ID!");
-                                    else
-                                        f.Lake = true;
-                                }
-                                else
-                                {
-                                    progress.ReportError($"Error: In default.map, lakes has unexpected value!");
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Issue with default.map! Program will exit after continuing!");
-                        progress.ReportError(e.ToString());
-                        throw new Exception();
-                    }
+                    LoadDefault(progress);
                 });
                 ldefaultmap.Start();
                 progress.UpdateProgress(17, 0);
@@ -1348,48 +197,7 @@ namespace Eu4ModEditor
                 //DONE
                 Task lmap = new Task(() =>
                 {
-                    try
-                    {
-                        Bitmap copiedBitmap = new Bitmap(GlobalVariables.ProvincesMapBitmap);
-                        LockBitmap bitmap = new LockBitmap(copiedBitmap);
-                        bitmap.LockBits();
-
-                        int heightInterval = bitmap.Height / 10;
-                        int heightValue = 0;
-                        int va = 10;
-
-                        for (int y = 1; y < bitmap.Height; y++)
-                        {
-                            for (int x = 1; x < bitmap.Width; x += 2)
-                            {
-                                Color c = bitmap.GetPixel(x, y);
-                                if (c != Color.FromArgb(1, 255, 255, 255))
-                                {
-                                    Province p = GlobalVariables.CubeArray[c.R, c.G, c.B];
-                                    if (p != null)
-                                    {
-                                        p.Pixel = new Point(x, y);
-                                        GraphicsMethods.FloodFill(ref bitmap, new Point(x, y), c, Color.FromArgb(1, 255, 255, 255), ref p.Pixels);
-                                    }
-                                }
-                            }
-                            heightValue++;
-                            if (heightInterval == heightValue)
-                            {
-                                heightValue = 0;
-                                va += 1;
-                            }
-                        }
-
-                        bitmap.UnlockBits();
-                    }
-                    catch (Exception e)
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Issue with the map! Program will exit after continuing!");
-                        progress.ReportError(e.ToString());
-                    }
+                    LoadMap(progress);  
                 });
                 lmap.Start();
                 progress.UpdateProgress(2, 0);
@@ -1575,129 +383,7 @@ namespace Eu4ModEditor
                 //DONE
                 Task ltradecomapnies = new Task(() =>
                 {
-                    try
-                    {
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.tradecompanies] != 0)
-                        {
-                            if (!Directory.Exists(GlobalVariables.pathtomod + "common\\trade_companies\\"))
-                            {
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtomod + "common\\trade_companies\\"}' not found!");
-                            }
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\trade_companies\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.')[1] == "txt")
-                                        {
-                                            NodeFile nf = new NodeFile(file);
-                                            if (nf.LastStatus.HasError)
-                                                progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                            else
-                                            {
-                                                tradecompanyfiles.Add(nf);
-                                                GlobalVariables.ModTradeCompanyFiles.Add(nf);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.tradecompanies] != 1)
-                        {
-                            if (!Directory.Exists(GlobalVariables.pathtogame + "common\\trade_companies\\"))
-                            {
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtogame + "common\\trade_companies\\"}' not found!");
-                            }
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\trade_companies\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.')[1] == "txt")
-                                        {
-                                            NodeFile nf = new NodeFile(file, true);
-                                            if (nf.LastStatus.HasError)
-                                                progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                            else
-                                            {
-                                                if (!tradecompanyfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
-                                                    tradecompanyfiles.Add(nf);
-                                                GlobalVariables.GameTradeCompanyFile = nf;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        foreach (NodeFile tradecompanies in tradecompanyfiles)
-                        {
-                            foreach (Node node in tradecompanies.MainNode.Nodes)
-                            {
-                                TradeCompany tc = GlobalVariables.TradeCompanies.Find(x => x.Name.ToLower() == node.Name.ToLower());
-                                if (tc == null)
-                                {
-                                    tc = new TradeCompany() { Name = node.Name };
-                                    GlobalVariables.TradeCompanies.Add(tc);
-                                }
-                                tc.NodeFile = tradecompanies;
-                                Node ColorNode = node.Nodes.Find(x => x.Name.ToLower() == "color");
-                                if (ColorNode != null)
-                                    tc.Color = Color.FromArgb(int.Parse(ColorNode.PureValues[0].Name), int.Parse(ColorNode.PureValues[1].Name), int.Parse(ColorNode.PureValues[2].Name));
-                                else                                
-                                    tc.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
-
-
-                                Node provinces = node.Nodes.Find(x => x.Name.ToLower() == "provinces");
-                                if (provinces == null)
-                                {
-                                    progress.ReportError($"Alert: Trade company '{tc.Name}' has no provinces specified!");
-                                }
-                                else
-                                {
-                                    foreach (PureValue value in provinces.PureValues)
-                                    {
-                                        int id = 0;
-                                        if (!int.TryParse(value.Name, out id))
-                                        {
-                                            progress.ReportError($"Error: Trade company '{tc.Name}' has unexpected value in provinces!");
-                                        }
-                                        else
-                                        {
-                                            Province p = GlobalVariables.Provinces.Find(x => x.ID == id);
-                                            if (p == null)
-                                            {
-                                                progress.ReportError($"Alert: Trade company '{tc.Name}' has invalid province ID {id}!");
-                                            }
-                                            else
-                                            {
-                                                if (p.TradeCompany != null)
-                                                {
-                                                    progress.ReportError($"Alert: Province {p.ID} belongs to many trade companies! '{p.TradeCompany.Name}' and '{tc.Name}'. Using second!");
-                                                }
-                                                tc.Provinces.Add(p);
-                                                p.TradeCompany = tc;
-                                            }
-                                        }
-                                    }
-                                }
-                                foreach (Node TCnames in node.Nodes.FindAll(x => x.Name.ToLower() == "names"))
-                                {
-                                    tc.Names.Add(TCnames.Variables.Find(x => x.Name.ToLower() == "name").Value);
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Unexpected issue with trade companies! Program will exit after continuing!");
-                        progress.ReportError(e.ToString());
-                        throw new Exception();
-                    }
+                    LoadTradeCompanies(progress, tradecompanyfiles);
                 });
                 ltradecomapnies.Start();
                 progress.UpdateProgress(21, 0);
@@ -1751,285 +437,7 @@ namespace Eu4ModEditor
                 //DONE
                 Task lclimate = new Task(() =>
                 {
-                    try
-                    {
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.climate] > 0)
-                            climate = new NodeFile(GlobalVariables.pathtomod + "map\\climate.txt");
-                        else
-                            climate = new NodeFile(GlobalVariables.pathtogame + "map\\climate.txt");
-
-                        if (climate.LastStatus.HasError)
-                            progress.ReportError($"Critical error: File '{climate.Path}' has an error in line {climate.LastStatus.LineError}");
-                        else
-                        {
-                            Node tropical = climate.MainNode.Nodes.Find(x => x.Name.ToLower() == "tropical");                           
-                            if (tropical != null)
-                            {
-                                int id = 0;
-                                Province p = null;
-                                foreach (PureValue pv in tropical.PureValues)
-                                {
-                                    if (!int.TryParse(pv.Name, out id))
-                                    {
-                                        progress.ReportError($"Error: tropical in climate.txt has unexpected value '{id}'!");
-                                    }
-                                    else
-                                    {
-                                        p = GlobalVariables.Provinces.Find(x => x.ID == id);
-                                        if(p == null)
-                                        {
-                                            progress.ReportError($"Error: tropical in climate.txt has invalid province ID '{id}'!");
-                                        }
-                                        else
-                                        {
-                                            p.Climate = 1;
-                                        }
-                                    }                           
-                                }
-                            }
-                            Node arid = climate.MainNode.Nodes.Find(x => x.Name.ToLower() == "arid");
-                            if (arid != null)
-                            {
-                                int id = 0;
-                                Province p = null;
-                                foreach (PureValue pv in arid.PureValues)
-                                {
-                                    if (!int.TryParse(pv.Name, out id))
-                                    {
-                                        progress.ReportError($"Error: arid in climate.txt has unexpected value '{id}'!");
-                                    }
-                                    else
-                                    {
-                                        p = GlobalVariables.Provinces.Find(x => x.ID == id);
-                                        if (p == null)
-                                        {
-                                            progress.ReportError($"Error: arid in climate.txt has invalid province ID '{id}'!");
-                                        }
-                                        else
-                                        {
-                                            p.Climate = 2;
-                                        }
-                                    }
-                                }
-                            }
-                            Node arctic = climate.MainNode.Nodes.Find(x => x.Name.ToLower() == "arctic");
-                            if (arctic != null)
-                            {
-                                int id = 0;
-                                Province p = null;
-                                foreach (PureValue pv in arctic.PureValues)
-                                {
-                                    if (!int.TryParse(pv.Name, out id))
-                                    {
-                                        progress.ReportError($"Error: arctic in climate.txt has unexpected value '{id}'!");
-                                    }
-                                    else
-                                    {
-                                        p = GlobalVariables.Provinces.Find(x => x.ID == id);
-                                        if (p == null)
-                                        {
-                                            progress.ReportError($"Error: arctic in climate.txt has invalid province ID '{id}'!");
-                                        }
-                                        else
-                                        {
-                                            p.Climate = 3;
-                                        }
-                                    }
-                                }
-                            }
-
-
-                            Node mild_winter = climate.MainNode.Nodes.Find(x => x.Name.ToLower() == "mild_winter");
-                            if (mild_winter != null)
-                            {
-                                int id = 0;
-                                Province p = null;
-                                foreach (PureValue pv in mild_winter.PureValues)
-                                {
-                                    if (!int.TryParse(pv.Name, out id))
-                                    {
-                                        progress.ReportError($"Error: mild_winter in climate.txt has unexpected value '{id}'!");
-                                    }
-                                    else
-                                    {
-                                        p = GlobalVariables.Provinces.Find(x => x.ID == id);
-                                        if (p == null)
-                                        {
-                                            progress.ReportError($"Error: mild_winter in climate.txt has invalid province ID '{id}'!");
-                                        }
-                                        else
-                                        {
-                                            p.Winter = 1;
-                                        }
-                                    }
-                                }
-
-                            }
-                            Node normal_winter = climate.MainNode.Nodes.Find(x => x.Name.ToLower() == "normal_winter");
-                            if (normal_winter != null)
-                            {
-                                int id = 0;
-                                Province p = null;
-                                foreach (PureValue pv in normal_winter.PureValues)
-                                {
-                                    if (!int.TryParse(pv.Name, out id))
-                                    {
-                                        progress.ReportError($"Error: normal_winter in climate.txt has unexpected value '{id}'!");
-                                    }
-                                    else
-                                    {
-                                        p = GlobalVariables.Provinces.Find(x => x.ID == id);
-                                        if (p == null)
-                                        {
-                                            progress.ReportError($"Error: normal_winter in climate.txt has invalid province ID '{id}'!");
-                                        }
-                                        else
-                                        {
-                                            p.Winter = 2;
-                                        }
-                                    }
-                                }
-                            }
-                            Node severe_winter = climate.MainNode.Nodes.Find(x => x.Name.ToLower() == "severe_winter");
-                            if (severe_winter != null)
-                            {
-                                int id = 0;
-                                Province p = null;
-                                foreach (PureValue pv in severe_winter.PureValues)
-                                {
-                                    if (!int.TryParse(pv.Name, out id))
-                                    {
-                                        progress.ReportError($"Error: severe_winter in climate.txt has unexpected value '{id}'!");
-                                    }
-                                    else
-                                    {
-                                        p = GlobalVariables.Provinces.Find(x => x.ID == id);
-                                        if (p == null)
-                                        {
-                                            progress.ReportError($"Error: severe_winter in climate.txt has invalid province ID '{id}'!");
-                                        }
-                                        else
-                                        {
-                                            p.Winter = 3;
-                                        }
-                                    }
-                                }
-                            }
-
-
-
-                            Node impassable = climate.MainNode.Nodes.Find(x => x.Name.ToLower() == "impassable");
-                            if (impassable != null)
-                            {
-                                int id = 0;
-                                Province p = null;
-                                foreach (PureValue pv in impassable.PureValues)
-                                {
-                                    if (!int.TryParse(pv.Name, out id))
-                                    {
-                                        progress.ReportError($"Error: impassable in climate.txt has unexpected value '{id}'!");
-                                    }
-                                    else
-                                    {
-                                        p = GlobalVariables.Provinces.Find(x => x.ID == id);
-                                        if (p == null)
-                                        {
-                                            progress.ReportError($"Error: impassable in climate.txt has invalid province ID '{id}'!");
-                                        }
-                                        else
-                                        {
-                                            p.Impassable = 1;
-                                        }
-                                    }
-                                }
-                            }
-
-
-
-                            Node mild_monsoon = climate.MainNode.Nodes.Find(x => x.Name.ToLower() == "mild_monsoon");
-                            if (mild_monsoon != null)
-                            {
-                                int id = 0;
-                                Province p = null;
-                                foreach (PureValue pv in mild_monsoon.PureValues)
-                                {
-                                    if (!int.TryParse(pv.Name, out id))
-                                    {
-                                        progress.ReportError($"Error: mild_monsoon in climate.txt has unexpected value '{id}'!");
-                                    }
-                                    else
-                                    {
-                                        p = GlobalVariables.Provinces.Find(x => x.ID == id);
-                                        if (p == null)
-                                        {
-                                            progress.ReportError($"Error: mild_monsoon in climate.txt has invalid province ID '{id}'!");
-                                        }
-                                        else
-                                        {
-                                            p.Monsoon = 1;
-                                        }
-                                    }
-                                }
-                            }
-                            Node normal_monsoon = climate.MainNode.Nodes.Find(x => x.Name.ToLower() == "normal_monsoon");
-                            if (normal_monsoon != null)
-                            {
-                                int id = 0;
-                                Province p = null;
-                                foreach (PureValue pv in normal_monsoon.PureValues)
-                                {
-                                    if (!int.TryParse(pv.Name, out id))
-                                    {
-                                        progress.ReportError($"Error: normal_monsoon in climate.txt has unexpected value '{id}'!");
-                                    }
-                                    else
-                                    {
-                                        p = GlobalVariables.Provinces.Find(x => x.ID == id);
-                                        if (p == null)
-                                        {
-                                            progress.ReportError($"Error: normal_monsoon in climate.txt has invalid province ID '{id}'!");
-                                        }
-                                        else
-                                        {
-                                            p.Monsoon = 2;
-                                        }
-                                    }
-                                }
-                            }
-                            Node severe_monsoon = climate.MainNode.Nodes.Find(x => x.Name.ToLower() == "severe_monsoon");
-                            if (severe_monsoon != null)
-                            {
-                                int id = 0;
-                                Province p = null;
-                                foreach (PureValue pv in severe_monsoon.PureValues)
-                                {
-                                    if (!int.TryParse(pv.Name, out id))
-                                    {
-                                        progress.ReportError($"Error: severe_monsoon in climate.txt has unexpected value '{id}'!");
-                                    }
-                                    else
-                                    {
-                                        p = GlobalVariables.Provinces.Find(x => x.ID == id);
-                                        if (p == null)
-                                        {
-                                            progress.ReportError($"Error: severe_monsoon in climate.txt has invalid province ID '{id}'!");
-                                        }
-                                        else
-                                        {
-                                            p.Monsoon = 3;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Unexpected issue with climate! Program will exit after continuing!");
-                        progress.ReportError(e.ToString());
-                    }
+                    LoadClimate(progress, climate);
                 });
                 lclimate.Start();
                 progress.UpdateProgress(24, 0);
@@ -2195,187 +603,7 @@ namespace Eu4ModEditor
                 //DONE
                 Task lcomcountries = new Task(() =>
                 {
-                    try
-                    {
-                        List<bool> GameFiles = new List<bool>();
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.commonCountries] != 0)
-                        {
-
-                            if (!Directory.Exists(GlobalVariables.pathtomod + "common\\countries\\"))
-                            {
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtomod + "common\\countries\\"}' not found!");
-                            }
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "common\\countries\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.')[1] == "txt")
-                                        {
-                                            NodeFile nf = new NodeFile(file);
-                                            if (nf.LastStatus.HasError)
-                                                progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                            else
-                                            {
-                                                CountryCommonFiles.Add(nf);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.commonCountries] != 1)
-                        {
-                            if (!Directory.Exists(GlobalVariables.pathtogame + "common\\countries\\"))
-                            {
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtogame + "common\\countries\\"}' not found!");
-                            }
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "common\\countries\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.')[1] == "txt")
-                                        {
-                                            if (!CountryCommonFiles.Any(x => x.Path.Split('\\').Last().Replace(".txt", "") == file.Split('\\').Last().Replace(".txt", "")))
-                                            {
-                                                NodeFile nf = new NodeFile(file, true);
-                                                if (nf.LastStatus.HasError)
-                                                    progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                                else
-                                                {
-                                                    CountryCommonFiles.Add(nf);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        //bw.ReportProgress(84);
-
-                        foreach (NodeFile file in CountryCommonFiles)
-                        {
-                            string name = file.Path.Split('\\').Last().Split('.')[0];
-                            if (!NameToTag.ContainsKey(name))
-                                continue;
-                            Country c = new Country();
-                            GlobalVariables.Countries.Add(c);
-                            c.CountryTagsFile = NameToFile[name];
-                            c.CommonFile = file;
-                            NodeFile nodefile = file;
-
-                            c.FullName = name;
-                            c.OriginalFullName = name;
-                            c.Tag = NameToTag[name];
-                            c.OriginalTag = c.Tag;
-
-                            Node colorn = nodefile.MainNode.Nodes.Find(x => x.Name.ToLower() == "color");
-
-                            if(colorn == null)
-                            {
-                                progress.ReportError($"Error: Country '{c.FullName}' has no color specified!");
-                            }
-                            else
-                            {
-                                string[] colort = colorn.GetPureValuesAsArray();
-                                if(colort.Count() < 3)
-                                {
-                                    progress.ReportError($"Error: Country '{c.FullName}' has incorrect number of color values specified!");
-                                }
-                                else
-                                {
-                                    if(colort[0].Contains(".") || colort[1].Contains(".") || colort[2].Contains("."))
-                                    {
-                                        double r = 0;
-                                        double g = 0;
-                                        double b = 0;
-                                        if (!double.TryParse(colort[0], NumberStyles.Any, CultureInfo.InvariantCulture , out r))
-                                            progress.ReportError($"Error: Country '{c.FullName}' has incorrect color values!");
-                                        else if (!double.TryParse(colort[1], NumberStyles.Any, CultureInfo.InvariantCulture, out g))
-                                            progress.ReportError($"Error: Country '{c.FullName}' has incorrect color values!");
-                                        else if (!double.TryParse(colort[2], NumberStyles.Any, CultureInfo.InvariantCulture, out b))
-                                            progress.ReportError($"Error: Country '{c.FullName}' has incorrect color values!");
-                                        else
-                                            c.Color = Color.FromArgb((int)(r*255), (int)(g * 255), (int)(b * 255));
-                                    }
-                                    else
-                                    {
-                                        int r = 0;
-                                        int g = 0;
-                                        int b = 0;
-                                        if (!int.TryParse(colort[0], out r))
-                                            progress.ReportError($"Error: Country '{c.FullName}' has incorrect color values!");
-                                        else if (!int.TryParse(colort[1], out g))
-                                            progress.ReportError($"Error: Country '{c.FullName}' has incorrect color values!");
-                                        else if (!int.TryParse(colort[2], out b))
-                                            progress.ReportError($"Error: Country '{c.FullName}' has incorrect color values!");
-                                        else
-                                            c.Color = Color.FromArgb(r, g, b);
-                                    }
-                                }
-                            }
-                                                  
-
-                            Variable gfxcul = nodefile.MainNode.Variables.Find(x => x.Name.ToLower() == "graphical_culture");
-                            if (gfxcul != null)
-                                c.GraphicalCulture = gfxcul.Value;
-                            else
-                                progress.ReportError($"Error: Country '{c.FullName}' has no graphical culture set!");
-
-                            Node monarchNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name.ToLower() == "monarch_names");
-                            if (monarchNamesNode != null)
-                            {
-                                foreach (Variable monarchName in monarchNamesNode.Variables)
-                                {
-                                    int v = 0;
-                                    if (int.TryParse(monarchName.Value, out v))
-                                    {
-                                        if (!c.MonarchNames.Any(x => x.Name == monarchName.Name.Replace("\"", "").Trim()))
-                                        {
-                                            c.MonarchNames.Add(new MonarchName(monarchName.Name.Replace("\"", "").Trim(), v));
-                                        }
-                                    }
-                                    else
-                                        progress.ReportError($"Error: Country '{c.FullName}' has invalid monarch name chance!");
-                                }
-                            }
-                            Node leaderNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name.ToLower() == "leader_names");
-                            if (leaderNamesNode != null)
-                                foreach (PureValue leadername in leaderNamesNode.PureValues)
-                                    if (!c.LeaderNames.Contains(leadername.Name.Replace("\"", "").Trim()))
-                                        c.LeaderNames.Add(leadername.Name.Replace("\"", "").Trim());
-                            Node shipNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name.ToLower() == "ship_names");
-                            if (shipNamesNode != null)
-                                foreach (PureValue shipname in shipNamesNode.PureValues)
-                                    if (!c.ShipNames.Contains(shipname.Name.Replace("\"", "").Trim()))
-                                        c.ShipNames.Add(shipname.Name.Replace("\"", "").Trim());
-                            Node armyNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name.ToLower() == "army_names");
-                            if (armyNamesNode != null)
-                                foreach (PureValue armyname in armyNamesNode.PureValues)
-                                    if (!c.ArmyNames.Contains(armyname.Name.Replace("\"", "").Trim()))
-                                        c.ArmyNames.Add(armyname.Name.Replace("\"", "").Trim());
-                            Node fleetNamesNode = nodefile.MainNode.Nodes.Find(x => x.Name.ToLower() == "fleet_names");
-                            if (fleetNamesNode != null)
-                                foreach (PureValue fleetname in fleetNamesNode.PureValues)
-                                    if (!c.FleetNames.Contains(fleetname.Name.Replace("\"", "").Trim()))
-                                        c.FleetNames.Add(fleetname.Name.Replace("\"", "").Trim());
-
-
-
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Unexpected issue with common countries! Program will exit after continuing!");
-                        progress.ReportError(e.ToString());
-                        throw new Exception();
-                    }
+                    LoadCommonCountries(progress, CountryCommonFiles, NameToTag, NameToFile);
                 });
                 lcomcountries.Start();
                 progress.UpdateProgress(10, 0);
@@ -2388,174 +616,7 @@ namespace Eu4ModEditor
                 //DONE
                 Task lcountries = new Task(() =>
                 {
-                    try
-                    {
-                        List<NodeFile> CountryHistoryFiles = new List<NodeFile>();
-
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.historyCountries] != 0)
-                        {
-
-                            if (!Directory.Exists(GlobalVariables.pathtomod + "history\\countries\\"))
-                            {
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtomod + "history\\countries\\"}' wasn't found!");
-                            }
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "history\\countries\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.')[1] == "txt")
-                                        {
-                                            NodeFile nf = new NodeFile(file);
-                                            if (nf.LastStatus.HasError)
-                                                progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                            else
-                                            {
-                                                CountryHistoryFiles.Add(nf);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.historyCountries] != 1)
-                        {
-                            if (!Directory.Exists(GlobalVariables.pathtogame + "history\\countries\\"))
-                            {
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtogame + "history\\countries\\"}' wasn't found!");
-                            }
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "history\\countries\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.')[1] == "txt")
-                                        {
-                                            if (!CountryHistoryFiles.Any(x => x.Path.Split('\\').Last().Replace(".txt", "") == file.Split('\\').Last().Replace(".txt", "")))
-                                            {
-                                                NodeFile nf = new NodeFile(file, true);
-                                                if (nf.LastStatus.HasError)
-                                                    progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                                else
-                                                {
-                                                    CountryHistoryFiles.Add(nf);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        foreach (NodeFile file in CountryHistoryFiles)
-                        {
-                            string fs = file.Path.Split('\\').Last();
-                            string tag = "";
-
-                            tag = fs.Split('-')[0].Trim().ToUpper();
-                            if (tag.Length > 3)
-                                tag = tag.Substring(0, 3);
-
-                            Country c = GlobalVariables.Countries.Find(x => x.Tag == tag);
-                            if (c == null)
-                            {
-                                progress.ReportError($"Alert: History file '{fs}' has no matching country!");
-                                continue;
-                            }
-
-                            c.HistoryFile = file;
-                            NodeFile nodefile = file;
-                            foreach (Variable v in nodefile.MainNode.Variables)
-                            {
-                                switch (v.Name.ToLower())
-                                {
-                                    case "government":
-                                        Government g = GlobalVariables.Governments.Find(x => x.Type.ToLower() == v.Value.ToLower());
-                                        if(g == null)
-                                        {
-                                            progress.ReportError($"Error: Government '{v.Value}' in country '{c.FullName}' wasn't found!");
-                                        }
-                                        c.Government = g;                                                                              
-                                        break;
-                                    case "add_government_reform":
-                                        c.GovernmentReform = v.Value;
-                                        break;
-                                    case "technology_group":
-                                        if(!GlobalVariables.TechGroups.Contains(v.Value.ToLower()))
-                                            progress.ReportError($"Error: Technology group '{v.Value}' in country '{c.FullName}' wasn't found!");
-                                        c.TechnologyGroup = v.Value;
-                                        break;
-                                    case "capital":
-                                        int val = 0;
-                                        if (int.TryParse(v.Value, out val))
-                                        {
-                                            c.CapitalID = val;
-                                            Province p = GlobalVariables.Provinces.Find(x => x.ID == c.CapitalID);
-                                            if(p != null)
-                                                c.Capital = p;
-                                            else
-                                                progress.ReportError($"Error: Province ID '{val}' in country '{c.FullName}' capital isn't valid!");
-                                        }
-                                        else
-                                        {
-                                            progress.ReportError($"Error: Unexpected value '{v.Value}' in country '{c.FullName}' capital!");
-                                        }
-                                        break;
-                                    case "religion":
-                                        Religion r = Religion.Religions.Find(x => x.Name.ToLower() == v.Value.ToLower());
-                                        if(r == null)
-                                        {
-                                            progress.ReportError($"Error: Religion '{v.Value}' in country '{c.FullName}' not found!");
-                                        }
-                                        c.Religion = r;
-                                        break;
-                                    case "primary_culture":
-                                        Culture cl = Culture.Cultures.Find(x => x.Name.ToLower() == v.Value.ToLower());
-                                        if(cl == null)
-                                        {
-                                            progress.ReportError($"Error: Culture '{v.Value}' in country '{c.FullName}' not found!");
-                                        }
-                                        c.PrimaryCulture = cl;
-                                        break;
-                                    case "government_rank":
-                                        int va = 0;
-                                        if (int.TryParse(v.Value, out va))
-                                        {
-                                            c.GovernmentRank = va;
-                                        }
-                                        else
-                                        {
-                                            progress.ReportError($"Error: Unexpected value '{v.Value}' in country '{c.FullName}' government rank!");
-                                        }
-                                        break;
-                                }
-                            }
-                        }
-
-
-                        foreach (Country c in GlobalVariables.Countries)
-                        {
-                            if (c != Country.NoCountry)
-                            {
-                                if (c.HistoryFile == null)
-                                {
-                                    c.HistoryFile = new NodeFile(GlobalVariables.pathtomod + $"history\\countries\\{c.Tag} - {c.FullName}.txt");
-                                    if (c.HistoryFile.LastStatus.HasError)
-                                        progress.ReportError($"Critical error: File '{c.HistoryFile.Path}' has an error in line {c.HistoryFile.LastStatus.LineError}");
-                                    c.HistoryFile.SaveFile();
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Unexpected issue with history countries! Program will exit after continuing!");
-                        progress.ReportError(e.ToString());
-                        throw new Exception();
-                    }
+                    LoadHistoryCountries(progress);
                 });
                 lcountries.Start();
                 progress.UpdateProgress(9, 0);
@@ -2563,188 +624,7 @@ namespace Eu4ModEditor
                 //DONE
                 Task lprovhistory = new Task(() =>
                 {
-                    try
-                    {
-                        List<NodeFile> Files = new List<NodeFile>();
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.historyProvinces] != 0)
-                        {
-                            if (!Directory.Exists(GlobalVariables.pathtomod + "history\\provinces\\"))
-                            {
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtomod + "history\\provinces\\"}' not found!");
-                            }
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "history\\provinces\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.').Last() == "txt")
-                                        {
-                                            try
-                                            {
-                                                NodeFile nf = new NodeFile(file);
-                                                if (nf.LastStatus.HasError)
-                                                    progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                                else
-                                                {
-                                                    Files.Add(nf);
-                                                }
-                                            }
-                                            catch
-                                            {
-                                                progress.ReportError($"File '{file}' is unusable!");
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.historyProvinces] != 1)
-                        {
-                            if (!Directory.Exists(GlobalVariables.pathtogame + "history\\provinces\\"))
-                            {
-                                progress.ReportError($"Error: Directory '{GlobalVariables.pathtogame + "history\\provinces\\"}' not found!");
-                            }
-                            else
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "history\\provinces\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Split('.').Last() == "txt")
-                                        {
-                                            if (!Files.Any(x => x.Path.Split('\\').Last() == file.Split('\\').Last()))
-                                            {
-                                                try
-                                                {
-                                                    NodeFile nf = new NodeFile(file, true);
-                                                    if (nf.LastStatus.HasError)
-                                                        progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                                    else
-                                                        Files.Add(nf);
-                                                }
-                                                catch
-                                                {
-                                                    progress.ReportError($"File '{file}' is unusable!");
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        foreach (NodeFile file in Files)
-                        {
-                            string tocheck = file.Path.Split('\\').Last();
-                            string created = "";
-                            
-                            for(int a = 0; a < tocheck.Length; a++)
-                            {
-                                if (char.IsDigit(tocheck[a]))
-                                    created += tocheck[a];
-                                else
-                                    break;
-                            }
-                            bool b = int.TryParse(created, out int id);
-                            if (b)
-                            {
-                                Province province = GlobalVariables.Provinces.Find(x => x.ID == id);
-                                if (province == null)
-                                {
-                                    progress.ReportError($"Alert: File '{file.FileName}' couldn't be loaded because it's not in definition.csv!");
-                                    continue;
-                                }
-
-                                province.HistoryFile = file;
-                                NodeFile nodefile = file;
-                                if (nodefile.MainNode.Variables.Any())
-                                    GlobalVariables.TotalUsableProvinces++;
-
-                                //CHECK
-                                ReadProvinceValuesFromNode(province, nodefile.MainNode, progress);
-
-                                foreach (Node dateNode in nodefile.MainNode.Nodes)
-                                {
-                                    if (dateNode.Name.Contains("."))
-                                    {
-                                        try
-                                        {
-                                            if (dateNode.Name.Where(x => x == '.').Count() >= 2)
-                                            {
-
-                                                int y = 0;
-                                                int m = 0;
-                                                int d = 0;
-
-                                                if (!int.TryParse(dateNode.Name.Split('.')[0], out y))
-                                                    progress.ReportError($"Error: Date entry '{dateNode.Name.Split('.')[0]}.{dateNode.Name.Split('.')[1]}.{dateNode.Name.Split('.')[2]}' in province '{province.ID}' is incorrect!");
-                                                else if (!int.TryParse(dateNode.Name.Split('.')[1], out m))
-                                                    progress.ReportError($"Error: Date entry '{dateNode.Name.Split('.')[0]}.{dateNode.Name.Split('.')[1]}.{dateNode.Name.Split('.')[2]}' in province '{province.ID}' is incorrect!");
-                                                else if (!int.TryParse(dateNode.Name.Split('.')[2], out d))
-                                                    progress.ReportError($"Error: Date entry '{dateNode.Name.Split('.')[0]}.{dateNode.Name.Split('.')[1]}.{dateNode.Name.Split('.')[2]}' in province '{province.ID}' is incorrect!");
-                                                else
-                                                {
-                                                    DateTime date = new DateTime(y, m, d);
-                                                    if (DateTime.Compare(date, GlobalVariables.StartDate) <= 0)
-                                                    {
-                                                        ReadProvinceValuesFromNode(province, dateNode);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        catch
-                                        {
-                                            progress.ReportError($"Alert: Date entry '{dateNode.Name}' in province {id} is incorrect! Ignoring.");
-                                        }
-                                    }
-                                }
-
-                                if (province.TradeGood != null)
-                                {
-                                    province.TradeGood.TotalDev += province.Tax + province.Production + province.Manpower;
-                                }
-
-                                Node n = nodefile.MainNode.Nodes.Find(x => x.Name.ToLower() == "latent_trade_goods");
-                                if (n != null)
-                                {
-                                    if (n.PureValues.Any())
-                                    {
-                                        province.LatentTradeGood = GlobalVariables.TradeGoods.Find(x => x.Name.ToLower() == n.PureValues[0].Name.Trim().ToLower());
-                                        if (province.LatentTradeGood != null)
-                                        {
-                                            province.LatentTradeGood.TotalProvinces++;
-                                            province.TradeGood.TotalDev += province.Tax + province.Production + province.Manpower;
-                                        }
-                                        else
-                                        {
-                                            progress.ReportError($"Error: Latent trade good in province {id} is incorrect! Ignoring.");
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                        if (GlobalVariables.pathtomod != "")
-                        {
-                            foreach (Province p in GlobalVariables.Provinces)
-                            {
-                                if (p.HistoryFile == null)
-                                {
-                                    string s = GlobalVariables.pathtomod + "history\\provinces\\" + (p.ID) + ".txt";
-                                    NodeFile nf = new NodeFile(s, dontread: true);
-                                    p.HistoryFile = nf;
-                                }
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Unexpected issue with province history! Program will exit after continuing!");
-                        progress.ReportError(e.ToString());
-                        throw new Exception();
-                    }
+                    LoadProvinces(progress);
                 });
                 lprovhistory.Start();
                 progress.UpdateProgress(11, 0);
@@ -2754,8 +634,6 @@ namespace Eu4ModEditor
                     progress.UpdateProgress(9, 1);
                 else if (lcountries.IsCompleted)
                     progress.UpdateProgress(9, 2);
-
-
 
                 await lprovhistory;
                 if (lprovhistory.IsFaulted)
@@ -2770,61 +648,7 @@ namespace Eu4ModEditor
                 //DONE
                 Task lregion = new Task(() =>
                 {
-                    try
-                    {
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.region] > 0)
-                            regions = new NodeFile(GlobalVariables.pathtomod + "map\\region.txt");
-                        else
-                            regions = new NodeFile(GlobalVariables.pathtogame + "map\\region.txt");
-
-                        if (regions.LastStatus.HasError)
-                            progress.ReportError($"Critical error: File '{regions}' has an error in line {regions.LastStatus.LineError}");
-                        else
-                        {
-                            foreach (Node n in regions.MainNode.Nodes)
-                            {
-                                List<Area> ar = new List<Area>();
-                                Node nd = n.Nodes.Find(x => x.Name.ToLower() == "areas");
-                                if (nd != null)
-                                {
-                                    foreach (PureValue vr in nd.PureValues)
-                                    {
-                                        if (vr.Name != "")
-                                        {
-                                            Area are = GlobalVariables.Areas.Find(x => x.Name.ToLower() == vr.Name.ToLower());
-                                            if (are != null)
-                                            {
-                                                if (are.Region != null)
-                                                {
-                                                    are.Region.Areas.Remove(are);
-                                                    progress.ReportError($"Alert: Area '{are}' is part of two regions. '{n.Name}' and '{are.Region}'. Picking second.");
-                                                }
-                                                ar.Add(are);
-                                            }
-                                            else
-                                            {
-                                                progress.ReportError($"Error: Region '{n.Name}' has unknown area '{vr.Name}'.");
-                                            }
-                                        }
-                                    }
-                                    Region r = new Region(n.Name, ar);
-                                    r.OriginalName = n.Name;
-                                    foreach (Area are in r.Areas)
-                                        are.Region = r;
-                                }
-                                else
-                                {
-                                    progress.ReportError($"Alert: Region '{n.Name}' has no areas.");
-                                }
-                            }
-                        }
-                    }
-                    catch
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Unexpected issue with regions! Program will exit after continuing!");
-                    }
+                    LoadRegions(progress, regions);
                 });
                 lregion.Start();
                 progress.UpdateProgress(13, 0);
@@ -2837,62 +661,10 @@ namespace Eu4ModEditor
                 //DONE
                 Task lsuperregion = new Task(() =>
                 {
-                    try
-                    {
-                        if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.superregion] > 0)
-                            Superregions = new NodeFile(GlobalVariables.pathtomod + "map\\superregion.txt");
-                        else
-                            Superregions = new NodeFile(GlobalVariables.pathtogame + "map\\superregion.txt");
-
-                        if (Superregions.LastStatus.HasError)
-                            progress.ReportError($"Critical error: File '{Superregions.Path}' has an error in line {Superregions.LastStatus.LineError}");
-
-                        foreach (Node n in Superregions.MainNode.Nodes)
-                        {
-                            List<Region> reg = new List<Region>();
-                            bool res = false;
-                            foreach (PureValue s in n.PureValues)
-                            {
-                                if(s.Name.ToLower() == "restrict_charter")
-                                {
-                                    res = true;
-                                    continue;
-                                }
-                                Region r = GlobalVariables.Regions.Find(x => x.Name.ToLower() == s.Name.ToLower());
-                                if (r != null)
-                                {
-                                    if(r.Superregion != null)
-                                    {
-                                        r.Superregion.Regions.Remove(r);
-                                        progress.ReportError($"Alert: Region '{r}' is part of two superregions. '{r.Name}' and '{r.Superregion}'. Picking second.");
-                                    }
-                                    reg.Add(r);
-                                }
-                                else
-                                {
-                                    progress.ReportError($"Error: Superregion '{n.Name}' has unknown region '{s.Name}'.");
-                                }
-                            }
-                            Superregion sr = new Superregion(n.Name, reg);
-                            sr.RestrictCharter = res;
-                            sr.OriginalName = n.Name;
-                            foreach (Region re in sr.Regions)
-                                re.Superregion = sr;
-                        }
-                    }
-                    catch
-                    {
-                        if (GlobalVariables.__DEBUG)
-                            throw;
-                        progress.ReportError("Critical error: Unexpected issue with superregions! Program will exit after continuing!");
-                    }
+                    LoadSuperregions(progress, Superregions);
                 });
                 lsuperregion.Start();
                 progress.UpdateProgress(16, 0);
-
-
-
-
 
                 await lcontinent;
                 if (lcontinent.IsFaulted)
@@ -2910,8 +682,6 @@ namespace Eu4ModEditor
                 else if (lsuperregion.IsCompleted)
                     progress.UpdateProgress(16, 2);
 
-
-
                 await ltradecomapnies;
                 if (ltradecomapnies.IsFaulted)
                     progress.UpdateProgress(21, 1);
@@ -2923,7 +693,6 @@ namespace Eu4ModEditor
                     progress.UpdateProgress(24, 1);
                 else if (lclimate.IsCompleted)
                     progress.UpdateProgress(24, 2);
-
 
                 await llocalisation;
                 if (llocalisation.IsFaulted)
@@ -2953,33 +722,7 @@ namespace Eu4ModEditor
 
                 Task ucontrol = new Task(() =>
                 {
-                    foreach (TradeGood tg in GlobalVariables.TradeGoods)
-                    {
-                        if (!GlobalVariables.LatentTradeGoods.Contains(tg))
-                            ModEditor.form.TradeGoodBox.Items.Add(tg);
-                        else
-                            ModEditor.form.LatentTradeGoodBox.Items.Add(tg);
-                    }
-                    foreach (Tradenode tn in GlobalVariables.TradeNodes)
-                    {
-                        ModEditor.form.ProvinceTradeNodeBox.Items.Add(tn);
-                        ModEditor.form.TradeNodeBox.Items.Add(tn.Name);
-                    }
-                    ModEditor.form.ProvinceTradeNodeBox.Sorted = true;
-                    foreach (Area a in GlobalVariables.Areas)
-                        ModEditor.form.AreaBox.Items.Add(a.Name);
-                    foreach (Region r in GlobalVariables.Regions)
-                        ModEditor.form.RegionBox.Items.Add(r.Name);
-                    foreach (Continent c in GlobalVariables.Continents)
-                        ModEditor.form.ContinentBox.Items.Add(c.Name);
-                    foreach (Government g in GlobalVariables.Governments)
-                        ModEditor.form.GovernmentTypeBox.Items.Add(g.Type);
-                    foreach (Building bl in GlobalVariables.Buildings)
-                        ModEditor.form.BuildingsBox.Items.Add(bl);
-                    foreach (Superregion sr in GlobalVariables.Superregions)
-                        ModEditor.form.SuperregionBox.Items.Add(sr.Name);
-                    foreach (TradeCompany tc in GlobalVariables.TradeCompanies)
-                        ModEditor.form.TradeCompanyBox.Items.Add(tc);
+                    
                 });
                 ucontrol.Start();
                 progress.UpdateProgress(19, 0);
@@ -3157,20 +900,22 @@ namespace Eu4ModEditor
             
         }
 
-        public static void ReadProvinceValuesFromNode(Province province, Node n, LoadingProgress progress = null)
+        public static void ReadProvinceValuesFromNode(Province province, DateTime date, Node n, LoadingProgress progress = null)
         {
+            GlobalVariables.CurrentDate = date;
             foreach (Variable v in n.Variables)
             {
                 Building bl = GlobalVariables.Buildings.Find(x => x.Name.ToLower() == v.Name.ToLower());
-                if (bl != null && v.Value == "yes")
+                if (bl != null && v.Value.ToLower().Trim() == "yes")
                 {
-                    province.AddBuilding(bl, true);
-                }                   
-
+                    province.AddBuilding(bl, date, true);
+                }
+                else if(bl != null && v.Value == "no")
+                    province.RemoveBuilding(bl, date, true);
                 switch (v.Name)
                 {
                     case "add_core":
-                        province.AddCore(v.Value.ToUpper(), true);
+                        province.AddCore(v.Value.ToUpper(), date, true);
                         if (v.Value == "---")
                             continue;
                         if (progress != null)
@@ -3180,7 +925,7 @@ namespace Eu4ModEditor
                         }
                         break; 
                     case "add_claim":
-                        province.AddClaim(v.Value.ToUpper(), true);
+                        province.AddClaim(v.Value.ToUpper(),date, true);
                         if (v.Value == "---")
                             continue;
                         if (progress != null)
@@ -3190,6 +935,8 @@ namespace Eu4ModEditor
                         }
                         break;
                     case "owner":
+                        if (province.OwnerCountry != null && DateTime.Compare(GlobalVariables.StartDate, date)==0)
+                            province.OwnerCountry.Provinces.Remove(province);
                         if (v.Value == "---")
                             province.OwnerCountry = null;
                         else
@@ -3254,12 +1001,6 @@ namespace Eu4ModEditor
                         else
                             province.HRE = false;
                         break;
-                    case "fort_15th":
-                        if (v.Value == "yes")
-                            province.Fort = true;
-                        else
-                            province.Fort = false;
-                        break;
                     case "base_tax":
                         int tax = 0;
                         if(!int.TryParse(v.Value, out tax))
@@ -3287,11 +1028,11 @@ namespace Eu4ModEditor
                     case "trade_goods":
                         TradeGood tg = GlobalVariables.TradeGoods.Find(x => x.Name.ToLower() == v.Value.ToLower());                        
                         province.TradeGood = tg;
-                        if (province.TradeGood != null)
+                        if (province.TradeGood != null && GlobalVariables.CurrentDate == GlobalVariables.StartDate)
                         {
                             province.TradeGood.TotalProvinces++;
                         }
-                        else
+                        else if(province.TradeGood == null)
                         {
                             progress.ReportError($"Error: Province {province.ID} has unknown trade good '{v.Value.ToUpper()}'!");
                         }
@@ -3308,7 +1049,7 @@ namespace Eu4ModEditor
                         province.CenterOfTrade = cot;
                         break;
                     case "discovered_by":
-                        province.AddDiscoveredBy(v.Value, true);
+                        province.AddDiscoveredBy(v.Value,date, true);
                         break;
                     case "is_city":
                         if (v.Value == "yes")
@@ -3318,11 +1059,40 @@ namespace Eu4ModEditor
                         break;
                 }
             }
+
+            Node revoltNode = n.Nodes.Find(x => x.Name.ToLower() == "revolt");
+            if(revoltNode != null)
+            {
+                ProvinceDateEntry.Revolt revolt = new ProvinceDateEntry.Revolt();
+                if(revoltNode.TryGetVariableValue("type", out string outputType))                
+                    revolt.Type = outputType;
+                if (revoltNode.TryGetVariableValue("size", out string outputSize))
+                    if (int.TryParse(outputSize, out int intSize))
+                        revolt.Size = intSize;
+                if (revoltNode.TryGetVariableValue("name", out string outputName))
+                    revolt.Name = outputName;
+                if (revoltNode.TryGetVariableValue("leader", out string outputLeader))
+                    revolt.Leader = outputLeader;
+                province.AddRevolt(date,revolt);
+            }
+
+
+            Node ltgn = n.Nodes.Find(x => x.Name.ToLower() == "latent_trade_goods");
+            if (ltgn != null)
+            {
+                if (ltgn.PureValues.Any())
+                {
+                    province.LatentTradeGood = GlobalVariables.TradeGoods.Find(x => x.Name.ToLower() == ltgn.PureValues[0].Name.Trim().ToLower());
+                    if(province.LatentTradeGood != null && GlobalVariables.CurrentDate == GlobalVariables.StartDate)
+                        province.LatentTradeGood.TotalProvinces++;
+                    else if(province.LatentTradeGood == null)
+                    {
+                        progress.ReportError($"Error: Latent trade good in province {province.ID} is incorrect! Ignoring.");
+                    }
+                }
+            }
+            GlobalVariables.CurrentDate = GlobalVariables.StartDate;
         }
-
-       
-
-
     }
 
     public class ProvinceNeighbourRay
