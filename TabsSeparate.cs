@@ -2398,7 +2398,7 @@ namespace Eu4ModEditor
             }
             if (!Directory.Exists(GlobalVariables.pathtomod + "localisation"))
                 Directory.CreateDirectory(GlobalVariables.pathtomod + "localisation");
-            File.WriteAllText(GlobalVariables.pathtomod + filename, tosave, Encoding.Default);
+            File.WriteAllText(GlobalVariables.pathtomod + filename, tosave, Encoding.UTF8);
         }
         private void SuperregionNameChangeSave_Click(object sender, EventArgs e)
         {
@@ -2652,7 +2652,7 @@ namespace Eu4ModEditor
             }
             if (!Directory.Exists(GlobalVariables.pathtomod + "localisation"))
                 Directory.CreateDirectory(GlobalVariables.pathtomod + "localisation");
-            File.WriteAllText(GlobalVariables.pathtomod + filename, tosave, Encoding.Default);
+            File.WriteAllText(GlobalVariables.pathtomod + filename, tosave, Encoding.UTF8);
         }
         private void SaveCountryName_Click(object sender, EventArgs e)
         {
