@@ -590,19 +590,21 @@ namespace Eu4ModEditor
 
             return text;
         }
-        public bool ChangeVariable(string name, string value, bool forceadd = false)
+        public bool ChangeVariable(string name, string value, bool forceadd = false, bool quot = false)
         {
             Variable v = Variables.Find(x => x.Name.ToLower() == name.ToLower());
             if (v != null)
             {
                 v.Value = value;
+                if (quot)
+                    v.QuotedValue = true;
                 return true;
             }
             else
             {
                 if (forceadd)
                 {
-                    v = new Variable(name, value);
+                    v = new Variable(name, value, quot);
                     Variables.Add(v);
                     ItemOrder.Add(v);
                     return true;

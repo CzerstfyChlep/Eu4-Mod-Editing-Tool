@@ -19,9 +19,12 @@ namespace Eu4ModEditor
         {
             if (!File.Exists("options.txt"))
                 File.Create("options.txt");
+            if (!File.Exists("lastSettings.txt"))
+                File.Create("lastSettings.txt");
 
             options = new NodeFile();
             options.ReadFile("options.txt", true);
+            options.ReadFile("lastSettings.txt", true);
 
 
             if (options.MainNode.TryGetVariableValue("gamepath", out string s))
@@ -236,8 +239,8 @@ namespace Eu4ModEditor
         private void CheckFilesButton_Click(object sender, EventArgs e)
         {
             //File.WriteAllText("directories.txt", GameDirectoryBox.Text + "\n" + ModDirectoryBox.Text);
-            options.MainNode.ChangeVariable("gamepath", GameDirectoryBox.Text, true);
-            options.MainNode.ChangeVariable("modpath", ModDirectoryBox.Text, true);
+            options.MainNode.ChangeVariable("gamepath", GameDirectoryBox.Text, true, true);
+            options.MainNode.ChangeVariable("modpath", ModDirectoryBox.Text, true, true);
 
 
             if (GameDirectoryBox.Text != "") 
@@ -531,6 +534,7 @@ namespace Eu4ModEditor
                     options.MainNode.ReplaceNode(nd, lastOP);
                 else
                     options.MainNode.AddNode(lastOP);
+                options.SaveFile("lastSettings.txt");
                 this.Close();
             }
         }
