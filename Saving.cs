@@ -71,7 +71,7 @@ namespace Eu4ModEditor
                     foreach (Variable v in RemDisc)
                         nf.MainNode.RemoveVariable(v);
                     foreach (string s in newDisc)
-                        nf.MainNode.AddVariable("discovered_by", s.ToUpper());
+                        nf.MainNode.AddVariable("discovered_by", s);
                 }
                 //BUILDINGS
                 {
