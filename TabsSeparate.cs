@@ -1773,18 +1773,22 @@ namespace Eu4ModEditor
             {
                 if (GlobalVariables.SelectedCountry.Provinces.Any())
                 {
-                    GlobalVariables.ClickedProvinces.Clear();
-                    if (GlobalVariables.SelectedCountry.Provinces.Count > 1)
-                    {
-                        GlobalVariables.ClickedProvinces.AddRange(GlobalVariables.SelectedCountry.Provinces);
-                        GlobalVariables.ClickedProvinces.RemoveAt(0);
-                    }
-                    AddToClickedProvinces(GlobalVariables.SelectedCountry.Provinces[0]);
+                    // GlobalVariables.ClickedProvinces.Clear();
+                    //if (GlobalVariables.SelectedCountry.Provinces.Count > 1)
+                    //{
+                    //    GlobalVariables.ClickedProvinces.AddRange(GlobalVariables.SelectedCountry.Provinces);
+                    //    // GlobalVariables.ClickedProvinces.RemoveAt(0);
+                    //}
+                    // AddToClickedProvinces(GlobalVariables.SelectedCountry.Provinces);
                     if (GlobalVariables.SelectedCountry.Capital != null)
                         MoveCameraTo(GlobalVariables.SelectedCountry.Capital);
                     else
                         MoveCameraTo(GlobalVariables.SelectedCountry.Provinces[0]);
+
+                    RemoveFromClickedProvinces(GlobalVariables.ClickedProvinces.ToList());
+                    AddToClickedProvinces(GlobalVariables.SelectedCountry.Provinces);
                 }
+                // UpdateDiscoveredBy();
             }
 
         }

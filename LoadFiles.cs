@@ -3309,8 +3309,8 @@ namespace Eu4ModEditor
                         }
                         break;
                     case "owner":
-                        if (province.OwnerCountry != null && DateTime.Compare(GlobalVariables.StartDate, date)==0)
-                            province.OwnerCountry.Provinces.Remove(province);
+                        //if (province.OwnerCountry != null && DateTime.Compare(GlobalVariables.StartDate, date)==0)
+                        //    province.OwnerCountry.Provinces.Remove(province);
                         if (v.Value == "---")
                             province.OwnerCountry = null;
                         else
@@ -3323,8 +3323,11 @@ namespace Eu4ModEditor
                                     progress.ReportError($"Error: Province {province.ID} has unknown owner '{v.Value.ToUpper()}'");
                                 }
                             }
-                            if (c != null)
+                            if (c != null && DateTime.Compare(GlobalVariables.StartDate, date) >= 0)
                             {
+                                if (province.OwnerCountry != null) {
+                                    province.OwnerCountry.Provinces.Remove(province);
+                                }
                                 province.OwnerCountry = c;
                                 c.Provinces.Add(province);
                             }
