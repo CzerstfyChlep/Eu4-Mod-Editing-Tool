@@ -4874,7 +4874,7 @@ namespace Eu4ModEditor
                     monarchnames.Variables.Clear();
                     foreach (MonarchName mn in c.MonarchNames)
                     {
-                        monarchnames.AddVariable($"\"{mn.Name}\"", mn.Chance.ToString());
+                        monarchnames.AddVariable($"{mn.Name}", mn.Chance.ToString());
                     }
 
                     Node leadernames = n.MainNode.Nodes.Find(x => x.Name == "leader_names");
