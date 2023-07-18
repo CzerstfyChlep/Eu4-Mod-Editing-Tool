@@ -121,7 +121,7 @@ namespace Eu4ModEditor
         {
             get
             {             
-                List<string> toreturn = Variables[Variable.Cores] as List<string>;
+                List<string> toreturn = new List<string>(Variables[Variable.Cores] as List<string>);
                 foreach (ProvinceDateEntry pde in DateEntries)
                 {
                     if(DateTime.Compare(pde.Date, GlobalVariables.CurrentDate) <= 0)
@@ -263,7 +263,7 @@ namespace Eu4ModEditor
 
             get
             {
-                List<string> toreturn = Variables[Variable.Claims] as List<string>;
+                List<string> toreturn = new List<string>(Variables[Variable.Claims] as List<string>);
                 foreach (ProvinceDateEntry pde in DateEntries)
                 {
                     if (DateTime.Compare(pde.Date, GlobalVariables.CurrentDate) <= 0)
@@ -515,7 +515,7 @@ namespace Eu4ModEditor
             {
                 //return Variables["Buildings"] as List<Building>;
 
-                List<Building> Value = ((List<Building>)Variables[Variable.Buildings]).ToList();
+                List<Building> Value = new List<Building>(((List<Building>)Variables[Variable.Buildings]).ToList());
                 if (!DateEntries.Any())
                     return Value;
                 else
@@ -819,7 +819,7 @@ namespace Eu4ModEditor
 
             get
             {
-                List<string> toreturn = Variables[Variable.DiscoveredBy] as List<string>;
+                List<string> toreturn = new List<string>(Variables[Variable.DiscoveredBy] as List<string>);
                 foreach (ProvinceDateEntry pde in DateEntries)
                 {
                     if (DateTime.Compare(pde.Date, GlobalVariables.CurrentDate) <= 0)
