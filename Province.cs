@@ -184,11 +184,12 @@ namespace Eu4ModEditor
         {
             if (Cores.Contains(TAG))
             {
-                if (DateTime.Compare(date, GlobalVariables.StartDate) == 0)
+                var basicCores = Variables[Variable.Cores] as List<string>;
+
+                if (basicCores.Contains(TAG) && DateTime.Compare(date, GlobalVariables.StartDate) == 0)
                 {
-                    var b = GetCores().ToList();
-                    b.Remove(TAG);
-                    Cores = b;
+                    basicCores.Remove(TAG);
+                    Cores = basicCores;
                     if (!noChange)
                         GlobalVariables.Changes.Add(new VariableChange(this, "Core", TAG, null));
                 }
@@ -326,11 +327,12 @@ namespace Eu4ModEditor
         {
             if (Claims.Contains(TAG))
             {
-                if (DateTime.Compare(date, GlobalVariables.StartDate) == 0)
+                var basicClaims = Variables[Variable.Claims] as List<string>;
+
+                if (basicClaims.Contains(TAG) && DateTime.Compare(date, GlobalVariables.StartDate) == 0)
                 {
-                    var b = GetClaims().ToList();
-                    b.Remove(TAG);
-                    Cores = b;
+                    basicClaims.Remove(TAG);
+                    Claims = basicClaims;
                     if (!noChange)
                         GlobalVariables.Changes.Add(new VariableChange(this, "Claims", TAG, null));
                 }
@@ -575,13 +577,14 @@ namespace Eu4ModEditor
         }
         public void RemoveBuilding(Building Building, DateTime date, bool noChange = false)
         {
-            if (Buildings.Contains(Building) || true)
+            if (Buildings.Contains(Building))
             {
-                if (DateTime.Compare(date, GlobalVariables.StartDate) == 0)
+                var basicBuildings = Variables[Variable.Buildings] as List<Building>;
+
+                if (basicBuildings.Contains(Building) && DateTime.Compare(date, GlobalVariables.StartDate) == 0)
                 {
-                    var b = GetBuildings().ToList();
-                    b.Remove(Building);
-                    Buildings = b;
+                    basicBuildings.Remove(Building);
+                    Buildings = basicBuildings;
                     if (!noChange)
                         GlobalVariables.Changes.Add(new VariableChange(this, "Buildings", Building, null));
                     //if (Building.Name == "fort_15th")
@@ -878,11 +881,13 @@ namespace Eu4ModEditor
         {
             if (DiscoveredBy.Contains(Tech))
             {
-                if (DateTime.Compare(date, GlobalVariables.StartDate) == 0)
+
+                var basicDiscoveries = Variables[Variable.DiscoveredBy] as List<string>;
+
+                if (basicDiscoveries.Contains(Tech) && DateTime.Compare(date, GlobalVariables.StartDate) == 0)
                 {
-                    var b = GetDiscoveredBy().ToList();
-                    b.Remove(Tech);
-                    DiscoveredBy = b;
+                    basicDiscoveries.Remove(Tech);
+                    DiscoveredBy = basicDiscoveries;
                     if (!noChange)
                         GlobalVariables.Changes.Add(new VariableChange(this, "DiscoveredBy", Tech, null));
                 }
