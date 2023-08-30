@@ -281,6 +281,7 @@
             this.label18 = new System.Windows.Forms.Label();
             this.TradeNodeNameBox = new System.Windows.Forms.TextBox();
             this.AdditionalPage = new System.Windows.Forms.TabPage();
+            this.button2 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.SendConsoleButton = new System.Windows.Forms.Button();
             this.ConsoleBox = new System.Windows.Forms.RichTextBox();
@@ -375,7 +376,6 @@
             this.SaveAllFilesButton = new System.Windows.Forms.Button();
             this.SaveFilesPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.RefreshSavesButton = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.ProvinceTabControl.SuspendLayout();
@@ -602,7 +602,7 @@
             this.label79.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label79.Location = new System.Drawing.Point(13, 115);
             this.label79.Name = "label79";
-            this.label79.Size = new System.Drawing.Size(82, 16);
+            this.label79.Size = new System.Drawing.Size(81, 16);
             this.label79.TabIndex = 26;
             this.label79.Text = "Impassable:";
             // 
@@ -612,7 +612,7 @@
             this.label78.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label78.Location = new System.Drawing.Point(13, 82);
             this.label78.Name = "label78";
-            this.label78.Size = new System.Drawing.Size(56, 16);
+            this.label78.Size = new System.Drawing.Size(55, 16);
             this.label78.TabIndex = 25;
             this.label78.Text = "Climate:";
             // 
@@ -622,7 +622,7 @@
             this.label77.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label77.Location = new System.Drawing.Point(13, 50);
             this.label77.Name = "label77";
-            this.label77.Size = new System.Drawing.Size(67, 16);
+            this.label77.Size = new System.Drawing.Size(66, 16);
             this.label77.TabIndex = 24;
             this.label77.Text = "Monsoon:";
             // 
@@ -632,7 +632,7 @@
             this.label76.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label76.Location = new System.Drawing.Point(11, 20);
             this.label76.Name = "label76";
-            this.label76.Size = new System.Drawing.Size(49, 16);
+            this.label76.Size = new System.Drawing.Size(48, 16);
             this.label76.TabIndex = 23;
             this.label76.Text = "Winter:";
             // 
@@ -817,7 +817,7 @@
             this.label37.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label37.Location = new System.Drawing.Point(7, 53);
             this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(68, 16);
+            this.label37.Size = new System.Drawing.Size(67, 16);
             this.label37.TabIndex = 22;
             this.label37.Text = "Controller:";
             // 
@@ -841,7 +841,7 @@
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label5.Location = new System.Drawing.Point(7, 26);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(49, 16);
+            this.label5.Size = new System.Drawing.Size(48, 16);
             this.label5.TabIndex = 20;
             this.label5.Text = "Owner:";
             // 
@@ -878,7 +878,7 @@
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label6.Location = new System.Drawing.Point(6, 33);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(52, 16);
+            this.label6.Size = new System.Drawing.Size(51, 16);
             this.label6.TabIndex = 8;
             this.label6.Text = "Culture:";
             // 
@@ -902,12 +902,14 @@
             this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label7.Location = new System.Drawing.Point(5, 57);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(61, 16);
+            this.label7.Size = new System.Drawing.Size(60, 16);
             this.label7.TabIndex = 10;
             this.label7.Text = "Religion:";
             // 
             // ReligionBox
             // 
+            this.ReligionBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.ReligionBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.ReligionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ReligionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.ReligionBox.FormattingEnabled = true;
@@ -939,7 +941,7 @@
             this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label17.Location = new System.Drawing.Point(6, 85);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(82, 16);
+            this.label17.Size = new System.Drawing.Size(81, 16);
             this.label17.TabIndex = 24;
             this.label17.Text = "Trade node:";
             // 
@@ -965,7 +967,7 @@
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label4.Location = new System.Drawing.Point(6, 25);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(83, 16);
+            this.label4.Size = new System.Drawing.Size(82, 16);
             this.label4.TabIndex = 7;
             this.label4.Text = "Trade good:";
             // 
@@ -986,6 +988,8 @@
             // 
             // LatentTradeGoodBox
             // 
+            this.LatentTradeGoodBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.LatentTradeGoodBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.LatentTradeGoodBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.LatentTradeGoodBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.LatentTradeGoodBox.FormattingEnabled = true;
@@ -1005,7 +1009,7 @@
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label14.Location = new System.Drawing.Point(6, 55);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(116, 16);
+            this.label14.Size = new System.Drawing.Size(115, 16);
             this.label14.TabIndex = 21;
             this.label14.Text = "Latent trade good:";
             // 
@@ -2026,7 +2030,7 @@
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label3.Location = new System.Drawing.Point(16, 76);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(74, 16);
+            this.label3.Size = new System.Drawing.Size(73, 16);
             this.label3.TabIndex = 4;
             this.label3.Text = "Manpower:";
             // 
@@ -2045,7 +2049,7 @@
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label2.Location = new System.Drawing.Point(16, 46);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(75, 16);
+            this.label2.Size = new System.Drawing.Size(74, 16);
             this.label2.TabIndex = 2;
             this.label2.Text = "Production:";
             // 
@@ -2064,7 +2068,7 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label1.Location = new System.Drawing.Point(16, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(34, 16);
+            this.label1.Size = new System.Drawing.Size(33, 16);
             this.label1.TabIndex = 0;
             this.label1.Text = "Tax:";
             // 
@@ -2510,6 +2514,8 @@
             // 
             // GovernmentReformBox
             // 
+            this.GovernmentReformBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.GovernmentReformBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.GovernmentReformBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.GovernmentReformBox.Enabled = false;
             this.GovernmentReformBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -2533,6 +2539,8 @@
             // 
             // GovernmentTypeBox
             // 
+            this.GovernmentTypeBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.GovernmentTypeBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.GovernmentTypeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.GovernmentTypeBox.Enabled = false;
             this.GovernmentTypeBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -2606,6 +2614,8 @@
             // 
             // GraphicalCultureBox
             // 
+            this.GraphicalCultureBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.GraphicalCultureBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.GraphicalCultureBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.GraphicalCultureBox.Enabled = false;
             this.GraphicalCultureBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -2629,6 +2639,8 @@
             // 
             // CountryPrimaryCultureBox
             // 
+            this.CountryPrimaryCultureBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.CountryPrimaryCultureBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.CountryPrimaryCultureBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CountryPrimaryCultureBox.Enabled = false;
             this.CountryPrimaryCultureBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -2651,6 +2663,8 @@
             // 
             // TechnologyGroupBox
             // 
+            this.TechnologyGroupBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.TechnologyGroupBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.TechnologyGroupBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.TechnologyGroupBox.Enabled = false;
             this.TechnologyGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -2664,6 +2678,8 @@
             // 
             // CountryBox
             // 
+            this.CountryBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.CountryBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.CountryBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CountryBox.FormattingEnabled = true;
             this.CountryBox.Location = new System.Drawing.Point(6, 19);
@@ -2732,6 +2748,8 @@
             // 
             // CountryReligionBox
             // 
+            this.CountryReligionBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.CountryReligionBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.CountryReligionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CountryReligionBox.Enabled = false;
             this.CountryReligionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
@@ -3061,6 +3079,8 @@
             // 
             // AddTradeNodeDestinationBox
             // 
+            this.AddTradeNodeDestinationBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.AddTradeNodeDestinationBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.AddTradeNodeDestinationBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.AddTradeNodeDestinationBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.AddTradeNodeDestinationBox.FormattingEnabled = true;
@@ -3091,6 +3111,8 @@
             // 
             // TradeNodeBox
             // 
+            this.TradeNodeBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.TradeNodeBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.TradeNodeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.TradeNodeBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.TradeNodeBox.FormattingEnabled = true;
@@ -3187,6 +3209,16 @@
             this.AdditionalPage.TabIndex = 2;
             this.AdditionalPage.Text = "Additional Tools";
             this.AdditionalPage.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(10, 480);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 8;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // panel1
             // 
@@ -3504,6 +3536,8 @@
             // 
             // MacroReligionBox
             // 
+            this.MacroReligionBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.MacroReligionBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.MacroReligionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.MacroReligionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.MacroReligionBox.FormattingEnabled = true;
@@ -3579,6 +3613,8 @@
             // 
             // MacroCultureBox
             // 
+            this.MacroCultureBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.MacroCultureBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.MacroCultureBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.MacroCultureBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.MacroCultureBox.FormattingEnabled = true;
@@ -3696,6 +3732,8 @@
             // 
             // MacroAreaBox
             // 
+            this.MacroAreaBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.MacroAreaBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.MacroAreaBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.MacroAreaBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.MacroAreaBox.FormattingEnabled = true;
@@ -3749,6 +3787,8 @@
             // 
             // MacroRegionBox
             // 
+            this.MacroRegionBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.MacroRegionBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.MacroRegionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.MacroRegionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.MacroRegionBox.FormattingEnabled = true;
@@ -3802,6 +3842,8 @@
             // 
             // MacroSuperregionBox
             // 
+            this.MacroSuperregionBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.MacroSuperregionBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.MacroSuperregionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.MacroSuperregionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.MacroSuperregionBox.FormattingEnabled = true;
@@ -3855,6 +3897,8 @@
             // 
             // MacroContinentBox
             // 
+            this.MacroContinentBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.MacroContinentBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.MacroContinentBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.MacroContinentBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.MacroContinentBox.FormattingEnabled = true;
@@ -3961,6 +4005,8 @@
             // 
             // MacroTradeNodeBox
             // 
+            this.MacroTradeNodeBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.MacroTradeNodeBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.MacroTradeNodeBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.MacroTradeNodeBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.MacroTradeNodeBox.FormattingEnabled = true;
@@ -4036,6 +4082,8 @@
             // 
             // MacroTechGroupBox
             // 
+            this.MacroTechGroupBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.MacroTechGroupBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.MacroTechGroupBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.MacroTechGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.MacroTechGroupBox.FormattingEnabled = true;
@@ -4188,16 +4236,6 @@
             this.RefreshSavesButton.Text = "Refresh saves (Shows only 30)";
             this.RefreshSavesButton.UseVisualStyleBackColor = true;
             this.RefreshSavesButton.Click += new System.EventHandler(this.RefreshSavesButton_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(10, 480);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // TabsSeparate
             // 

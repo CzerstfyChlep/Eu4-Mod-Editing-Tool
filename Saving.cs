@@ -71,7 +71,7 @@ namespace Eu4ModEditor
                     foreach (Variable v in RemDisc)
                         nf.MainNode.RemoveVariable(v);
                     foreach (string s in newDisc)
-                        nf.MainNode.AddVariable("discovered_by", s.ToUpper());
+                        nf.MainNode.AddVariable("discovered_by", s);
                 }
                 //BUILDINGS
                 {
@@ -1163,10 +1163,10 @@ namespace Eu4ModEditor
                                         tc.NodeFile.MainNode.AddNode(n);
                                         n.Parent = tc.NodeFile.MainNode;
 
-                                        Node color = new Node("color", n)
-                                        {
-                                            PureValues = new List<PureValue>() { new PureValue(tc.Color.R.ToString()), new PureValue(tc.Color.G.ToString()), new PureValue(tc.Color.B.ToString()) }
-                                        };
+                                        Node color = new Node("color", n);
+                                        color.AddPureValue(tc.Color.R.ToString());
+                                        color.AddPureValue(tc.Color.G.ToString());
+                                        color.AddPureValue(tc.Color.B.ToString());
                                         n.AddNode(color);
                                         Node provinces = new Node("provinces", n);
                                         n.AddNode(provinces);

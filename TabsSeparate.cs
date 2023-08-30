@@ -1773,18 +1773,22 @@ namespace Eu4ModEditor
             {
                 if (GlobalVariables.SelectedCountry.Provinces.Any())
                 {
-                    GlobalVariables.ClickedProvinces.Clear();
-                    if (GlobalVariables.SelectedCountry.Provinces.Count > 1)
-                    {
-                        GlobalVariables.ClickedProvinces.AddRange(GlobalVariables.SelectedCountry.Provinces);
-                        GlobalVariables.ClickedProvinces.RemoveAt(0);
-                    }
-                    AddToClickedProvinces(GlobalVariables.SelectedCountry.Provinces[0]);
+                    // GlobalVariables.ClickedProvinces.Clear();
+                    //if (GlobalVariables.SelectedCountry.Provinces.Count > 1)
+                    //{
+                    //    GlobalVariables.ClickedProvinces.AddRange(GlobalVariables.SelectedCountry.Provinces);
+                    //    // GlobalVariables.ClickedProvinces.RemoveAt(0);
+                    //}
+                    // AddToClickedProvinces(GlobalVariables.SelectedCountry.Provinces);
                     if (GlobalVariables.SelectedCountry.Capital != null)
                         MoveCameraTo(GlobalVariables.SelectedCountry.Capital);
                     else
                         MoveCameraTo(GlobalVariables.SelectedCountry.Provinces[0]);
+
+                    RemoveFromClickedProvinces(GlobalVariables.ClickedProvinces.ToList());
+                    AddToClickedProvinces(GlobalVariables.SelectedCountry.Provinces);
                 }
+                // UpdateDiscoveredBy();
             }
 
         }
@@ -2398,7 +2402,7 @@ namespace Eu4ModEditor
             }
             if (!Directory.Exists(GlobalVariables.pathtomod + "localisation"))
                 Directory.CreateDirectory(GlobalVariables.pathtomod + "localisation");
-            File.WriteAllText(GlobalVariables.pathtomod + filename, tosave, Encoding.Default);
+            File.WriteAllText(GlobalVariables.pathtomod + filename, tosave, Encoding.UTF8);
         }
         private void SuperregionNameChangeSave_Click(object sender, EventArgs e)
         {
@@ -2652,7 +2656,7 @@ namespace Eu4ModEditor
             }
             if (!Directory.Exists(GlobalVariables.pathtomod + "localisation"))
                 Directory.CreateDirectory(GlobalVariables.pathtomod + "localisation");
-            File.WriteAllText(GlobalVariables.pathtomod + filename, tosave, Encoding.Default);
+            File.WriteAllText(GlobalVariables.pathtomod + filename, tosave, Encoding.UTF8);
         }
         private void SaveCountryName_Click(object sender, EventArgs e)
         {
@@ -4870,7 +4874,7 @@ namespace Eu4ModEditor
                     monarchnames.Variables.Clear();
                     foreach (MonarchName mn in c.MonarchNames)
                     {
-                        monarchnames.AddVariable($"\"{mn.Name}\"", mn.Chance.ToString());
+                        monarchnames.AddVariable($"{mn.Name}", mn.Chance.ToString());
                     }
 
                     Node leadernames = n.MainNode.Nodes.Find(x => x.Name == "leader_names");
