@@ -36,7 +36,7 @@ namespace Eu4ModEditor
             SuperregionBox.KeyDown += InputManagement.IgnoreKeyPress;
             TechnologyGroupBox.KeyDown += InputManagement.IgnoreKeyPress;
             CountryPrimaryCultureBox.KeyDown += InputManagement.IgnoreKeyPress;
-            DiscoveredByBox.KeyDown += InputManagement.IgnoreKeyPress;
+            DiscoveredByGroupBox.KeyDown += InputManagement.IgnoreKeyPress;
             BuildingsBox.KeyDown += InputManagement.IgnoreKeyPress;
             WinterBox.KeyDown += InputManagement.IgnoreKeyPress;
             MonsoonBox.KeyDown += InputManagement.IgnoreKeyPress;
@@ -66,12 +66,15 @@ namespace Eu4ModEditor
 
             HideSeaTiles.Click += ShowHideSeaTilesAreaMapmode_Click;
 
+            DiscoveredByGroupBox.SelectedValueChanged += HandleDiscoveredByBoxesValueChanged;
+            DiscoveredByTagBox.SelectedValueChanged += HandleDiscoveredByBoxesValueChanged;
+
             form = this;
 
             boxes.AddRange(new ComboBox[] { OwnerBox, ReligionBox, CultureBox, TradeGoodBox,
             CountryBox, CountryReligionBox, AreaBox, RegionBox, ProvinceTradeNodeBox, TradeNodeBox,
             AddTradeNodeDestinationBox, ContinentBox, AddCoreBox, TechnologyGroupBox,
-            CountryPrimaryCultureBox, DiscoveredByBox, BuildingsBox, SuperregionBox, TradeCompanyBox });
+            CountryPrimaryCultureBox, DiscoveredByGroupBox, BuildingsBox, SuperregionBox, TradeCompanyBox });
             textboxes.AddRange(new TextBox[] { AreaNameChangeBox, AddNewAreaBox, AddNewRegionBox,
             RegionNameChangeBox, ChangeTradeNodeNameBox, TradeNodeNameBox, TradeNodeProvinceLocationBox,
             ContinentNameChangeBox, AddNewContinentBox, SuperregionNameChangeBox, AddNewSuperregionBox,
@@ -85,11 +88,11 @@ namespace Eu4ModEditor
 
             foreach (string s in GlobalVariables.TechGroups)
             {
-                DiscoveredByBox.Items.Add(s);
+                DiscoveredByGroupBox.Items.Add(s);
             }
             foreach(Country s in GlobalVariables.Countries)
             {
-                DiscoveredByBox.Items.Add(s.Tag);
+                DiscoveredByTagBox.Items.Add(s.Tag);
               
             }
 
@@ -1066,11 +1069,15 @@ namespace Eu4ModEditor
                         oldlab.Text = "Old value: " + (change.PreviousValue as Government).Type;
                     else if (change.PreviousValue is Building)
                         oldlab.Text = "Old value: " + (change.PreviousValue as Building).Name;
+                    else if (change.PreviousValue is List<string>)
+                    {
+                        oldlab.Text = "Old value: { " + AdditionalElements.CreateStringFromStringList(change.PreviousValue as List<string>) + " }";
+                    }
                     else
                         oldlab.Text = "Old value: " + change.PreviousValue.ToString();
                 }
                 else
-                    oldlab.Text = "Old value: Null";
+                    oldlab.Text = "Old value: None";
                 gb.Controls.Add(oldlab);
 
                 Label newlab = new Label();
@@ -1096,11 +1103,15 @@ namespace Eu4ModEditor
                         newlab.Text = "New value: " + (change.CurrentValue as Government).Type;
                     else if (change.CurrentValue is Building)
                         newlab.Text = "New value: " + (change.CurrentValue as Building).Name;
+                    else if (change.CurrentValue is List<string>)
+                    {
+                        newlab.Text = "New value: { " + AdditionalElements.CreateStringFromStringList(change.CurrentValue as List<string>) + " }";
+                    }
                     else
                         newlab.Text = "New value: " + change.CurrentValue.ToString();
                 }
                 else
-                    newlab.Text = "New value: Null";
+                    newlab.Text = "New value: None";
                 gb.Controls.Add(newlab);
 
                 Button keep = new Button();
@@ -2571,8 +2582,10 @@ namespace Eu4ModEditor
         }
         private void AddDiscoveredByButton_Click(object sender, EventArgs e)
         {
-            if (DiscoveredByBox.SelectedItem.ToString() != "")
-                ChangeProvinceInfo(ChangeProvinceMode.DiscoveredBy, DiscoveredByBox.SelectedItem, false);
+            if (DiscoveredByGroupBox.SelectedItem != null && DiscoveredByGroupBox.SelectedItem.ToString() != "")
+                ChangeProvinceInfo(ChangeProvinceMode.DiscoveredBy, DiscoveredByGroupBox.SelectedItem, false);
+            if(DiscoveredByTagBox.SelectedItem != null && DiscoveredByTagBox.SelectedItem.ToString() != "")
+                ChangeProvinceInfo(ChangeProvinceMode.DiscoveredBy, DiscoveredByTagBox.SelectedItem, false);
             UpdateDiscoveredBy();
             MapManagement.UpdateMap(GlobalVariables.Provinces, MapManagement.UpdateMapOptions.DiscoveredBy);
         }
@@ -5281,7 +5294,107 @@ namespace Eu4ModEditor
 
         private void button2_Click(object sender, EventArgs e)
         {
-            throw new Exception();
+            //throw new Exception();
+        }
+
+        private void LookupCultureProvince_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(Culture.Cultures, "Select culture", "Culture");
+            lookupMenu.ShowDialog();
+            Culture found = Culture.Cultures.Find(x=>x.Name == lookupMenu.GetChosenObject());
+            if( found != null )
+            {
+                CultureBox.SelectedItem = found;
+            }
+
+        }
+
+        private void LookupReligionProvince_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(Religion.Religions, "Select religion", "Religion");
+            lookupMenu.ShowDialog();
+            Religion found = Religion.Religions.Find(x => x.Name == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                ReligionBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupOwnerProvince_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.Countries, "Select country", "Country");
+            lookupMenu.ShowDialog();
+            Country found =  GlobalVariables.Countries.Find(x => x.FullName == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                OwnerBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupControllerProvince_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.Countries, "Select country", "Country");
+            lookupMenu.ShowDialog();
+            Country found = GlobalVariables.Countries.Find(x => x.FullName == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                ControllerBox.SelectedItem = found;
+            }
+        }
+
+        public void HandleDiscoveredByBoxesValueChanged(object sender, EventArgs e)
+        {
+            ComboBox senderCB = (ComboBox)sender;
+            if(senderCB == DiscoveredByGroupBox)
+            {
+                if(senderCB.SelectedItem != null)
+                {
+                    DiscoveredByTagBox.SelectedItem = null;
+                }
+            }
+            else
+            {
+                if (senderCB.SelectedItem != null)
+                {
+                    DiscoveredByGroupBox.SelectedItem = null;
+                }
+            }
+        }
+
+        private void LookupDiscoveredGroupProvince_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.TechGroups, "Select technology group", "Technology group");
+            lookupMenu.ShowDialog();
+            DiscoveredByGroupBox.SelectedItem = lookupMenu.GetChosenObject();
+        }
+
+        private void LookupDiscoveredTagProvince_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.Countries, "Select TAG", "TAG");
+            lookupMenu.ShowDialog();
+            Country found = GlobalVariables.Countries.Find(x => x.FullName == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                DiscoveredByTagBox.SelectedItem = found.Tag;
+            }
+        }
+
+        private void LookupTradeNodeProvince_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.TradeNodes, "Select trade node", "Trade node");
+            lookupMenu.ShowDialog();
+            Tradenode found = GlobalVariables.TradeNodes.Find(x => x.Name == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                ProvinceTradeNodeBox.SelectedItem = found;
+            }
         }
     }
 }

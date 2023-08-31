@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using F23.StringSimilarity;
 
 namespace Eu4ModEditor
 {
@@ -62,6 +63,35 @@ namespace Eu4ModEditor
             return Color.FromArgb(R, G, B);
         }
 
-        
+        public static string CreateStringFromStringList(List<string> input, string separator = ", ")
+        {
+            string toReturn = "";
+            for(int a = 0; a < input.Count; a++)
+            {
+                toReturn += input[a];
+                if(a != input.Count - 1)
+                    toReturn += separator;
+            }
+            return toReturn;
+      
+        }
+
+        public static int StringSimilarity(string s, string t)
+        {
+            int splitResult = 0;
+            if (s.Length > t.Length)
+            {
+                splitResult = (int)(stringComparer.Similarity(s.Substring(0, t.Length), t) * 100);
+            }
+            else
+                splitResult = (int)(stringComparer.Similarity(t.Substring(0, s.Length), s) * 100);
+            int normalResult = (int)(stringComparer.Similarity(s, t) * 100);
+
+
+            return Math.Max(splitResult, normalResult);
+        }
+
+        static F23.StringSimilarity.RatcliffObershelp stringComparer = new RatcliffObershelp();
+
     }
 }

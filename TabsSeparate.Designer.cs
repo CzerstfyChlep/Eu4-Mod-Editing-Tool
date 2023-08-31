@@ -55,7 +55,7 @@
             this.label36 = new System.Windows.Forms.Label();
             this.AddOwnerDiscoveredByButton = new System.Windows.Forms.Button();
             this.AddDiscoveredByButton = new System.Windows.Forms.Button();
-            this.DiscoveredByBox = new System.Windows.Forms.ComboBox();
+            this.DiscoveredByGroupBox = new System.Windows.Forms.ComboBox();
             this.DiscoveredByPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
             this.label37 = new System.Windows.Forms.Label();
@@ -63,6 +63,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.OwnerBox = new System.Windows.Forms.ComboBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.LookupCultureProvince = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.CultureBox = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -376,6 +377,13 @@
             this.SaveAllFilesButton = new System.Windows.Forms.Button();
             this.SaveFilesPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.RefreshSavesButton = new System.Windows.Forms.Button();
+            this.LookupReligionProvince = new System.Windows.Forms.Button();
+            this.LookupOwnerProvince = new System.Windows.Forms.Button();
+            this.LookupControllerProvince = new System.Windows.Forms.Button();
+            this.DiscoveredByTagBox = new System.Windows.Forms.ComboBox();
+            this.LookupDiscoveredGroupProvince = new System.Windows.Forms.Button();
+            this.LookupDiscoveredTagProvince = new System.Windows.Forms.Button();
+            this.LookupTradeNodeProvince = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.ProvinceTabControl.SuspendLayout();
@@ -642,9 +650,9 @@
             this.groupBox16.Controls.Add(this.AddBuildingButton);
             this.groupBox16.Controls.Add(this.BuildingsBox);
             this.groupBox16.Controls.Add(this.BuildingsPanel);
-            this.groupBox16.Location = new System.Drawing.Point(6, 340);
+            this.groupBox16.Location = new System.Drawing.Point(8, 360);
             this.groupBox16.Name = "groupBox16";
-            this.groupBox16.Size = new System.Drawing.Size(260, 127);
+            this.groupBox16.Size = new System.Drawing.Size(260, 107);
             this.groupBox16.TabIndex = 41;
             this.groupBox16.TabStop = false;
             this.groupBox16.Text = "Buildings";
@@ -660,7 +668,7 @@
             // 
             // AddBuildingButton
             // 
-            this.AddBuildingButton.Location = new System.Drawing.Point(183, 19);
+            this.AddBuildingButton.Location = new System.Drawing.Point(182, 20);
             this.AddBuildingButton.Name = "AddBuildingButton";
             this.AddBuildingButton.Size = new System.Drawing.Size(75, 23);
             this.AddBuildingButton.TabIndex = 26;
@@ -685,7 +693,7 @@
             // BuildingsPanel
             // 
             this.BuildingsPanel.BackColor = System.Drawing.Color.LightGray;
-            this.BuildingsPanel.Location = new System.Drawing.Point(6, 62);
+            this.BuildingsPanel.Location = new System.Drawing.Point(5, 62);
             this.BuildingsPanel.Name = "BuildingsPanel";
             this.BuildingsPanel.Size = new System.Drawing.Size(251, 38);
             this.BuildingsPanel.TabIndex = 25;
@@ -735,14 +743,17 @@
             // 
             // groupBox12
             // 
+            this.groupBox12.Controls.Add(this.LookupDiscoveredTagProvince);
+            this.groupBox12.Controls.Add(this.LookupDiscoveredGroupProvince);
+            this.groupBox12.Controls.Add(this.DiscoveredByTagBox);
             this.groupBox12.Controls.Add(this.label36);
             this.groupBox12.Controls.Add(this.AddOwnerDiscoveredByButton);
             this.groupBox12.Controls.Add(this.AddDiscoveredByButton);
-            this.groupBox12.Controls.Add(this.DiscoveredByBox);
+            this.groupBox12.Controls.Add(this.DiscoveredByGroupBox);
             this.groupBox12.Controls.Add(this.DiscoveredByPanel);
-            this.groupBox12.Location = new System.Drawing.Point(6, 198);
+            this.groupBox12.Location = new System.Drawing.Point(6, 193);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(242, 136);
+            this.groupBox12.Size = new System.Drawing.Size(242, 161);
             this.groupBox12.TabIndex = 40;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Discovered by";
@@ -750,7 +761,7 @@
             // label36
             // 
             this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(6, 76);
+            this.label36.Location = new System.Drawing.Point(5, 101);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(158, 13);
             this.label36.TabIndex = 28;
@@ -758,9 +769,9 @@
             // 
             // AddOwnerDiscoveredByButton
             // 
-            this.AddOwnerDiscoveredByButton.Location = new System.Drawing.Point(5, 47);
+            this.AddOwnerDiscoveredByButton.Location = new System.Drawing.Point(6, 75);
             this.AddOwnerDiscoveredByButton.Name = "AddOwnerDiscoveredByButton";
-            this.AddOwnerDiscoveredByButton.Size = new System.Drawing.Size(231, 23);
+            this.AddOwnerDiscoveredByButton.Size = new System.Drawing.Size(230, 23);
             this.AddOwnerDiscoveredByButton.TabIndex = 27;
             this.AddOwnerDiscoveredByButton.Text = "Add owner\'s technology group";
             this.AddOwnerDiscoveredByButton.UseVisualStyleBackColor = true;
@@ -770,43 +781,45 @@
             // 
             this.AddDiscoveredByButton.Location = new System.Drawing.Point(183, 19);
             this.AddDiscoveredByButton.Name = "AddDiscoveredByButton";
-            this.AddDiscoveredByButton.Size = new System.Drawing.Size(53, 23);
+            this.AddDiscoveredByButton.Size = new System.Drawing.Size(53, 51);
             this.AddDiscoveredByButton.TabIndex = 26;
             this.AddDiscoveredByButton.Text = "Add";
             this.AddDiscoveredByButton.UseVisualStyleBackColor = true;
             this.AddDiscoveredByButton.Click += new System.EventHandler(this.AddDiscoveredByButton_Click);
             // 
-            // DiscoveredByBox
+            // DiscoveredByGroupBox
             // 
-            this.DiscoveredByBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.DiscoveredByBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.DiscoveredByBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.DiscoveredByBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.DiscoveredByBox.FormattingEnabled = true;
-            this.DiscoveredByBox.Location = new System.Drawing.Point(6, 19);
-            this.DiscoveredByBox.Name = "DiscoveredByBox";
-            this.DiscoveredByBox.Size = new System.Drawing.Size(171, 24);
-            this.DiscoveredByBox.Sorted = true;
-            this.DiscoveredByBox.TabIndex = 25;
-            this.DiscoveredByBox.TabStop = false;
+            this.DiscoveredByGroupBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.DiscoveredByGroupBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.DiscoveredByGroupBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.DiscoveredByGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.DiscoveredByGroupBox.FormattingEnabled = true;
+            this.DiscoveredByGroupBox.Location = new System.Drawing.Point(6, 19);
+            this.DiscoveredByGroupBox.Name = "DiscoveredByGroupBox";
+            this.DiscoveredByGroupBox.Size = new System.Drawing.Size(140, 24);
+            this.DiscoveredByGroupBox.Sorted = true;
+            this.DiscoveredByGroupBox.TabIndex = 25;
+            this.DiscoveredByGroupBox.TabStop = false;
             // 
             // DiscoveredByPanel
             // 
             this.DiscoveredByPanel.BackColor = System.Drawing.Color.LightGray;
-            this.DiscoveredByPanel.Location = new System.Drawing.Point(6, 92);
+            this.DiscoveredByPanel.Location = new System.Drawing.Point(6, 117);
             this.DiscoveredByPanel.Name = "DiscoveredByPanel";
             this.DiscoveredByPanel.Size = new System.Drawing.Size(230, 38);
             this.DiscoveredByPanel.TabIndex = 25;
             // 
             // groupBox13
             // 
+            this.groupBox13.Controls.Add(this.LookupControllerProvince);
+            this.groupBox13.Controls.Add(this.LookupOwnerProvince);
             this.groupBox13.Controls.Add(this.label37);
             this.groupBox13.Controls.Add(this.ControllerBox);
             this.groupBox13.Controls.Add(this.label5);
             this.groupBox13.Controls.Add(this.OwnerBox);
             this.groupBox13.Location = new System.Drawing.Point(6, 103);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(242, 89);
+            this.groupBox13.Size = new System.Drawing.Size(242, 84);
             this.groupBox13.TabIndex = 43;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "Owner";
@@ -830,7 +843,7 @@
             this.ControllerBox.FormattingEnabled = true;
             this.ControllerBox.Location = new System.Drawing.Point(79, 50);
             this.ControllerBox.Name = "ControllerBox";
-            this.ControllerBox.Size = new System.Drawing.Size(157, 24);
+            this.ControllerBox.Size = new System.Drawing.Size(119, 24);
             this.ControllerBox.TabIndex = 21;
             this.ControllerBox.TabStop = false;
             this.ControllerBox.SelectedIndexChanged += new System.EventHandler(this.ControllerBox_SelectedIndexChanged);
@@ -854,13 +867,15 @@
             this.OwnerBox.FormattingEnabled = true;
             this.OwnerBox.Location = new System.Drawing.Point(79, 23);
             this.OwnerBox.Name = "OwnerBox";
-            this.OwnerBox.Size = new System.Drawing.Size(157, 24);
+            this.OwnerBox.Size = new System.Drawing.Size(119, 24);
             this.OwnerBox.TabIndex = 19;
             this.OwnerBox.TabStop = false;
             this.OwnerBox.SelectedIndexChanged += new System.EventHandler(this.OwnerBox_SelectedIndexChanged);
             // 
             // groupBox10
             // 
+            this.groupBox10.Controls.Add(this.LookupReligionProvince);
+            this.groupBox10.Controls.Add(this.LookupCultureProvince);
             this.groupBox10.Controls.Add(this.label6);
             this.groupBox10.Controls.Add(this.CultureBox);
             this.groupBox10.Controls.Add(this.label7);
@@ -871,6 +886,16 @@
             this.groupBox10.TabIndex = 38;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Culture and Religion";
+            // 
+            // LookupCultureProvince
+            // 
+            this.LookupCultureProvince.Location = new System.Drawing.Point(204, 27);
+            this.LookupCultureProvince.Name = "LookupCultureProvince";
+            this.LookupCultureProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupCultureProvince.TabIndex = 27;
+            this.LookupCultureProvince.Text = "🔎";
+            this.LookupCultureProvince.UseVisualStyleBackColor = true;
+            this.LookupCultureProvince.Click += new System.EventHandler(this.LookupCultureProvince_Click);
             // 
             // label6
             // 
@@ -891,7 +916,7 @@
             this.CultureBox.FormattingEnabled = true;
             this.CultureBox.Location = new System.Drawing.Point(66, 27);
             this.CultureBox.Name = "CultureBox";
-            this.CultureBox.Size = new System.Drawing.Size(170, 24);
+            this.CultureBox.Size = new System.Drawing.Size(132, 24);
             this.CultureBox.TabIndex = 9;
             this.CultureBox.TabStop = false;
             this.CultureBox.SelectedIndexChanged += new System.EventHandler(this.CultureBox_SelectedIndexChanged);
@@ -915,13 +940,14 @@
             this.ReligionBox.FormattingEnabled = true;
             this.ReligionBox.Location = new System.Drawing.Point(66, 54);
             this.ReligionBox.Name = "ReligionBox";
-            this.ReligionBox.Size = new System.Drawing.Size(170, 24);
+            this.ReligionBox.Size = new System.Drawing.Size(132, 24);
             this.ReligionBox.TabIndex = 11;
             this.ReligionBox.TabStop = false;
             this.ReligionBox.SelectedIndexChanged += new System.EventHandler(this.ReligionBox_SelectedIndexChanged);
             // 
             // groupBox9
             // 
+            this.groupBox9.Controls.Add(this.LookupTradeNodeProvince);
             this.groupBox9.Controls.Add(this.label17);
             this.groupBox9.Controls.Add(this.ProvinceTradeNodeBox);
             this.groupBox9.Controls.Add(this.label4);
@@ -956,7 +982,7 @@
             " "});
             this.ProvinceTradeNodeBox.Location = new System.Drawing.Point(88, 82);
             this.ProvinceTradeNodeBox.Name = "ProvinceTradeNodeBox";
-            this.ProvinceTradeNodeBox.Size = new System.Drawing.Size(184, 24);
+            this.ProvinceTradeNodeBox.Size = new System.Drawing.Size(146, 24);
             this.ProvinceTradeNodeBox.TabIndex = 23;
             this.ProvinceTradeNodeBox.TabStop = false;
             this.ProvinceTradeNodeBox.SelectedIndexChanged += new System.EventHandler(this.ProvinceTradeNodeBox_SelectedIndexChanged);
@@ -4237,6 +4263,80 @@
             this.RefreshSavesButton.UseVisualStyleBackColor = true;
             this.RefreshSavesButton.Click += new System.EventHandler(this.RefreshSavesButton_Click);
             // 
+            // LookupReligionProvince
+            // 
+            this.LookupReligionProvince.Location = new System.Drawing.Point(204, 54);
+            this.LookupReligionProvince.Name = "LookupReligionProvince";
+            this.LookupReligionProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupReligionProvince.TabIndex = 28;
+            this.LookupReligionProvince.Text = "🔎";
+            this.LookupReligionProvince.UseVisualStyleBackColor = true;
+            this.LookupReligionProvince.Click += new System.EventHandler(this.LookupReligionProvince_Click);
+            // 
+            // LookupOwnerProvince
+            // 
+            this.LookupOwnerProvince.Location = new System.Drawing.Point(204, 23);
+            this.LookupOwnerProvince.Name = "LookupOwnerProvince";
+            this.LookupOwnerProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupOwnerProvince.TabIndex = 29;
+            this.LookupOwnerProvince.Text = "🔎";
+            this.LookupOwnerProvince.UseVisualStyleBackColor = true;
+            this.LookupOwnerProvince.Click += new System.EventHandler(this.LookupOwnerProvince_Click);
+            // 
+            // LookupControllerProvince
+            // 
+            this.LookupControllerProvince.Location = new System.Drawing.Point(204, 50);
+            this.LookupControllerProvince.Name = "LookupControllerProvince";
+            this.LookupControllerProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupControllerProvince.TabIndex = 30;
+            this.LookupControllerProvince.Text = "🔎";
+            this.LookupControllerProvince.UseVisualStyleBackColor = true;
+            this.LookupControllerProvince.Click += new System.EventHandler(this.LookupControllerProvince_Click);
+            // 
+            // DiscoveredByTagBox
+            // 
+            this.DiscoveredByTagBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.DiscoveredByTagBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.DiscoveredByTagBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.DiscoveredByTagBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.DiscoveredByTagBox.FormattingEnabled = true;
+            this.DiscoveredByTagBox.Location = new System.Drawing.Point(6, 46);
+            this.DiscoveredByTagBox.Name = "DiscoveredByTagBox";
+            this.DiscoveredByTagBox.Size = new System.Drawing.Size(140, 24);
+            this.DiscoveredByTagBox.Sorted = true;
+            this.DiscoveredByTagBox.TabIndex = 29;
+            this.DiscoveredByTagBox.TabStop = false;
+            // 
+            // LookupDiscoveredGroupProvince
+            // 
+            this.LookupDiscoveredGroupProvince.Location = new System.Drawing.Point(149, 19);
+            this.LookupDiscoveredGroupProvince.Name = "LookupDiscoveredGroupProvince";
+            this.LookupDiscoveredGroupProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupDiscoveredGroupProvince.TabIndex = 31;
+            this.LookupDiscoveredGroupProvince.Text = "🔎";
+            this.LookupDiscoveredGroupProvince.UseVisualStyleBackColor = true;
+            this.LookupDiscoveredGroupProvince.Click += new System.EventHandler(this.LookupDiscoveredGroupProvince_Click);
+            // 
+            // LookupDiscoveredTagProvince
+            // 
+            this.LookupDiscoveredTagProvince.Location = new System.Drawing.Point(149, 46);
+            this.LookupDiscoveredTagProvince.Name = "LookupDiscoveredTagProvince";
+            this.LookupDiscoveredTagProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupDiscoveredTagProvince.TabIndex = 32;
+            this.LookupDiscoveredTagProvince.Text = "🔎";
+            this.LookupDiscoveredTagProvince.UseVisualStyleBackColor = true;
+            this.LookupDiscoveredTagProvince.Click += new System.EventHandler(this.LookupDiscoveredTagProvince_Click);
+            // 
+            // LookupTradeNodeProvince
+            // 
+            this.LookupTradeNodeProvince.Location = new System.Drawing.Point(240, 82);
+            this.LookupTradeNodeProvince.Name = "LookupTradeNodeProvince";
+            this.LookupTradeNodeProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupTradeNodeProvince.TabIndex = 29;
+            this.LookupTradeNodeProvince.Text = "🔎";
+            this.LookupTradeNodeProvince.UseVisualStyleBackColor = true;
+            this.LookupTradeNodeProvince.Click += new System.EventHandler(this.LookupTradeNodeProvince_Click);
+            // 
             // TabsSeparate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4385,7 +4485,7 @@
         private System.Windows.Forms.Label label36;
         private System.Windows.Forms.Button AddOwnerDiscoveredByButton;
         private System.Windows.Forms.Button AddDiscoveredByButton;
-        public System.Windows.Forms.ComboBox DiscoveredByBox;
+        public System.Windows.Forms.ComboBox DiscoveredByGroupBox;
         private System.Windows.Forms.FlowLayoutPanel DiscoveredByPanel;
         private System.Windows.Forms.GroupBox groupBox13;
         private System.Windows.Forms.Label label37;
@@ -4708,5 +4808,13 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button LookupCultureProvince;
+        private System.Windows.Forms.Button LookupReligionProvince;
+        private System.Windows.Forms.Button LookupControllerProvince;
+        private System.Windows.Forms.Button LookupOwnerProvince;
+        public System.Windows.Forms.ComboBox DiscoveredByTagBox;
+        private System.Windows.Forms.Button LookupDiscoveredTagProvince;
+        private System.Windows.Forms.Button LookupDiscoveredGroupProvince;
+        private System.Windows.Forms.Button LookupTradeNodeProvince;
     }
 }
