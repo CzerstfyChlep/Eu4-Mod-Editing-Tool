@@ -14,8 +14,6 @@ namespace Eu4ModEditor
 {
     public partial class ModEditor : Form
     {
-        public static int ZoomIn = 1;
-
         public static TabsSeparate TabsSeparateWindow;
         public static MapmodesWindow MapmodesSeparateWindow;
         public static DateWindow DateSeparateWindow;
@@ -46,8 +44,17 @@ namespace Eu4ModEditor
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            e.Graphics.DrawImage(GlobalVariables.DrawingMain.source, new Rectangle(GlobalVariables.MapDrawingPosX, GlobalVariables.MapDrawingPosY, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
-            e.Graphics.DrawImage(GlobalVariables.ClickedMask.source, new Rectangle(GlobalVariables.MapDrawingPosX, GlobalVariables.MapDrawingPosY, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
+            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            if (GlobalVariables.Zoom > 1)
+            {
+                e.Graphics.DrawImage(GlobalVariables.DrawingMain.source, new Rectangle(GlobalVariables.MapDrawingPosX, GlobalVariables.MapDrawingPosY, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth / GlobalVariables.Zoom, GlobalVariables.MapDrawingHeight / GlobalVariables.Zoom)), GraphicsUnit.Pixel);
+                e.Graphics.DrawImage(GlobalVariables.ClickedMask.source, new Rectangle(GlobalVariables.MapDrawingPosX, GlobalVariables.MapDrawingPosY, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth / GlobalVariables.Zoom, GlobalVariables.MapDrawingHeight / GlobalVariables.Zoom)), GraphicsUnit.Pixel);
+            }
+            else
+            {
+                e.Graphics.DrawImage(GlobalVariables.DrawingMain.source, new Rectangle(GlobalVariables.MapDrawingPosX, GlobalVariables.MapDrawingPosY, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
+                e.Graphics.DrawImage(GlobalVariables.ClickedMask.source, new Rectangle(GlobalVariables.MapDrawingPosX, GlobalVariables.MapDrawingPosY, GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight), new Rectangle(GlobalVariables.CameraPosition, new Size(GlobalVariables.MapDrawingWidth, GlobalVariables.MapDrawingHeight)), GraphicsUnit.Pixel);
+            }
             //base.OnPaint(e);
         }
 
@@ -143,7 +150,7 @@ namespace Eu4ModEditor
             {
                 if (e.Location.X > GlobalVariables.MapDrawingPosX && e.Location.X < GlobalVariables.MapDrawingWidth + GlobalVariables.MapDrawingPosX && e.Location.Y > GlobalVariables.MapDrawingPosY && e.Location.Y < GlobalVariables.MapDrawingHeight + GlobalVariables.MapDrawingPosY)
                 {
-                    Point truePosition = new Point(e.Location.X - GlobalVariables.MapDrawingPosX + GlobalVariables.CameraPosition.X, e.Location.Y - GlobalVariables.MapDrawingPosY + GlobalVariables.CameraPosition.Y);
+                    Point truePosition = new Point((e.Location.X - GlobalVariables.MapDrawingPosX) / GlobalVariables.Zoom + GlobalVariables.CameraPosition.X, (e.Location.Y - GlobalVariables.MapDrawingPosY) / GlobalVariables.Zoom + GlobalVariables.CameraPosition.Y);
                     Color c = GlobalVariables.ProvincesMapBitmap.GetPixel(truePosition.X, truePosition.Y);
                     Province p = GlobalVariables.CubeArray[c.R, c.G, c.B];
                     if (p != null)
@@ -188,6 +195,18 @@ namespace Eu4ModEditor
                 
             }
             this.ActiveControl = null;
+        }
+
+        void ScrollHandler(object sender, MouseEventArgs e)
+        {
+            if(e.Delta > 0)
+            {
+                ZoomIn();
+            }
+            else
+            {
+                ZoomOut();
+            }
         }
         private void ReloadMapsButton_Click(object sender, EventArgs e)
         {
@@ -513,14 +532,29 @@ namespace Eu4ModEditor
 
         private void ZoomInButton_Click(object sender, EventArgs e)
         {
-            /*
-            ZoomIn *= 2;
-            if (ZoomIn == 16)
-                ZoomIn = 1;*/
-            UpButton.Text = form.Width + "";
-            GlobalVariables.MapDrawingHeight = form.Height - 133;
-            GlobalVariables.MapDrawingWidth = form.Width - 95;
-            graphics = form.CreateGraphics();
+            GlobalVariables.Zoom *= 2;
+            if (GlobalVariables.Zoom == 16)
+                GlobalVariables.Zoom = 1;
+            //GlobalVariables.MapDrawingHeight = form.Height - 133;
+            //GlobalVariables.MapDrawingWidth = form.Width - 95;
+            //graphics = form.CreateGraphics();
+            ZoomInButton.Text = GlobalVariables.Zoom + "x";
+            UpdateMap();
+        }
+
+        public void ZoomIn()
+        {
+            if (GlobalVariables.Zoom < 8)
+                GlobalVariables.Zoom *= 2;
+            ZoomInButton.Text = GlobalVariables.Zoom + "x";
+            UpdateMap();
+        }
+
+        public void ZoomOut()
+        {
+            if(GlobalVariables.Zoom > 1)
+                GlobalVariables.Zoom /= 2;
+            ZoomInButton.Text = GlobalVariables.Zoom + "x";
             UpdateMap();
         }
 

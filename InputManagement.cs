@@ -30,19 +30,19 @@ namespace Eu4ModEditor
             //TODO
             //Make this smaller for smaller windows
             if (name == "RightButton")
-                GlobalVariables.CameraPosition.X += 220;
+                GlobalVariables.CameraPosition.X += 220 / GlobalVariables.Zoom;
             else if (name == "LeftButton" && GlobalVariables.CameraPosition.X > 0)
-                GlobalVariables.CameraPosition.X -= 220;
+                GlobalVariables.CameraPosition.X -= 220 / GlobalVariables.Zoom;
             else if (name == "UpButton" && GlobalVariables.CameraPosition.Y > 0)
-                GlobalVariables.CameraPosition.Y -= 160;
+                GlobalVariables.CameraPosition.Y -= 160 / GlobalVariables.Zoom;
             else if (name == "DownButton")
-                GlobalVariables.CameraPosition.Y += 160;
-            if (GlobalVariables.CameraPosition.X + GlobalVariables.MapDrawingWidth >= GlobalVariables.ProvincesMap.Width)
-                GlobalVariables.CameraPosition.X = GlobalVariables.ProvincesMap.Width - GlobalVariables.MapDrawingWidth;
+                GlobalVariables.CameraPosition.Y += 160 / GlobalVariables.Zoom;
+            if (GlobalVariables.CameraPosition.X + GlobalVariables.MapDrawingWidth / GlobalVariables.Zoom >= GlobalVariables.ProvincesMap.Width)
+                GlobalVariables.CameraPosition.X = GlobalVariables.ProvincesMap.Width - GlobalVariables.MapDrawingWidth / GlobalVariables.Zoom;
             else if (GlobalVariables.CameraPosition.X < 0)
                 GlobalVariables.CameraPosition.X = 0;
-            if (GlobalVariables.CameraPosition.Y + GlobalVariables.MapDrawingHeight >= GlobalVariables.ProvincesMap.Height)
-                GlobalVariables.CameraPosition.Y = GlobalVariables.ProvincesMap.Height - GlobalVariables.MapDrawingHeight;
+            if (GlobalVariables.CameraPosition.Y + GlobalVariables.MapDrawingHeight / GlobalVariables.Zoom >= GlobalVariables.ProvincesMap.Height)
+                GlobalVariables.CameraPosition.Y = GlobalVariables.ProvincesMap.Height - GlobalVariables.MapDrawingHeight / GlobalVariables.Zoom;
             else if (GlobalVariables.CameraPosition.Y < 0)
                 GlobalVariables.CameraPosition.Y = 0;
 

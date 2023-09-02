@@ -52,23 +52,30 @@
             this.MakeCityButton = new System.Windows.Forms.Button();
             this.IsCityCheckbox = new System.Windows.Forms.CheckBox();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.LookupDiscoveredTagProvince = new System.Windows.Forms.Button();
+            this.LookupDiscoveredGroupProvince = new System.Windows.Forms.Button();
+            this.DiscoveredByTagBox = new System.Windows.Forms.ComboBox();
             this.label36 = new System.Windows.Forms.Label();
             this.AddOwnerDiscoveredByButton = new System.Windows.Forms.Button();
             this.AddDiscoveredByButton = new System.Windows.Forms.Button();
             this.DiscoveredByGroupBox = new System.Windows.Forms.ComboBox();
             this.DiscoveredByPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.LookupControllerProvince = new System.Windows.Forms.Button();
+            this.LookupOwnerProvince = new System.Windows.Forms.Button();
             this.label37 = new System.Windows.Forms.Label();
             this.ControllerBox = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.OwnerBox = new System.Windows.Forms.ComboBox();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
+            this.LookupReligionProvince = new System.Windows.Forms.Button();
             this.LookupCultureProvince = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.CultureBox = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.ReligionBox = new System.Windows.Forms.ComboBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.LookupTradeNodeProvince = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
             this.ProvinceTradeNodeBox = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -377,13 +384,9 @@
             this.SaveAllFilesButton = new System.Windows.Forms.Button();
             this.SaveFilesPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.RefreshSavesButton = new System.Windows.Forms.Button();
-            this.LookupReligionProvince = new System.Windows.Forms.Button();
-            this.LookupOwnerProvince = new System.Windows.Forms.Button();
-            this.LookupControllerProvince = new System.Windows.Forms.Button();
-            this.DiscoveredByTagBox = new System.Windows.Forms.ComboBox();
-            this.LookupDiscoveredGroupProvince = new System.Windows.Forms.Button();
-            this.LookupDiscoveredTagProvince = new System.Windows.Forms.Button();
-            this.LookupTradeNodeProvince = new System.Windows.Forms.Button();
+            this.LookupProvinceCores = new System.Windows.Forms.Button();
+            this.TradeGoodProvinceLookup = new System.Windows.Forms.Button();
+            this.LookupLatentTradeGoodProvince = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.ProvinceTabControl.SuspendLayout();
@@ -758,6 +761,40 @@
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Discovered by";
             // 
+            // LookupDiscoveredTagProvince
+            // 
+            this.LookupDiscoveredTagProvince.Location = new System.Drawing.Point(149, 46);
+            this.LookupDiscoveredTagProvince.Name = "LookupDiscoveredTagProvince";
+            this.LookupDiscoveredTagProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupDiscoveredTagProvince.TabIndex = 32;
+            this.LookupDiscoveredTagProvince.Text = "🔎";
+            this.LookupDiscoveredTagProvince.UseVisualStyleBackColor = true;
+            this.LookupDiscoveredTagProvince.Click += new System.EventHandler(this.LookupDiscoveredTagProvince_Click);
+            // 
+            // LookupDiscoveredGroupProvince
+            // 
+            this.LookupDiscoveredGroupProvince.Location = new System.Drawing.Point(149, 19);
+            this.LookupDiscoveredGroupProvince.Name = "LookupDiscoveredGroupProvince";
+            this.LookupDiscoveredGroupProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupDiscoveredGroupProvince.TabIndex = 31;
+            this.LookupDiscoveredGroupProvince.Text = "🔎";
+            this.LookupDiscoveredGroupProvince.UseVisualStyleBackColor = true;
+            this.LookupDiscoveredGroupProvince.Click += new System.EventHandler(this.LookupDiscoveredGroupProvince_Click);
+            // 
+            // DiscoveredByTagBox
+            // 
+            this.DiscoveredByTagBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.DiscoveredByTagBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.DiscoveredByTagBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.DiscoveredByTagBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.DiscoveredByTagBox.FormattingEnabled = true;
+            this.DiscoveredByTagBox.Location = new System.Drawing.Point(6, 46);
+            this.DiscoveredByTagBox.Name = "DiscoveredByTagBox";
+            this.DiscoveredByTagBox.Size = new System.Drawing.Size(140, 24);
+            this.DiscoveredByTagBox.Sorted = true;
+            this.DiscoveredByTagBox.TabIndex = 29;
+            this.DiscoveredByTagBox.TabStop = false;
+            // 
             // label36
             // 
             this.label36.AutoSize = true;
@@ -824,6 +861,26 @@
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "Owner";
             // 
+            // LookupControllerProvince
+            // 
+            this.LookupControllerProvince.Location = new System.Drawing.Point(204, 50);
+            this.LookupControllerProvince.Name = "LookupControllerProvince";
+            this.LookupControllerProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupControllerProvince.TabIndex = 30;
+            this.LookupControllerProvince.Text = "🔎";
+            this.LookupControllerProvince.UseVisualStyleBackColor = true;
+            this.LookupControllerProvince.Click += new System.EventHandler(this.LookupControllerProvince_Click);
+            // 
+            // LookupOwnerProvince
+            // 
+            this.LookupOwnerProvince.Location = new System.Drawing.Point(204, 23);
+            this.LookupOwnerProvince.Name = "LookupOwnerProvince";
+            this.LookupOwnerProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupOwnerProvince.TabIndex = 29;
+            this.LookupOwnerProvince.Text = "🔎";
+            this.LookupOwnerProvince.UseVisualStyleBackColor = true;
+            this.LookupOwnerProvince.Click += new System.EventHandler(this.LookupOwnerProvince_Click);
+            // 
             // label37
             // 
             this.label37.AutoSize = true;
@@ -887,6 +944,16 @@
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "Culture and Religion";
             // 
+            // LookupReligionProvince
+            // 
+            this.LookupReligionProvince.Location = new System.Drawing.Point(204, 54);
+            this.LookupReligionProvince.Name = "LookupReligionProvince";
+            this.LookupReligionProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupReligionProvince.TabIndex = 28;
+            this.LookupReligionProvince.Text = "🔎";
+            this.LookupReligionProvince.UseVisualStyleBackColor = true;
+            this.LookupReligionProvince.Click += new System.EventHandler(this.LookupReligionProvince_Click);
+            // 
             // LookupCultureProvince
             // 
             this.LookupCultureProvince.Location = new System.Drawing.Point(204, 27);
@@ -947,6 +1014,8 @@
             // 
             // groupBox9
             // 
+            this.groupBox9.Controls.Add(this.LookupLatentTradeGoodProvince);
+            this.groupBox9.Controls.Add(this.TradeGoodProvinceLookup);
             this.groupBox9.Controls.Add(this.LookupTradeNodeProvince);
             this.groupBox9.Controls.Add(this.label17);
             this.groupBox9.Controls.Add(this.ProvinceTradeNodeBox);
@@ -960,6 +1029,16 @@
             this.groupBox9.TabIndex = 37;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Trade";
+            // 
+            // LookupTradeNodeProvince
+            // 
+            this.LookupTradeNodeProvince.Location = new System.Drawing.Point(240, 82);
+            this.LookupTradeNodeProvince.Name = "LookupTradeNodeProvince";
+            this.LookupTradeNodeProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupTradeNodeProvince.TabIndex = 29;
+            this.LookupTradeNodeProvince.Text = "🔎";
+            this.LookupTradeNodeProvince.UseVisualStyleBackColor = true;
+            this.LookupTradeNodeProvince.Click += new System.EventHandler(this.LookupTradeNodeProvince_Click);
             // 
             // label17
             // 
@@ -1006,7 +1085,7 @@
             this.TradeGoodBox.FormattingEnabled = true;
             this.TradeGoodBox.Location = new System.Drawing.Point(122, 22);
             this.TradeGoodBox.Name = "TradeGoodBox";
-            this.TradeGoodBox.Size = new System.Drawing.Size(150, 24);
+            this.TradeGoodBox.Size = new System.Drawing.Size(112, 24);
             this.TradeGoodBox.Sorted = true;
             this.TradeGoodBox.TabIndex = 6;
             this.TradeGoodBox.TabStop = false;
@@ -1023,7 +1102,7 @@
             " "});
             this.LatentTradeGoodBox.Location = new System.Drawing.Point(122, 52);
             this.LatentTradeGoodBox.Name = "LatentTradeGoodBox";
-            this.LatentTradeGoodBox.Size = new System.Drawing.Size(150, 24);
+            this.LatentTradeGoodBox.Size = new System.Drawing.Size(112, 24);
             this.LatentTradeGoodBox.Sorted = true;
             this.LatentTradeGoodBox.TabIndex = 22;
             this.LatentTradeGoodBox.TabStop = false;
@@ -1041,6 +1120,7 @@
             // 
             // groupBox11
             // 
+            this.groupBox11.Controls.Add(this.LookupProvinceCores);
             this.groupBox11.Controls.Add(this.AddClaimButton);
             this.groupBox11.Controls.Add(this.label33);
             this.groupBox11.Controls.Add(this.AddOwnerCoreButton);
@@ -1102,7 +1182,7 @@
             this.AddCoreBox.FormattingEnabled = true;
             this.AddCoreBox.Location = new System.Drawing.Point(6, 19);
             this.AddCoreBox.Name = "AddCoreBox";
-            this.AddCoreBox.Size = new System.Drawing.Size(171, 24);
+            this.AddCoreBox.Size = new System.Drawing.Size(133, 24);
             this.AddCoreBox.TabIndex = 25;
             this.AddCoreBox.TabStop = false;
             // 
@@ -4263,79 +4343,35 @@
             this.RefreshSavesButton.UseVisualStyleBackColor = true;
             this.RefreshSavesButton.Click += new System.EventHandler(this.RefreshSavesButton_Click);
             // 
-            // LookupReligionProvince
+            // LookupProvinceCores
             // 
-            this.LookupReligionProvince.Location = new System.Drawing.Point(204, 54);
-            this.LookupReligionProvince.Name = "LookupReligionProvince";
-            this.LookupReligionProvince.Size = new System.Drawing.Size(32, 24);
-            this.LookupReligionProvince.TabIndex = 28;
-            this.LookupReligionProvince.Text = "🔎";
-            this.LookupReligionProvince.UseVisualStyleBackColor = true;
-            this.LookupReligionProvince.Click += new System.EventHandler(this.LookupReligionProvince_Click);
+            this.LookupProvinceCores.Location = new System.Drawing.Point(145, 19);
+            this.LookupProvinceCores.Name = "LookupProvinceCores";
+            this.LookupProvinceCores.Size = new System.Drawing.Size(32, 24);
+            this.LookupProvinceCores.TabIndex = 30;
+            this.LookupProvinceCores.Text = "🔎";
+            this.LookupProvinceCores.UseVisualStyleBackColor = true;
+            this.LookupProvinceCores.Click += new System.EventHandler(this.LookupProvinceCores_Click);
             // 
-            // LookupOwnerProvince
+            // TradeGoodProvinceLookup
             // 
-            this.LookupOwnerProvince.Location = new System.Drawing.Point(204, 23);
-            this.LookupOwnerProvince.Name = "LookupOwnerProvince";
-            this.LookupOwnerProvince.Size = new System.Drawing.Size(32, 24);
-            this.LookupOwnerProvince.TabIndex = 29;
-            this.LookupOwnerProvince.Text = "🔎";
-            this.LookupOwnerProvince.UseVisualStyleBackColor = true;
-            this.LookupOwnerProvince.Click += new System.EventHandler(this.LookupOwnerProvince_Click);
+            this.TradeGoodProvinceLookup.Location = new System.Drawing.Point(240, 22);
+            this.TradeGoodProvinceLookup.Name = "TradeGoodProvinceLookup";
+            this.TradeGoodProvinceLookup.Size = new System.Drawing.Size(32, 24);
+            this.TradeGoodProvinceLookup.TabIndex = 30;
+            this.TradeGoodProvinceLookup.Text = "🔎";
+            this.TradeGoodProvinceLookup.UseVisualStyleBackColor = true;
+            this.TradeGoodProvinceLookup.Click += new System.EventHandler(this.TradeGoodProvinceLookup_Click);
             // 
-            // LookupControllerProvince
+            // LookupLatentTradeGoodProvince
             // 
-            this.LookupControllerProvince.Location = new System.Drawing.Point(204, 50);
-            this.LookupControllerProvince.Name = "LookupControllerProvince";
-            this.LookupControllerProvince.Size = new System.Drawing.Size(32, 24);
-            this.LookupControllerProvince.TabIndex = 30;
-            this.LookupControllerProvince.Text = "🔎";
-            this.LookupControllerProvince.UseVisualStyleBackColor = true;
-            this.LookupControllerProvince.Click += new System.EventHandler(this.LookupControllerProvince_Click);
-            // 
-            // DiscoveredByTagBox
-            // 
-            this.DiscoveredByTagBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.DiscoveredByTagBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.DiscoveredByTagBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.DiscoveredByTagBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.DiscoveredByTagBox.FormattingEnabled = true;
-            this.DiscoveredByTagBox.Location = new System.Drawing.Point(6, 46);
-            this.DiscoveredByTagBox.Name = "DiscoveredByTagBox";
-            this.DiscoveredByTagBox.Size = new System.Drawing.Size(140, 24);
-            this.DiscoveredByTagBox.Sorted = true;
-            this.DiscoveredByTagBox.TabIndex = 29;
-            this.DiscoveredByTagBox.TabStop = false;
-            // 
-            // LookupDiscoveredGroupProvince
-            // 
-            this.LookupDiscoveredGroupProvince.Location = new System.Drawing.Point(149, 19);
-            this.LookupDiscoveredGroupProvince.Name = "LookupDiscoveredGroupProvince";
-            this.LookupDiscoveredGroupProvince.Size = new System.Drawing.Size(32, 24);
-            this.LookupDiscoveredGroupProvince.TabIndex = 31;
-            this.LookupDiscoveredGroupProvince.Text = "🔎";
-            this.LookupDiscoveredGroupProvince.UseVisualStyleBackColor = true;
-            this.LookupDiscoveredGroupProvince.Click += new System.EventHandler(this.LookupDiscoveredGroupProvince_Click);
-            // 
-            // LookupDiscoveredTagProvince
-            // 
-            this.LookupDiscoveredTagProvince.Location = new System.Drawing.Point(149, 46);
-            this.LookupDiscoveredTagProvince.Name = "LookupDiscoveredTagProvince";
-            this.LookupDiscoveredTagProvince.Size = new System.Drawing.Size(32, 24);
-            this.LookupDiscoveredTagProvince.TabIndex = 32;
-            this.LookupDiscoveredTagProvince.Text = "🔎";
-            this.LookupDiscoveredTagProvince.UseVisualStyleBackColor = true;
-            this.LookupDiscoveredTagProvince.Click += new System.EventHandler(this.LookupDiscoveredTagProvince_Click);
-            // 
-            // LookupTradeNodeProvince
-            // 
-            this.LookupTradeNodeProvince.Location = new System.Drawing.Point(240, 82);
-            this.LookupTradeNodeProvince.Name = "LookupTradeNodeProvince";
-            this.LookupTradeNodeProvince.Size = new System.Drawing.Size(32, 24);
-            this.LookupTradeNodeProvince.TabIndex = 29;
-            this.LookupTradeNodeProvince.Text = "🔎";
-            this.LookupTradeNodeProvince.UseVisualStyleBackColor = true;
-            this.LookupTradeNodeProvince.Click += new System.EventHandler(this.LookupTradeNodeProvince_Click);
+            this.LookupLatentTradeGoodProvince.Location = new System.Drawing.Point(240, 52);
+            this.LookupLatentTradeGoodProvince.Name = "LookupLatentTradeGoodProvince";
+            this.LookupLatentTradeGoodProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupLatentTradeGoodProvince.TabIndex = 31;
+            this.LookupLatentTradeGoodProvince.Text = "🔎";
+            this.LookupLatentTradeGoodProvince.UseVisualStyleBackColor = true;
+            this.LookupLatentTradeGoodProvince.Click += new System.EventHandler(this.LookupLatentTradeGoodProvince_Click);
             // 
             // TabsSeparate
             // 
@@ -4816,5 +4852,8 @@
         private System.Windows.Forms.Button LookupDiscoveredTagProvince;
         private System.Windows.Forms.Button LookupDiscoveredGroupProvince;
         private System.Windows.Forms.Button LookupTradeNodeProvince;
+        private System.Windows.Forms.Button LookupProvinceCores;
+        private System.Windows.Forms.Button LookupLatentTradeGoodProvince;
+        private System.Windows.Forms.Button TradeGoodProvinceLookup;
     }
 }

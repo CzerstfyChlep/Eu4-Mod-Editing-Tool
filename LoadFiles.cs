@@ -3226,16 +3226,6 @@ namespace Eu4ModEditor
                 GlobalVariables.CountryModifiers.AddRange(modifiers);
 
                 GlobalVariables.FullyLoaded = true;
-
-                /*
-                File.WriteAllLines("owners.txt", tags);
-                File.WriteAllLines("cultures.txt", cultu);
-                File.WriteAllLines("religions.txt", relig);
-                File.WriteAllLines("dev.txt", dev.Select(x => x.ToString()).ToArray());
-                File.WriteAllLines("tradegoods.txt", tradego);
-                */
-                //File.WriteAllLines("ids.txt", ids.Select(x => x.ToString()).ToArray());
-                //MessageBox.Show($"Provinces: {GlobalVariables.Provinces.Count()}\nName: {GlobalVariables.Provinces[0].DefinitionName}");
             }
             catch (Exception e)
             {

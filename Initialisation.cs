@@ -63,6 +63,8 @@ namespace Eu4ModEditor
 
             MouseClick += MouseClickHandler;
 
+            MouseWheel += ScrollHandler;
+
             TabsSeparateWindow = new TabsSeparate();
 
             TabsSeparateWindow.Show();

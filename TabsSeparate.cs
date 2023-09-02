@@ -5396,5 +5396,41 @@ namespace Eu4ModEditor
                 ProvinceTradeNodeBox.SelectedItem = found;
             }
         }
+
+        private void LookupProvinceCores_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.Countries, "Select country", "Country");
+            lookupMenu.ShowDialog();
+            Country found = GlobalVariables.Countries.Find(x => x.FullName == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                AddCoreBox.SelectedItem = found;
+            }
+        }
+
+        private void TradeGoodProvinceLookup_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.TradeGoods, "Select trade good", "Trade good");
+            lookupMenu.ShowDialog();
+            TradeGood found = GlobalVariables.TradeGoods.Find(x => x.ReadableName == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                TradeGoodBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupLatentTradeGoodProvince_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.TradeGoods, "Select trade good", "Trade good");
+            lookupMenu.ShowDialog();
+            TradeGood found = GlobalVariables.LatentTradeGoods.Find(x => x.ReadableName == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                LatentTradeGoodBox.SelectedItem = found;
+            }
+        }
     }
 }
