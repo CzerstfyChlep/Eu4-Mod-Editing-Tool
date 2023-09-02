@@ -180,9 +180,7 @@ namespace Eu4ModEditor
             MacroTechGroupBox.Items.AddRange(GlobalVariables.TechGroups.ToArray());
             MacroTechGroupBox.Sorted = true;
 
-            GraphicalCultureBox.Items.AddRange(new string[] { "westerngfx", "easterngfx", "muslimgfx",
-            "indiangfx", "asiangfx", "africangfx", "northamericagfx", "southamericagfx", "inuitgfx",
-            "aboriginalgfx", "polynesiangfx", "southeastasiangfx"});
+            GraphicalCultureBox.Items.AddRange(GlobalVariables.GraphicalCultures);
 
             //GIVE FOCUS
 
@@ -5315,7 +5313,7 @@ namespace Eu4ModEditor
             LookupMenu lookupMenu = new LookupMenu();
             lookupMenu.InitializeArray(Religion.Religions, "Select religion", "Religion");
             lookupMenu.ShowDialog();
-            Religion found = Religion.Religions.Find(x => x.Name == lookupMenu.GetChosenObject());
+            Religion found = Religion.Religions.Find(x => x.ReadableName == lookupMenu.GetChosenObject());
             if (found != null)
             {
                 ReligionBox.SelectedItem = found;
@@ -5424,13 +5422,275 @@ namespace Eu4ModEditor
         private void LookupLatentTradeGoodProvince_Click(object sender, EventArgs e)
         {
             LookupMenu lookupMenu = new LookupMenu();
-            lookupMenu.InitializeArray(GlobalVariables.TradeGoods, "Select trade good", "Trade good");
+            lookupMenu.InitializeArray(GlobalVariables.LatentTradeGoods, "Select trade good", "Trade good");
             lookupMenu.ShowDialog();
             TradeGood found = GlobalVariables.LatentTradeGoods.Find(x => x.ReadableName == lookupMenu.GetChosenObject());
             if (found != null)
             {
                 LatentTradeGoodBox.SelectedItem = found;
             }
+        }
+
+        private void LookupBuildingProvince_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.Buildings, "Select building", "Building");
+            lookupMenu.ShowDialog();
+            Building found = GlobalVariables.Buildings.Find(x => x.Name == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                BuildingsBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupReligionCountry_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(Religion.Religions, "Select religion", "Religion");
+            lookupMenu.ShowDialog();
+            Religion found = Religion.Religions.Find(x => x.ReadableName == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                CountryReligionBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupTechGroupCountry_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.TechGroups, "Select technology group", "Technology group");
+            lookupMenu.ShowDialog();
+            TechnologyGroupBox.SelectedItem = lookupMenu.GetChosenObject();
+        }
+
+        private void LookupCountrySelect_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.Countries, "Select country", "Country");
+            lookupMenu.ShowDialog();
+            Country found = GlobalVariables.Countries.Find(x => x.FullName == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                CountryBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupPrimaryCultureCountry_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(Culture.Cultures, "Select culture", "Culture");
+            lookupMenu.ShowDialog();
+            Culture found = Culture.Cultures.Find(x => x.Name == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                CountryPrimaryCultureBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupGraphicalCulture_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.GraphicalCultures.ToList(), "Select graphical culture", "Graphical culture");
+            lookupMenu.ShowDialog();
+            GraphicalCultureBox.SelectedItem = lookupMenu.GetChosenObject();
+        }
+
+        private void LookupGovernmentType_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            List<string> GovernmentTypes = new List<string>();
+            foreach(Government g in GlobalVariables.Governments)
+            {
+                GovernmentTypes.Add(g.Type);
+            }
+
+            lookupMenu.InitializeArray(GovernmentTypes, "Select government type", "Government type");
+            lookupMenu.ShowDialog();
+            GovernmentTypeBox.SelectedItem = lookupMenu.GetChosenObject();
+        }
+
+        private void LookupGovernmentReform_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.SelectedCountry.Government.reforms, "Select starting reform", "Reform");
+            lookupMenu.ShowDialog();
+            GovernmentReformBox.SelectedItem = lookupMenu.GetChosenObject();
+        }
+
+        private void LookupTradenodeSelect_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.TradeNodes, "Select trade node", "Trade node");
+            lookupMenu.ShowDialog();
+            Tradenode found = GlobalVariables.TradeNodes.Find(x => x.Name == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                TradeNodeBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupTradenodeDest_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.TradeNodes, "Select trade node", "Trade node");
+            lookupMenu.ShowDialog();
+            Tradenode found = GlobalVariables.TradeNodes.Find(x => x.Name == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                AddTradeNodeDestinationBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupMacroReligion_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(Religion.Religions, "Select religion", "Religion");
+            lookupMenu.ShowDialog();
+            Religion found = Religion.Religions.Find(x => x.ReadableName == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                MacroReligionBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupMacroCulture_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(Culture.Cultures, "Select culture", "Culture");
+            lookupMenu.ShowDialog();
+            Culture found = Culture.Cultures.Find(x => x.Name == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                MacroCultureBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupAreaProvince_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.Areas, "Select area", "Area");
+            lookupMenu.ShowDialog();
+            Area found = GlobalVariables.Areas.Find(x => x.Name == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                AreaBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupRegionProvince_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.Regions, "Select region", "Region");
+            lookupMenu.ShowDialog();
+            Region found = GlobalVariables.Regions.Find(x => x.Name == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                RegionBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupContinentProvince_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.Continents, "Select continent", "Continent");
+            lookupMenu.ShowDialog();
+            Continent found = GlobalVariables.Continents.Find(x => x.Name == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                ContinentBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupSuperregionProvince_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.Superregions, "Select superregion", "Superregion");
+            lookupMenu.ShowDialog();
+            Superregion found = GlobalVariables.Superregions.Find(x => x.Name == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                SuperregionBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupTradeCompanyProvince_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.Continents, "Select trade company region", "Trade Company Region");
+            lookupMenu.ShowDialog();
+            TradeCompany found = GlobalVariables.TradeCompanies.Find(x => x.Name == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                TradeCompanyBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupMacroArea_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.Areas, "Select area", "Area");
+            lookupMenu.ShowDialog();
+            Area found = GlobalVariables.Areas.Find(x => x.Name == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                MacroAreaBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupMacroRegion_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.Regions, "Select region", "Region");
+            lookupMenu.ShowDialog();
+            Region found = GlobalVariables.Regions.Find(x => x.Name == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                MacroRegionBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupMacroSuperregion_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.Superregions, "Select superregion", "Superregion");
+            lookupMenu.ShowDialog();
+            Superregion found = GlobalVariables.Superregions.Find(x => x.Name == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                MacroSuperregionBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupMacroContinent_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.Continents, "Select continent", "Continent");
+            lookupMenu.ShowDialog();
+            Continent found = GlobalVariables.Continents.Find(x => x.Name == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                MacroContinentBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupMacroTradenode_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.TradeNodes, "Select trade node", "Trade node");
+            lookupMenu.ShowDialog();
+            Tradenode found = GlobalVariables.TradeNodes.Find(x => x.Name == lookupMenu.GetChosenObject());
+            if (found != null)
+            {
+                MacroTradeNodeBox.SelectedItem = found;
+            }
+        }
+
+        private void LookupMacroTechGroup_Click(object sender, EventArgs e)
+        {
+            LookupMenu lookupMenu = new LookupMenu();
+            lookupMenu.InitializeArray(GlobalVariables.TechGroups, "Select technology group", "Technology group");
+            lookupMenu.ShowDialog();
+            MacroTechGroupBox.SelectedItem = lookupMenu.GetChosenObject();
         }
     }
 }

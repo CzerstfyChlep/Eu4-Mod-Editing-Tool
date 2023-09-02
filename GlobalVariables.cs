@@ -165,6 +165,10 @@ namespace Eu4ModEditor
         buildings = 17, superregion = 18, tradecompanies = 19, localisation = 20,
         climate = 21}
 
+        public static string[] GraphicalCultures = new string[] { "westerngfx", "easterngfx", "muslimgfx",
+            "indiangfx", "asiangfx", "africangfx", "northamericagfx", "southamericagfx", "inuitgfx",
+            "aboriginalgfx", "polynesiangfx", "southeastasiangfx"};
+
 
         public static DateTime StartDate = new DateTime(1444, 11, 11);
         public static DateTime CurrentDate = new DateTime(1444, 11, 11);
