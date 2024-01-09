@@ -392,12 +392,31 @@ namespace Eu4ModEditor
             return new NodeFileReadStatus();
         }
 
+        void CheckForNonExistingDirectories(string path)
+        {
+            if (!path.Contains("\\"))
+            {
+                return;
+            }
+            string subPath = path.Substring(0, path.LastIndexOf("\\"));
+            if (subPath + "\\" != GlobalVariables.pathtomod)
+            {
+                CheckForNonExistingDirectories(subPath);
+            }
+            if (!Directory.Exists(subPath))
+            {
+                Directory.CreateDirectory(subPath);
+            }
+        }
+
         public void SaveFile(string path)
         {
+            CheckForNonExistingDirectories(path);
             File.WriteAllText(path, Node.NodeToText(MainNode), Encoding.GetEncoding(1252));
         }
         public void SaveFile()
         {
+            CheckForNonExistingDirectories(Path);
             File.WriteAllText(Path, Node.NodeToText(MainNode), Encoding.GetEncoding(1252));
         }
     }
