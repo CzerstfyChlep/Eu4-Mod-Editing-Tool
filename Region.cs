@@ -8,7 +8,7 @@ namespace Eu4ModEditor
         public Region(string name)
         {
             Name = name;
-            GlobalVariables.Regions.Add(this);
+            Region.Regions.Add(this);
             Color = Color.FromArgb(GlobalVariables.GlobalRandom.Next(10, 245), GlobalVariables.GlobalRandom.Next(10, 245), GlobalVariables.GlobalRandom.Next(10, 245));
         }
         public Region(string name, List<Area> areas)
@@ -16,10 +16,10 @@ namespace Eu4ModEditor
             Name = name;
             Areas.AddRange(areas);
             Color = Color.FromArgb(GlobalVariables.GlobalRandom.Next(10, 245), GlobalVariables.GlobalRandom.Next(10, 245), GlobalVariables.GlobalRandom.Next(10, 245));
-            GlobalVariables.Regions.Add(this);
+            Region.Regions.Add(this);
         }
         public List<Area> Areas = new List<Area>();
-        public Superregion Superregion;
+        public Superregion Superregion = Superregion.NoSuperregion;
 
 
 
@@ -30,5 +30,8 @@ namespace Eu4ModEditor
         {
             return Name;
         }
+
+        public static List<Region> Regions = new List<Region>();
+        public static Region NoRegion = new Region("");
     }
 }

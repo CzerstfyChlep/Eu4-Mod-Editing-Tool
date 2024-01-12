@@ -16,7 +16,7 @@ namespace Eu4ModEditor
         public Area(string name)
         {
             Name = name;
-            GlobalVariables.Areas.Add(this);
+            Areas.Add(this);
             Color = Color.FromArgb(GlobalVariables.GlobalRandom.Next(10, 245), GlobalVariables.GlobalRandom.Next(10, 245), GlobalVariables.GlobalRandom.Next(10, 245));
         }
         /// <summary>
@@ -29,16 +29,19 @@ namespace Eu4ModEditor
             Name = name;
             Provinces.AddRange(provinces);
             Color = Color.FromArgb(GlobalVariables.GlobalRandom.Next(10, 245), GlobalVariables.GlobalRandom.Next(10, 245), GlobalVariables.GlobalRandom.Next(10, 245));
-            GlobalVariables.Areas.Add(this);
+            Areas.Add(this);
         }
         public List<Province> Provinces = new List<Province>();
         public string Name = "";
         public string OriginalName = "";
         public Color Color;
-        public Region Region;
+        public Region Region = Region.NoRegion;
         public override string ToString()
         {
             return Name;
         }
+
+        public static List<Area> Areas = new List<Area>();
+        public static Area NoArea = new Area("");
     }
 }

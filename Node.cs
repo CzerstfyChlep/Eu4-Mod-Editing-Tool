@@ -642,9 +642,11 @@ namespace Eu4ModEditor
                 int a = ItemOrder.IndexOf(fnd);
                 ItemOrder.Insert(a, replacement);
                 RemoveNode(fnd);
-                Nodes.Add(replacement);
-                replacement.InLine = fnd.InLine;
-                //MessageBox.Show("Worked");
+                if (replacement != null)
+                {
+                    Nodes.Add(replacement);
+                    replacement.InLine = fnd.InLine;
+                }
             }
         }
 

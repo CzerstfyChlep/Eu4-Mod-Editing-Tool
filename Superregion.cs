@@ -20,14 +20,14 @@ namespace Eu4ModEditor
         public Color Color;
         public Superregion(string name, List<Region> list)
         {
-            GlobalVariables.Superregions.Add(this);
+            Superregions.Add(this);
             Name = name;
             Regions.AddRange(list);
             Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
         }
         public Superregion(string name)
         {
-            GlobalVariables.Superregions.Add(this);
+            Superregions.Add(this);
             Name = name;
             Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
         }
@@ -35,5 +35,8 @@ namespace Eu4ModEditor
         {
             return Name;
         }
+
+        public static List<Superregion> Superregions = new List<Superregion>();
+        public static Superregion NoSuperregion = new Superregion("");
     }
 }

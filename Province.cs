@@ -960,12 +960,12 @@ namespace Eu4ModEditor
             Variables.Add(Variable.TradeNode, null);
             Variables.Add(Variable.Religion, Religion.NoReligion);
             Variables.Add(Variable.Culture, Culture.NoCulture);
-            Variables.Add(Variable.Area, null);
-            Variables.Add(Variable.Continent, null);
+            Variables.Add(Variable.Area, Area.NoArea);
+            Variables.Add(Variable.Continent, Continent.NoContinent);
             Variables.Add(Variable.DiscoveredBy, new List<string>());
             Variables.Add(Variable.City, false);
             Variables.Add(Variable.Buildings, new List<Building>());
-            Variables.Add(Variable.TradeCompany, null);
+            Variables.Add(Variable.TradeCompany, TradeCompany.NoTradeCompany);
             Variables.Add(Variable.Winter, 0);
             Variables.Add(Variable.Climate, 0);
             Variables.Add(Variable.Terrain, null);

@@ -97,6 +97,7 @@
             this.label75 = new System.Windows.Forms.Label();
             this.label74 = new System.Windows.Forms.Label();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
+            this.LookupTradeCompanyProvince = new System.Windows.Forms.Button();
             this.TradeCompanyRandomColor = new System.Windows.Forms.Button();
             this.TradeCompanyColorButton = new System.Windows.Forms.Button();
             this.label50 = new System.Windows.Forms.Label();
@@ -109,6 +110,7 @@
             this.TradeCompanyBox = new System.Windows.Forms.ComboBox();
             this.label49 = new System.Windows.Forms.Label();
             this.groupBox17 = new System.Windows.Forms.GroupBox();
+            this.LookupSuperregionProvince = new System.Windows.Forms.Button();
             this.label43 = new System.Windows.Forms.Label();
             this.label44 = new System.Windows.Forms.Label();
             this.AddNewSuperregionBox = new System.Windows.Forms.TextBox();
@@ -119,6 +121,7 @@
             this.SuperregionBox = new System.Windows.Forms.ComboBox();
             this.label45 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.LookupAreaProvince = new System.Windows.Forms.Button();
             this.label28 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.AddNewAreaBox = new System.Windows.Forms.TextBox();
@@ -129,6 +132,7 @@
             this.AreaBox = new System.Windows.Forms.ComboBox();
             this.label15 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.LookupRegionProvince = new System.Windows.Forms.Button();
             this.label30 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.AddNewRegionBox = new System.Windows.Forms.TextBox();
@@ -139,6 +143,7 @@
             this.RegionBox = new System.Windows.Forms.ComboBox();
             this.label16 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.LookupContinentProvince = new System.Windows.Forms.Button();
             this.label32 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.AddNewContinentBox = new System.Windows.Forms.TextBox();
@@ -158,6 +163,7 @@
             this.ProvinceNameLocalisationBox = new System.Windows.Forms.TextBox();
             this.label51 = new System.Windows.Forms.Label();
             this.DateEntriesPage = new System.Windows.Forms.TabPage();
+            this.RemoveAllDateEntriesButton = new System.Windows.Forms.Button();
             this.DateEntryFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.AddNew = new System.Windows.Forms.GroupBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -348,21 +354,25 @@
             this.MacroWithoutFort = new System.Windows.Forms.Button();
             this.MacroWithFort = new System.Windows.Forms.Button();
             this.MacroAreaPage = new System.Windows.Forms.TabPage();
+            this.LookupMacroArea = new System.Windows.Forms.Button();
             this.label59 = new System.Windows.Forms.Label();
             this.MacroDifferentArea = new System.Windows.Forms.Button();
             this.MacroSameArea = new System.Windows.Forms.Button();
             this.MacroAreaBox = new System.Windows.Forms.ComboBox();
             this.MacroRegionPage = new System.Windows.Forms.TabPage();
+            this.LookupMacroRegion = new System.Windows.Forms.Button();
             this.label60 = new System.Windows.Forms.Label();
             this.MacroDifferentRegion = new System.Windows.Forms.Button();
             this.MacroSameRegion = new System.Windows.Forms.Button();
             this.MacroRegionBox = new System.Windows.Forms.ComboBox();
             this.MacroSuperregionPage = new System.Windows.Forms.TabPage();
+            this.LookupMacroSuperregion = new System.Windows.Forms.Button();
             this.label61 = new System.Windows.Forms.Label();
             this.MacroDifferentSuperregion = new System.Windows.Forms.Button();
             this.MacroSameSuperregion = new System.Windows.Forms.Button();
             this.MacroSuperregionBox = new System.Windows.Forms.ComboBox();
             this.MacroContinentPage = new System.Windows.Forms.TabPage();
+            this.LookupMacroContinent = new System.Windows.Forms.Button();
             this.label62 = new System.Windows.Forms.Label();
             this.MacroDifferentContinent = new System.Windows.Forms.Button();
             this.MacroSameContinent = new System.Windows.Forms.Button();
@@ -373,11 +383,13 @@
             this.MacroOutsideHRE = new System.Windows.Forms.Button();
             this.MacroInsideHRE = new System.Windows.Forms.Button();
             this.MacroTradenodePage = new System.Windows.Forms.TabPage();
+            this.LookupMacroTradenode = new System.Windows.Forms.Button();
             this.MacroDifferentTradenode = new System.Windows.Forms.Button();
             this.MacroSameTradenode = new System.Windows.Forms.Button();
             this.label63 = new System.Windows.Forms.Label();
             this.MacroTradeNodeBox = new System.Windows.Forms.ComboBox();
             this.MacroTechGroupPage = new System.Windows.Forms.TabPage();
+            this.LookupMacroTechGroup = new System.Windows.Forms.Button();
             this.MacroSameTechGroup = new System.Windows.Forms.Button();
             this.MacroNotDiscoveredBy = new System.Windows.Forms.Button();
             this.MacroDifferentTechGroup = new System.Windows.Forms.Button();
@@ -398,17 +410,6 @@
             this.SaveAllFilesButton = new System.Windows.Forms.Button();
             this.SaveFilesPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.RefreshSavesButton = new System.Windows.Forms.Button();
-            this.LookupAreaProvince = new System.Windows.Forms.Button();
-            this.LookupRegionProvince = new System.Windows.Forms.Button();
-            this.LookupContinentProvince = new System.Windows.Forms.Button();
-            this.LookupSuperregionProvince = new System.Windows.Forms.Button();
-            this.LookupTradeCompanyProvince = new System.Windows.Forms.Button();
-            this.LookupMacroArea = new System.Windows.Forms.Button();
-            this.LookupMacroRegion = new System.Windows.Forms.Button();
-            this.LookupMacroSuperregion = new System.Windows.Forms.Button();
-            this.LookupMacroContinent = new System.Windows.Forms.Button();
-            this.LookupMacroTradenode = new System.Windows.Forms.Button();
-            this.LookupMacroTechGroup = new System.Windows.Forms.Button();
             this.Tabs.SuspendLayout();
             this.ProvinceTab.SuspendLayout();
             this.ProvinceTabControl.SuspendLayout();
@@ -1314,6 +1315,16 @@
             this.groupBox18.TabStop = false;
             this.groupBox18.Text = "Province trade company";
             // 
+            // LookupTradeCompanyProvince
+            // 
+            this.LookupTradeCompanyProvince.Location = new System.Drawing.Point(222, 19);
+            this.LookupTradeCompanyProvince.Name = "LookupTradeCompanyProvince";
+            this.LookupTradeCompanyProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupTradeCompanyProvince.TabIndex = 34;
+            this.LookupTradeCompanyProvince.Text = "🔎";
+            this.LookupTradeCompanyProvince.UseVisualStyleBackColor = true;
+            this.LookupTradeCompanyProvince.Click += new System.EventHandler(this.LookupTradeCompanyProvince_Click);
+            // 
             // TradeCompanyRandomColor
             // 
             this.TradeCompanyRandomColor.Location = new System.Drawing.Point(182, 98);
@@ -1400,8 +1411,6 @@
             this.TradeCompanyBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.TradeCompanyBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.TradeCompanyBox.FormattingEnabled = true;
-            this.TradeCompanyBox.Items.AddRange(new object[] {
-            " "});
             this.TradeCompanyBox.Location = new System.Drawing.Point(64, 19);
             this.TradeCompanyBox.Name = "TradeCompanyBox";
             this.TradeCompanyBox.Size = new System.Drawing.Size(154, 24);
@@ -1436,6 +1445,16 @@
             this.groupBox17.TabIndex = 38;
             this.groupBox17.TabStop = false;
             this.groupBox17.Text = "Province superregion";
+            // 
+            // LookupSuperregionProvince
+            // 
+            this.LookupSuperregionProvince.Location = new System.Drawing.Point(222, 18);
+            this.LookupSuperregionProvince.Name = "LookupSuperregionProvince";
+            this.LookupSuperregionProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupSuperregionProvince.TabIndex = 34;
+            this.LookupSuperregionProvince.Text = "🔎";
+            this.LookupSuperregionProvince.UseVisualStyleBackColor = true;
+            this.LookupSuperregionProvince.Click += new System.EventHandler(this.LookupSuperregionProvince_Click);
             // 
             // label43
             // 
@@ -1506,8 +1525,6 @@
             this.SuperregionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.SuperregionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.SuperregionBox.FormattingEnabled = true;
-            this.SuperregionBox.Items.AddRange(new object[] {
-            " "});
             this.SuperregionBox.Location = new System.Drawing.Point(75, 19);
             this.SuperregionBox.Name = "SuperregionBox";
             this.SuperregionBox.Size = new System.Drawing.Size(144, 24);
@@ -1542,6 +1559,16 @@
             this.groupBox5.TabIndex = 35;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Province area";
+            // 
+            // LookupAreaProvince
+            // 
+            this.LookupAreaProvince.Location = new System.Drawing.Point(222, 19);
+            this.LookupAreaProvince.Name = "LookupAreaProvince";
+            this.LookupAreaProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupAreaProvince.TabIndex = 32;
+            this.LookupAreaProvince.Text = "🔎";
+            this.LookupAreaProvince.UseVisualStyleBackColor = true;
+            this.LookupAreaProvince.Click += new System.EventHandler(this.LookupAreaProvince_Click);
             // 
             // label28
             // 
@@ -1612,8 +1639,6 @@
             this.AreaBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.AreaBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.AreaBox.FormattingEnabled = true;
-            this.AreaBox.Items.AddRange(new object[] {
-            " "});
             this.AreaBox.Location = new System.Drawing.Point(51, 19);
             this.AreaBox.Name = "AreaBox";
             this.AreaBox.Size = new System.Drawing.Size(167, 24);
@@ -1648,6 +1673,16 @@
             this.groupBox6.TabIndex = 36;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Province region";
+            // 
+            // LookupRegionProvince
+            // 
+            this.LookupRegionProvince.Location = new System.Drawing.Point(224, 19);
+            this.LookupRegionProvince.Name = "LookupRegionProvince";
+            this.LookupRegionProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupRegionProvince.TabIndex = 33;
+            this.LookupRegionProvince.Text = "🔎";
+            this.LookupRegionProvince.UseVisualStyleBackColor = true;
+            this.LookupRegionProvince.Click += new System.EventHandler(this.LookupRegionProvince_Click);
             // 
             // label30
             // 
@@ -1718,8 +1753,6 @@
             this.RegionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.RegionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.RegionBox.FormattingEnabled = true;
-            this.RegionBox.Items.AddRange(new object[] {
-            " "});
             this.RegionBox.Location = new System.Drawing.Point(55, 19);
             this.RegionBox.Name = "RegionBox";
             this.RegionBox.Size = new System.Drawing.Size(164, 24);
@@ -1754,6 +1787,16 @@
             this.groupBox3.TabIndex = 37;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Province continent";
+            // 
+            // LookupContinentProvince
+            // 
+            this.LookupContinentProvince.Location = new System.Drawing.Point(222, 19);
+            this.LookupContinentProvince.Name = "LookupContinentProvince";
+            this.LookupContinentProvince.Size = new System.Drawing.Size(32, 24);
+            this.LookupContinentProvince.TabIndex = 33;
+            this.LookupContinentProvince.Text = "🔎";
+            this.LookupContinentProvince.UseVisualStyleBackColor = true;
+            this.LookupContinentProvince.Click += new System.EventHandler(this.LookupContinentProvince_Click);
             // 
             // label32
             // 
@@ -1824,8 +1867,6 @@
             this.ContinentBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ContinentBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.ContinentBox.FormattingEnabled = true;
-            this.ContinentBox.Items.AddRange(new object[] {
-            " "});
             this.ContinentBox.Location = new System.Drawing.Point(64, 19);
             this.ContinentBox.Name = "ContinentBox";
             this.ContinentBox.Size = new System.Drawing.Size(154, 24);
@@ -1932,6 +1973,7 @@
             // 
             // DateEntriesPage
             // 
+            this.DateEntriesPage.Controls.Add(this.RemoveAllDateEntriesButton);
             this.DateEntriesPage.Controls.Add(this.DateEntryFlowLayoutPanel);
             this.DateEntriesPage.Controls.Add(this.DateEntryAddButton);
             this.DateEntriesPage.Controls.Add(this.DateEntryAddBox);
@@ -1946,14 +1988,24 @@
             this.DateEntriesPage.Text = "Date entries";
             this.DateEntriesPage.UseVisualStyleBackColor = true;
             // 
+            // RemoveAllDateEntriesButton
+            // 
+            this.RemoveAllDateEntriesButton.Location = new System.Drawing.Point(9, 6);
+            this.RemoveAllDateEntriesButton.Name = "RemoveAllDateEntriesButton";
+            this.RemoveAllDateEntriesButton.Size = new System.Drawing.Size(215, 21);
+            this.RemoveAllDateEntriesButton.TabIndex = 6;
+            this.RemoveAllDateEntriesButton.Text = "Remove all";
+            this.RemoveAllDateEntriesButton.UseVisualStyleBackColor = true;
+            this.RemoveAllDateEntriesButton.Click += new System.EventHandler(this.RemoveAllDateEntriesButton_Click);
+            // 
             // DateEntryFlowLayoutPanel
             // 
             this.DateEntryFlowLayoutPanel.AutoScroll = true;
             this.DateEntryFlowLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.DateEntryFlowLayoutPanel.Controls.Add(this.AddNew);
-            this.DateEntryFlowLayoutPanel.Location = new System.Drawing.Point(9, 51);
+            this.DateEntryFlowLayoutPanel.Location = new System.Drawing.Point(9, 79);
             this.DateEntryFlowLayoutPanel.Name = "DateEntryFlowLayoutPanel";
-            this.DateEntryFlowLayoutPanel.Size = new System.Drawing.Size(520, 420);
+            this.DateEntryFlowLayoutPanel.Size = new System.Drawing.Size(520, 392);
             this.DateEntryFlowLayoutPanel.TabIndex = 5;
             // 
             // AddNew
@@ -1987,7 +2039,7 @@
             // 
             // DateEntryAddButton
             // 
-            this.DateEntryAddButton.Location = new System.Drawing.Point(481, 25);
+            this.DateEntryAddButton.Location = new System.Drawing.Point(481, 54);
             this.DateEntryAddButton.Name = "DateEntryAddButton";
             this.DateEntryAddButton.Size = new System.Drawing.Size(50, 20);
             this.DateEntryAddButton.TabIndex = 4;
@@ -1997,14 +2049,14 @@
             // 
             // DateEntryAddBox
             // 
-            this.DateEntryAddBox.Location = new System.Drawing.Point(376, 25);
+            this.DateEntryAddBox.Location = new System.Drawing.Point(376, 54);
             this.DateEntryAddBox.Name = "DateEntryAddBox";
             this.DateEntryAddBox.Size = new System.Drawing.Size(99, 20);
             this.DateEntryAddBox.TabIndex = 3;
             // 
             // RemoveDateEntryButton
             // 
-            this.RemoveDateEntryButton.Location = new System.Drawing.Point(295, 24);
+            this.RemoveDateEntryButton.Location = new System.Drawing.Point(295, 53);
             this.RemoveDateEntryButton.Name = "RemoveDateEntryButton";
             this.RemoveDateEntryButton.Size = new System.Drawing.Size(75, 21);
             this.RemoveDateEntryButton.TabIndex = 2;
@@ -2015,7 +2067,7 @@
             // label80
             // 
             this.label80.AutoSize = true;
-            this.label80.Location = new System.Drawing.Point(6, 8);
+            this.label80.Location = new System.Drawing.Point(6, 37);
             this.label80.Name = "label80";
             this.label80.Size = new System.Drawing.Size(56, 13);
             this.label80.TabIndex = 1;
@@ -2025,7 +2077,7 @@
             // 
             this.DateEntrySelectionBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.DateEntrySelectionBox.FormattingEnabled = true;
-            this.DateEntrySelectionBox.Location = new System.Drawing.Point(9, 24);
+            this.DateEntrySelectionBox.Location = new System.Drawing.Point(9, 53);
             this.DateEntrySelectionBox.Name = "DateEntrySelectionBox";
             this.DateEntrySelectionBox.Size = new System.Drawing.Size(283, 21);
             this.DateEntrySelectionBox.Sorted = true;
@@ -2137,6 +2189,7 @@
             this.RandomDevHigh.TabIndex = 18;
             this.RandomDevHigh.Text = "Rnd High Dev";
             this.RandomDevHigh.UseVisualStyleBackColor = true;
+            this.RandomDevHigh.Click += new System.EventHandler(this.RandomDevHigh_Click);
             // 
             // RandomDevMed
             // 
@@ -2146,6 +2199,7 @@
             this.RandomDevMed.TabIndex = 17;
             this.RandomDevMed.Text = "Rnd Med Dev";
             this.RandomDevMed.UseVisualStyleBackColor = true;
+            this.RandomDevMed.Click += new System.EventHandler(this.RandomDevMed_Click);
             // 
             // RandomDevLow
             // 
@@ -2155,6 +2209,7 @@
             this.RandomDevLow.TabIndex = 16;
             this.RandomDevLow.Text = "Rnd Low Dev";
             this.RandomDevLow.UseVisualStyleBackColor = true;
+            this.RandomDevLow.Click += new System.EventHandler(this.RandomDevLow_Click);
             // 
             // DevRemoveAll
             // 
@@ -3491,7 +3546,7 @@
             this.button2.TabIndex = 8;
             this.button2.Text = "button2";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 
             // panel1
             // 
@@ -3986,6 +4041,16 @@
             this.MacroAreaPage.Text = "Area";
             this.MacroAreaPage.UseVisualStyleBackColor = true;
             // 
+            // LookupMacroArea
+            // 
+            this.LookupMacroArea.Location = new System.Drawing.Point(286, 28);
+            this.LookupMacroArea.Name = "LookupMacroArea";
+            this.LookupMacroArea.Size = new System.Drawing.Size(32, 24);
+            this.LookupMacroArea.TabIndex = 31;
+            this.LookupMacroArea.Text = "🔎";
+            this.LookupMacroArea.UseVisualStyleBackColor = true;
+            this.LookupMacroArea.Click += new System.EventHandler(this.LookupMacroArea_Click);
+            // 
             // label59
             // 
             this.label59.AutoSize = true;
@@ -4041,6 +4106,16 @@
             this.MacroRegionPage.TabIndex = 5;
             this.MacroRegionPage.Text = "Region";
             this.MacroRegionPage.UseVisualStyleBackColor = true;
+            // 
+            // LookupMacroRegion
+            // 
+            this.LookupMacroRegion.Location = new System.Drawing.Point(292, 29);
+            this.LookupMacroRegion.Name = "LookupMacroRegion";
+            this.LookupMacroRegion.Size = new System.Drawing.Size(32, 24);
+            this.LookupMacroRegion.TabIndex = 35;
+            this.LookupMacroRegion.Text = "🔎";
+            this.LookupMacroRegion.UseVisualStyleBackColor = true;
+            this.LookupMacroRegion.Click += new System.EventHandler(this.LookupMacroRegion_Click);
             // 
             // label60
             // 
@@ -4098,6 +4173,16 @@
             this.MacroSuperregionPage.Text = "Superregion";
             this.MacroSuperregionPage.UseVisualStyleBackColor = true;
             // 
+            // LookupMacroSuperregion
+            // 
+            this.LookupMacroSuperregion.Location = new System.Drawing.Point(291, 27);
+            this.LookupMacroSuperregion.Name = "LookupMacroSuperregion";
+            this.LookupMacroSuperregion.Size = new System.Drawing.Size(32, 24);
+            this.LookupMacroSuperregion.TabIndex = 39;
+            this.LookupMacroSuperregion.Text = "🔎";
+            this.LookupMacroSuperregion.UseVisualStyleBackColor = true;
+            this.LookupMacroSuperregion.Click += new System.EventHandler(this.LookupMacroSuperregion_Click);
+            // 
             // label61
             // 
             this.label61.AutoSize = true;
@@ -4153,6 +4238,16 @@
             this.MacroContinentPage.TabIndex = 7;
             this.MacroContinentPage.Text = "Continent";
             this.MacroContinentPage.UseVisualStyleBackColor = true;
+            // 
+            // LookupMacroContinent
+            // 
+            this.LookupMacroContinent.Location = new System.Drawing.Point(134, 90);
+            this.LookupMacroContinent.Name = "LookupMacroContinent";
+            this.LookupMacroContinent.Size = new System.Drawing.Size(32, 24);
+            this.LookupMacroContinent.TabIndex = 43;
+            this.LookupMacroContinent.Text = "🔎";
+            this.LookupMacroContinent.UseVisualStyleBackColor = true;
+            this.LookupMacroContinent.Click += new System.EventHandler(this.LookupMacroContinent_Click);
             // 
             // label62
             // 
@@ -4263,6 +4358,16 @@
             this.MacroTradenodePage.Text = "Tradenode";
             this.MacroTradenodePage.UseVisualStyleBackColor = true;
             // 
+            // LookupMacroTradenode
+            // 
+            this.LookupMacroTradenode.Location = new System.Drawing.Point(129, 86);
+            this.LookupMacroTradenode.Name = "LookupMacroTradenode";
+            this.LookupMacroTradenode.Size = new System.Drawing.Size(32, 24);
+            this.LookupMacroTradenode.TabIndex = 44;
+            this.LookupMacroTradenode.Text = "🔎";
+            this.LookupMacroTradenode.UseVisualStyleBackColor = true;
+            this.LookupMacroTradenode.Click += new System.EventHandler(this.LookupMacroTradenode_Click);
+            // 
             // MacroDifferentTradenode
             // 
             this.MacroDifferentTradenode.Location = new System.Drawing.Point(176, 70);
@@ -4320,6 +4425,16 @@
             this.MacroTechGroupPage.TabIndex = 10;
             this.MacroTechGroupPage.Text = "Technology group";
             this.MacroTechGroupPage.UseVisualStyleBackColor = true;
+            // 
+            // LookupMacroTechGroup
+            // 
+            this.LookupMacroTechGroup.Location = new System.Drawing.Point(129, 93);
+            this.LookupMacroTechGroup.Name = "LookupMacroTechGroup";
+            this.LookupMacroTechGroup.Size = new System.Drawing.Size(32, 24);
+            this.LookupMacroTechGroup.TabIndex = 45;
+            this.LookupMacroTechGroup.Text = "🔎";
+            this.LookupMacroTechGroup.UseVisualStyleBackColor = true;
+            this.LookupMacroTechGroup.Click += new System.EventHandler(this.LookupMacroTechGroup_Click);
             // 
             // MacroSameTechGroup
             // 
@@ -4527,121 +4642,10 @@
             this.RefreshSavesButton.UseVisualStyleBackColor = true;
             this.RefreshSavesButton.Click += new System.EventHandler(this.RefreshSavesButton_Click);
             // 
-            // LookupAreaProvince
-            // 
-            this.LookupAreaProvince.Location = new System.Drawing.Point(222, 19);
-            this.LookupAreaProvince.Name = "LookupAreaProvince";
-            this.LookupAreaProvince.Size = new System.Drawing.Size(32, 24);
-            this.LookupAreaProvince.TabIndex = 32;
-            this.LookupAreaProvince.Text = "🔎";
-            this.LookupAreaProvince.UseVisualStyleBackColor = true;
-            this.LookupAreaProvince.Click += new System.EventHandler(this.LookupAreaProvince_Click);
-            // 
-            // LookupRegionProvince
-            // 
-            this.LookupRegionProvince.Location = new System.Drawing.Point(224, 19);
-            this.LookupRegionProvince.Name = "LookupRegionProvince";
-            this.LookupRegionProvince.Size = new System.Drawing.Size(32, 24);
-            this.LookupRegionProvince.TabIndex = 33;
-            this.LookupRegionProvince.Text = "🔎";
-            this.LookupRegionProvince.UseVisualStyleBackColor = true;
-            this.LookupRegionProvince.Click += new System.EventHandler(this.LookupRegionProvince_Click);
-            // 
-            // LookupContinentProvince
-            // 
-            this.LookupContinentProvince.Location = new System.Drawing.Point(222, 19);
-            this.LookupContinentProvince.Name = "LookupContinentProvince";
-            this.LookupContinentProvince.Size = new System.Drawing.Size(32, 24);
-            this.LookupContinentProvince.TabIndex = 33;
-            this.LookupContinentProvince.Text = "🔎";
-            this.LookupContinentProvince.UseVisualStyleBackColor = true;
-            this.LookupContinentProvince.Click += new System.EventHandler(this.LookupContinentProvince_Click);
-            // 
-            // LookupSuperregionProvince
-            // 
-            this.LookupSuperregionProvince.Location = new System.Drawing.Point(222, 18);
-            this.LookupSuperregionProvince.Name = "LookupSuperregionProvince";
-            this.LookupSuperregionProvince.Size = new System.Drawing.Size(32, 24);
-            this.LookupSuperregionProvince.TabIndex = 34;
-            this.LookupSuperregionProvince.Text = "🔎";
-            this.LookupSuperregionProvince.UseVisualStyleBackColor = true;
-            this.LookupSuperregionProvince.Click += new System.EventHandler(this.LookupSuperregionProvince_Click);
-            // 
-            // LookupTradeCompanyProvince
-            // 
-            this.LookupTradeCompanyProvince.Location = new System.Drawing.Point(222, 19);
-            this.LookupTradeCompanyProvince.Name = "LookupTradeCompanyProvince";
-            this.LookupTradeCompanyProvince.Size = new System.Drawing.Size(32, 24);
-            this.LookupTradeCompanyProvince.TabIndex = 34;
-            this.LookupTradeCompanyProvince.Text = "🔎";
-            this.LookupTradeCompanyProvince.UseVisualStyleBackColor = true;
-            this.LookupTradeCompanyProvince.Click += new System.EventHandler(this.LookupTradeCompanyProvince_Click);
-            // 
-            // LookupMacroArea
-            // 
-            this.LookupMacroArea.Location = new System.Drawing.Point(286, 28);
-            this.LookupMacroArea.Name = "LookupMacroArea";
-            this.LookupMacroArea.Size = new System.Drawing.Size(32, 24);
-            this.LookupMacroArea.TabIndex = 31;
-            this.LookupMacroArea.Text = "🔎";
-            this.LookupMacroArea.UseVisualStyleBackColor = true;
-            this.LookupMacroArea.Click += new System.EventHandler(this.LookupMacroArea_Click);
-            // 
-            // LookupMacroRegion
-            // 
-            this.LookupMacroRegion.Location = new System.Drawing.Point(292, 29);
-            this.LookupMacroRegion.Name = "LookupMacroRegion";
-            this.LookupMacroRegion.Size = new System.Drawing.Size(32, 24);
-            this.LookupMacroRegion.TabIndex = 35;
-            this.LookupMacroRegion.Text = "🔎";
-            this.LookupMacroRegion.UseVisualStyleBackColor = true;
-            this.LookupMacroRegion.Click += new System.EventHandler(this.LookupMacroRegion_Click);
-            // 
-            // LookupMacroSuperregion
-            // 
-            this.LookupMacroSuperregion.Location = new System.Drawing.Point(291, 27);
-            this.LookupMacroSuperregion.Name = "LookupMacroSuperregion";
-            this.LookupMacroSuperregion.Size = new System.Drawing.Size(32, 24);
-            this.LookupMacroSuperregion.TabIndex = 39;
-            this.LookupMacroSuperregion.Text = "🔎";
-            this.LookupMacroSuperregion.UseVisualStyleBackColor = true;
-            this.LookupMacroSuperregion.Click += new System.EventHandler(this.LookupMacroSuperregion_Click);
-            // 
-            // LookupMacroContinent
-            // 
-            this.LookupMacroContinent.Location = new System.Drawing.Point(134, 90);
-            this.LookupMacroContinent.Name = "LookupMacroContinent";
-            this.LookupMacroContinent.Size = new System.Drawing.Size(32, 24);
-            this.LookupMacroContinent.TabIndex = 43;
-            this.LookupMacroContinent.Text = "🔎";
-            this.LookupMacroContinent.UseVisualStyleBackColor = true;
-            this.LookupMacroContinent.Click += new System.EventHandler(this.LookupMacroContinent_Click);
-            // 
-            // LookupMacroTradenode
-            // 
-            this.LookupMacroTradenode.Location = new System.Drawing.Point(129, 86);
-            this.LookupMacroTradenode.Name = "LookupMacroTradenode";
-            this.LookupMacroTradenode.Size = new System.Drawing.Size(32, 24);
-            this.LookupMacroTradenode.TabIndex = 44;
-            this.LookupMacroTradenode.Text = "🔎";
-            this.LookupMacroTradenode.UseVisualStyleBackColor = true;
-            this.LookupMacroTradenode.Click += new System.EventHandler(this.LookupMacroTradenode_Click);
-            // 
-            // LookupMacroTechGroup
-            // 
-            this.LookupMacroTechGroup.Location = new System.Drawing.Point(129, 93);
-            this.LookupMacroTechGroup.Name = "LookupMacroTechGroup";
-            this.LookupMacroTechGroup.Size = new System.Drawing.Size(32, 24);
-            this.LookupMacroTechGroup.TabIndex = 45;
-            this.LookupMacroTechGroup.Text = "🔎";
-            this.LookupMacroTechGroup.UseVisualStyleBackColor = true;
-            this.LookupMacroTechGroup.Click += new System.EventHandler(this.LookupMacroTechGroup_Click);
-            // 
             // TabsSeparate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(574, 814);
             this.Controls.Add(this.Tabs);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -5141,5 +5145,6 @@
         private System.Windows.Forms.Button LookupMacroContinent;
         private System.Windows.Forms.Button LookupMacroTradenode;
         private System.Windows.Forms.Button LookupMacroTechGroup;
+        private System.Windows.Forms.Button RemoveAllDateEntriesButton;
     }
 }

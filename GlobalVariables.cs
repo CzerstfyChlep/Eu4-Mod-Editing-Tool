@@ -13,7 +13,7 @@ namespace Eu4ModEditor
     public static class GlobalVariables
     {
         public static bool __DEBUG = false;
-        public static string Version = "1.3.2";
+        public static string Version = "1.3.4";
 
         public static List<Province> Provinces = new List<Province>();
         public static Dictionary<string, Province> ColorToProvince = new Dictionary<string, Province>();
@@ -72,13 +72,8 @@ namespace Eu4ModEditor
         public static Country SelectedCountry;
         public static int TotalUsableProvinces = 0;
         public static List<int> PressedKeys = new List<int>();
-        public static List<Area> Areas = new List<Area>();
-        public static List<Region> Regions = new List<Region>();
-        public static List<Superregion> Superregions = new List<Superregion>();
-        public static List<Continent> Continents = new List<Continent>();
         public static List<Tradenode> TradeNodes = new List<Tradenode>();
         public static bool TradeDestClickingMode = false;
-        public static List<TradeCompany> TradeCompanies = new List<TradeCompany>();
 
         public static List<Building> Buildings = new List<Building>();
 

@@ -392,8 +392,12 @@ namespace Eu4ModEditor
                 switch((objectToSave as SpecialSavingObject).Type)
                 {
                     case SpecialSavingObject.SavingType.Area:
-                        foreach (Area a in GlobalVariables.Areas)
+                        foreach (Area a in Area.Areas)
                         {
+                            if(a == Area.NoArea)
+                            {
+                                continue;
+                            }
                             Node n = nf.MainNode.Nodes.Find(x => x.Name == a.Name);
                             if (n != null)
                             {
@@ -422,11 +426,16 @@ namespace Eu4ModEditor
                                 }
                             }
                         }
-                        nf.MainNode.Nodes.Where(x => !GlobalVariables.Areas.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
+                        nf.MainNode.Nodes.Where(x => !Area.Areas.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
                         break;
                     case SpecialSavingObject.SavingType.Region:
-                        foreach (Region r in GlobalVariables.Regions)
+                        foreach (Region r in Region.Regions)
                         {
+                            if(r == Region.NoRegion)
+                            {
+                                continue;
+                            }
+
                             Node pn = nf.MainNode.Nodes.Find(x => x.Name == r.Name);
                             if (pn != null)
                             {
@@ -462,11 +471,16 @@ namespace Eu4ModEditor
                                 }
                             }
                         }
-                        nf.MainNode.Nodes.Where(x => !GlobalVariables.Regions.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
+                        nf.MainNode.Nodes.Where(x => !Region.Regions.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
                         break;
                     case SpecialSavingObject.SavingType.Continent:
-                        foreach (Continent c in GlobalVariables.Continents)
+                        foreach (Continent c in Continent.Continents)
                         {
+                            if(c == Continent.NoContinent)
+                            {
+                                continue;
+                            }
+
                             Node n = nf.MainNode.Nodes.Find(x => x.Name == c.Name);
                             if (n != null)
                             {
@@ -495,11 +509,14 @@ namespace Eu4ModEditor
                                 }
                             }
                         }
-                        nf.MainNode.Nodes.Where(x => !GlobalVariables.Continents.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
+                        nf.MainNode.Nodes.Where(x => !Continent.Continents.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
                         break;
                     case SpecialSavingObject.SavingType.Superregion:
-                        foreach (Superregion sr in GlobalVariables.Superregions)
+                        foreach (Superregion sr in Superregion.Superregions)
                         {
+                            if (sr == Superregion.NoSuperregion)
+                                continue;
+
                             Node n = nf.MainNode.Nodes.Find(x => x.Name == sr.Name);
                             if (n != null)
                             {
@@ -528,40 +545,20 @@ namespace Eu4ModEditor
                                 }
                             }
                         }
-                        nf.MainNode.Nodes.Where(x => !GlobalVariables.Superregions.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
+                        nf.MainNode.Nodes.Where(x => !Superregion.Superregions.Any(y => y.Name == x.Name)).ToList().ForEach(x => nf.MainNode.RemoveNode(x));
                         break;
                     case SpecialSavingObject.SavingType.Climate:
                         {
-                            Node tropical = nf.MainNode.Nodes.Find(x => x.Name == "tropical");
-                            if (tropical == null)
-                                tropical = nf.MainNode.AddNode("tropical");
-                            Node arid = nf.MainNode.Nodes.Find(x => x.Name == "arid");
-                            if (arid == null)
-                                arid = nf.MainNode.AddNode("arid");
-                            Node arctic = nf.MainNode.Nodes.Find(x => x.Name == "arctic");
-                            if (arctic == null)
-                                arctic = nf.MainNode.AddNode("arctic");
-                            Node mild_winter = nf.MainNode.Nodes.Find(x => x.Name == "mild_winter");
-                            if (mild_winter == null)
-                                mild_winter = nf.MainNode.AddNode("mild_winter");
-                            Node normal_winter = nf.MainNode.Nodes.Find(x => x.Name == "normal_winter");
-                            if (normal_winter == null)
-                                normal_winter = nf.MainNode.AddNode("normal_winter");
-                            Node severe_winter = nf.MainNode.Nodes.Find(x => x.Name == "severe_winter");
-                            if (severe_winter == null)
-                                severe_winter = nf.MainNode.AddNode("severe_winter");
-                            Node impassable = nf.MainNode.Nodes.Find(x => x.Name == "impassable");
-                            if (impassable == null)
-                                impassable = nf.MainNode.AddNode("impassable");
-                            Node mild_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "mild_monsoon");
-                            if (mild_monsoon == null)
-                                mild_monsoon = nf.MainNode.AddNode("mild_monsoon");
-                            Node normal_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "normal_monsoon");
-                            if (normal_monsoon == null)
-                                normal_monsoon = nf.MainNode.AddNode("normal_monsoon");
-                            Node severe_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "severe_monsoon");
-                            if (severe_monsoon == null)
-                                severe_monsoon = nf.MainNode.AddNode("severe_monsoon");
+                            Node tropical = nf.MainNode.Nodes.Find(x => x.Name == "tropical") ?? nf.MainNode.AddNode("tropical");
+                            Node arid = nf.MainNode.Nodes.Find(x => x.Name == "arid") ?? nf.MainNode.AddNode("arid");
+                            Node arctic = nf.MainNode.Nodes.Find(x => x.Name == "arctic") ?? nf.MainNode.AddNode("arctic");
+                            Node mild_winter = nf.MainNode.Nodes.Find(x => x.Name == "mild_winter") ?? nf.MainNode.AddNode("mild_winter");
+                            Node normal_winter = nf.MainNode.Nodes.Find(x => x.Name == "normal_winter") ?? nf.MainNode.AddNode("normal_winter");
+                            Node severe_winter = nf.MainNode.Nodes.Find(x => x.Name == "severe_winter") ?? nf.MainNode.AddNode("severe_winter");
+                            Node impassable = nf.MainNode.Nodes.Find(x => x.Name == "impassable") ?? nf.MainNode.AddNode("impassable");
+                            Node mild_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "mild_monsoon") ?? nf.MainNode.AddNode("mild_monsoon");
+                            Node normal_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "normal_monsoon") ?? nf.MainNode.AddNode("normal_monsoon");
+                            Node severe_monsoon = nf.MainNode.Nodes.Find(x => x.Name == "severe_monsoon") ?? nf.MainNode.AddNode("severe_monsoon");
                             foreach (Province p in GlobalVariables.Provinces)
                             {
                                 switch (p.Winter)
@@ -713,7 +710,7 @@ namespace Eu4ModEditor
                         n.AddVariable("remove_claim", en.Value.ToString());
                         break;
                     case Province.Variable.Controller:
-                        n.AddVariable("controller", ((Country)en.Value).Tag);
+                        n.AddVariable("controller", en.Value == null ? "---" : ((Country)en.Value).Tag);
                         break;
                     case Province.Variable.CoresAdd:
                         n.AddVariable("add_core", en.Value.ToString());
@@ -751,7 +748,7 @@ namespace Eu4ModEditor
                         n.AddVariable("native_size", en.Value.ToString());
                         break;
                     case Province.Variable.OwnerCountry:
-                        n.AddVariable("owner", ((Country)en.Value).Tag);
+                        n.AddVariable("owner", en.Value == null ? "---" : ((Country)en.Value).Tag);
                         break;
                     case Province.Variable.Production:
                         n.AddVariable("base_production", en.Value.ToString());
@@ -775,7 +772,7 @@ namespace Eu4ModEditor
                         n.AddVariable("trade_goods", en.Value.ToString());
                         break;
                     case Province.Variable.TribalOwner:
-                        n.AddVariable("tribal_owner", ((Country)en.Value).Tag);
+                        n.AddVariable("tribal_owner", en.Value == null ? "---" : ((Country)en.Value).Tag);
                         break;
                     case Province.Variable.Unrest:
                         n.AddVariable("unrest", en.Value.ToString());
@@ -1135,9 +1132,9 @@ namespace Eu4ModEditor
                                     if (GlobalVariables.ReadOnly[(int)GlobalVariables.LoadFilesOrder.tradecompanies] && !GlobalVariables.CreateNewFilesReadOnly)
                                         return;
                                 }
-                                foreach (TradeCompany tc in GlobalVariables.TradeCompanies)
+                                foreach (TradeCompany tc in TradeCompany.TradeCompanies)
                                 {                                   
-                                    if (!tc.MadeChanges)
+                                    if (!tc.MadeChanges || tc == TradeCompany.NoTradeCompany)
                                         continue;
                                     NodeFile toSaveTo;
                                     if (normal)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -13,51 +14,43 @@ namespace Eu4ModEditor
 {
     public static class LoadFilesClass
     {
-
-        public static NodeFile ReadOneFile(string path, LoadingProgress progress)
-        {
-            return null;
-        }
         public static NodeFile[] ReadFiles(string path, LoadingProgress progress)
         {
             List<NodeFile> files = new List<NodeFile>();
             if (!Directory.Exists(path))
-                progress.ReportError($"Error: Directory '{path}' doesn't exist!");
-            else
             {
-                foreach (string file in Directory.GetFiles(path))
+                progress.ReportError($"Error: Directory '{path}' doesn't exist!");
+                return files.ToArray();
+            }
+
+            foreach (string file in Directory.GetFiles(path))
+            {
+                if(!file.Contains('.'))
                 {
-                    if (file.Contains('.'))
-                    {
-                        if (file.Split('.')[1] == "txt")
-                        {
-                            NodeFile nf = new NodeFile(file);
-                            if (nf.LastStatus.HasError)
-                                progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                            else
-                            {
-                                files.Add(nf);
-                            }
-                        }
-                    }
+                    continue;
                 }
+
+                if (file.Split('.')[1] != "txt")
+                {
+                    continue;
+                }
+
+                NodeFile nf = new NodeFile(file);
+
+                if (nf.LastStatus.HasError)
+                    progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
+                else
+                    files.Add(nf);
+                
             }
             return files.ToArray();
         }
-
 
         public static async void LoadFilesWork(LoadingProgress progress)
         {
             try
             {
-
                 NodeFile nodef = new NodeFile();
-                nodef.ReadFile("test.txt", true);
-                nodef.SaveFile("testout.txt");
-
-
-
-                //BackgroundWorker bw = (BackgroundWorker)sender;
                 List<NodeFile> tradegoodsfiles = new List<NodeFile>();
                 List<NodeFile> tradegoodspricesfiles = new List<NodeFile>();
                 List<NodeFile> culturesfiles = new List<NodeFile>();
@@ -76,201 +69,14 @@ namespace Eu4ModEditor
                 List<NodeFile> tradenodesfiles = new List<NodeFile>();
                 List<NodeFile> tradecompanyfiles = new List<NodeFile>();
                 NodeFile Superregions;
-
                 GlobalVariables.Countries.Add(Country.NoCountry);
-                //DONE
                 Task llocalisation = new Task(() =>
                 {
-                    string[] splitValues;
-                    string[] apostrophSplit;
-                    if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.localisation] != 1)
-                    {
-                        if (!Directory.Exists(GlobalVariables.pathtogame + "localisation\\"))
-                            progress.ReportError($"Error: Localisation directory missing! Expected path: {GlobalVariables.pathtogame + "localisation\\"}");
-                        else
-                        {
-                            try
-                            {
-                                foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "localisation\\"))
-                                {
-                                    if (file.Contains('.'))
-                                    {
-                                        if (file.Contains("l_english") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.English)
-                                            continue;
-                                        if (file.Contains("l_french") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.French)
-                                            continue;
-                                        if (file.Contains("l_spanish") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.Spanish)
-                                            continue;
-                                        if (file.Contains("l_german") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.German)
-                                            continue;
-                                        if (!file.Contains("l_english") && !file.Contains("l_french") && !file.Contains("l_spanish") && !file.Contains("l_german"))
-                                            continue;
-                                        if (file.Split('.')[1] == "yml")
-                                        {
-                                            int linenumber = 0;
-                                            foreach (string line in File.ReadAllLines(file, Encoding.GetEncoding(1252)))
-                                            {
-                                                linenumber++;
-                                                if (linenumber == 1)
-                                                    continue;
-                                                string linetoread = line.Split('#')[0];
-                                                if (string.IsNullOrWhiteSpace(linetoread))
-                                                    continue;
-                                                if (!linetoread.Contains("\""))
-                                                {
-                                                    progress.ReportError($"Alert: Strange line number {linenumber} in localisation file '{Path.GetFileName(file)}'. Skipping.");
-                                                    continue;
-                                                }                                                
-                                                try
-                                                {
-                                                    splitValues = linetoread.Split(':');
-                                                    splitValues[0] = splitValues[0].Trim();
-                                                    if (string.IsNullOrWhiteSpace(splitValues[0]))
-                                                    {
-                                                        progress.ReportError($"Alert: Strange line number {linenumber} in localisation file '{Path.GetFileName(file)}'. Skipping.");
-                                                        continue;
-                                                    }
-                                                    if(splitValues.Count() < 2)
-                                                    {
-                                                        progress.ReportError($"Alert: Strange line number {linenumber} in localisation file '{Path.GetFileName(file)}'. Skipping.");
-                                                        continue;
-                                                    }
-                                                    apostrophSplit = splitValues[1].Split('"');
-                                                    if (apostrophSplit.Count() < 2)
-                                                    {
-                                                        progress.ReportError($"Alert: Strange line number {linenumber} in localisation file '{Path.GetFileName(file)}'. Skipping.");
-                                                        continue;
-                                                    }     
-                                                    if (GlobalVariables.LocalisationEntries.Keys.Contains(splitValues[0]))
-                                                        GlobalVariables.LocalisationEntries[splitValues[0]] = apostrophSplit[1];
-                                                    else
-                                                        GlobalVariables.LocalisationEntries.Add(splitValues[0], apostrophSplit[1]);
-                                                }
-                                                catch
-                                                {
-                                                    if (GlobalVariables.__DEBUG)
-                                                        throw;
-                                                    progress.ReportError($"Critical error: Localisation issue! -> { Path.GetFileName(file) } -> Line '{line}' is invalid!");
-                                                }
-
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            catch (UnauthorizedAccessException)
-                            {
-                                if (GlobalVariables.__DEBUG)
-                                    throw;
-                                progress.ReportError("Error: No access to localisation files! Program will exit after continuing");
-                            }
-                        }
-                    }
-
-
-                    if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.localisation] != 0)
-                    {
-                        foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "localisation\\"))
-                        {
-                            if (file.Contains('.'))
-                            {
-                                if (file.Contains("l_english") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.English)
-                                    continue;
-                                if (file.Contains("l_french") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.French)
-                                    continue;
-                                if (file.Contains("l_spanish") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.Spanish)
-                                    continue;
-                                if (file.Contains("l_german") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.German)
-                                    continue;
-                                if (!file.Contains("l_english") && !file.Contains("l_french") && !file.Contains("l_spanish") && !file.Contains("l_german"))
-                                    continue;
-                                if (file.Split('.')[1] == "yml")
-                                {
-                                    int linenumber = 0;
-                                    foreach (string line in File.ReadAllLines(file, Encoding.GetEncoding(1252)))
-                                    {
-                                        linenumber++;
-                                        if (linenumber == 1)
-                                            continue;
-                                        string linetoread = line.Split('#')[0];
-                                        if (string.IsNullOrWhiteSpace(linetoread))
-                                            continue;
-                                        if (!linetoread.Contains("\""))
-                                        {
-                                            progress.ReportError($"Alert: Strange line number {linenumber} in mod localisation file '{Path.GetFileName(file)}'. Skipping.");
-                                            continue;
-                                        }
-                                        try
-                                        {
-                                            splitValues = linetoread.Split(':');
-                                            splitValues[0] = splitValues[0].Trim();
-                                            if (string.IsNullOrWhiteSpace(splitValues[0]))
-                                            {
-                                                progress.ReportError($"Alert: Strange line number {linenumber} in mod localisation file '{Path.GetFileName(file)}'. Skipping.");
-                                                continue;
-                                            }
-                                            if (splitValues.Count() < 2)
-                                            {
-                                                progress.ReportError($"Alert: Strange line number {linenumber} in mod localisation file '{Path.GetFileName(file)}'. Skipping.");
-                                                continue;
-                                            }
-                                            apostrophSplit = splitValues[1].Split('"');
-                                            if (apostrophSplit.Count() < 2)
-                                            {
-                                                progress.ReportError($"Alert: Strange line number {linenumber} in mod localisation file '{Path.GetFileName(file)}'. Skipping.");
-                                                continue;
-                                            }
-                                            if (GlobalVariables.ModLocalisationEntries.Keys.Contains(splitValues[0]))
-                                                GlobalVariables.ModLocalisationEntries[splitValues[0]] = apostrophSplit[1];
-                                            else
-                                                GlobalVariables.ModLocalisationEntries.Add(splitValues[0], apostrophSplit[1]);
-                                        }
-                                        catch
-                                        {
-                                            if (GlobalVariables.__DEBUG)
-                                                throw;
-                                            progress.ReportError($"Critical error: Localisation issue! { Path.GetFileName(file) } has an unexpected error on line '{line}'!");
-                                        }
-
-                                    }
-
-
-                                    foreach (string line in File.ReadAllLines(file, Encoding.GetEncoding(1252)))
-                                    {
-                                        string linetoread = line.Split('#')[0];
-
-                                        if (linetoread.Contains("\""))
-                                        {
-                                            string name = "";
-                                            string value = "";
-                                            try
-                                            {
-                                                name = linetoread.Split(':')[0].Trim();
-                                                value = linetoread.Split(':')[1].Split('"')[1];
-                                                if (GlobalVariables.ModLocalisationEntries.Keys.Contains(name))
-                                                    GlobalVariables.ModLocalisationEntries[name] = value;
-                                                else
-                                                    GlobalVariables.ModLocalisationEntries.Add(name, value);
-                                            }
-                                            catch
-                                            {
-                                                if (GlobalVariables.__DEBUG)
-                                                    throw;
-                                                progress.ReportError($"Critical error: Localisation issue! { Path.GetFileName(file) } has an unexpected error on line '{line}'!");
-                                            }
-
-                                        }
-
-                                    }
-
-                                }
-                            }
-                        }
-                    }
+                    ReadLocalisationFiles(progress);
                 });
                 llocalisation.Start();
                 progress.UpdateProgress(22, 0);
-                //DONE
+
                 Task ldefinition = new Task(() =>
                 {
                     int linen = 0;
@@ -286,16 +92,42 @@ namespace Eu4ModEditor
                         {
                             string data = Reader.ReadLine();
                             linen++;
-                            if (data.Contains("province;red;"))
-                                continue;
                             string[] values = data.Split(';');
                             if(values.Count() < 5)
                             {
                                 progress.ReportError($"Error: Incorrect line number {linen} in definition.csv");
                                 continue;
                             }
-                            Province p = new Province(int.Parse(values[0]), int.Parse(values[1]), int.Parse(values[2]), int.Parse(values[3]), values[4]);
-                            GlobalVariables.CubeArray[int.Parse(values[1]), int.Parse(values[2]), int.Parse(values[3])] = p;
+                            if (!int.TryParse(values[0], out int ID))
+                            {
+                                if(linen == 1)
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    progress.ReportError($"Error: Invalid ID in line {linen} of definition.csv");
+                                    continue;
+                                }
+                            }
+                            if (!int.TryParse(values[1], out int Red))
+                            {
+                                progress.ReportError($"Error: Invalid red value in line {linen} of definition.csv");
+                                continue;
+                            }
+                            if (!int.TryParse(values[2], out int Green))
+                            {
+                                progress.ReportError($"Error: Invalid green value in line {linen} of definition.csv");
+                                continue;
+                            }
+                            if (!int.TryParse(values[3], out int Blue))
+                            {
+                                progress.ReportError($"Error: Invalid blue value in line {linen} of definition.csv");
+                                continue;
+                            }
+
+                            Province p = new Province(ID, Red, Green, Blue, values[4]);
+                            GlobalVariables.CubeArray[Red, Green, Blue] = p;
                             GlobalVariables.Provinces.Add(p);
                         }
                     }
@@ -308,10 +140,9 @@ namespace Eu4ModEditor
                 });
                 ldefinition.Start();
                 progress.UpdateProgress(0, 0);
-                //DONE
+
                 Task ltradegoods = new Task(() =>
                 {
-
                     try
                     {
                         if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.tradegoods] != 0)
@@ -348,7 +179,7 @@ namespace Eu4ModEditor
                                             progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
                                         else
                                         {
-                                            if (!tradegoodsfiles.Any(x => x.FileName == file.Split('\\').Last().Replace(".txt", "")))
+                                            if (!tradegoodsfiles.Any(x => x.FileName == Path.GetFileNameWithoutExtension(file)))
                                                 tradegoodsfiles.Add(nf);
                                             GlobalVariables.GameTradeGoodsFile = nf;
                                         }
@@ -1023,7 +854,14 @@ namespace Eu4ModEditor
                                             {
                                                 if(p.Area != null)
                                                 {
-                                                    progress.ReportError($"Alert: Province '{p.ID}' is in multiple areas, '{p.Area}' and '{n.Name}'! Using the second one!");
+                                                    if (p.Area == Area.NoArea)
+                                                    {
+                                                        Area.NoArea.Provinces.Remove(p);
+                                                    }
+                                                    else
+                                                    {
+                                                        progress.ReportError($"Alert: Province '{p.ID}' is in multiple areas, '{p.Area}' and '{n.Name}'! Using the second one!");
+                                                    }
                                                 }
                                                 pr.Add(p);
                                             }
@@ -1696,11 +1534,10 @@ namespace Eu4ModEditor
                         {
                             foreach (Node node in tradecompanies.MainNode.Nodes)
                             {
-                                TradeCompany tc = GlobalVariables.TradeCompanies.Find(x => x.Name.ToLower() == node.Name.ToLower());
+                                TradeCompany tc = TradeCompany.TradeCompanies.Find(x => x.Name.ToLower() == node.Name.ToLower());
                                 if (tc == null)
                                 {
                                     tc = new TradeCompany() { Name = node.Name };
-                                    GlobalVariables.TradeCompanies.Add(tc);
                                 }
                                 tc.NodeFile = tradecompanies;
                                 Node ColorNode = node.Nodes.Find(x => x.Name.ToLower() == "color");
@@ -1708,7 +1545,6 @@ namespace Eu4ModEditor
                                     tc.Color = Color.FromArgb(int.Parse(ColorNode.PureValues[0].Name), int.Parse(ColorNode.PureValues[1].Name), int.Parse(ColorNode.PureValues[2].Name));
                                 else                                
                                     tc.Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
-
 
                                 Node provinces = node.Nodes.Find(x => x.Name.ToLower() == "provinces");
                                 if (provinces == null)
@@ -1719,8 +1555,7 @@ namespace Eu4ModEditor
                                 {
                                     foreach (PureValue value in provinces.PureValues)
                                     {
-                                        int id = 0;
-                                        if (!int.TryParse(value.Name, out id))
+                                        if (!int.TryParse(value.Name, out int id))
                                         {
                                             progress.ReportError($"Error: Trade company '{tc.Name}' has unexpected value in provinces!");
                                         }
@@ -1735,7 +1570,14 @@ namespace Eu4ModEditor
                                             {
                                                 if (p.TradeCompany != null)
                                                 {
-                                                    progress.ReportError($"Alert: Province {p.ID} belongs to many trade companies! '{p.TradeCompany.Name}' and '{tc.Name}'. Using second!");
+                                                    if (p.TradeCompany == TradeCompany.NoTradeCompany)
+                                                    {
+                                                        p.TradeCompany.Provinces.Remove(p);
+                                                    }
+                                                    else
+                                                    {
+                                                        progress.ReportError($"Alert: Province {p.ID} belongs to many trade companies! '{p.TradeCompany.Name}' and '{tc.Name}'. Using second!");
+                                                    }
                                                 }
                                                 tc.Provinces.Add(p);
                                                 p.TradeCompany = tc;
@@ -2841,13 +2683,19 @@ namespace Eu4ModEditor
                                     {
                                         if (vr.Name != "")
                                         {
-                                            Area are = GlobalVariables.Areas.Find(x => x.Name.ToLower() == vr.Name.ToLower());
+                                            Area are = Area.Areas.Find(x => x.Name.ToLower() == vr.Name.ToLower());
                                             if (are != null)
                                             {
                                                 if (are.Region != null)
                                                 {
-                                                    are.Region.Areas.Remove(are);
-                                                    progress.ReportError($"Alert: Area '{are}' is part of two regions. '{n.Name}' and '{are.Region}'. Picking second.");
+                                                    if (are.Region == Region.NoRegion)
+                                                    {
+                                                        are.Region.Areas.Remove(are);
+                                                    }
+                                                    else
+                                                    {
+                                                        progress.ReportError($"Alert: Area '{are}' is part of two regions. '{n.Name}' and '{are.Region}'. Picking second.");
+                                                    }
                                                 }
                                                 ar.Add(are);
                                             }
@@ -2908,13 +2756,19 @@ namespace Eu4ModEditor
                                     res = true;
                                     continue;
                                 }
-                                Region r = GlobalVariables.Regions.Find(x => x.Name.ToLower() == s.Name.ToLower());
+                                Region r = Region.Regions.Find(x => x.Name.ToLower() == s.Name.ToLower());
                                 if (r != null)
                                 {
                                     if(r.Superregion != null)
                                     {
-                                        r.Superregion.Regions.Remove(r);
-                                        progress.ReportError($"Alert: Region '{r}' is part of two superregions. '{r.Name}' and '{r.Superregion}'. Picking second.");
+                                        if(r.Superregion == Superregion.NoSuperregion)
+                                        {
+                                            r.Superregion.Regions.Remove(r);
+                                        }
+                                        else
+                                        {
+                                            progress.ReportError($"Alert: Region '{r}' is part of two superregions. '{r.Name}' and '{r.Superregion}'. Picking second.");
+                                        }
                                     }
                                     reg.Add(r);
                                 }
@@ -3238,13 +3092,103 @@ namespace Eu4ModEditor
         
         }
 
-       
-
-        public static void WorkerDone(object sender, RunWorkerCompletedEventArgs e)
+        public static void ReadLocalisationFiles(LoadingProgress progress)
         {
-            MessageBox.Show(GlobalVariables.CurrentLoadingProgress + "");
-            if (e.Error != null)
-                MessageBox.Show(e.Error.StackTrace);
+            if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.localisation] != 1)
+            {
+                ReadLocalisationDirectory(progress, false);
+            }
+            if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.localisation] != 0)
+            {
+                ReadLocalisationDirectory(progress, true);
+            }      
+        }
+
+        public static void ReadLocalisationDirectory(LoadingProgress progress, bool mod)
+        {
+            string[] splitValues;
+            string[] apostrophSplit;
+            string LocPath = mod ? GlobalVariables.pathtomod : GlobalVariables.pathtogame;
+            LocPath += "localisation\\";
+            Dictionary<string, string> Dict = mod ? GlobalVariables.ModLocalisationEntries : GlobalVariables.LocalisationEntries;
+
+            if (!Directory.Exists(LocPath))
+            {
+                progress.ReportError($"Error: Localisation directory missing! Expected path: {LocPath}");
+                return;
+            }
+
+            try
+            {
+                foreach (string file in Directory.GetFiles(LocPath))
+                {
+                    if (file.Contains('.'))
+                    {
+                        if (file.Contains("l_english") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.English)
+                            continue;
+                        if (file.Contains("l_french") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.French)
+                            continue;
+                        if (file.Contains("l_spanish") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.Spanish)
+                            continue;
+                        if (file.Contains("l_german") && GlobalVariables.LocalisationLanguage != GlobalVariables.Languages.German)
+                            continue;
+                        if (!file.Contains("l_english") && !file.Contains("l_french") && !file.Contains("l_spanish") && !file.Contains("l_german"))
+                            continue;
+                        if (file.Split('.')[1] != "yml")
+                            continue;
+
+                        string[] allLines = File.ReadAllLines(file, Encoding.GetEncoding(1252));
+                        for (int lineNumber = 1; lineNumber < allLines.Length; lineNumber++)
+                        {
+                            string linetoread = allLines[lineNumber].Split('#')[0];
+                            if (string.IsNullOrWhiteSpace(linetoread))
+                                continue;
+                            if (!linetoread.Contains("\""))
+                            {
+                                progress.ReportError($"Alert: Strange line number {lineNumber} in localisation file '{Path.GetFileName(file)}'. Skipping.");
+                                continue;
+                            }
+                            try
+                            {
+                                splitValues = linetoread.Split(':');
+                                splitValues[0] = splitValues[0].Trim();
+                                if (string.IsNullOrWhiteSpace(splitValues[0]))
+                                {
+                                    progress.ReportError($"Alert: Strange line number {lineNumber} in localisation file '{Path.GetFileName(file)}'. Skipping.");
+                                    continue;
+                                }
+                                if (splitValues.Count() < 2)
+                                {
+                                    progress.ReportError($"Alert: Strange line number {lineNumber} in localisation file '{Path.GetFileName(file)}'. Skipping.");
+                                    continue;
+                                }
+                                apostrophSplit = splitValues[1].Split('"');
+                                if (apostrophSplit.Count() < 2)
+                                {
+                                    progress.ReportError($"Alert: Strange line number {lineNumber} in localisation file '{Path.GetFileName(file)}'. Skipping.");
+                                    continue;
+                                }
+                                if (Dict.Keys.Contains(splitValues[0]))
+                                    Dict[splitValues[0]] = apostrophSplit[1];
+                                else
+                                    Dict.Add(splitValues[0], apostrophSplit[1]);
+                            }
+                            catch
+                            {
+                                if (GlobalVariables.__DEBUG)
+                                    throw;
+                                progress.ReportError($"Critical error: Localisation issue! -> {Path.GetFileName(file)} -> Line '{lineNumber}' is invalid!");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                if (GlobalVariables.__DEBUG)
+                    throw;
+                progress.ReportError("Error: No access to localisation files! Program will exit after continuing");
+            }
         }
 
         public static void LoadFiles()

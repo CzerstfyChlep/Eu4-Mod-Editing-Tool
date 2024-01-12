@@ -18,10 +18,14 @@ namespace Eu4ModEditor
         public TradeCompany()
         {
             Color = AdditionalElements.GenerateColor(GlobalVariables.GlobalRandom);
+            TradeCompanies.Add(this);
         }
         public override string ToString()
         {
             return Name;
         }
+
+        public static List<TradeCompany> TradeCompanies = new List<TradeCompany>();
+        public static TradeCompany NoTradeCompany = new TradeCompany();
     }
 }

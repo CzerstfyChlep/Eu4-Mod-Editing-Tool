@@ -527,7 +527,10 @@ namespace Eu4ModEditor
 
         private void ModEditor_Load(object sender, EventArgs e)
         {
-
+            if (Screen.PrimaryScreen.Bounds.Height < 860)
+            {
+                this.Height = Screen.PrimaryScreen.Bounds.Height - 40;
+            }
         }
 
         private void ZoomInButton_Click(object sender, EventArgs e)
@@ -545,15 +548,23 @@ namespace Eu4ModEditor
         public void ZoomIn()
         {
             if (GlobalVariables.Zoom < 8)
+            {
                 GlobalVariables.Zoom *= 2;
+                GlobalVariables.CameraPosition.X += GlobalVariables.MapDrawingWidth / GlobalVariables.Zoom / 2;
+                GlobalVariables.CameraPosition.Y += GlobalVariables.MapDrawingHeight / GlobalVariables.Zoom / 2;
+            }
             ZoomInButton.Text = GlobalVariables.Zoom + "x";
             UpdateMap();
         }
 
         public void ZoomOut()
         {
-            if(GlobalVariables.Zoom > 1)
+            if (GlobalVariables.Zoom > 1)
+            {
+                GlobalVariables.CameraPosition.X -= GlobalVariables.MapDrawingWidth / GlobalVariables.Zoom / 2;
+                GlobalVariables.CameraPosition.Y -= GlobalVariables.MapDrawingHeight / GlobalVariables.Zoom / 2;
                 GlobalVariables.Zoom /= 2;
+            }
             ZoomInButton.Text = GlobalVariables.Zoom + "x";
             UpdateMap();
         }

@@ -12,7 +12,7 @@ namespace Eu4ModEditor
         public Continent(string name)
         {
             Name = name;
-            GlobalVariables.Continents.Add(this);
+            Continents.Add(this);
             Color = Color.FromArgb(GlobalVariables.GlobalRandom.Next(10, 245), GlobalVariables.GlobalRandom.Next(10, 245), GlobalVariables.GlobalRandom.Next(10, 245));
         }
         /// <summary>
@@ -25,7 +25,7 @@ namespace Eu4ModEditor
             Name = name;
             Provinces.AddRange(provinces);
             Color = Color.FromArgb(GlobalVariables.GlobalRandom.Next(10, 245), GlobalVariables.GlobalRandom.Next(10, 245), GlobalVariables.GlobalRandom.Next(10, 245));
-            GlobalVariables.Continents.Add(this);
+            Continents.Add(this);
         }
         public List<Province> Provinces = new List<Province>();
         public string Name = "";
@@ -35,5 +35,8 @@ namespace Eu4ModEditor
         {
             return Name;
         }
+
+        public static List<Continent> Continents = new List<Continent>();
+        public static Continent NoContinent = new Continent("");
     }
 }

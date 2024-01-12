@@ -171,15 +171,15 @@ namespace Eu4ModEditor
                     break;
                 case 2:
                     FilterValueBox.Items.Clear();
-                    FilterValueBox.Items.AddRange(GlobalVariables.Continents.ToArray());
+                    FilterValueBox.Items.AddRange(Continent.Continents.ToArray());
                     break;
                 case 3:
                     FilterValueBox.Items.Clear();
-                    FilterValueBox.Items.AddRange(GlobalVariables.Superregions.ToArray());
+                    FilterValueBox.Items.AddRange(Superregion.Superregions.ToArray());
                     break;
                 case 4:
                     FilterValueBox.Items.Clear();
-                    FilterValueBox.Items.AddRange(GlobalVariables.Regions.ToArray());
+                    FilterValueBox.Items.AddRange(Eu4ModEditor.Region.Regions.ToArray());
                     break;
                 case 5:
                     FilterValueBox.Items.Clear();
