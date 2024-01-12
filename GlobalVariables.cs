@@ -13,7 +13,7 @@ namespace Eu4ModEditor
     public static class GlobalVariables
     {
         public static bool __DEBUG = false;
-        public static string Version = "1.3.4";
+        public static string Version = "1.3.5";
 
         public static List<Province> Provinces = new List<Province>();
         public static Dictionary<string, Province> ColorToProvince = new Dictionary<string, Province>();

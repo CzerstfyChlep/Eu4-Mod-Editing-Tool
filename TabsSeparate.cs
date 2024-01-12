@@ -2432,7 +2432,7 @@ namespace Eu4ModEditor
                 SuperregionBox.Items.Add(c);
                 MacroSuperregionBox.Items.Add(c);
 
-                ChangeProvinceInfo(ChangeProvinceMode.Superregion, SuperregionBox.Items.Count - 2);
+                ChangeProvinceInfo(ChangeProvinceMode.Superregion, c);
                 AddNewSuperregionBox.Text = "";
 
                 if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Superregion))
