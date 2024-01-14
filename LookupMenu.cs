@@ -83,7 +83,7 @@ namespace Eu4ModEditor
             {
                 for (int a = 0; a < ObjectsList.Count; a++)
                 {
-                    if (AdditionalElements.StringSimilarity(ObjectsList[a].ToLower(), FilterTextbox.Text.ToLower()) > 75)
+                    if (AdditionalElements.CompareStrings(ObjectsList[a].ToLower(), FilterTextbox.Text.ToLower()) < 2)
                     {
                         DisplayedList.Add(ObjectsList[a]);
                     }
