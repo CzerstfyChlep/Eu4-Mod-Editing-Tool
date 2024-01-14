@@ -531,6 +531,33 @@ namespace Eu4ModEditor
             {
                 this.Height = Screen.PrimaryScreen.Bounds.Height - 40;
             }
+
+            this.MouseMove += MouseMoveAction;
+        }
+
+        private void MouseMoveAction(object sender, MouseEventArgs e)
+        {
+            if(e.Button == MouseButtons.Right)
+            {
+                if (e.Location.X > GlobalVariables.MapDrawingPosX && e.Location.X < GlobalVariables.MapDrawingWidth + GlobalVariables.MapDrawingPosX && e.Location.Y > GlobalVariables.MapDrawingPosY && e.Location.Y < GlobalVariables.MapDrawingHeight + GlobalVariables.MapDrawingPosY)
+                {
+                    Point truePosition = new Point((e.Location.X - GlobalVariables.MapDrawingPosX) / GlobalVariables.Zoom + GlobalVariables.CameraPosition.X, (e.Location.Y - GlobalVariables.MapDrawingPosY) / GlobalVariables.Zoom + GlobalVariables.CameraPosition.Y);
+                    Color c = GlobalVariables.ProvincesMapBitmap.GetPixel(truePosition.X, truePosition.Y);
+                    Province p = GlobalVariables.CubeArray[c.R, c.G, c.B];
+                    if (p != null)
+                    {
+                        if (!GlobalVariables.ClickedProvinces.Contains(p))
+                        {
+                            if (p.HistoryFile != null)
+                            {
+                                AddToClickedProvinces(p);
+                            }
+                        }
+                    }
+                    //UpdateMap();
+                }
+
+            }
         }
 
         private void ZoomInButton_Click(object sender, EventArgs e)

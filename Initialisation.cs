@@ -60,7 +60,7 @@ namespace Eu4ModEditor
             LeftButton.MouseClick += InputManagement.HandleMoveButton;
             UpButton.MouseClick += InputManagement.HandleMoveButton;
             DownButton.MouseClick += InputManagement.HandleMoveButton;
-
+            
             MouseClick += MouseClickHandler;
 
             MouseWheel += ScrollHandler;
