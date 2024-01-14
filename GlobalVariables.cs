@@ -57,7 +57,7 @@ namespace Eu4ModEditor
         public static Bitmap DevelopmentBitmap;
 
 
-       
+        public static bool SelectionPainted = false;
 
         public static bool ShowSeaTilesAreaMapmode = false;
 

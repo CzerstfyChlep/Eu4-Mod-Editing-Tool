@@ -164,10 +164,11 @@ namespace Eu4ModEditor
                                     AddToClickedProvinces(p);
                                 }
                             }
-                            else
+                            else if (!GlobalVariables.SelectionPainted)
                             {
                                 RemoveFromClickedProvinces(p);
                             }
+                            GlobalVariables.SelectionPainted = false;
                         }
                         else
                         {
@@ -551,6 +552,7 @@ namespace Eu4ModEditor
                             if (p.HistoryFile != null)
                             {
                                 AddToClickedProvinces(p);
+                                GlobalVariables.SelectionPainted = true;
                             }
                         }
                     }

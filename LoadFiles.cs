@@ -2705,15 +2705,16 @@ namespace Eu4ModEditor
                                             }
                                         }
                                     }
-                                    Region r = new Region(n.Name, ar);
-                                    r.OriginalName = n.Name;
-                                    foreach (Area are in r.Areas)
-                                        are.Region = r;
                                 }
                                 else
                                 {
                                     progress.ReportError($"Alert: Region '{n.Name}' has no areas.");
                                 }
+
+                                Region r = new Region(n.Name, ar);
+                                r.OriginalName = n.Name;
+                                foreach (Area are in r.Areas)
+                                    are.Region = r;
                             }
                         }
                     }
