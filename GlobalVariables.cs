@@ -7,13 +7,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using Eu4ModEditor;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Eu4ModEditor
 {
     public static class GlobalVariables
     {
         public static bool __DEBUG = false;
-        public static string Version = "1.3.6";
+        public static string Version = "1.3.7";
 
         public static List<Province> Provinces = new List<Province>();
         public static Dictionary<string, Province> ColorToProvince = new Dictionary<string, Province>();
@@ -133,8 +134,89 @@ namespace Eu4ModEditor
 
         public static Languages LocalisationLanguage = Languages.English;
 
-        public static Dictionary<string, string> LocalisationEntries = new Dictionary<string, string>();
-        public static Dictionary<string, string> ModLocalisationEntries = new Dictionary<string, string>();
+
+        public static List<LocalisationFile> LocalisationFiles = new List<LocalisationFile>();
+        public static LocalisationFile ModLocalisationFile;
+        public static bool GetLocalised(string key, out string output)
+        {
+            foreach(LocalisationFile file in LocalisationFiles)
+            {
+                if(file.GetLocalised(key, out output))
+                {
+                    return true;
+                }
+            }
+            output = "";
+            return false;
+        }
+        public static void ChangeLocalisation(string key, string value)
+        {
+            foreach (LocalisationFile file in LocalisationFiles)
+            {
+                if (file.TryChange(key, value))
+                {
+                    return;
+                }
+            }
+
+            ModLocalisationFile.AddNew(key, value);
+        }
+        public static void SaveLocalisation()
+        {
+            foreach (LocalisationFile file in LocalisationFiles)
+            {
+                if (!file.Changed)
+                {
+                    continue;
+                }
+                StringBuilder tosave = new StringBuilder(file.Localisation.Keys.Count * 100);
+                switch (LocalisationLanguage)
+                {
+                    case Languages.English:
+                        tosave.Append("l_english:\n");
+                        break;
+                    case Languages.French:
+                        tosave.Append("l_french:\n");
+                        break;
+                    case Languages.German:
+                        tosave.Append("l_german:\n");
+                        break;
+                    case Languages.Spanish:
+                        tosave.Append("l_spanish:\n");
+                        break;
+                }
+
+                foreach (string key in file.Localisation.Keys)
+                {
+                    tosave.Append(" ");
+                    tosave.Append(key);
+                    tosave.Append(": \"");
+                    tosave.Append(file.Localisation[key]);
+                    tosave.Append("\"\n");
+                }
+                if (!Directory.Exists(pathtomod + "localisation"))
+                    Directory.CreateDirectory(pathtomod + "localisation");
+                File.WriteAllText(pathtomod + "localisation\\" + file.Filename, tosave.ToString(), new UTF8Encoding(true));
+            }
+        }
+        public static string GetModEdtLocName()
+        {
+            switch(LocalisationLanguage)
+            {
+                default:
+                case Languages.English:
+                    return "mod_edt_loc_l_english.yml";
+                case Languages.French:
+                    return "mod_edt_loc_l_french.yml";
+                case Languages.German:
+                    return "mod_edt_loc_l_german.yml";
+                case Languages.Spanish:
+                    return "mod_edt_loc_l_spanish.yml";
+            }         
+        }
+
+        //public static Dictionary<string, string> LocalisationEntries = new Dictionary<string, string>();
+        //public static Dictionary<string, string> ModLocalisationEntries = new Dictionary<string, string>();
 
 
         public static bool BorderingMode = false;

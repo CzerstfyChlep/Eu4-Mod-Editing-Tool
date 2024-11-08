@@ -14,6 +14,7 @@ namespace Eu4ModEditor
         public object PreviousValue;
         public object CurrentValue;
         public NonVariableChange SpecialChange;
+        public DateTime Date;
 
         public VariableChange(object obj, Province.Variable name, object prev, object cur)
         {
@@ -23,6 +24,15 @@ namespace Eu4ModEditor
             PreviousValue = prev;
             CurrentValue = cur;
         }
+        public VariableChange(object obj, Province.Variable name, object prev, object cur, DateTime date)
+        {
+            Object = obj;
+            ProvinceVariable = name;
+            VariableName = ProvinceVariable.ToString();
+            PreviousValue = prev;
+            CurrentValue = cur;
+            Date = date;
+        }
         public VariableChange(object obj, string name, object prev, object cur)
         {
             Object = obj;
@@ -30,9 +40,18 @@ namespace Eu4ModEditor
             PreviousValue = prev;
             CurrentValue = cur;
         }
-        public VariableChange(NonVariableChange sp)
+        public VariableChange(object obj, string name, object prev, object cur, DateTime date)
+        {
+            Object = obj;
+            VariableName = name;
+            PreviousValue = prev;
+            CurrentValue = cur;
+            Date = date;
+        }
+        public VariableChange(NonVariableChange sp, DateTime date)
         {
             SpecialChange = sp;
+            Date = date;
         }
 
         public enum NonVariableChange { Area }

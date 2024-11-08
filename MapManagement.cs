@@ -427,9 +427,9 @@ namespace Eu4ModEditor
                         p.VerticalStripes = Color.Transparent;
 
                         int pt = 0;
-                        if (GlobalVariables.ModLocalisationEntries.Keys.Contains("PROV" + p.ID) || GlobalVariables.LocalisationEntries.Keys.Contains("PROV" + p.ID))
+                        if (GlobalVariables.GetLocalised("PROV" + p.ID, out _))
                             pt = 1;
-                        if (GlobalVariables.ModLocalisationEntries.Keys.Contains("PROV_ADJ" + p.ID) || GlobalVariables.LocalisationEntries.Keys.Contains("PROV_ADJ" + p.ID))
+                        if (GlobalVariables.GetLocalised("PROV_ADJ" + p.ID, out _))
                             pt += 2;
 
                         if (pt == 1)
@@ -1166,9 +1166,9 @@ namespace Eu4ModEditor
                     {
                         Color c = Color.White;
                         int pt = 0;
-                        if (GlobalVariables.ModLocalisationEntries.Keys.Contains("PROV" + p.ID) || GlobalVariables.LocalisationEntries.Keys.Contains("PROV" + p.ID))
+                        if (GlobalVariables.GetLocalised("PROV" + p.ID, out _))
                             pt = 1;
-                        if (GlobalVariables.ModLocalisationEntries.Keys.Contains("PROV_ADJ" + p.ID) || GlobalVariables.LocalisationEntries.Keys.Contains("PROV_ADJ" + p.ID))
+                        if (GlobalVariables.GetLocalised("PROV_ADJ" + p.ID, out _))
                             pt += 2;
 
                         if (pt == 1)
