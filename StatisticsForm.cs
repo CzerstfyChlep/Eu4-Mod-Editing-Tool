@@ -195,7 +195,7 @@ namespace Eu4ModEditor
                     break;
                 case 8:
                     FilterValueBox.Items.Clear();
-                    FilterValueBox.Items.AddRange(GlobalVariables.Buildings.ToArray());
+                    FilterValueBox.Items.AddRange(GlobalVariables.Buildings.Values.ToArray());
                     break;
             }
 

@@ -677,9 +677,9 @@ namespace Eu4ModEditor
         public bool Wasteland;
 
         public Point Pixel = new Point();
-        public List<Point> Pixels = new List<Point>();
-        public List<Point> BorderPixels = new List<Point>();
-        public List<Point> NonBorderPixels = new List<Point>();
+        public List<Point> Pixels = new List<Point>(5000);
+        public List<Point> BorderPixels = new List<Point>(1000);
+        public List<Point> NonBorderPixels = new List<Point>(4000);
         public Rectangle ContainingRectangle;
         public Point Center = new Point();
         public Color c;

@@ -75,7 +75,7 @@ namespace Eu4ModEditor
                 }
                 //BUILDINGS
                 {
-                    Variable[] add_buildings = nf.MainNode.Variables.Where(x => GlobalVariables.Buildings.Any(y => y.Name.ToLower() == x.Name.ToLower())).ToArray();
+                    Variable[] add_buildings = nf.MainNode.Variables.Where(x => GlobalVariables.Buildings.TryGetValue(x.Name.ToLower(), out _)).ToArray();
                     List<Variable> ToRemove = new List<Variable>();
 
                     List<string> newBuildings = province.GetBuildings().ToList().ConvertAll(x => x.Name);
@@ -1615,10 +1615,10 @@ namespace Eu4ModEditor
 
                     foreach (Variable v in nf.MainNode.Variables)
                     {
-                        Building bl = GlobalVariables.Buildings.Find(x => x.Name == v.Name);
-                        if (bl != null && v.Value == "yes")
+                        if (GlobalVariables.Buildings.TryGetValue(v.Name.ToLower(), out Building bl) && v.Value == "yes")
                         {
                             (province.Variables[Province.Variable.Buildings] as List<Building>).Add(bl);
+                            continue;
                         }
                         switch (v.Name)
                         {

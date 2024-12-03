@@ -777,7 +777,7 @@ namespace Eu4ModEditor
                         {
                             foreach (Node node in buildings.MainNode.Nodes)
                             {
-                                if (GlobalVariables.Buildings.Any(x => x.Name.ToLower() == node.Name.ToLower()))
+                                if (GlobalVariables.Buildings.TryGetValue(node.Name.ToLower(), out _))
                                     continue;
                                 Building bl = new Building();
                                 bl.Name = node.Name;
@@ -796,7 +796,7 @@ namespace Eu4ModEditor
                                     
                                 }
 
-                                GlobalVariables.Buildings.Add(bl);
+                                GlobalVariables.Buildings.Add(bl.Name.ToLower(), bl);
                             }
                         }
 
@@ -2467,7 +2467,7 @@ namespace Eu4ModEditor
                 {
                     try
                     {
-                        List<NodeFile> Files = new List<NodeFile>();
+                        Dictionary<string, NodeFile> Files = new Dictionary<string, NodeFile>();
                         if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.historyProvinces] != 0)
                         {
                             if (!Directory.Exists(GlobalVariables.pathtomod + "history\\provinces\\"))
@@ -2478,25 +2478,24 @@ namespace Eu4ModEditor
                             {
                                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtomod + "history\\provinces\\"))
                                 {
-                                    if (file.Contains('.'))
+                                    string FileName = Path.GetFileName(file);
+                                    if (Path.GetExtension(file) != ".txt")
                                     {
-                                        if (file.Split('.').Last() == "txt")
+                                        continue;
+                                    }
+                                    try
+                                    {
+                                        NodeFile nf = new NodeFile(file);
+                                        if (nf.LastStatus.HasError)
+                                            progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
+                                        else
                                         {
-                                            try
-                                            {
-                                                NodeFile nf = new NodeFile(file);
-                                                if (nf.LastStatus.HasError)
-                                                    progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                                else
-                                                {
-                                                    Files.Add(nf);
-                                                }
-                                            }
-                                            catch
-                                            {
-                                                progress.ReportError($"File '{file}' is unusable!");
-                                            }
+                                            Files.Add(FileName, nf);
                                         }
+                                    }
+                                    catch
+                                    {
+                                        progress.ReportError($"File '{file}' is unusable!");
                                     }
                                 }
                             }
@@ -2511,33 +2510,32 @@ namespace Eu4ModEditor
                             {
                                 foreach (string file in Directory.GetFiles(GlobalVariables.pathtogame + "history\\provinces\\"))
                                 {
-                                    if (file.Contains('.'))
+                                    string FileName = Path.GetFileName(file);
+                                    if(Path.GetExtension(file) != ".txt")
                                     {
-                                        if (file.Split('.').Last() == "txt")
-                                        {
-                                            if (!Files.Any(x => x.Path.Split('\\').Last() == file.Split('\\').Last()))
-                                            {
-                                                try
-                                                {
-                                                    NodeFile nf = new NodeFile(file, true);
-                                                    if (nf.LastStatus.HasError)
-                                                        progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
-                                                    else
-                                                        Files.Add(nf);
-                                                }
-                                                catch
-                                                {
-                                                    progress.ReportError($"File '{file}' is unusable!");
-                                                }
-                                            }
-                                        }
+                                        continue;
+                                    }
+
+                                    if (Files.TryGetValue(FileName, out _))
+                                        continue;
+                                    try
+                                    {
+                                        NodeFile nf = new NodeFile(file, true);
+                                        if (nf.LastStatus.HasError)
+                                            progress.ReportError($"Critical error: File '{file}' has an error in line {nf.LastStatus.LineError}");
+                                        else
+                                            Files.Add(FileName, nf);
+                                    }
+                                    catch
+                                    {
+                                        progress.ReportError($"File '{file}' is unusable!");
                                     }
                                 }
                             }
                         }
-                        foreach (NodeFile file in Files)
+                        foreach (NodeFile file in Files.Values)
                         {
-                            string tocheck = file.Path.Split('\\').Last();
+                            string tocheck = Path.GetFileName(file.Path);
                             string created = "";
                             
                             for(int a = 0; a < tocheck.Length; a++)
@@ -2838,11 +2836,11 @@ namespace Eu4ModEditor
 
                 Task umapmisc = new Task(() =>
                 {
-                    foreach (Province p in GlobalVariables.Provinces)
+                    Parallel.ForEach(GlobalVariables.Provinces, (Province p) =>
                     {
                         p.BorderPixels = GraphicsMethods.CreateBorders(p);
                         p.NonBorderPixels = p.Pixels.Except(p.BorderPixels).ToList();
-                    }
+                    });
                     MapManagement.CreateClickMask();
                 });
                 umapmisc.Start();
@@ -3214,8 +3212,7 @@ namespace Eu4ModEditor
             GlobalVariables.CurrentDate = date;
             foreach (Variable v in n.Variables)
             {
-                Building bl = GlobalVariables.Buildings.Find(x => x.Name.ToLower() == v.Name.ToLower());
-                if (bl != null && v.Value.ToLower().Trim() == "yes")
+                if (GlobalVariables.Buildings.TryGetValue(v.Name.ToLower(), out Building bl) && v.Value.ToLower().Trim() == "yes")
                 {
                     province.AddBuilding(bl, date, true);
                 }
@@ -3232,7 +3229,17 @@ namespace Eu4ModEditor
                             if (!GlobalVariables.Countries.Any(x => x.Tag == v.Value.ToUpper()))
                                 progress.ReportError($"Alert: Province {province.ID} has unknown country tag in cores {v.Value.ToUpper()}");
                         }
-                        break; 
+                        break;
+                    case "remove_core":
+                        province.RemoveCore(v.Value.ToUpper(), date, true);
+                        if (v.Value == "---")
+                            continue;
+                        if (progress != null)
+                        {
+                            if (!GlobalVariables.Countries.Any(x => x.Tag == v.Value.ToUpper()))
+                                progress.ReportError($"Alert: Province {province.ID} has unknown country tag in removed cores {v.Value.ToUpper()}");
+                        }
+                        break;
                     case "add_claim":
                         province.AddClaim(v.Value.ToUpper(),date, true);
                         if (v.Value == "---")
@@ -3258,13 +3265,17 @@ namespace Eu4ModEditor
                                     progress.ReportError($"Error: Province {province.ID} has unknown owner '{v.Value.ToUpper()}'");
                                 }
                             }
-                            if (c != null && DateTime.Compare(GlobalVariables.StartDate, date) >= 0)
+                            if (c != null)
                             {
-                                if (province.OwnerCountry != null) {
-                                    province.OwnerCountry.Provinces.Remove(province);
+                                if (DateTime.Compare(GlobalVariables.StartDate, date) >= 0)
+                                {
+                                    if (province.OwnerCountry != null)
+                                    {
+                                        province.OwnerCountry.Provinces.Remove(province);
+                                    }
+                                    c.Provinces.Add(province);
                                 }
-                                province.OwnerCountry = c;
-                                c.Provinces.Add(province);
+                                province.OwnerCountry = c;                            
                             }
                         }
                         break;

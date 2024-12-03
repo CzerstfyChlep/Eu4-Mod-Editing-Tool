@@ -17,6 +17,7 @@ namespace Eu4ModEditor
 
         public byte[] Pixels { get; set; }
         public int Depth { get; private set; }
+        public int Step { get; private set; }
         public int Width { get; private set; }
         public int Height { get; private set; }
 
@@ -56,8 +57,8 @@ namespace Eu4ModEditor
                                              source.PixelFormat);
 
                 // create byte array to copy pixel values
-                int step = Depth / 8;
-                Pixels = new byte[PixelCount * step];
+                Step = Depth / 8;
+                Pixels = new byte[PixelCount * Step];
                 Iptr = bitmapData.Scan0;
 
                 // Copy data from pointer to array
@@ -98,14 +99,8 @@ namespace Eu4ModEditor
         {
             Color clr = Color.Empty;
 
-            // Get color components count
-            int cCount = Depth / 8;
-
             // Get start index of the specified pixel
-            int i = ((y * Width) + x) * cCount;
-
-            if (i > Pixels.Length - cCount)
-                throw new IndexOutOfRangeException();
+            int i = ((y * Width) + x) * Step;
 
             if (Depth == 32) // For 32 bpp get Red, Green, Blue and Alpha
             {
@@ -129,6 +124,26 @@ namespace Eu4ModEditor
                 clr = Color.FromArgb(c, c, c);
             }
             return clr;
+        }
+
+        public bool CmpPixel(int x, int y, int R, int G, int B)
+        {
+            Color clr = Color.Empty;
+            // Get start index of the specified pixel
+            int i = ((y * Width) + x) * Step;
+            if(Pixels[i] != B)
+            {
+                return false;
+            }
+            if (Pixels[i+1] != G)
+            {
+                return false;
+            }
+            if (Pixels[i+2] != R)
+            {
+                return false;
+            }
+            return true;
         }
 
         /// <summary>

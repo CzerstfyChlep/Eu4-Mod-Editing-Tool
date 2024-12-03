@@ -50,7 +50,7 @@ namespace Eu4ModEditor
             UpdateList();
         }
 
-        public void InitializeArray<T>(List<T> list, string Title, string ColumnTitle)
+        public void InitializeArray<T>(IEnumerable<T> list, string Title, string ColumnTitle)
         {
             ObjectsList = new List<string>();
             DisplayedList = new List<string>();

@@ -75,7 +75,7 @@ namespace Eu4ModEditor
         public static List<Tradenode> TradeNodes = new List<Tradenode>();
         public static bool TradeDestClickingMode = false;
 
-        public static List<Building> Buildings = new List<Building>();
+        public static Dictionary<string, Building> Buildings = new Dictionary<string, Building>(128);
 
         public static List<Government> Governments = new List<Government>();
 

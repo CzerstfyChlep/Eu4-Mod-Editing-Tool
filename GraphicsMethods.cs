@@ -8,20 +8,19 @@ namespace Eu4ModEditor
     {
         public static void FloodFill(ref LockBitmap bmp, Point pt, Color targetColor, Color replacementColor, ref List<Point> pixelsChanged)
         {
-            Stack<Point> pixels = new Stack<Point>();
+            Stack<Point> pixels = new Stack<Point>(10000);
             targetColor = bmp.GetPixel(pt.X, pt.Y);
             pixels.Push(pt);
-            List<Point> changed = new List<Point>();
             while (pixels.Count > 0)
             {
                 Point a = pixels.Pop();
                 if (a.X < bmp.Width && a.X > 0 &&
                         a.Y < bmp.Height && a.Y > 0)
                 {
-                    if (bmp.GetPixel(a.X, a.Y) == targetColor)
+                    if (bmp.CmpPixel(a.X, a.Y, targetColor.R, targetColor.G, targetColor.B))
                     {
                         bmp.SetPixel(a.X, a.Y, replacementColor);
-                        changed.Add(new Point(a.X, a.Y));
+                        pixelsChanged.Add(new Point(a.X, a.Y));
                         pixels.Push(new Point(a.X - 1, a.Y));
                         pixels.Push(new Point(a.X + 1, a.Y));
                         pixels.Push(new Point(a.X, a.Y - 1));
@@ -29,14 +28,13 @@ namespace Eu4ModEditor
                     }
                 }
             }
-            pixelsChanged.AddRange(changed);
         }
         public static List<Point> CreateBorders(Province p)
         {
             List<Point> border = new List<Point>();
-            int minx = GlobalVariables.ProvincesMapBitmap.Width;
+            int minx = GlobalVariables.MapWidth;
             int maxx = 0;
-            int miny = GlobalVariables.ProvincesMapBitmap.Height;
+            int miny = GlobalVariables.MapHeight;
             int maxy = 0;
             if (!p.Pixels.Any())
                 return border;
@@ -80,8 +78,8 @@ namespace Eu4ModEditor
         }
         public static List<Point> CreateBordersTwo(ref LockBitmap bmp)
         {
-            List<Point> border = new List<Point>();
-            List<Point> AlreadyAdded = new List<Point>();
+            List<Point> border = new List<Point>(1000);
+            List<Point> AlreadyAdded = new List<Point>(1000);
             for (int y = 1; y < bmp.Height - 1; y++)
             {
                 for (int x = 1; x < bmp.Width - 1; x++)
@@ -89,28 +87,28 @@ namespace Eu4ModEditor
                     Color c = bmp.GetPixel(x, y);
                     if (!AlreadyAdded.Contains(new Point(x, y)))
                     {
-                        if (bmp.GetPixel(x - 1, y) != c)
+                        if (!bmp.CmpPixel(x - 1, y, c.R, c.G, c.B))
                         {
                             border.Add(new Point(x, y));
                             border.Add(new Point(x - 1, y));
                             AlreadyAdded.Add(new Point(x - 1, y));
                             continue;
                         }
-                        if (bmp.GetPixel(x + 1, y) != c)
+                        if (!bmp.CmpPixel(x + 1, y, c.R, c.G, c.B))
                         {
                             border.Add(new Point(x, y));
                             border.Add(new Point(x + 1, y));
                             AlreadyAdded.Add(new Point(x + 1, y));
                             continue;
                         }
-                        if (bmp.GetPixel(x, y - 1) != c)
+                        if (!bmp.CmpPixel(x, y - 1, c.R, c.G, c.B))
                         {
                             border.Add(new Point(x, y));
                             border.Add(new Point(x, y - 1));
                             AlreadyAdded.Add(new Point(x, y - 1));
                             continue;
                         }
-                        if (bmp.GetPixel(x, y + 1) != c)
+                        if (!bmp.CmpPixel(x, y + 1, c.R, c.G, c.B))
                         {
                             border.Add(new Point(x, y));
                             border.Add(new Point(x, y + 1));

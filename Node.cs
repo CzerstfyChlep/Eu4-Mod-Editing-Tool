@@ -71,15 +71,16 @@ namespace Eu4ModEditor
                     CreatedByEditor = true;
                     return new NodeFileReadStatus();
                 }
-                if (string.IsNullOrWhiteSpace(File.ReadAllText(path)))
-                    return new NodeFileReadStatus();
             }
             int linen = 0;
 
             try
             {
-
                 string read = File.ReadAllText(path, Encoding.GetEncoding(1252));
+                if(read.Length == 0)
+                {
+                    return new NodeFileReadStatus();
+                }
                 string[] readLines = File.ReadAllLines(path, Encoding.GetEncoding(1252));
                 bool InComment = false;
                 string ReadValue = "";

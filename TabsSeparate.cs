@@ -136,7 +136,7 @@ namespace Eu4ModEditor
 
             foreach (Government g in GlobalVariables.Governments)
                 GovernmentTypeBox.Items.Add(g);
-            foreach (Building bl in GlobalVariables.Buildings)
+            foreach (Building bl in GlobalVariables.Buildings.Values)
                 BuildingsBox.Items.Add(bl);
 
 
@@ -819,7 +819,7 @@ namespace Eu4ModEditor
                 case Province.Variable.BuildingRemove:
                     {
                         ComboBox cb = new ComboBox();
-                        cb.Items.AddRange(GlobalVariables.Buildings.ToArray());
+                        cb.Items.AddRange(GlobalVariables.Buildings.Values.ToArray());
                         cb.Size = new Size(133, 21);
                         cb.Location = new Point(6, 19);
                         cb.SelectedItem = entry.Value;
@@ -883,10 +883,10 @@ namespace Eu4ModEditor
                     en = SelectedDateEntry.AddDateEntry(Province.Variable.LatentTradeGood, GlobalVariables.TradeGoods[0]);
                     break;
                 case "Add building":
-                    en = SelectedDateEntry.AddDateEntry(Province.Variable.BuildingAdd, GlobalVariables.Buildings[0]);
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.BuildingAdd, GlobalVariables.Buildings.Values.FirstOrDefault());
                     break;
                 case "Remove building":
-                    en = SelectedDateEntry.AddDateEntry(Province.Variable.BuildingRemove, GlobalVariables.Buildings[0]);
+                    en = SelectedDateEntry.AddDateEntry(Province.Variable.BuildingRemove, GlobalVariables.Buildings.Values.FirstOrDefault());
                     break;
                 case "Capital name":
                     en = SelectedDateEntry.AddDateEntry(Province.Variable.Capital, "");
@@ -5403,10 +5403,9 @@ namespace Eu4ModEditor
         private void LookupBuildingProvince_Click(object sender, EventArgs e)
         {
             LookupMenu lookupMenu = new LookupMenu();
-            lookupMenu.InitializeArray(GlobalVariables.Buildings, "Select building", "Building");
+            lookupMenu.InitializeArray(GlobalVariables.Buildings.Values, "Select building", "Building");
             lookupMenu.ShowDialog();
-            Building found = GlobalVariables.Buildings.Find(x => x.Name == lookupMenu.GetChosenObject());
-            if (found != null)
+            if (GlobalVariables.Buildings.TryGetValue(lookupMenu.GetChosenObject(), out Building found))
             {
                 BuildingsBox.SelectedItem = found;
             }
