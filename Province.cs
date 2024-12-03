@@ -762,11 +762,11 @@ namespace Eu4ModEditor
         {
             get
             {
-                return (int)Variables[Variable.Climate];
+                return (int)Variables[Variable.Winter];
             }
             set
             {
-                Variables[Variable.Climate] = value;
+                Variables[Variable.Winter] = value;
                 if (GlobalVariables.FullyLoaded)
                     if (!GlobalVariables.Saves.Any(x => x is Saving.SpecialSavingObject && ((Saving.SpecialSavingObject)x)?.Type == Saving.SpecialSavingObject.SavingType.Climate))
                         GlobalVariables.Saves.Add(new Saving.SpecialSavingObject(Saving.SpecialSavingObject.SavingType.Climate));
