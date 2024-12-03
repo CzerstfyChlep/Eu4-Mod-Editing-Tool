@@ -719,7 +719,7 @@ namespace Eu4ModEditor
                         n.AddVariable("remove_core", en.Value.ToString());
                         break;
                     case Province.Variable.Culture:
-                        n.AddVariable("culture", en.Value.ToString());
+                        n.AddVariable("culture", ((Culture)en.Value).Name);
                         break;
                     case Province.Variable.DiscoveredByAdd:
                         n.AddVariable("discovered_by", en.Value.ToString());
@@ -733,7 +733,7 @@ namespace Eu4ModEditor
                         n.AddVariable("hre", ((bool)en.Value) ? "yes" : "no");
                         break;
                     case Province.Variable.LatentTradeGood:
-                        n.AddNode("latent_trade_goods").AddPureValue(en.Value.ToString());
+                        n.AddNode("latent_trade_goods").AddPureValue(((TradeGood)en.Value).Name);
                         break;
                     case Province.Variable.Manpower:
                         n.AddVariable("base_manpower", en.Value.ToString());
@@ -757,7 +757,7 @@ namespace Eu4ModEditor
                         n.AddVariable("reformation_center", en.Value.ToString());
                         break;
                     case Province.Variable.Religion:
-                        n.AddVariable("religion", en.Value.ToString());
+                        n.AddVariable("religion", ((Religion)en.Value).Name);
                         break;
                     case Province.Variable.RemoveProvinceModifier:
                         n.AddVariable("remove_province_modifier", en.Value.ToString());
@@ -769,7 +769,7 @@ namespace Eu4ModEditor
                         n.AddVariable("base_tax", en.Value.ToString());
                         break;
                     case Province.Variable.TradeGood:
-                        n.AddVariable("trade_goods", en.Value.ToString());
+                        n.AddVariable("trade_goods", ((TradeGood)en.Value).Name);
                         break;
                     case Province.Variable.TribalOwner:
                         n.AddVariable("tribal_owner", en.Value == null ? "---" : ((Country)en.Value).Tag);
