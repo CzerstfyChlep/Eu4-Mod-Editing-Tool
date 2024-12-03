@@ -4559,7 +4559,7 @@
             this.RefreshChanges.Name = "RefreshChanges";
             this.RefreshChanges.Size = new System.Drawing.Size(543, 23);
             this.RefreshChanges.TabIndex = 4;
-            this.RefreshChanges.Text = "Refresh changes (Shows only 30)";
+            this.RefreshChanges.Text = "Refresh changes (Shows only 50)";
             this.RefreshChanges.UseVisualStyleBackColor = true;
             this.RefreshChanges.Click += new System.EventHandler(this.RefreshChanges_Click);
             // 
@@ -4638,7 +4638,7 @@
             this.RefreshSavesButton.Name = "RefreshSavesButton";
             this.RefreshSavesButton.Size = new System.Drawing.Size(546, 23);
             this.RefreshSavesButton.TabIndex = 0;
-            this.RefreshSavesButton.Text = "Refresh saves (Shows only 30)";
+            this.RefreshSavesButton.Text = "Refresh saves (Shows only 50)";
             this.RefreshSavesButton.UseVisualStyleBackColor = true;
             this.RefreshSavesButton.Click += new System.EventHandler(this.RefreshSavesButton_Click);
             // 

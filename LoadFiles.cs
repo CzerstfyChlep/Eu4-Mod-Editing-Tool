@@ -3100,7 +3100,20 @@ namespace Eu4ModEditor
             if (GlobalVariables.UseMod[(int)GlobalVariables.LoadFilesOrder.localisation] != 0)
             {
                 ReadLocalisationDirectory(progress, true);
-            }      
+            }
+
+            string ModEdtFileName = GlobalVariables.GetModEdtLocName();
+            LocalisationFile EdtFile = GlobalVariables.LocalisationFiles.Find(x => x.Filename == ModEdtFileName);
+
+            if (EdtFile == null)
+            {
+                EdtFile = new LocalisationFile();
+                EdtFile.Filename = ModEdtFileName;
+                GlobalVariables.LocalisationFiles.Add(EdtFile);
+            }
+
+            GlobalVariables.ModLocalisationFile = EdtFile;
+
         }
 
         public static void ReadLocalisationDirectory(LoadingProgress progress, bool mod)
@@ -3109,7 +3122,6 @@ namespace Eu4ModEditor
             string[] apostrophSplit;
             string LocPath = mod ? GlobalVariables.pathtomod : GlobalVariables.pathtogame;
             LocPath += "localisation\\";
-            Dictionary<string, string> Dict = mod ? GlobalVariables.ModLocalisationEntries : GlobalVariables.LocalisationEntries;
 
             if (!Directory.Exists(LocPath))
             {
@@ -3136,6 +3148,9 @@ namespace Eu4ModEditor
                         if (file.Split('.')[1] != "yml")
                             continue;
 
+                        LocalisationFile locFile = new LocalisationFile();
+                        locFile.Filename = Path.GetFileName(file);
+                     
                         string[] allLines = File.ReadAllLines(file, Encoding.GetEncoding(1252));
                         for (int lineNumber = 1; lineNumber < allLines.Length; lineNumber++)
                         {
@@ -3167,10 +3182,10 @@ namespace Eu4ModEditor
                                     progress.ReportError($"Alert: Strange line number {lineNumber} in localisation file '{Path.GetFileName(file)}'. Skipping.");
                                     continue;
                                 }
-                                if (Dict.Keys.Contains(splitValues[0]))
-                                    Dict[splitValues[0]] = apostrophSplit[1];
-                                else
-                                    Dict.Add(splitValues[0], apostrophSplit[1]);
+                                if (!locFile.TryChange(splitValues[0], apostrophSplit[1]))
+                                {
+                                    locFile.AddNew(splitValues[0], apostrophSplit[1]);
+                                }
                             }
                             catch
                             {
@@ -3179,6 +3194,17 @@ namespace Eu4ModEditor
                                 progress.ReportError($"Critical error: Localisation issue! -> {Path.GetFileName(file)} -> Line '{lineNumber}' is invalid!");
                             }
                         }
+
+                        //To not save it again
+                        locFile.Changed = false;
+
+                        LocalisationFile existing = GlobalVariables.LocalisationFiles.Find(x => x.Filename == locFile.Filename);
+                        if(existing != null)
+                        {
+                            GlobalVariables.LocalisationFiles.Remove(existing);
+                        }
+
+                        GlobalVariables.LocalisationFiles.Add(locFile);
                     }
                 }
             }

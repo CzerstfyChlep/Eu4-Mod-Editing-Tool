@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using System;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace Eu4ModEditor
 {
@@ -170,13 +171,15 @@ namespace Eu4ModEditor
                     if (pde == null)
                     {
                         pde = new ProvinceDateEntry(date, this);
-                        //AddDateEntry(pde);
                     }
                     ProvinceDateEntry.Entry entry = pde.Entries.Find(x => x.Type == Variable.CoresAdd && (string)x.Value == TAG);
                     if (entry == null)
                     {
                         entry = pde.AddDateEntry(Variable.CoresAdd, TAG);
                     }
+                    
+                    if (GlobalVariables.FullyLoaded && !GlobalVariables.Saves.Contains(this))
+                        GlobalVariables.Saves.Add(this);
                 }
             }
         }
@@ -199,13 +202,15 @@ namespace Eu4ModEditor
                     if (pde == null)
                     {
                         pde = new ProvinceDateEntry(date, this);
-                        //AddDateEntry(pde);
                     }
                     ProvinceDateEntry.Entry entry = pde.Entries.Find(x => x.Type == Variable.CoresRemove && (string)x.Value == TAG);
                     if (entry == null)
                     {
                         entry = pde.AddDateEntry(Variable.CoresRemove, TAG);
                     }
+
+                    if (GlobalVariables.FullyLoaded && !GlobalVariables.Saves.Contains(this))
+                        GlobalVariables.Saves.Add(this);
                 }
                 
             }
@@ -225,7 +230,6 @@ namespace Eu4ModEditor
                 if (pde == null)
                 {
                     pde = new ProvinceDateEntry(GlobalVariables.CurrentDate, this);
-                    //AddDateEntry(pde);
                 }
                 ProvinceDateEntry.Entry entry = pde.Entries.Find(x => x.Type == type);
                 if (entry == null)
@@ -234,6 +238,9 @@ namespace Eu4ModEditor
                 }
                 else
                     entry.Value = value;
+
+                if (GlobalVariables.FullyLoaded && !GlobalVariables.Saves.Contains(this))
+                    GlobalVariables.Saves.Add(this);
             }
         }
         private T GetValueWithDates<T>(Variable type, DateTime date)

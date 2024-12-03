@@ -16,9 +16,11 @@ namespace Eu4ModEditor
         {
             InitializeComponent();
 
+            IgnoreValueChange = true;
             DayInput.Value = GlobalVariables.CurrentDate.Day;
             MonthInput.Value = GlobalVariables.CurrentDate.Month;
             YearInput.Value = GlobalVariables.CurrentDate.Year;
+            IgnoreValueChange = false;
 
             PrevDayValue = (int)DayInput.Value;
             PrevMonthValue = (int)MonthInput.Value;
@@ -30,8 +32,13 @@ namespace Eu4ModEditor
         int PrevMonthValue = 0;
         int PrevYearValue = 0;
 
+        bool IgnoreValueChange = false;
+
         private void DayInput_ValueChanged(object sender, EventArgs e)
         {
+            if (IgnoreValueChange)
+                return;
+
             decimal Diff = PrevDayValue - DayInput.Value;
             GlobalVariables.CurrentDate = GlobalVariables.CurrentDate.AddDays((int)-Diff);
            
@@ -54,6 +61,9 @@ namespace Eu4ModEditor
 
         private void MonthInput_ValueChanged(object sender, EventArgs e)
         {
+            if (IgnoreValueChange)
+                return;
+
             decimal Diff = PrevMonthValue - MonthInput.Value;
             GlobalVariables.CurrentDate = GlobalVariables.CurrentDate.AddMonths((int)-Diff);
 
@@ -76,6 +86,9 @@ namespace Eu4ModEditor
 
         private void YearInput_ValueChanged(object sender, EventArgs e)
         {
+            if (IgnoreValueChange)
+                return;
+
             decimal Diff = PrevYearValue - YearInput.Value;
             GlobalVariables.CurrentDate = GlobalVariables.CurrentDate.AddYears((int)-Diff);
 
